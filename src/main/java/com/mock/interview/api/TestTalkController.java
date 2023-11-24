@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class TestTalkController {
-    @PostMapping("/test-talk")
+    @PostMapping("/talk-test")
     public String talk(@RequestBody ClientTalkRequest request) {
         log.info("사용자 음성 : {}", request);
         return "응답 완료했습니다.";
