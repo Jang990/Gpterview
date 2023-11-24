@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Speech Recognition Example</title>
+</head>
+<body>
+    <h1>Speech Recognition Example</h1>
+    <textarea id="result" rows="10" cols="50" disabled></textarea>
+    <br>
+    <button id="speckBtn" onclick="startRecognition()">Start Recognition</button>
+    <button id="sendBtn">send</button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        var recognition;
+        var resultArea = document.getElementById("result").setAttribute("disabled", "");
+
+        function startRecognition() {
+            recognition = new window.webkitSpeechRecognition();
+
+            recognition.onend = function() {
+                document.getElementById("result").removeAttribute("disabled");
+            };
+
+            recognition.onresult = function(event) {
+                var transcript = event.results[0][0].transcript;
+                document.getElementById("result").innerHTML += transcript + "\n";
+            };
+            recognition.start();
+
+        }
+
+        // ==============
+
+        $(document).ready(function() {
+          $("#sendBtn").on("click", function() {
+            getText();
+          });
+
+          // voiceschanged 이벤트 핸들러 등록
+          //window.speechSynthesis.onvoiceschanged = function() {
+          //  var voices = window.speechSynthesis.getVoices();
+          //  console.log(voices);
+          //};
+
+        });
+
+        function getText() {
+          var clientTalk = {"clientTalk": $('#result').val()};
+          $.ajax({
+            url: "/talk-test",
+            type: "POST",
+            contentType: "application/json",
+            //data: $("#result").val(),
+            data: JSON.stringify(clientTalk),
+            success: function(result) {
+              console.log(result);
+              var text = result;
+              speak(text);
+            },
+            error: function(error) {
+              console.log(error);
+            }
+          });
+        }
+
+        function speak(text) {
+          var msg = new SpeechSynthesisUtterance(text);
+          msg.voice = window.speechSynthesis.getVoices()[0]; // 첫번째 목소리로 설정
+          msg.rate = 1.5; // 속도 설정 (기본값은 1)
+          window.speechSynthesis.speak(msg);
+        }
+
+    </script>
+</body>
+</html>

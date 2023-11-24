@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="fragment-header">
+  <meta charset="UTF-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <title>인터뷰 메인 페이지</title>
+</head>
+<body>
+  <!-- 헤더 -->
+  <header th:replace="fragments/header :: header">헤더 공간</header>
+
+  <!-- 본문 내용 -->
+  <div class="container mt-5 min-vh-100">
+    <h2 class="mb-4">환경 설정</h2>
+    <!-- 모의 면접을 시작하기 앞서 초기 세팅을 하는 페이지 입니다. -->
+
+
+    <!--
+    기존에 저장한 인터뷰 설정이 있는지 확인합니다.
+    로그인을 한 사용자라면, 기존 세팅을 불러올 수 있습니다.
+    -->
+    <div>
+      <button class="btn btn-secondary">기존 설정 불러오기</button>
+    </div>
+    <div>
+      <lable>로그인을 하면 기존 설정을 불러올 수 있어요!</lable>
+      <button class="btn btn-primary">Login</button>
+    </div>
+
+    <hr>
+
+
+    <h3 class="my-3">지원환경 설정</h3>
+    <!--
+    어느 분야에 지원했는지.
+    어느 직군에 지원했는지.
+    어느 기술을 가지고 있는지.
+    관련 자기소개서가 있는지.
+    -->
+    <div class="mb-3 row">
+      <label for="field" class="col-sm-1 col-form-label">지원 분야</label>
+      <div class="col-sm-3">
+        <select id="field" class="form-select" aria-label="Select Field">
+          <option selected>선택해주세요</option>
+          <option value="1">IT (프로그래밍)</option>
+          <option value="2">A 분야</option>
+          <option value="3">B 분야</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-5 row">
+      <label for="position"  class="col-sm-1 col-form-label">지원 직군</label>
+      <div class="col-sm-3">
+        <select id="position" class="form-select" aria-label="Select Position">
+          <option selected>선택해주세요</option>
+          <option value="1">백엔드</option>
+          <option value="2">프론트엔드</option>
+          <option value="3">Android</option>
+          <option value="4">IOS</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-5 col">
+      <div for="intro" class="form-floating mb-1">
+        <textarea class="form-control" placeholder="여기에 적어주세요." id="intro" style="height: 200px"></textarea>
+        <label for="intro">지원서 내용 (3000자 이하)</label>
+      </div>
+      <a class="link-dark" href="#">지원서 예시보기</a>
+    </div>
+
+    <div class="mb-5 col">
+      <div for="company" class="form-floating mb-1">
+        <textarea class="form-control" placeholder="여기에 적어주세요." id="company" style="height: 100px"></textarea>
+        <label for="company">지원 회사 정보 (300자 이하)</label>
+      </div>
+      <a class="link-dark" href="#">회사 예시보기</a>
+    </div>
+
+    <hr>
+
+    <h3 class="my-3">모의면접 설정</h3>
+    <!--
+    면접 시간을 어느정도로 설정할 것인지. 30분 40분 등등...
+    인성 면접 or 기술 면접 or 인성 + 기술면접 으로 진행할 것인지...
+    등의 면접 진행 방식을 세팅해줍니다.
+    -->
+    <div class="mb-3 row">
+      <label for="time" class="col-sm-1 col-form-label">면접 시간</label>
+      <div class="col-sm-3">
+        <select id="time" class="form-select" aria-label="Select Time">
+          <option selected value="1">30분</option>
+          <option value="2">40분</option>
+          <option value="3">50분</option>
+          <option value="4">60분</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3 row">
+      <label for="type" class="col-sm-1 col-form-label">면접 타입</label>
+      <div class="col-sm-3">
+        <select id="type" class="form-select" aria-label="Select Type">
+          <option selected value="1">기술 면접</option>
+          <option value="2">인성 면접</option>
+          <option value="3">기술 + 인성 면접</option>
+        </select>
+      </div>
+    </div>
+
+
+    <hr>
+
+    <br>
+
+    <a class="btn btn-success mb-5">면접 시작</a>
+  </div>
+</body>
+</html>

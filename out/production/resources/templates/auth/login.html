@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="fragment-header">
+  <meta charset="UTF-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>로그인</title>
+</head>
+<body>
+  <!-- 헤더 -->
+  <header th:replace="fragments/header :: header">헤더 공간</header>
+  <!-- 본문 내용 -->
+  <div class="d-flex justify-content-center my-5 min-vh-100">
+    <div>
+      <h2 class="mb-4">로그인</h2>
+      <form th:replace="fragments/auth/login-form :: fragment-login-form">로그인 컴포넌트</form>
+    </div>
+  </div>
+
+  <footer th:replace="fragments/footer :: footer">Footer 공간</footer>
+
+</body>
+</html>
