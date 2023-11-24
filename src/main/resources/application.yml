@@ -1,4 +1,8 @@
+#hello: 안녕하세요
+
 spring:
   output:
     ansi:
       enabled: always
+  profiles:
+    active: "openai"

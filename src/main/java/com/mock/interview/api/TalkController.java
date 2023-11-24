@@ -15,10 +15,4 @@ public class TalkController {
         log.info("사용자 음성 : {}", clientTalk);
         return "안녕하세요!";
     }
-
-    @PostMapping("/test")
-    public String test(String talk) {
-        log.info("Hello World! : {}", talk);
-        return "ok";
-    }
 }
