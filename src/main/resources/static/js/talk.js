@@ -67,6 +67,7 @@ function sendMessage() {
             // message
             console.log(talkHistory);
             console.log(data);
+            speak(data);
         },
         error: function(error) {
             let errorMessage;
