@@ -1,17 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout/base-layout :: base-layout (~{::title},~{::link},~{::section})">
 <head>
-    <meta charset="UTF-8">
-    <title>Speech Recognition Example</title>
+    <title>테스트 페이지</title>
 </head>
 <body>
-    <h1>Speech Recognition Example</h1>
-    <textarea id="result" rows="10" cols="50" disabled></textarea>
-    <br>
-    <button id="speckBtn" onclick="startRecognition()">Start Recognition</button>
-    <button id="sendBtn">send</button>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<section>
     <script th:inline="javascript">
         var recognition;
         var resultArea = document.getElementById("result").setAttribute("disabled", "");
@@ -73,5 +66,11 @@
         }
 
     </script>
+    <h1>Speech Recognition Example</h1>
+    <textarea id="result" rows="10" cols="50" disabled></textarea>
+    <br>
+    <button id="speckBtn" onclick="startRecognition()">Start Recognition</button>
+    <button id="sendBtn">send</button>
+</section>
 </body>
 </html>
