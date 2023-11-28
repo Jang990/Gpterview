@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="fragments/layout/base-layout :: base-layout (~{::title},~{::link},~{::section})">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
 <head>
     <title>테스트 페이지</title>
 </head>
@@ -66,11 +66,12 @@
         }
 
     </script>
+
     <h1>Speech Recognition Example</h1>
     <textarea id="result" rows="10" cols="50" disabled></textarea>
     <br>
-    <button id="speckBtn" onclick="startRecognition()">Start Recognition</button>
-    <button id="sendBtn">send</button>
+    <button type="button" class="btn btn-success" id="speckBtn" onclick="startRecognition()">말하기</button>
+    <button type="button" class="btn btn-primary" id="sendBtn">전송</button>
 </section>
 </body>
 </html>

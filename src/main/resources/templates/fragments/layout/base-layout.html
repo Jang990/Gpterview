@@ -9,10 +9,10 @@
   <th:block th:replcae="${links}" />
 </head>
 <body>
-  <header th:replace="fragments/header :: header">헤더 공간</header>
+  <header th:replace="~{fragments/header :: header}">헤더 공간</header>
   <div th:replace="${content}">
     본문 페이지
   </div>
-  <footer th:replace="fragments/footer :: footer">Footer 공간</footer>
+  <footer th:replace="~{fragments/footer :: footer}">Footer 공간</footer>
 </body>
 </html>
