@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MyTestController {
-    @GetMapping("/talk")
+    @GetMapping("/interview/start")
     public String talkPage() {
-        return "interview/interview-talk-test";
+        return "interview/interview-start";
     }
 }

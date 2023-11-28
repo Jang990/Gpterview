@@ -10,11 +10,6 @@ public class SpeechController {
         return "interview/interview-setting";
     }
 
-    @GetMapping("/speech-V2")
-    public String speechPageV2() {
-        return "interview/speechV2";
-    }
-
     @GetMapping("/")
     public String index() {
         return "index";
