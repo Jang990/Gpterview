@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html th:fragment="base-layout (title, links, content)" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/bootstrap.min.css}" href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <title th:replace="${title}">레이아웃 타이틀</title>
+  <th:block th:replcae="${links}" />
+</head>
+<body>
+  <header th:replace="fragments/header :: header">헤더 공간</header>
+  <div th:replace="${content}">
+    본문 페이지
+  </div>
+  <footer th:replace="fragments/footer :: footer">Footer 공간</footer>
+</body>
+</html>
