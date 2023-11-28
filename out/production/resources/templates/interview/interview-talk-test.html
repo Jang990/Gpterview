@@ -1,77 +1,92 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
 <head>
-    <title>테스트 페이지</title>
+    <title>말하기 테스트</title>
 </head>
 <body>
-<section>
-    <script th:inline="javascript">
-        var recognition;
-        var resultArea = document.getElementById("result").setAttribute("disabled", "");
+<section style="background-color: #eee;">
+    <script th:src="@{/js/talk.js}" src="../../static/js/talk.js"></script>
+    <div class="d-flex justify-content-center p-4">
+        <div class="d-flex justify-content-center">
+            <div class="col-md-6 col-lg-7 col-xl-8">
+                <ul class="list-unstyled">
+                    <li class="d-flex justify-content-center mb-4 mt-4">
+                        <div>
+                            <button type="button" class="btn btn-success" id="speckBtn" onclick="startRecognition()">말하기</button>
+                        </div>
+                    </li>
 
-        function startRecognition() {
-            recognition = new window.webkitSpeechRecognition();
+                    <li class="mb-4">
+                        <div class="card p-3">
+                            <div class="form-outline w-100">
+                                <textarea class="form-control" id="result" rows="5" placeholder="말하는 중..." disabled></textarea>
+                            </div>
 
-            recognition.onend = function() {
-                document.getElementById("result").removeAttribute("disabled");
-            };
+                            <div class="py-1 border-0">
+                                <div class="float-end mt-2 pt-1 pl-3">
+                                    <button type="submit" class="btn btn-primary btn-sm" onclick="sendMessage()">응답완료</button>
+                                </div>
+                            </div>
+                        </div>
 
-            recognition.onresult = function(event) {
-                var transcript = event.results[0][0].transcript;
-                document.getElementById("result").innerHTML += transcript + "\n";
-            };
-            recognition.start();
+<!--                        <div class="form-outline">-->
+<!--                            <textarea class="form-control" id="textAreaExample2" rows="4"></textarea>-->
+<!--                            <label class="form-label" for="textAreaExample2">Message</label>-->
+<!--                        </div>-->
+                    </li>
 
-        }
-
-        // ==============
-
-        $(document).ready(function() {
-          $("#sendBtn").on("click", function() {
-            getText();
-          });
-
-          // voiceschanged 이벤트 핸들러 등록
-          //window.speechSynthesis.onvoiceschanged = function() {
-          //  var voices = window.speechSynthesis.getVoices();
-          //  console.log(voices);
-          //};
-
-        });
-
-        function getText() {
-          var clientTalk = {"clientTalk": $('#result').val()};
-          $.ajax({
-            url: "/talk-test",
-            type: "POST",
-            contentType: "application/json",
-            //data: $("#result").val(),
-            data: JSON.stringify(clientTalk),
-            success: function(result) {
-              console.log(result);
-              var text = result;
-              speak(text);
-            },
-            error: function(error) {
-              console.log(error);
-            }
-          });
-        }
-
-        function speak(text) {
-          var msg = new SpeechSynthesisUtterance(text);
-          msg.voice = window.speechSynthesis.getVoices()[0]; // 첫번째 목소리로 설정
-          msg.rate = 1.5; // 속도 설정 (기본값은 1)
-          window.speechSynthesis.speak(msg);
-        }
-
-    </script>
-
-    <h1>Speech Recognition Example</h1>
-    <textarea id="result" rows="10" cols="50" disabled></textarea>
-    <br>
-    <button type="button" class="btn btn-success" id="speckBtn" onclick="startRecognition()">말하기</button>
-    <button type="button" class="btn btn-primary" id="sendBtn">전송</button>
+                    <li class="d-flex justify-content-between mb-4">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between p-3">
+                                <p class="fw-bold mb-0">Brad Pitt</p>
+                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> 12 mins ago</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                                    labore et dolore magna aliqua.
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="d-flex justify-content-between mb-4">
+                        <div class="card w-100">
+                            <div class="card-header d-flex justify-content-between p-3">
+                                <p class="fw-bold mb-0">Lara Croft</p>
+                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> 13 mins ago</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                    laudantium.
+                                </p>
+                            </div>
+                        </div>
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                             class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                    </li>
+                    <li class="d-flex justify-content-between mb-4">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between p-3">
+                                <p class="fw-bold mb-0">Brad Pitt</p>
+                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> 10 mins ago</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                                    labore et dolore magna aliqua.
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </section>
 </body>
 </html>
