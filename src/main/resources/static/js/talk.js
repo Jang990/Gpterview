@@ -1,50 +1,20 @@
 var recognition;
-var resultArea = document.getElementById("result").setAttribute("disabled", "");
 
 function startRecognition() {
     recognition = new window.webkitSpeechRecognition();
-    recognition.onend = function() {
-//        document.getElementById("result").removeAttribute("disabled");
+
+    recognition.onstart = function(event) {
+        $('#result').attr("placeholder", "음성 인식 중...");
     };
 
     recognition.onresult = function(event) {
+        // 음성 인식 결과 나옴
         var transcript = event.results[0][0].transcript;
-        document.getElementById("result").innerHTML += transcript + "\n";
+        const text = $('#result').val() + transcript + "\n";
+        $('#result').val(text);
+        $('#result').attr("placeholder", "질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!");
     };
     recognition.start();
-
-}
-
-        // ==============
-
-$(document).ready(function() {
-  $("#sendBtn").on("click", function() {
-    getText();
-  });
-  // voiceschanged 이벤트 핸들러 등록
-  //window.speechSynthesis.onvoiceschanged = function() {
-  //  var voices = window.speechSynthesis.getVoices();
-  //  console.log(voices);
-  //};
-});
-
-function getText() {
-  var clientTalk = {"clientTalk": $('#result').val()};
-  $.ajax({
-    url: "/talk-test",
-    type: "POST",
-    contentType: "application/json",
-    //data: $("#result").val(),
-    data: JSON.stringify(clientTalk),
-    success: function(result) {
-      console.log(result);
-      var text = result;
-      speak(text);
-    },
-    error: function(error) {
-      console.log(error);
-    }
-  });
 }
 
 function speak(text) {
@@ -55,19 +25,26 @@ function speak(text) {
 }
 
 function sendMessage() {
+    const nowMsg = $('#result').val();
     var talkHistory = {
-        message: $('#result').val(),
+        message: nowMsg,
     };
     $.ajax({
         type: 'POST',
         url: '/chat',
         contentType: 'application/json',
         data: JSON.stringify(talkHistory),
+        beforeSend: function() {
+            const newConversationItem = createUserMessage(nowMsg);
+            $('#talk-history').append(newConversationItem);
+            $('#result').val('');
+        },
         success: function(data) {
-            // message
             console.log(talkHistory);
             console.log(data);
             speak(data);
+            const newConversationItem = createGptMessage(data);
+            $('#talk-history').append(newConversationItem);
         },
         error: function(error) {
             let errorMessage;
@@ -80,4 +57,45 @@ function sendMessage() {
             $('#creationGroupError').text(errorMessage);
         }
     });
+}
+
+function getCurrentTime() {
+    var now = new Date();
+    var hours = now.getHours().toString().padStart(2, '0');
+    var minutes = now.getMinutes().toString().padStart(2, '0');
+    return hours + ':' + minutes;
+}
+
+function createUserMessage(msg) {
+    return `
+           <li class="d-flex justify-content-start mb-4">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                     class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                <div class="card w-100">
+                    <div class="card-header d-flex justify-content-between p-3">
+                        <p class="fw-bold mb-0">지원자</p>
+                        <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">${msg}</p>
+                    </div>
+                </div>
+            </li>`;
+}
+
+function createGptMessage(msg) {
+    return `
+            <li class="d-flex justify-content-end mb-4">
+                <div class="card w-100">
+                    <div class="card-header d-flex justify-content-between p-3">
+                        <p class="fw-bold mb-0">면접관</p>
+                        <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0">${msg}</p>
+                    </div>
+                </div>
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                     class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+            </li>`;
 }
