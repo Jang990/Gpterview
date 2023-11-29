@@ -69,7 +69,7 @@ function getCurrentTime() {
 function createUserMessage(msg) {
     return `
            <li class="d-flex justify-content-start mb-4">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp" alt="avatar"
+                <img src="../image/applicant.png" alt="avatar"
                      class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
                 <div class="card w-100">
                     <div class="card-header d-flex justify-content-between p-3">
@@ -95,7 +95,7 @@ function createGptMessage(msg) {
                         <p class="mb-0">${msg}</p>
                     </div>
                 </div>
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp" alt="avatar"
+                <img src="../image/interviewer.png" alt="avatar"
                      class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
             </li>`;
 }
