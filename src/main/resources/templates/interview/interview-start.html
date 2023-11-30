@@ -30,7 +30,25 @@
                             </div>
                         </div>
                     </li>
-
+                    <article th:object="${interviewInfo.messageHistory}">
+                        <li th:each="message : *{messages}" class="mb-4 d-flex"
+                            th:unless="${#strings.equals(message.role, 'system')}"
+                            th:classappend="${#strings.equals(message.role, 'user')} ? justify-content-start : justify-content-end">
+                            <img th:if="${#strings.equals(message.role, 'user')}" src="../image/applicant.png" alt="avatar"
+                                 class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                            <div class="card w-100">
+                                <div class="card-header d-flex justify-content-between p-3">
+                                    <p class="fw-bold mb-0" th:text="${message.role}">지원자</p>
+                                    <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-0" th:text="${message.content}" >${msg}</p>
+                                </div>
+                            </div>
+                            <img th:if="${#strings.equals(message.role, 'assistant')}" src="../image/interviewer.png" alt="avatar"
+                                 class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                        </li>
+                    </article>
                 </ul>
             </div>
         </div>

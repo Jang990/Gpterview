@@ -18,9 +18,10 @@ public class SpeechController {
     public String startInterviewPage(Model model) {
         // TODO: testCreator를 지우고 /setting에서 넘어오면서 받은 DTO를 사용할 것
         InterviewInfo interviewInfo = InterviewInfo.testCreator("백엔드", "개발");
-        Message message = requester.sendRequest(interviewInfo);
-        interviewInfo.getMessageHistory().getMessages().add(message);
+//        Message message = requester.sendRequest(interviewInfo);
+//        interviewInfo.getMessageHistory().getMessages().add(message);
         model.addAttribute("interviewInfo", interviewInfo);
+        System.out.println(interviewInfo);
         return "interview/interview-start";
     }
 
