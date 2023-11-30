@@ -1,6 +1,7 @@
 package com.mock.interview.gpt;
 
 import com.mock.interview.contorller.dto.InterviewInfo;
+import com.mock.interview.contorller.dto.MessageHistory;
 import com.mock.interview.gpt.dto.ChatGptRequest;
 import com.mock.interview.gpt.dto.ChatGptResponse;
 import com.mock.interview.contorller.dto.Message;
@@ -25,17 +26,17 @@ public class ChatGPTRequester {
     private String apiUrl;
 
     private final String INTERVIEWER_ROLE = "system";
-    private final String INTERVIEWER_SETTING_FORMAT = "너는 %s 분야 %s 포지션의 면접관이고 user는 면접 지원자야. " +
-            "너가 하나씩 질문을 하면 user가 그에 대한 대답을 할꺼야. " +
-            "너는 user의 대답에 이상한 부분이 있다면 좀 더 깊게 질문할 수 있어." +
-            "기술적인 질문을 많이 해줘" +
-            "면접을 시작하자. 바로 질문해줘.";
+    private final String INTERVIEWER_SETTING_FORMAT =
+            "너는 %s 분야 %s 포지션의 면접관이고 user는 면접 지원자야. " +
+            "너는 질문하고 user는 대답한다." +
+            "너는 user의 대답에 이상한 부분이 있다면 추궁할 수 있다." +
+            "넌 한 번에 응답에 한 번의 질문을 한다.";
 
     public Message sendRequest(InterviewInfo interviewInfo) {
-        ChatGptRequest request = new ChatGptRequest(model, interviewInfo.getMessageHistory().getMessages());
-        if(isFirstRequest(request) || hasOnlyUserRequest(request))
+        if(isFirstMessage(interviewInfo.getMessageHistory()) || hasOnlyUserMessage(interviewInfo.getMessageHistory()))
             setInterviewMode(interviewInfo);
 
+        ChatGptRequest request = new ChatGptRequest(model, interviewInfo.getMessageHistory().getMessages());
         log.info("요청 : {}", request);
         ChatGptResponse response = openaiRestTemplate.postForObject(apiUrl, request, ChatGptResponse.class);
         log.info("응답 : {}", response);
@@ -54,12 +55,12 @@ public class ChatGPTRequester {
         interviewInfo.getMessageHistory().getMessages().add(0, interviewerSetting);
     }
 
-    private boolean isFirstRequest(ChatGptRequest request) {
-        return request.getMessages().isEmpty();
+    private boolean isFirstMessage(MessageHistory history) {
+        return history.getMessages().isEmpty();
     }
 
-    private boolean hasOnlyUserRequest(ChatGptRequest request) {
-        return !request.getMessages().get(0)
+    private boolean hasOnlyUserMessage(MessageHistory history) {
+        return !history.getMessages().get(0)
                 .getRole().equalsIgnoreCase(INTERVIEWER_ROLE);
     }
 }
