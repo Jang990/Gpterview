@@ -1,4 +1,4 @@
-package com.mock.interview.gpt;
+package com.mock.interview.contorller.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
