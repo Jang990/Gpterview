@@ -5,11 +5,11 @@
 </head>
 <body>
 <section style="background-color: #eee;">
-    <script th:src="@{/js/talk.js}" src="../../static/js/talk.js"></script>
+<!--    <script th:src="@{/js/talk.js}" src="../../static/js/talk.js"></script>-->
     <div class="d-flex justify-content-center p-4">
         <div class="d-flex justify-content-center flex-fill" style="max-width:1000px;">
             <div class="col-md-6 col-lg-7 col-xl-8">
-                <ul class="list-unstyled" id="talk-history">
+                <ul class="list-unstyled" id="talk">
                     <li class="d-flex justify-content-center mb-4 mt-4">
                         <div>
                             <button type="button" class="btn btn-success" id="speckBtn" onclick="startRecognition()">말하기</button>
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                     </li>
-                    <article th:object="${interviewInfo.messageHistory}">
+                    <article th:object="${interviewInfo.messageHistory}" id="talk-history">
                         <li th:each="message : *{messages}" class="mb-4 d-flex"
                             th:unless="${#strings.equals(message.role, 'system')}"
                             th:classappend="${#strings.equals(message.role, 'user')} ? justify-content-start : justify-content-end">
@@ -38,11 +38,11 @@
                                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
                             <div class="card w-100">
                                 <div class="card-header d-flex justify-content-between p-3">
-                                    <p class="fw-bold mb-0" th:text="${message.role}">지원자</p>
+                                    <p class="fw-bold mb-0 role" th:text="${message.role}">지원자</p>
                                     <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
                                 </div>
                                 <div class="card-body">
-                                    <p class="mb-0" th:text="${message.content}" >${msg}</p>
+                                    <p class="mb-0 message" th:text="${message.content}">${msg}</p>
                                 </div>
                             </div>
                             <img th:if="${#strings.equals(message.role, 'assistant')}" src="../image/interviewer.png" alt="avatar"
@@ -53,6 +53,134 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        let recognition;
+        let talkHistory = [];
+
+        function startRecognition() {
+            recognition = new window.webkitSpeechRecognition();
+
+            recognition.onstart = function(event) {
+                $('#result').attr("placeholder", "음성 인식 중...");
+            };
+
+            recognition.onresult = function(event) {
+                // 음성 인식 결과 나옴
+                var transcript = event.results[0][0].transcript;
+                const text = $('#result').val() + transcript + "\n";
+                $('#result').val(text);
+                $('#result').attr("placeholder", "질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!");
+            };
+            recognition.start();
+        }
+
+        function speak(text) {
+          var msg = new SpeechSynthesisUtterance(text);
+          msg.voice = window.speechSynthesis.getVoices()[0]; // 첫번째 목소리로 설정
+          msg.rate = 1.5; // 속도 설정 (기본값은 1)
+          window.speechSynthesis.speak(msg);
+        }
+
+        function sendMessage() {
+            const nowMsg = $('#result').val();
+            pushTalkHistory("user", nowMsg); // UserMessage 기록하기
+            const messages = talkHistory;
+            const interviewInfo = ({profile : null, messageHistory : {messages}});
+            console.log(interviewInfo);
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/interview/response',
+                contentType: 'application/json',
+                data: JSON.stringify(interviewInfo),
+                beforeSend: function() {
+                    $('#result').val(''); // 사용자 응답창 지워주기
+
+                    const newConversationItem = createUserMessage(nowMsg);
+                    $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
+                },
+                success: function(data) {
+                    // console.log(data);
+                    const role = data.role;
+                    const msg = data.content;
+
+                    speak(msg); // 응답 메시지를 음성으로 전달
+
+                    const newConversationItem = createGptMessage(msg);
+                    $('#talk-history').append(newConversationItem); // 화면에 응답 추가해주기
+
+                    pushTalkHistory(data.role, data.content); // GPT 응답 기록
+                    // console.log(talkHistory);
+                },
+                error: function(error) {
+                    console.log(error);
+                    let errorMessage;
+                    if(error.status == 400)
+                        errorMessage = error.responseJSON[0].message;
+                    else if(error.status == 401)
+                        errorMessage = '로그인을 다시 진행한 후 시도해주세요.';
+                    else
+                        errorMessage = error.responseJSON.message;
+                    $('#creationGroupError').text(errorMessage);
+                }
+            });
+        }
+
+        function getCurrentTime() {
+            var now = new Date();
+            var hours = now.getHours().toString().padStart(2, '0');
+            var minutes = now.getMinutes().toString().padStart(2, '0');
+            return hours + ':' + minutes;
+        }
+
+        function createUserMessage(msg) {
+            return `
+                   <li class="d-flex justify-content-start mb-4">
+                        <img src="../image/applicant.png" alt="avatar"
+                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                        <div class="card w-100">
+                            <div class="card-header d-flex justify-content-between p-3">
+                                <p class="fw-bold mb-0 role">지원자</p>
+                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0" name="message">${msg}</p>
+                            </div>
+                        </div>
+                    </li>`;
+        }
+
+        function createGptMessage(msg) {
+            return `
+                    <li class="d-flex justify-content-end mb-4">
+                        <div class="card w-100">
+                            <div class="card-header d-flex justify-content-between p-3">
+                                <p class="fw-bold mb-0 role">면접관</p>
+                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0 message">${msg}</p>
+                            </div>
+                        </div>
+                        <img src="../image/interviewer.png" alt="avatar"
+                             class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                    </li>`;
+        }
+
+        $(document).ready(function () {
+            $("#talk-history li").each(function () {
+              let role = $(this).find(".role").text();
+              let message = $(this).find(".message").text();
+              pushTalkHistory(role, message);
+            });
+        });
+
+        function pushTalkHistory(role, content) {
+            talkHistory.push({ role: role, content: content });
+        }
+    </script>
 </section>
 </body>
 </html>

@@ -9,21 +9,23 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class AIResponseController {
 
     private final ChatGPTRequester requester;
 
     @PostMapping("/chat")
-    public String chat(@RequestBody String message) {
+    public Message chat(@RequestBody String message) {
 //        MessageHistory history = new MessageHistory(message);
 //        ChatResponse chatResponse = requester.sendRequest(history);
 //        return chatResponse.getChoices().get(0).getMessage().getContent();
-        return "Hello World!";
+        return new Message("assistant", "Hello World!");
     }
 
     @PostMapping("/interview/response")
     public Message chat(@RequestBody InterviewInfo interviewInfo) {
+        System.out.println(interviewInfo);
         // TODO: interviewInfo에 system 환경 설정 정보가 없으면 bad Request를 반환할 것.
         return requester.sendRequest(interviewInfo);
     }
