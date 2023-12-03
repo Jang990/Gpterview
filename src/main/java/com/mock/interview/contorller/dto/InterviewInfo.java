@@ -17,8 +17,8 @@ public class InterviewInfo {
         info.setProfile(new CandidateProfileDTO());
 
         info.getMessageHistory().setMessages(new ArrayList<>());
-        info.getProfile().setField(field);
-        info.getProfile().setPosition(position);
+        info.getProfile().setDepartment(field);
+        info.getProfile().setField(position);
 
         MessageHistory history = new MessageHistory();
         history.setMessages(new ArrayList<>());
