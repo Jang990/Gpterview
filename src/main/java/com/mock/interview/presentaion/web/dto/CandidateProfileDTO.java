@@ -14,13 +14,7 @@ import java.util.List;
 public class CandidateProfileDTO {
     private String department;  // "개발", "영업", "세무"
     private String field; // BE, FE, 디자인
-    private List<String> skills; // Java, Spring, Mysql, Jenkins ...
+    private String skills; // Java, Spring, Mysql, Jenkins ...
 //    private int yearsOfExperience;   // 경력 연차
 //    private String jobDescription; // 채용공고 정보
-
-    public void setSkills(String skills) {
-        this.skills = Arrays.stream(skills.split(" "))
-                .filter(StringUtils::hasText)
-                .toList();
-    }
 }
