@@ -1,9 +1,9 @@
 package com.mock.interview.presentaion.web.dto;
 
 import lombok.*;
+import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,12 +14,13 @@ import java.util.List;
 public class CandidateProfileDTO {
     private String department;  // "개발", "영업", "세무"
     private String field; // BE, FE, 디자인
-    private List<String> skills;
+    private List<String> skills; // Java, Spring, Mysql, Jenkins ...
 //    private int yearsOfExperience;   // 경력 연차
 //    private String jobDescription; // 채용공고 정보
 
     public void setSkills(String skills) {
-        this.skills = new LinkedList<>();
-        Collections.addAll(this.skills, skills.split(" "));
+        this.skills = Arrays.stream(skills.split(" "))
+                .filter(StringUtils::hasText)
+                .toList();
     }
 }
