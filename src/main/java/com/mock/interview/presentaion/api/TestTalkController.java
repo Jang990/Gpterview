@@ -1,4 +1,4 @@
-package com.mock.interview.api;
+package com.mock.interview.presentaion.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

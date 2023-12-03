@@ -1,8 +1,8 @@
-package com.mock.interview.contorller;
+package com.mock.interview.presentaion.web;
 
-import com.mock.interview.contorller.dto.InterviewInfo;
-import com.mock.interview.gpt.ChatGPTRequester;
-import com.mock.interview.contorller.dto.Message;
+import com.mock.interview.presentaion.web.dto.InterviewInfo;
+import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
+import com.mock.interview.presentaion.web.dto.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

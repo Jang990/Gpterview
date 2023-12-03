@@ -1,4 +1,4 @@
-package com.mock.interview.contorller.dto;
+package com.mock.interview.presentaion.web.dto;
 
 import lombok.*;
 

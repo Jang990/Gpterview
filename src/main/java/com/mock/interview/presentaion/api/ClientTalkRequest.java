@@ -1,4 +1,4 @@
-package com.mock.interview.api;
+package com.mock.interview.presentaion.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

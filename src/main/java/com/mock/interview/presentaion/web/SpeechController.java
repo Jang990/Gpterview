@@ -1,10 +1,9 @@
-package com.mock.interview.contorller;
+package com.mock.interview.presentaion.web;
 
-import com.mock.interview.constant.Category;
-import com.mock.interview.contorller.dto.CandidateProfileDTO;
-import com.mock.interview.contorller.dto.InterviewInfo;
-import com.mock.interview.contorller.dto.Message;
-import com.mock.interview.gpt.ChatGPTRequester;
+import com.mock.interview.domain.constant.Category;
+import com.mock.interview.presentaion.web.dto.CandidateProfileDTO;
+import com.mock.interview.presentaion.web.dto.InterviewInfo;
+import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
-package com.mock.interview.gpt.dto;
+package com.mock.interview.infrastructure.gpt.dto;
 
-import com.mock.interview.contorller.dto.Message;
+import com.mock.interview.presentaion.web.dto.Message;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

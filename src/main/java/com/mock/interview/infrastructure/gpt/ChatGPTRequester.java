@@ -1,10 +1,10 @@
-package com.mock.interview.gpt;
+package com.mock.interview.infrastructure.gpt;
 
-import com.mock.interview.contorller.dto.InterviewInfo;
-import com.mock.interview.contorller.dto.MessageHistory;
-import com.mock.interview.gpt.dto.ChatGptRequest;
-import com.mock.interview.gpt.dto.ChatGptResponse;
-import com.mock.interview.contorller.dto.Message;
+import com.mock.interview.presentaion.web.dto.InterviewInfo;
+import com.mock.interview.presentaion.web.dto.MessageHistory;
+import com.mock.interview.infrastructure.gpt.dto.ChatGptRequest;
+import com.mock.interview.infrastructure.gpt.dto.ChatGptResponse;
+import com.mock.interview.presentaion.web.dto.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

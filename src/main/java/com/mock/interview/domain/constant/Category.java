@@ -1,4 +1,4 @@
-package com.mock.interview.constant;
+package com.mock.interview.domain.constant;
 
 import lombok.Getter;
 
