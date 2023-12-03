@@ -1,6 +1,6 @@
 package com.mock.interview.presentaion.web;
 
-import com.mock.interview.domain.constant.Category;
+import com.mock.interview.domain.Category;
 import com.mock.interview.presentaion.web.dto.CandidateProfileDTO;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
 import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
