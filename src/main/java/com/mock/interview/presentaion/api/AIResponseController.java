@@ -28,6 +28,7 @@ public class AIResponseController {
         System.out.println(interviewInfo);
         // TODO: interviewInfo에 system 환경 설정 정보가 없으면 bad Request를 반환할 것.
         return requester.sendRequest(interviewInfo);
+//        return new Message("assistant", "HelloWorld!");
     }
 }
 

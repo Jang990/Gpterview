@@ -6,10 +6,14 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 
 @Data
-@NoArgsConstructor
 public class InterviewInfo {
     private MessageHistory messageHistory;
     private CandidateProfileDTO profile;
+
+    public InterviewInfo() {
+        messageHistory = new MessageHistory();
+        profile = new CandidateProfileDTO();
+    }
 
     public static InterviewInfo testCreator(String position, String field) {
         InterviewInfo info = new InterviewInfo();

@@ -4,11 +4,15 @@ import com.mock.interview.domain.Category;
 import com.mock.interview.presentaion.web.dto.CandidateProfileDTO;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
 import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
+import com.mock.interview.presentaion.web.dto.Message;
+import com.mock.interview.presentaion.web.dto.MessageHistory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -19,12 +23,13 @@ public class SpeechController {
 
     @GetMapping("/interview/start")
     public String startInterviewPage(Model model, CandidateProfileDTO profile) {
-        // TODO: testCreator를 지우고 /setting에서 넘어오면서 받은 DTO를 사용할 것
-        InterviewInfo interviewInfo = InterviewInfo.testCreator(profile);
-//        Message message = requester.sendRequest(interviewInfo);
-//        interviewInfo.getMessageHistory().getMessages().add(message);
+        InterviewInfo interviewInfo = new InterviewInfo();
+        interviewInfo.setProfile(profile);
+
+        Message message = requester.sendRequest(interviewInfo);
+        interviewInfo.getMessageHistory().getMessages().add(message);
         model.addAttribute("interviewInfo", interviewInfo);
-        System.out.println(interviewInfo);
+
         return "interview/interview-start";
     }
 
