@@ -1,4 +1,4 @@
-package com.mock.interview.presentaion.web;
+package com.mock.interview.presentaion.api;
 
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
 import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
