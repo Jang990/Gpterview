@@ -18,9 +18,9 @@ public class SpeechController {
     private final ChatGPTRequester requester;
 
     @GetMapping("/interview/start")
-    public String startInterviewPage(Model model) {
+    public String startInterviewPage(Model model, CandidateProfileDTO profile) {
         // TODO: testCreator를 지우고 /setting에서 넘어오면서 받은 DTO를 사용할 것
-        InterviewInfo interviewInfo = InterviewInfo.testCreator("백엔드", "개발");
+        InterviewInfo interviewInfo = InterviewInfo.testCreator(profile);
 //        Message message = requester.sendRequest(interviewInfo);
 //        interviewInfo.getMessageHistory().getMessages().add(message);
         model.addAttribute("interviewInfo", interviewInfo);
