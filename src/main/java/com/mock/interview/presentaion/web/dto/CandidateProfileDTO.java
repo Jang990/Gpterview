@@ -18,9 +18,7 @@ public class CandidateProfileDTO {
 //    private int yearsOfExperience;   // 경력 연차
 //    private String jobDescription; // 채용공고 정보
 
-    public CandidateProfileDTO(String department, String field, String skills) {
-        this.department = department;
-        this.field = field;
+    public void setSkills(String skills) {
         this.skills = new LinkedList<>();
         Collections.addAll(this.skills, skills.split(" "));
     }
