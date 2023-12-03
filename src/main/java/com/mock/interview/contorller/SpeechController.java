@@ -1,5 +1,6 @@
 package com.mock.interview.contorller;
 
+import com.mock.interview.constant.Category;
 import com.mock.interview.contorller.dto.InterviewInfo;
 import com.mock.interview.contorller.dto.Message;
 import com.mock.interview.gpt.ChatGPTRequester;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,8 +29,12 @@ public class SpeechController {
     }
 
     @GetMapping("/interview/setting")
-    public String speechPage() {
+    public String speechPage(Model model) {
         // TODO: Setting DTO를 만들고 Model에 넣어서 타임리프에 th:object로 연결할 것.
+        model.addAttribute("categoryList", List.of(Category.IT));
+
+        // TODO: Ajax로 분야에 맞는 필드를 가져오도록 수정해야 한다. 일단 임시로 each문 돌린다.
+        // TODO: 지금은 면접 설정은 생략하고 기술면접으로 진행한다. 추후 면접 설정도 추가해야 한다.
         return "interview/interview-setting";
     }
 

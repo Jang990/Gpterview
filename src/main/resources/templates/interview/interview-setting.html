@@ -32,48 +32,67 @@
             어느 기술을 가지고 있는지.
             관련 자기소개서가 있는지.
             -->
-            <div class="mb-3 row">
-                <label for="field" class="col-sm-1 col-form-label">지원 분야</label>
-                <div class="col-sm-3">
-                    <select id="field" class="form-select" aria-label="Select Field">
-                        <option selected>선택해주세요</option>
-                        <option value="1">IT (프로그래밍)</option>
-                        <option value="2">A 분야</option>
-                        <option value="3">B 분야</option>
-                    </select>
+            <div th:object="${categoryList}">
+                <div class="mb-3 row">
+                    <label for="field" class="col-sm-1 col-form-label">지원 분야</label>
+                    <div class="col-sm-3">
+                        <select id="department" class="form-select" aria-label="Select Field">
+                            <option selected>선택해주세요</option>
+                            <option th:each="department : ${categoryList}"
+                                    th:value="${department}" th:text="${department.name}">IT (프로그래밍)</option>
+                            <option disabled>다른 분야 추가 예정</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-5 row">
+                    <label for="field"  class="col-sm-1 col-form-label">지원 직군</label>
+                    <div class="col-sm-3">
+                        <select id="field" class="form-select" aria-label="Select Position">
+                            <option selected>선택해주세요</option>
+                            <!-- 동적으로 변해야 함. 이 코드는 임시 코드 -->
+                            <option th:each="field : ${categoryList[0].fields}"
+                                    th:value="${field}" th:text="${field.name}">백엔드</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <div class="mb-5 row">
-                <label for="position"  class="col-sm-1 col-form-label">지원 직군</label>
-                <div class="col-sm-3">
-                    <select id="position" class="form-select" aria-label="Select Position">
-                        <option selected>선택해주세요</option>
-                        <option value="1">백엔드</option>
-                        <option value="2">프론트엔드</option>
-                        <option value="3">Android</option>
-                        <option value="4">IOS</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-5 col">
-                <div for="intro" class="form-floating mb-1">
-                    <textarea class="form-control" placeholder="여기에 적어주세요." id="intro" style="height: 200px"></textarea>
-                    <label for="intro">지원서 내용 (3000자 이하)</label>
-                </div>
-                <a class="link-dark" href="#">지원서 예시보기</a>
-            </div>
 
             <div class="mb-5 col">
-                <div for="company" class="form-floating mb-1">
+                <div for="skills" class="form-floating">
+                    <textarea class="form-control" placeholder="여기에 적어주세요." id="skills"></textarea>
+                    <label for="company">보유 기술 정보 - 띄어쓰기로 구분</label>
+                </div>
+                <div class="mt-2">
+                    <a class="link-dark" href="#">기술 정보 예시보기</a>
+                </div>
+            </div>
+
+            <!-- 우대사항  -->
+            <div class="mb-5 col">
+                <div for="company" class="form-floating">
                     <textarea class="form-control" placeholder="여기에 적어주세요." id="company" style="height: 100px"></textarea>
-                    <label for="company">지원 회사 정보 (300자 이하)</label>
+                    <label for="company">지원 회사 정보 (300자 이하) - 생략가능</label>
                 </div>
-                <a class="link-dark" href="#">회사 예시보기</a>
+                <div class="mt-2">
+                    <a class="link-dark mx-1" href="#">회사 예시보기</a>
+                </div>
+            </div>
+
+            <!-- 자기소개 및 지원동기 등등 자유 양식 -->
+            <div class="mb-5 col">
+                <div for="intro" class="form-floating">
+                    <textarea class="form-control" placeholder="여기에 적어주세요." id="intro" style="height: 200px"></textarea>
+                    <label for="intro">간단한 지원서 내용 (500자 이하) - 생략가능</label>
+                </div>
+                <div class="mt-2">
+                    <a class="link-dark" href="#">지원서 예시보기</a>
+                </div>
             </div>
 
             <hr>
+
 
             <h3 class="my-3">모의면접 설정</h3>
             <!--
@@ -84,7 +103,7 @@
             <div class="mb-3 row">
                 <label for="time" class="col-sm-1 col-form-label">면접 시간</label>
                 <div class="col-sm-3">
-                    <select id="time" class="form-select" aria-label="Select Time">
+                    <select id="time" class="form-select" aria-label="Select Time" disabled>
                         <option selected value="1">30분</option>
                         <option value="2">40분</option>
                         <option value="3">50분</option>
@@ -96,7 +115,7 @@
             <div class="mb-3 row">
                 <label for="type" class="col-sm-1 col-form-label">면접 타입</label>
                 <div class="col-sm-3">
-                    <select id="type" class="form-select" aria-label="Select Type">
+                    <select id="type" class="form-select" aria-label="Select Type" disabled>
                         <option selected value="1">기술 면접</option>
                         <option value="2">인성 면접</option>
                         <option value="3">기술 + 인성 면접</option>
