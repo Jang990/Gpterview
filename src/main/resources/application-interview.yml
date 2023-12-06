@@ -1,0 +1,21 @@
+interview:
+  format:
+    role:
+      system: _system_
+      user: _user_
+      interviewer: _interviewer_
+    profile:
+      department: _department_
+      field: _field_
+      skills: _skills_
+
+  strategy:
+    common:
+      rule: |
+        ${interview.format.role.user} 에게 정말 중요한 일이야.
+        ${interview.format.role.interviewer} 는 질문하고 ${interview.format.role.user} 는 대답.
+        ${interview.format.role.interviewer} 는 ${interview.format.role.user} 의 대답에 이상한 부분이 있다면 추궁.
+        추궁할 부분이 없다면 같은 주제로 3번 이상 말하지 말고 주제를 변경.
+        넌 한 번에 응답에 한 번의 질문.
+      profile: 너는 ${interview.format.profile.department} 분야 ${interview.format.profile.field} 포지션의 면접관, ${interview.format.role.user}는 면접 지원자.
+      skills: ${interview.format.role.user}는 ${interview.format.profile.skills} 등의 기술을 보유.
