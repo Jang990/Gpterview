@@ -1,13 +1,13 @@
 interview:
   format:
     role:
-      system: _system_
-      user: _user_
-      interviewer: _interviewer_
+      system: $_system_
+      user: $_user_
+      interviewer: $_interviewer_
     profile:
-      department: _department_
-      field: _field_
-      skills: _skills_
+      department: $_department_
+      field: $_field_
+      skills: $_skills_
 
   strategy:
     common:

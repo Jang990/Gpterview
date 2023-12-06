@@ -17,7 +17,7 @@ class StringFormatterTest {
     void testSuccess() {
         String target = "tem";
         String replaceStr = "user";
-        String s = "Hello World! ${"+target+"}";
+        String s = "Hello World! $_"+target+"_";
         Map<String, Object> map = new HashMap<>();
         map.put(target, replaceStr);
 
@@ -29,9 +29,9 @@ class StringFormatterTest {
     @Test
     @DisplayName("잘못된 파라미터")
     void testMal() {
-        String s = "Hello World! ${aaa}";
+        String s = "Hello World! $_aaa_";
         Map<String, Object> map = new HashMap<>();
-        map.put("${aaa}", "user");
+        map.put("$_aaa_", "user");
 
         // Hello World! null
         String result = StringFormatter.format(s, map);
@@ -39,15 +39,15 @@ class StringFormatterTest {
     }
 
     @Test
-    @DisplayName("잘못된 템플릿")
-    void testMal2() {
-        String s = "Hello World! ${{}";
+    @DisplayName("파라미터 매칭 실패")
+    void testMissMatch() {
+        String s = "Hello World! $_aaa_";
         Map<String, Object> map = new HashMap<>();
-        map.put("{", "user");
+        map.put("abc", "user");
 
-        // Hello World! ${{}
+        // Hello World! null
         String result = StringFormatter.format(s, map);
-        assertThat(result).doesNotContain("null");
+        assertThat(result).contains("null");
     }
 
 }

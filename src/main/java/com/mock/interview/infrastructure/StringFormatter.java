@@ -7,7 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StringFormatter {
-    private static final String PATTERN_STRING = "[$][{](\\w+)}";
+//    private static final String PATTERN_STRING = "[$][_](\\w+)_";
+    private static final String PATTERN_STRING = "[$][_](\\w+)_";
     private static final Pattern VALID_PATTERN = Pattern.compile(PATTERN_STRING);
 
     public static String format(String template, Map<String, Object> parameters) {
@@ -19,7 +20,7 @@ public class StringFormatter {
         while (matcher.find()) {
             String key = matcher.group(1);
 
-            String paramName = "${" + key + "}";
+            String paramName = "$_" + key + "_";
             int index = newTemplate.indexOf(paramName);
             if (index != -1) {
                 newTemplate.replace(index, index + paramName.length(), "%s");
