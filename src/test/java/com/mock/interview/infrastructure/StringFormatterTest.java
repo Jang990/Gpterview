@@ -1,6 +1,6 @@
 package com.mock.interview.infrastructure;
 
-import org.assertj.core.api.Assertions;
+import com.mock.interview.infrastructure.fomatter.StringFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

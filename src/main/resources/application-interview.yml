@@ -1,21 +1,48 @@
 interview:
+  role: # fommater에서 변환할 수 있는 role 키
+    system: system
+    user: user
+    interviewer: interviewer
+  profile: # fommater에서 변환할 수 있는 profile 키
+    department: department
+    field: field
+    skills: skills
+    experience: experience
   format:
-    role:
-      system: $_system_
-      user: $_user_
-      interviewer: $_interviewer_
+    prefix: $_
+    suffix: _
+    role: #fomatter에서 사용할 양식
+      system: ${interview.format.prefix}${interview.role.system}${interview.format.suffix}
+      user: ${interview.format.prefix}${interview.role.user}${interview.format.suffix}
+      interviewer: ${interview.format.prefix}${interview.role.interviewer}${interview.format.suffix}
     profile:
-      department: $_department_
-      field: $_field_
-      skills: $_skills_
+      department: ${interview.format.prefix}${interview.profile.department}${interview.format.suffix}
+      field: ${interview.format.prefix}${interview.profile.field}${interview.format.suffix}
+      skills: ${interview.format.prefix}${interview.profile.skills}${interview.format.suffix}
+      experience: ${interview.format.prefix}${interview.profile.experience}${interview.format.suffix}
 
   strategy:
     common:
       rule: |
         ${interview.format.role.user} 에게 정말 중요한 일이야.
+        너는 ${interview.format.profile.department} 분야 ${interview.format.profile.field} 포지션의 면접관, ${interview.format.role.user}는 면접 지원자.
         ${interview.format.role.interviewer} 는 질문하고 ${interview.format.role.user} 는 대답.
         ${interview.format.role.interviewer} 는 ${interview.format.role.user} 의 대답에 이상한 부분이 있다면 추궁.
         추궁할 부분이 없다면 같은 주제로 3번 이상 말하지 말고 주제를 변경.
         넌 한 번에 응답에 한 번의 질문.
-      profile: 너는 ${interview.format.profile.department} 분야 ${interview.format.profile.field} 포지션의 면접관, ${interview.format.role.user}는 면접 지원자.
       skills: ${interview.format.role.user}는 ${interview.format.profile.skills} 등의 기술을 보유.
+      experience: ${interview.format.role.user}는 다음과 같은 경험을 함 ${interview.format.profile.experience}.
+    IT:
+      personal: | 
+        ${interview.strategy.common.rule} 
+        인성과 관련된 질문만.
+      experience: |
+        ${interview.strategy.common.experience}
+        ${interview.strategy.common.rule}
+        ${interview.strategy.common.skills} 
+        진행자가 진행한 프로젝트 경험에 대해 인성 및 기술 질문.
+      technical: |
+        ${interview.strategy.common.rule}
+        ${interview.strategy.common.skills} 
+        컴퓨터 사이언스, 네트워크, 운영체제, DB, 자료구조 + 지원자가 가지고 있는 스킬과 관련된 질문을 적극적으로 할 것을 권유.
+        지원자의 기술적 역량이나 다양한 스킬을 자세히 알아보기 위해 관련 질문을 추가.

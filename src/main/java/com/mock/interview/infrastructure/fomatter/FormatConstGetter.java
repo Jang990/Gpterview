@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.interview;
+package com.mock.interview.infrastructure.fomatter;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class CommonConstGetter {
+public class FormatConstGetter {
     @Value("${interview.format.role.system}")
     private String systemRoleFormat;
     @Value("${interview.format.role.user}")
@@ -20,10 +20,19 @@ public class CommonConstGetter {
     @Value("${interview.format.profile.skills}")
     private String skillsFormat;
 
-    @Value("${interview.strategy.common.rule}")
-    private String commonRule;
-    @Value("${interview.strategy.common.profile}")
-    private String commonProfile;
-    @Value("${interview.strategy.common.skills}")
-    private String commonSkills;
+    @Value("${interview.role.system}")
+    private String systemRole;
+    @Value("${interview.role.user}")
+    private String userRole;
+    @Value("${interview.role.interviewer}")
+    private String interviewerRole;
+
+    @Value("${interview.profile.department}")
+    private String department;
+    @Value("${interview.profile.field}")
+    private String field;
+    @Value("${interview.profile.skills}")
+    private String skills;
+    @Value("${interview.profile.experience}")
+    private String experience;
 }
