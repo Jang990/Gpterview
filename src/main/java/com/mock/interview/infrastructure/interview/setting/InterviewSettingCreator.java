@@ -51,7 +51,7 @@ public class InterviewSettingCreator {
         map.put(formatConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
         map.put(formatConstGetter.getField(), profile.getField());
         map.put(formatConstGetter.getDepartment(), profile.getDepartment());
-        map.put(formatConstGetter.getSkillsFormat(), profile.getSkills());
+        map.put(formatConstGetter.getSkills(), profile.getSkills());
         map.put(formatConstGetter.getExperience(), profile.getExperience());
         return map;
 //        return Map.of(
