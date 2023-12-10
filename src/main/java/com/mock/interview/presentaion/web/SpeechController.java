@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -28,8 +29,15 @@ public class SpeechController {
         interviewInfo.setInterviewDetails(interviewDetails);
 
         Message message = service.service(interviewInfo);
-        interviewInfo.getMessageHistory().getMessages().add(message);
+
+        // TODO : Service 부분에서 MessageHistory 원본을 건드리지 못하도록 수정할 것. - 중요함
+        LinkedList<Message> messages = new LinkedList<>();
+        messages.add(message);
+        interviewInfo.getMessageHistory().setMessages(messages);
+
         model.addAttribute("interviewInfo", interviewInfo);
+
+
 
         return "interview/interview-start";
     }
