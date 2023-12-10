@@ -39,7 +39,8 @@
                                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
                             <div class="card w-100">
                                 <div class="card-header d-flex justify-content-between p-3">
-                                    <p class="fw-bold mb-0 role" name="role" th:text="${#strings.equals(message.role, 'USER')} ? 지원자 : 면접관">역할</p>
+                                    <p class="fw-bold mb-0"th:text="${#strings.equals(message.role, 'USER')} ? 지원자 : 면접관">역할</p>
+                                    <input type="hidden" name="role" class="role" th:value="${message.role}">
                                     <p class="text-muted small mb-0"><i class="far fa-clock"></i> 현재 시간 </p>
                                 </div>
                                 <div class="card-body">
@@ -131,6 +132,7 @@
             });
         }
 
+        // 서버로 받은 응답 값을 화면에 면접관으로 표시
         function displayResponse(data) {
             const msg = data.content;
             const newConversationItem = createGptMessage(msg)
@@ -152,7 +154,8 @@
                              class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
                         <div class="card w-100">
                             <div class="card-header d-flex justify-content-between p-3">
-                                <p class="fw-bold mb-0 role" name="role">지원자</p>
+                                <p class="fw-bold mb-0">지원자</p>
+                                <input type="hidden" name="role" class="role" th:value="USER">
                                 <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
                             </div>
                             <div class="card-body">
@@ -168,6 +171,7 @@
                         <div class="card w-100">
                             <div class="card-header d-flex justify-content-between p-3">
                                 <p class="fw-bold mb-0 role">면접관</p>
+                                <input type="hidden" name="role" class="role" th:value="INTERVIEWER">
                                 <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
                             </div>
                             <div class="card-body">
@@ -181,7 +185,7 @@
 
         $(document).ready(function () {
             $("#talk-history li").each(function () {
-              let role = $(this).find(".role").text();
+              let role = $(this).find(".role").val();
               let content = $(this).find(".content").text();
               pushTalkHistory(role, content);
             });
