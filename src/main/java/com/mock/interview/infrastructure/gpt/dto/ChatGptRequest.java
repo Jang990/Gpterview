@@ -12,7 +12,6 @@ public class ChatGptRequest {
     private String model;
     private List<Message> messages;
     private final int n = 1;
-    private double temperature;
 
     public ChatGptRequest(String model, List<Message> history) {
         this.model = model;
