@@ -1,5 +1,6 @@
 package com.mock.interview.infrastructure.interview.strategy;
 
+import com.mock.interview.domain.Category;
 import com.mock.interview.infrastructure.gpt.AISpecification;
 import com.mock.interview.infrastructure.gpt.InterviewAIRequest;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
@@ -19,4 +20,6 @@ public interface InterviewerStrategy {
      * @return
      */
     InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo);
+
+    boolean isSupportedCategory(Category category);
 }
