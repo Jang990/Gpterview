@@ -1,6 +1,6 @@
 package com.mock.interview.presentaion.api;
 
-//import com.mock.interview.application.AIService;
+import com.mock.interview.application.AIService;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
 import com.mock.interview.presentaion.web.dto.InterviewRole;
 import com.mock.interview.presentaion.web.dto.Message;
@@ -16,16 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AIResponseController {
 
-//    private final ChatGPTRequester requester;
-//    private final AIService service;
+    private final AIService service;
 
     @PostMapping("/interview/response")
     public ResponseEntity<Message> chat(@RequestBody InterviewInfo interviewInfo) {
-        System.out.println("====>" + interviewInfo.getProfile());
-//        return requester.sendRequest(interviewInfo);
-//        return service.service(interviewInfo);
-        Message tempMsg = new Message(InterviewRole.INTERVIEWER.toString(), "안녕하세요");
-        return new ResponseEntity<>(tempMsg, HttpStatus.OK);
+        Message response = service.service(interviewInfo);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

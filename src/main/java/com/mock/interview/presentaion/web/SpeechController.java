@@ -3,7 +3,6 @@ package com.mock.interview.presentaion.web;
 import com.mock.interview.application.AIService;
 import com.mock.interview.domain.Category;
 import com.mock.interview.presentaion.web.dto.*;
-import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SpeechController {
 
-//    private final AIService service;
+    private final AIService service;
 
     @GetMapping("/interview/start")
     public String startInterviewPage(
@@ -27,20 +26,12 @@ public class SpeechController {
         InterviewInfo interviewInfo = new InterviewInfo();
         interviewInfo.setProfile(profile);
         interviewInfo.setInterviewDetails(interviewDetails);
-//        Message message = service.service(interviewInfo);
 
-        addTempData(interviewInfo);
+        Message message = service.service(interviewInfo);
+        interviewInfo.getMessageHistory().getMessages().add(message);
         model.addAttribute("interviewInfo", interviewInfo);
 
         return "interview/interview-start";
-    }
-
-    private static void addTempData(InterviewInfo interviewInfo) {
-        // 임시 데이터 추가
-        Message userMsg = new Message(InterviewRole.USER.toString(), "안녕하세요.");
-        Message interviewerMsg = new Message(InterviewRole.INTERVIEWER.toString(), "Hello World!");
-        interviewInfo.getMessageHistory().getMessages().add(userMsg);
-        interviewInfo.getMessageHistory().getMessages().add(interviewerMsg);
     }
 
     @GetMapping("/interview/setting")
