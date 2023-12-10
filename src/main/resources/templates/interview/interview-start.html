@@ -30,22 +30,23 @@
                             </div>
                         </div>
                     </li>
+
+                    <!-- INTERVIEWER, USER 등등 하드코딩 수정하기 -->
                     <article id="talk-history">
                         <li th:each="message : *{messages}" class="mb-4 d-flex"
-                            th:unless="${#strings.equals(message.role, 'system')}"
-                            th:classappend="${#strings.equals(message.role, 'user')} ? justify-content-start : justify-content-end">
-                            <img th:if="${#strings.equals(message.role, 'user')}" src="../image/applicant.png" alt="avatar"
+                            th:classappend="${#strings.equals(message.role, 'USER')} ? justify-content-start : justify-content-end">
+                            <img th:if="${#strings.equals(message.role, 'USER')}" src="../image/applicant.png" alt="avatar"
                                  class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
                             <div class="card w-100">
                                 <div class="card-header d-flex justify-content-between p-3">
-                                    <p class="fw-bold mb-0 role" th:text="${message.role}">지원자</p>
-                                    <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                                    <p class="fw-bold mb-0 role" name="role" th:text="${#strings.equals(message.role, 'USER')} ? 지원자 : 면접관">역할</p>
+                                    <p class="text-muted small mb-0"><i class="far fa-clock"></i> 현재 시간 </p>
                                 </div>
                                 <div class="card-body">
-                                    <p class="mb-0 message" th:text="${message.content}">${msg}</p>
+                                    <p class="mb-0 content" name="content" th:text="${message.content}">말한 내용</p>
                                 </div>
                             </div>
-                            <img th:if="${#strings.equals(message.role, 'assistant')}" src="../image/interviewer.png" alt="avatar"
+                            <img th:if="${#strings.equals(message.role, 'INTERVIEWER')}" src="../image/interviewer.png" alt="avatar"
                                  class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                         </li>
                     </article>
@@ -108,14 +109,10 @@
                     $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
                 },
                 success: function(data) {
-                    // console.log(data);
-                    const role = data.role;
-                    const msg = data.content;
+                    console.log(data);
 
-                    speak(msg); // 응답 메시지를 음성으로 전달
-
-                    const newConversationItem = createGptMessage(msg);
-                    $('#talk-history').append(newConversationItem); // 화면에 응답 추가해주기
+                    // speak(data.content); // 응답 메시지를 음성으로 전달
+                    displayResponse(data);
 
                     pushTalkHistory(data.role, data.content); // GPT 응답 기록
                     // console.log(talkHistory);
@@ -134,6 +131,13 @@
             });
         }
 
+        function displayResponse(data) {
+            const msg = data.content;
+            const newConversationItem = createGptMessage(msg)
+
+            $('#talk-history').append(newConversationItem); // 화면에 응답 추가해주기
+        }
+
         function getCurrentTime() {
             var now = new Date();
             var hours = now.getHours().toString().padStart(2, '0');
@@ -148,11 +152,11 @@
                              class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
                         <div class="card w-100">
                             <div class="card-header d-flex justify-content-between p-3">
-                                <p class="fw-bold mb-0 role">지원자</p>
+                                <p class="fw-bold mb-0 role" name="role">지원자</p>
                                 <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
                             </div>
                             <div class="card-body">
-                                <p class="mb-0" name="message">${msg}</p>
+                                <p class="mb-0 content" name="content">${msg}</p>
                             </div>
                         </div>
                     </li>`;
@@ -167,7 +171,7 @@
                                 <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
                             </div>
                             <div class="card-body">
-                                <p class="mb-0 message">${msg}</p>
+                                <p class="mb-0 content" name="content">${msg}</p>
                             </div>
                         </div>
                         <img src="../image/interviewer.png" alt="avatar"
@@ -178,8 +182,8 @@
         $(document).ready(function () {
             $("#talk-history li").each(function () {
               let role = $(this).find(".role").text();
-              let message = $(this).find(".message").text();
-              pushTalkHistory(role, message);
+              let content = $(this).find(".content").text();
+              pushTalkHistory(role, content);
             });
         });
 

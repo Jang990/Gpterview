@@ -1,5 +1,6 @@
 package com.mock.interview.presentaion.web;
 
+import com.mock.interview.application.AIService;
 import com.mock.interview.domain.Category;
 import com.mock.interview.presentaion.web.dto.*;
 import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
@@ -22,15 +23,24 @@ public class SpeechController {
             CandidateProfileDTO profile,
             InterviewDetailsDTO interviewDetails
     ) {
+        // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
         InterviewInfo interviewInfo = new InterviewInfo();
         interviewInfo.setProfile(profile);
         interviewInfo.setInterviewDetails(interviewDetails);
 //        Message message = service.service(interviewInfo);
-        Message message = new Message(InterviewRole.INTERVIEWER.getName(), "Hello World!");
-        interviewInfo.getMessageHistory().getMessages().add(message);
+
+        addTempData(interviewInfo);
         model.addAttribute("interviewInfo", interviewInfo);
 
         return "interview/interview-start";
+    }
+
+    private static void addTempData(InterviewInfo interviewInfo) {
+        // 임시 데이터 추가
+        Message userMsg = new Message(InterviewRole.USER.toString(), "안녕하세요.");
+        Message interviewerMsg = new Message(InterviewRole.INTERVIEWER.toString(), "Hello World!");
+        interviewInfo.getMessageHistory().getMessages().add(userMsg);
+        interviewInfo.getMessageHistory().getMessages().add(interviewerMsg);
     }
 
     @GetMapping("/interview/setting")

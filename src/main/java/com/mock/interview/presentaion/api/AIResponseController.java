@@ -1,10 +1,13 @@
 package com.mock.interview.presentaion.api;
 
+//import com.mock.interview.application.AIService;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
-import com.mock.interview.infrastructure.gpt.ChatGPTRequester;
+import com.mock.interview.presentaion.web.dto.InterviewRole;
 import com.mock.interview.presentaion.web.dto.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -13,22 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AIResponseController {
 
-    private final ChatGPTRequester requester;
-
-    @PostMapping("/chat")
-    public Message chat(@RequestBody String message) {
-//        MessageHistory history = new MessageHistory(message);
-//        ChatResponse chatResponse = requester.sendRequest(history);
-//        return chatResponse.getChoices().get(0).getMessage().getContent();
-        return new Message("assistant", "Hello World!");
-    }
+//    private final ChatGPTRequester requester;
+//    private final AIService service;
 
     @PostMapping("/interview/response")
-    public Message chat(@RequestBody InterviewInfo interviewInfo) {
-        System.out.println(interviewInfo);
-        // TODO: interviewInfo에 system 환경 설정 정보가 없으면 bad Request를 반환할 것.
-        return requester.sendRequest(interviewInfo);
-//        return new Message("assistant", "HelloWorld!");
+    public ResponseEntity<Message> chat(@RequestBody InterviewInfo interviewInfo) {
+        System.out.println("====>" + interviewInfo.getProfile());
+//        return requester.sendRequest(interviewInfo);
+//        return service.service(interviewInfo);
+        Message tempMsg = new Message(InterviewRole.INTERVIEWER.toString(), "안녕하세요");
+        return new ResponseEntity<>(tempMsg, HttpStatus.OK);
     }
+
 }
 
