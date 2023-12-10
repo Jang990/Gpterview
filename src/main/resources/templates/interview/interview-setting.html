@@ -32,100 +32,107 @@
             어느 기술을 가지고 있는지.
             관련 자기소개서가 있는지.
             -->
-            <form action="/interview/start" method="GET" th:object="${candidateProfile}">
+            <form action="/interview/start" method="GET">
                 <input type="submit" class="btn btn-success mb-5" value="임시 면접 시작 버튼">
-                <div>
+                <th:block th:object="${candidateProfile}">
+                    <div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-1 col-form-label">지원 분야</label>
+                            <div class="col-sm-3">
+                                <select name="department" id="department" class="form-select" aria-label="Select Department" required>
+                                    <option  disabled hidden selected>선택해주세요</option>
+                                    <option th:each="department : ${categoryList}"
+                                            th:value="${department}" th:text="${department.name}">IT (프로그래밍)</option>
+                                    <option disabled>다른 분야 추가 예정</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-5 row">
+                            <label for="field"  class="col-sm-1 col-form-label">지원 직군</label>
+                            <div class="col-sm-3">
+                                <select name="field" id="field" class="form-select" aria-label="Select Field" required>
+                                    <option disabled hidden selected>선택해주세요</option>
+                                    <!-- 동적으로 변해야 함. 이 코드는 임시 코드 -->
+                                    <option th:each="field : ${categoryList[0].fields}"
+                                            th:value="${field}" th:text="${field.name}">백엔드</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="mb-5 col">
+                        <div for="skills" class="form-floating">
+                            <textarea class="form-control" placeholder="여기에 적어주세요." th:field="*{skills}" required></textarea>
+                            <label>보유 기술 정보 - 띄어쓰기로 구분</label>
+                        </div>
+                        <div class="mt-2">
+                            <a class="link-dark" href="#">기술 정보 예시보기</a>
+                        </div>
+                    </div>
+
+                    <!-- 프로젝트 경험을 동적으로 추가할 수 있어야 함.  -->
+
+                    <!-- Object와 매핑시키지 않음! : 회사 공고 지원자격 및 우대사항  -->
+                    <div class="mb-5 col">
+                        <div for="company" class="form-floating">
+                            <textarea class="form-control" placeholder="여기에 적어주세요." id="company" style="height: 100px"></textarea>
+                            <label>지원 회사 정보 (300자 이하) - 생략가능</label>
+                        </div>
+                        <div class="mt-2">
+                            <a class="link-dark mx-1" href="#">회사 예시보기</a>
+                        </div>
+                    </div>
+
+                    <!-- Object와 매핑시키지 않음! : 자기소개 및 지원동기 등등 자유 양식 -->
+                    <div class="mb-5 col">
+                        <div for="intro" class="form-floating">
+                            <textarea class="form-control" placeholder="여기에 적어주세요." id="intro" style="height: 200px"></textarea>
+                            <label>간단한 지원서 내용 (500자 이하) - 생략가능</label>
+                        </div>
+                        <div class="mt-2">
+                            <a class="link-dark" href="#">지원서 예시보기</a>
+                        </div>
+                    </div>
+                </th:block>
+
+                <hr>
+
+
+                <h3 class="my-3">모의면접 설정</h3>
+                <!--
+                면접 시간을 어느정도로 설정할 것인지. 30분 40분 등등...
+                인성 면접 or 기술 면접 or 인성 + 기술면접 으로 진행할 것인지...
+                등의 면접 진행 방식을 세팅해줍니다.
+                -->
+                <th:block th:object="${interviewDetailsDTO}">
                     <div class="mb-3 row">
-                        <label class="col-sm-1 col-form-label">지원 분야</label>
+                        <label for="durationMinutes" class="col-sm-1 col-form-label">면접 시간</label>
                         <div class="col-sm-3">
-                            <select name="department" id="department" class="form-select" aria-label="Select Department" required>
-                                <option  disabled hidden selected>선택해주세요</option>
-                                <option th:each="department : ${categoryList}"
-                                        th:value="${department}" th:text="${department.name}">IT (프로그래밍)</option>
-                                <option disabled>다른 분야 추가 예정</option>
+                            <select id="durationMinutes" name="durationMinutes" class="form-select" aria-label="Select Time">
+                                <option selected value="30">30분</option>
+                                <option value="40">40분</option>
+                                <option value="50">50분</option>
+                                <option value="60">60분</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="mb-5 row">
-                        <label for="field"  class="col-sm-1 col-form-label">지원 직군</label>
+                    <div class="mb-3 row">
+                        <label for="interviewType" class="col-sm-1 col-form-label">면접 타입</label>
                         <div class="col-sm-3">
-                            <select name="field" id="field" class="form-select" aria-label="Select Field" required>
-                                <option disabled hidden selected>선택해주세요</option>
-                                <!-- 동적으로 변해야 함. 이 코드는 임시 코드 -->
-                                <option th:each="field : ${categoryList[0].fields}"
-                                        th:value="${field}" th:text="${field.name}">백엔드</option>
+                            <select id="interviewType" name="interviewType" class="form-select" aria-label="Select Type">
+                                <option th:each="interviewType : ${T(com.mock.interview.presentaion.web.dto.InterviewType).values()}"
+                                        th:value="${interviewType}"
+                                        th:text="${interviewType.name}">
+                                    면접 진행 방식
+                                </option>
                             </select>
                         </div>
                     </div>
-                </div>
-
-
-                <div class="mb-5 col">
-                    <div for="skills" class="form-floating">
-                        <textarea class="form-control" placeholder="여기에 적어주세요." th:field="*{skills}" required></textarea>
-                        <label>보유 기술 정보 - 띄어쓰기로 구분</label>
-                    </div>
-                    <div class="mt-2">
-                        <a class="link-dark" href="#">기술 정보 예시보기</a>
-                    </div>
-                </div>
+                </th:block>
             </form>
-
-            <!-- 우대사항  -->
-            <div class="mb-5 col">
-                <div for="company" class="form-floating">
-                    <textarea class="form-control" placeholder="여기에 적어주세요." id="company" style="height: 100px"></textarea>
-                    <label>지원 회사 정보 (300자 이하) - 생략가능</label>
-                </div>
-                <div class="mt-2">
-                    <a class="link-dark mx-1" href="#">회사 예시보기</a>
-                </div>
-            </div>
-
-            <!-- 자기소개 및 지원동기 등등 자유 양식 -->
-            <div class="mb-5 col">
-                <div for="intro" class="form-floating">
-                    <textarea class="form-control" placeholder="여기에 적어주세요." id="intro" style="height: 200px"></textarea>
-                    <label>간단한 지원서 내용 (500자 이하) - 생략가능</label>
-                </div>
-                <div class="mt-2">
-                    <a class="link-dark" href="#">지원서 예시보기</a>
-                </div>
-            </div>
-
-            <hr>
-
-
-            <h3 class="my-3">모의면접 설정</h3>
-            <!--
-            면접 시간을 어느정도로 설정할 것인지. 30분 40분 등등...
-            인성 면접 or 기술 면접 or 인성 + 기술면접 으로 진행할 것인지...
-            등의 면접 진행 방식을 세팅해줍니다.
-            -->
-            <div class="mb-3 row">
-                <label for="time" class="col-sm-1 col-form-label">면접 시간</label>
-                <div class="col-sm-3">
-                    <select id="time" class="form-select" aria-label="Select Time" disabled>
-                        <option selected value="1">30분</option>
-                        <option value="2">40분</option>
-                        <option value="3">50분</option>
-                        <option value="4">60분</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-3 row">
-                <label for="type" class="col-sm-1 col-form-label">면접 타입</label>
-                <div class="col-sm-3">
-                    <select id="type" class="form-select" aria-label="Select Type" disabled>
-                        <option selected value="1">기술 면접</option>
-                        <option value="2">인성 면접</option>
-                        <option value="3">기술 + 인성 면접</option>
-                    </select>
-                </div>
-            </div>
-
 
             <hr>
 

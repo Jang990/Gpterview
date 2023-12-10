@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class InterviewInfo {
     private MessageHistory messageHistory;
     private CandidateProfileDTO profile;
+    private InterviewDetailsDTO interviewDetails;
 
     public InterviewInfo() {
         messageHistory = new MessageHistory();
