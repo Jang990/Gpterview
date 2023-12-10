@@ -33,8 +33,7 @@ public class ChatGPTRequester implements AIRequester {
 
     @Override
     public Message sendRequest(InterviewAIRequest request) {
-        if(containsSystemMessage(request.getHistory()))
-            return null; // TODO: 커스텀 Exception 던질 것
+        // TODO: 이 부분에서는 전달하는데 최선을 다할 것. 면접에 대한 관여는 최소한으로 할 것. 면접 관련 부분은 전략에서 다 예외처리를 할 것이다.
 
         List<Message> messages = request.getHistory();
         setInterviewMode(messages, request.getInterviewSetting());
@@ -53,15 +52,6 @@ public class ChatGPTRequester implements AIRequester {
     private void setInterviewMode(List<Message> messages, InterviewSetting settings) {
         Message systemMsg = new Message(SYSTEM_ROLE, settings.getConcept());
         messages.add(0, systemMsg);
-    }
-
-    private boolean containsSystemMessage(List<Message> history) {
-        for (Message message : history) {
-            if(message.getRole().equalsIgnoreCase(InterviewRole.SYSTEM.name()))
-                return true;
-        }
-
-        return false;
     }
 
     @Override
