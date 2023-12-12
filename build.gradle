@@ -30,6 +30,9 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// GPT 3.5 토큰 검사 의존성
+	implementation 'com.knuddels:jtokkit:0.6.1'
 }
 
 tasks.named('test') {
