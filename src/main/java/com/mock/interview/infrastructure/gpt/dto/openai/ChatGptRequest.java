@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.gpt.dto;
+package com.mock.interview.infrastructure.gpt.dto.openai;
 
 import com.mock.interview.presentaion.web.dto.Message;
 import lombok.Data;

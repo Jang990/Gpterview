@@ -1,9 +1,8 @@
 package com.mock.interview.infrastructure.gpt;
 
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
-import com.mock.interview.presentaion.web.dto.InterviewRole;
-import com.mock.interview.infrastructure.gpt.dto.ChatGptRequest;
-import com.mock.interview.infrastructure.gpt.dto.ChatGptResponse;
+import com.mock.interview.infrastructure.gpt.dto.openai.ChatGptRequest;
+import com.mock.interview.infrastructure.gpt.dto.openai.ChatGptResponse;
 import com.mock.interview.presentaion.web.dto.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
