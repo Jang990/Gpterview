@@ -10,11 +10,11 @@ import java.util.List;
 @NoArgsConstructor
 public class ChatGptRequest {
     private String model;
-    private List<Message> messages;
+    private List<OpenAIMessage> messages;
     private final int n = 1;
     private final double temperature = 0.7;
 
-    public ChatGptRequest(String model, List<Message> history) {
+    public ChatGptRequest(String model, List<OpenAIMessage> history) {
         this.model = model;
         this.messages = history;
     }

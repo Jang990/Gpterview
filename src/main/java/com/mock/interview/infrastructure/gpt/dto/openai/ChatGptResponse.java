@@ -1,6 +1,5 @@
 package com.mock.interview.infrastructure.gpt.dto.openai;
 
-import com.mock.interview.presentaion.web.dto.Message;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +16,7 @@ public class ChatGptResponse {
     @NoArgsConstructor
     public static class Choice {
         private int index;
-        private Message message;
+        private OpenAIMessage message;
     }
 
     @Data

@@ -1,5 +1,6 @@
 package com.mock.interview.infrastructure.gpt;
 
+import com.mock.interview.infrastructure.gpt.dto.openai.OpenAIMessage;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.gpt.dto.openai.ChatGptRequest;
 import com.mock.interview.infrastructure.gpt.dto.openai.ChatGptResponse;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -32,10 +34,10 @@ public class ChatGPTRequester implements AIRequester {
 
     @Override
     public Message sendRequest(InterviewAIRequest request) {
-        List<Message> messages = request.getHistory();
-        setInterviewMode(messages, request.getInterviewSetting());
+        List<OpenAIMessage> history = convertHistory(request.getHistory());
+        setInterviewMode(history, request.getInterviewSetting());
 
-        ChatGptRequest openAIRequest = new ChatGptRequest(model, messages);
+        ChatGptRequest openAIRequest = new ChatGptRequest(model, history);
         log.info("요청 : {}", openAIRequest);
         ChatGptResponse response = openaiRestTemplate.postForObject(apiUrl, openAIRequest, ChatGptResponse.class);
         log.info("응답 : {}", response);
@@ -43,11 +45,21 @@ public class ChatGPTRequester implements AIRequester {
             throw new RuntimeException("ChatGPT 오류"); // TODO: 커스텀 예외로 바꿀 것
         }
 
-        return response.getChoices().get(0).getMessage();
+        return convertMessage(response.getChoices().get(0).getMessage());
     }
 
-    private void setInterviewMode(List<Message> messages, InterviewSetting settings) {
-        Message systemMsg = new Message(SYSTEM_ROLE, settings.getConcept());
+    private Message convertMessage(OpenAIMessage message) {
+        return new Message(message.getRole(), message.getContent());
+    }
+
+    private List<OpenAIMessage> convertHistory(List<Message> history) {
+        return history.stream()
+                .map(msg -> new OpenAIMessage(msg.getRole(), msg.getContent()))
+                .collect(Collectors.toList());
+    }
+
+    private void setInterviewMode(List<OpenAIMessage> messages, InterviewSetting settings) {
+        OpenAIMessage systemMsg = new OpenAIMessage(SYSTEM_ROLE, settings.getConcept());
         messages.add(0, systemMsg);
     }
 
