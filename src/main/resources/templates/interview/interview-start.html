@@ -10,29 +10,8 @@
         <div class="d-flex justify-content-center flex-fill" style="max-width:1000px;">
             <div class="col-md-6 col-lg-7 col-xl-8">
                 <ul class="list-unstyled" id="talk">
-                    <li class="d-flex justify-content-center mb-4 mt-4">
-                        <div>
-                            <button type="button" class="btn btn-success" id="speckBtn" onclick="startRecognition()">말하기</button>
-                        </div>
-                    </li>
-<!--                    <img th:src="@{/image/applicant.png}" alt="avatar"-->
-<!--                         class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">-->
-                    <li class="mb-4">
-                        <div class="card p-3">
-                            <div class="form-outline w-100">
-                                <textarea class="form-control" id="result" rows="5" placeholder="질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!"></textarea>
-                            </div>
-
-                            <div class="py-1 border-0">
-                                <div class="float-end mt-2 pt-1 pl-3">
-                                    <button type="submit" class="btn btn-primary btn-sm" onclick="sendMessage()">응답완료</button>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-
                     <!-- INTERVIEWER, USER 등등 하드코딩 수정하기 -->
-                    <article id="talk-history">
+                    <article id="talk-history" style="height: 500px; overflow-y: scroll;">
                         <li th:each="message : *{messages}" class="mb-4 d-flex"
                             th:classappend="${#strings.equals(message.role, 'USER')} ? justify-content-start : justify-content-end">
                             <img th:if="${#strings.equals(message.role, 'USER')}" src="../image/applicant.png" alt="avatar"
@@ -51,6 +30,28 @@
                                  class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                         </li>
                     </article>
+
+                    <li class="d-flex justify-content-center mb-4 mt-4">
+                        <div>
+
+                        </div>
+                    </li>
+                    <!--                    <img th:src="@{/image/applicant.png}" alt="avatar"-->
+                    <!--                         class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">-->
+                    <li class="mb-4">
+                        <div class="card p-3">
+                            <div class="form-outline w-100">
+                                <textarea class="form-control" id="result" rows="3" placeholder="질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!"></textarea>
+                            </div>
+
+                            <div class="py-1 border-0">
+                                <div class="float-end mt-2 pt-1 pl-3">
+                                    <button type="button" class="btn btn-success btn-sm" id="speckBtn" onclick="startRecognition()">말하기</button>
+                                    <button type="submit" class="btn btn-primary btn-sm sendBtn" onclick="sendMessage()">응답완료</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -63,9 +64,13 @@
             "field": /*[[${interviewInfo.profile.field}]]*/ '',
             "skills": /*[[${interviewInfo.profile.skills}]]*/ ''
         };
+        const loadingTime = 2000;
+        const sendBtn = $('.sendBtn');
 
         let recognition;
         let talkHistory = [];
+        let remainingTime = loadingTime;
+        let decreaseInterval;
 
         function startRecognition() {
             recognition = new window.webkitSpeechRecognition();
@@ -91,6 +96,16 @@
           window.speechSynthesis.speak(msg);
         }
 
+        // 응답을 최소 1.5초의 뒤에 보여주기 위한 함수
+        function decreaseRemainingTime() {
+            if(remainingTime <= 0){
+                clearInterval(decreaseInterval);
+                return;
+            }
+
+            remainingTime -= 100;
+        }
+
         function sendMessage() {
             const nowMsg = $('#result').val();
             pushTalkHistory("user", nowMsg); // UserMessage 기록하기
@@ -104,19 +119,29 @@
                 contentType: 'application/json',
                 data: JSON.stringify(interviewInfo),
                 beforeSend: function() {
+                    sendBtn.prop("disabled", true);
                     $('#result').val(''); // 사용자 응답창 지워주기
 
                     const newConversationItem = createUserMessage(nowMsg);
                     $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
+                    displayWaitingPanel();
+                    scroll();
+
+                    decreaseInterval = setInterval(decreaseRemainingTime, 100);
                 },
                 success: function(data) {
                     console.log(data);
+                    clearInterval(decreaseInterval);
+                    setTimeout(function () {
+                        // speak(data.content); // 응답 메시지를 음성으로 전달
+                        displayResponse(data);
 
-                    // speak(data.content); // 응답 메시지를 음성으로 전달
-                    displayResponse(data);
-
-                    pushTalkHistory(data.role, data.content); // GPT 응답 기록
-                    // console.log(talkHistory);
+                        pushTalkHistory(data.role, data.content); // GPT 응답 기록
+                        scroll();
+                        remainingTime = loadingTime;
+                        // console.log(talkHistory);
+                        sendBtn.prop("disabled", false);
+                    }, remainingTime);
                 },
                 error: function(error) {
                     console.log(error);
@@ -132,12 +157,39 @@
             });
         }
 
+
+        function displayWaitingPanel(data) {
+            const randomMessage = createRandomMessage();
+            const waitingPanel = createWaitingPanel(randomMessage);
+            $('#talk-history').append(waitingPanel);
+        }
+
+        function createRandomMessage() {
+            const waitingMessages = [
+                "머리를 굴리는중...",
+                "잠시 커피를 마시는 중...",
+                "멋진 질문을 고민 중...",
+                "이력서를 확인하는 중...",
+                "미소 짓는 중...",
+                "잠시 물을 마시는 중...",
+                "종이에 무엇인가를 체크 중...",
+                "생각을 정리하는 중...",
+                "미간을 찌푸리는 중..."
+            ];
+
+            return waitingMessages[Math.floor(Math.random() * waitingMessages.length)];
+        }
+
         // 서버로 받은 응답 값을 화면에 면접관으로 표시
         function displayResponse(data) {
             const msg = data.content;
-            const newConversationItem = createGptMessage(msg)
 
-            $('#talk-history').append(newConversationItem); // 화면에 응답 추가해주기
+            // waiting 패널 지우기
+            $('#talk-history .temporary').remove();
+
+            const newConversationItem = createGptMessage(msg);
+            $('#talk-history').append(newConversationItem);
+            scroll();
         }
 
         function getCurrentTime() {
@@ -145,6 +197,26 @@
             var hours = now.getHours().toString().padStart(2, '0');
             var minutes = now.getMinutes().toString().padStart(2, '0');
             return hours + ':' + minutes;
+        }
+
+        function createWaitingPanel(msg) {
+            return `
+                    <li class="d-flex justify-content-end mb-4 temporary">
+                        <div class="card w-100">
+                            <div class="card-header d-flex justify-content-between p-3">
+                                <p class="fw-bold mb-0 role">면접관</p>
+                                <input type="hidden" name="role" class="role" th:value="INTERVIEWER">
+                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                            </div>
+                            <div class="card-body d-flex align-items-center">
+                                <img src="../image/loading.gif" alt="loading..." style="width: 40px;">
+                                <p class="ps-2 mb-0 content" name="content">${msg}</p>
+
+                            </div>
+                        </div>
+                        <img src="../image/interviewer.png" alt="avatar"
+                             class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
+                    </li>`;
         }
 
         function createUserMessage(msg) {
@@ -193,6 +265,11 @@
 
         function pushTalkHistory(role, content) {
             talkHistory.push({ role: role, content: content });
+        }
+
+        function scroll() {
+            const talkHistoryArticle = $('#talk-history');
+            talkHistoryArticle.scrollTop(talkHistoryArticle[0].scrollHeight);
         }
     </script>
 </section>
