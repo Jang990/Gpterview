@@ -97,10 +97,11 @@ public class ChatGPTRequester implements AIRequester {
     }
 
     @Override
-    public boolean isTokenLimitExceeded(List<Message> history) {
+    public boolean isTokenLimitExceeded(InterviewAIRequest request) {
         // TODO: 여유 토큰을 남겨둬서 답변을 받을 수 있도록 만들어야 함.
         StringBuilder sb = new StringBuilder();
-        history.forEach(sb::append);
+        sb.append(request.getInterviewSetting().getConcept());
+        request.getHistory().forEach(sb::append);
         EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
         Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
         int tokens = enc.countTokens(sb.toString());

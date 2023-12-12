@@ -13,7 +13,7 @@ public interface AISpecification {
     String getUserRole();
     String getInterviewerRole();
     long getMaxToken();
-    boolean isTokenLimitExceeded(List<Message> history);
+    boolean isTokenLimitExceeded(InterviewAIRequest request);
 
     // TODO: Message에 토큰 수를 파악하는 메소드도 필요해 보임.
 }
