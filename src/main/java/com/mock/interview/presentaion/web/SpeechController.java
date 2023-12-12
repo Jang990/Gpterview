@@ -29,16 +29,9 @@ public class SpeechController {
         interviewInfo.setInterviewDetails(interviewDetails);
 
         Message message = service.service(interviewInfo);
-
-        // TODO : Service 부분에서 MessageHistory 원본을 건드리지 못하도록 수정할 것. - 중요함
-        LinkedList<Message> messages = new LinkedList<>();
-        messages.add(message);
-        interviewInfo.getMessageHistory().setMessages(messages);
+        interviewInfo.getMessageHistory().getMessages().add(message);
 
         model.addAttribute("interviewInfo", interviewInfo);
-
-
-
         return "interview/interview-start";
     }
 

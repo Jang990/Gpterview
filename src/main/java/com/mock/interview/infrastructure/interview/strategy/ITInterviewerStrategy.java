@@ -23,13 +23,15 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
         // TODO: 임시 코드를 적절한 로직으로 수정할 것
+        System.out.println(interviewInfo.getMessageHistory().getMessages());
+
         int cnt = interviewInfo.getMessageHistory().getMessages().size();
         if (cnt <= 4) {
             return createRequestForTechnical(aiSpec, interviewInfo);
         } else if (cnt <= 8) {
             return createRequestForProjectExperience(aiSpec, interviewInfo);
         } else {
-            return createRequestForTechnical(aiSpec, interviewInfo);
+            return createRequestForPersonal(aiSpec, interviewInfo);
         }
     }
 
@@ -52,7 +54,6 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
         List<Message> requestMessages = messageHistory;
 
         InterviewSetting setting = interviewSettingCreator.create(aiSpec, interviewInfo.getProfile(), personalSetting);
-        interviewSettingCreator.create(aiSpec, interviewInfo.getProfile(), personalSetting);
         return new InterviewAIRequest(requestMessages, setting);
     }
 
@@ -80,6 +81,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
         System.out.println();
 
         InterviewSetting setting = interviewSettingCreator.create(aiSpec, interviewInfo.getProfile(), technicalSetting);
+        System.out.println(setting);
         return new InterviewAIRequest(requestMessages, setting);
     }
 }
