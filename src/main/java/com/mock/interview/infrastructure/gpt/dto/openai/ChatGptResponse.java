@@ -1,5 +1,6 @@
 package com.mock.interview.infrastructure.gpt.dto.openai;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,11 @@ public class ChatGptResponse {
     public static class Choice {
         private int index;
         private OpenAIMessage message;
+    }
+
+    @JsonIgnore
+    public String getFunctionResultString() {
+        return choices.get(0).message.getResponseMessage();
     }
 
     @Data
