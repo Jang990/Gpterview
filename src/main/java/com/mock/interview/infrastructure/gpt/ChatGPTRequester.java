@@ -53,10 +53,8 @@ public class ChatGPTRequester implements AIRequester {
 
         List<OpenAIMessage> history = convertHistory(request.getHistory());
         ChatGptRequest openAIRequest = ChatGptRequest.createRequestWithFunction(model, request.getInterviewSetting().getConcept(), history);
-        System.out.println(openAIRequest);
 
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
-        System.out.println(response);
         validateResponse(response);
 
         GptFunctionResult content = convertFunctionResult(response.getFunctionResultString());
