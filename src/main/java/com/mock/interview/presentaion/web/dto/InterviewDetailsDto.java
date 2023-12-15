@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class InterviewDetailsDTO {
+public class InterviewDetailsDto {
     private InterviewType interviewType;
     private int durationMinutes;
 }

@@ -6,10 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Data
-public class MessageHistoryDTO {
-    private List<MessageDTO> messages;
+public class MessageHistoryDto {
+    private List<MessageDto> messages;
 
-    public MessageHistoryDTO() {
+    public MessageHistoryDto() {
         this.messages = new LinkedList<>();
     }
 }

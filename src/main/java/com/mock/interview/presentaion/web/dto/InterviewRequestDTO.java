@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InterviewRequestDTO {
-    private InterviewInfo interviewSetting;
-    private MessageHistoryDTO messageHistory;
+    private InterviewInfoDto interviewSetting;
+    private MessageHistoryDto messageHistory;
 }

@@ -16,25 +16,25 @@ public class SpeechController {
     @GetMapping("/interview/start")
     public String startInterviewPage(
             Model model,
-            CandidateProfileDTO profile,
-            InterviewDetailsDTO interviewDetails
+            CandidateProfileDto profile,
+            InterviewDetailsDto interviewDetails
     ) {
         // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
-        InterviewInfo interviewInfo = new InterviewInfo();
-        interviewInfo.setProfile(profile);
-        interviewInfo.setInterviewDetails(interviewDetails);
-        MessageHistoryDTO historyDTO = initHistory();
+        InterviewInfoDto interviewInfoDto = new InterviewInfoDto();
+        interviewInfoDto.setProfile(profile);
+        interviewInfoDto.setInterviewDetails(interviewDetails);
+        MessageHistoryDto historyDTO = initHistory();
 
-        InterviewRequestDTO interviewRequestDTO = new InterviewRequestDTO(interviewInfo, historyDTO);
+        InterviewRequestDTO interviewRequestDTO = new InterviewRequestDTO(interviewInfoDto, historyDTO);
 
         model.addAttribute("interviewInfo", interviewRequestDTO);
         return "interview/interview-start";
     }
 
-    private MessageHistoryDTO initHistory() {
-        MessageHistoryDTO historyDTO = new MessageHistoryDTO();
-        historyDTO.getMessages().add(new MessageDTO(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
-        historyDTO.getMessages().add(new MessageDTO(InterviewRole.USER.toString(), "네. 준비됐습니다."));
+    private MessageHistoryDto initHistory() {
+        MessageHistoryDto historyDTO = new MessageHistoryDto();
+        historyDTO.getMessages().add(new MessageDto(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
+        historyDTO.getMessages().add(new MessageDto(InterviewRole.USER.toString(), "네. 준비됐습니다."));
         return historyDTO;
     }
 
@@ -42,8 +42,8 @@ public class SpeechController {
     public String speechPage(Model model) {
         // TODO: Setting DTO를 만들고 Model에 넣어서 타임리프에 th:object로 연결할 것.
         model.addAttribute("categoryList", List.of(Category.IT));
-        model.addAttribute("candidateProfile", new CandidateProfileDTO());
-        model.addAttribute("interviewDetails", new InterviewDetailsDTO());
+        model.addAttribute("candidateProfile", new CandidateProfileDto());
+        model.addAttribute("interviewDetails", new InterviewDetailsDto());
 
         // TODO: Ajax로 분야에 맞는 필드를 가져오도록 수정해야 한다. 일단 임시로 each문 돌린다.
         // TODO: 지금은 면접 설정은 생략하고 기술면접으로 진행한다. 추후 면접 설정도 추가해야 한다.
