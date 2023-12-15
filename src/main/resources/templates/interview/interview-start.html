@@ -60,9 +60,9 @@
 
     <script th:inline="javascript">
         const profile = {
-            "department": /*[[${interviewInfo.profile.department}]]*/ '',
-            "field": /*[[${interviewInfo.profile.field}]]*/ '',
-            "skills": /*[[${interviewInfo.profile.skills}]]*/ ''
+            "department": /*[[${interviewInfo.interviewSetting.profile.department}]]*/ '',
+            "field": /*[[${interviewInfo.interviewSetting.profile.field}]]*/ '',
+            "skills": /*[[${interviewInfo.interviewSetting.profile.skills}]]*/ ''
         };
         const loadingTime = 1500;
         const sendBtn = $('.sendBtn');
@@ -106,29 +106,43 @@
             remainingTime -= 100;
         }
 
+        // 현재 내용을 토대로 응답을 다시 받음.
+        function retryResponse() {
+
+        }
+
+        // InterviewDTO와 형식을 맞출 것.
+        function createInterviewObject() {
+            return ({"interviewSetting" : {"profile" : profile}, "messageHistory" : {talkHistory}});
+        }
+
+        // 응답완료 버튼 클릭시 동작
         function sendMessage() {
-            const nowMsg = $('#result').val();
+            const nowMsg = $('#result').val(); // 현재 사용자 작성 답변 가져오기.
             pushTalkHistory("user", nowMsg); // UserMessage 기록하기
-            const messages = talkHistory;
-            const interviewInfo = ({"profile" : profile, "messageHistory" : {messages}});
+            const interviewInfo = createInterviewObject();
             console.log(interviewInfo);
+
+            $('#result').val(''); // 사용자 응답창 지워주기
+
+            const newConversationItem = createUserMessage(nowMsg);
+            $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
+
+            sendRequest(interviewInfo);
+        }
+
+        // 서버로 요청보내기.
+        function sendRequest(interviewInfo) {
+            sendBtn.prop("disabled", true); // 전송버튼 잠시 비활성화
+            displayWaitingPanel();
+            scroll();
+            decreaseInterval = setInterval(decreaseRemainingTime, 100);
 
             $.ajax({
                 type: 'POST',
                 url: '/api/interview/response',
                 contentType: 'application/json',
                 data: JSON.stringify(interviewInfo),
-                beforeSend: function() {
-                    sendBtn.prop("disabled", true);
-                    $('#result').val(''); // 사용자 응답창 지워주기
-
-                    const newConversationItem = createUserMessage(nowMsg);
-                    $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
-                    displayWaitingPanel();
-                    scroll();
-
-                    decreaseInterval = setInterval(decreaseRemainingTime, 100);
-                },
                 success: function(data) {
                     console.log(data);
                     clearInterval(decreaseInterval);
@@ -156,7 +170,6 @@
                 }
             });
         }
-
 
         function displayWaitingPanel(data) {
             const randomMessage = createRandomMessage();
@@ -262,6 +275,9 @@
               let content = $(this).find(".content").text();
               pushTalkHistory(role, content);
             });
+
+            const interviewInfo = createInterviewObject();
+            sendRequest(interviewInfo);
         });
 
         function pushTalkHistory(role, content) {
