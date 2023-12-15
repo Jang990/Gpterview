@@ -14,6 +14,7 @@ public class InterviewInfo {
     public InterviewInfo() {
         messageHistory = new MessageHistory();
         profile = new CandidateProfileDTO();
+        messageHistory = new MessageHistory();
     }
 
     public static InterviewInfo testCreator(String position, String field) {

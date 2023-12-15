@@ -27,9 +27,11 @@ public class SpeechController {
         InterviewInfo interviewInfo = new InterviewInfo();
         interviewInfo.setProfile(profile);
         interviewInfo.setInterviewDetails(interviewDetails);
-
-        Message message = service.service(interviewInfo);
-        interviewInfo.getMessageHistory().getMessages().add(message);
+        MessageHistory history = new MessageHistory();
+        history.getMessages().add(new Message(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
+        history.getMessages().add(new Message(InterviewRole.USER.toString(), "네. 준비됐습니다."));
+        // TODO: 면접 질문 추천 기능으로 대체하고 싶다.
+        interviewInfo.setMessageHistory(history);
 
         model.addAttribute("interviewInfo", interviewInfo);
         return "interview/interview-start";
