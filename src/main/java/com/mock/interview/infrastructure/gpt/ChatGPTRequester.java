@@ -106,7 +106,6 @@ public class ChatGPTRequester implements AIRequester {
      * @return
      */
     private GptFunctionResult convertFunctionResult(String messageString) {
-        System.out.println("======>" + messageString);
         if(!messageString.contains("\"response\":"))
             return new GptFunctionResult(messageString);
 
