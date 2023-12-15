@@ -1,7 +1,8 @@
 package com.mock.interview.presentaion.web.dto;
 
+import com.mock.interview.infrastructure.dto.Message;
+import com.mock.interview.infrastructure.dto.MessageHistory;
 import lombok.*;
-import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 

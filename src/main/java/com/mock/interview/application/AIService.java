@@ -6,7 +6,7 @@ import com.mock.interview.infrastructure.gpt.AIRequester;
 import com.mock.interview.infrastructure.interview.strategy.ITInterviewerStrategy;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
 import com.mock.interview.presentaion.web.dto.InterviewRole;
-import com.mock.interview.presentaion.web.dto.Message;
+import com.mock.interview.infrastructure.dto.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

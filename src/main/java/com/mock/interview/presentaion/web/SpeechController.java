@@ -2,13 +2,14 @@ package com.mock.interview.presentaion.web;
 
 import com.mock.interview.application.AIService;
 import com.mock.interview.domain.Category;
+import com.mock.interview.infrastructure.dto.Message;
+import com.mock.interview.infrastructure.dto.MessageHistory;
 import com.mock.interview.presentaion.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Controller

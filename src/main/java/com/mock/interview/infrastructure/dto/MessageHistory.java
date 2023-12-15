@@ -1,7 +1,6 @@
-package com.mock.interview.presentaion.web.dto;
+package com.mock.interview.infrastructure.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
 import java.util.List;

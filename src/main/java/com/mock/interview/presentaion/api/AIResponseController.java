@@ -2,8 +2,7 @@ package com.mock.interview.presentaion.api;
 
 import com.mock.interview.application.AIService;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
-import com.mock.interview.presentaion.web.dto.InterviewRole;
-import com.mock.interview.presentaion.web.dto.Message;
+import com.mock.interview.infrastructure.dto.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

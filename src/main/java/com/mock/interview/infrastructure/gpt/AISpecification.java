@@ -1,9 +1,5 @@
 package com.mock.interview.infrastructure.gpt;
 
-import com.mock.interview.presentaion.web.dto.Message;
-
-import java.util.List;
-
 /**
  * AI 종류에 따른 스펙을 알려주는 인터페이스
  * oepnAI의 경우 Role은 system, user, assistant가 있고 MaxToken은 4096
