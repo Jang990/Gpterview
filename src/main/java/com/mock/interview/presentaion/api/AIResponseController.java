@@ -26,8 +26,6 @@ public class AIResponseController {
         Message response = service.service(interviewDTO.getInterviewSetting(), history);
         MessageDTO message = new MessageDTO(response.getRole(), response.getContent());
         return new ResponseEntity<>(message, HttpStatus.OK);
-//        System.out.println(interviewDTO);
-//        return new ResponseEntity<>(new Message("user", "Hello World!"), HttpStatus.OK);
     }
 
 }

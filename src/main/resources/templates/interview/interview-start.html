@@ -113,7 +113,7 @@
 
         // InterviewDTO와 형식을 맞출 것.
         function createInterviewObject() {
-            return ({"interviewSetting" : {"profile" : profile}, "messageHistory" : {talkHistory}});
+            return ({"interviewSetting" : {"profile" : profile}, "messageHistory" : {messages : talkHistory}});
         }
 
         // 응답완료 버튼 클릭시 동작
@@ -121,7 +121,6 @@
             const nowMsg = $('#result').val(); // 현재 사용자 작성 답변 가져오기.
             pushTalkHistory("user", nowMsg); // UserMessage 기록하기
             const interviewInfo = createInterviewObject();
-            console.log(interviewInfo);
 
             $('#result').val(''); // 사용자 응답창 지워주기
 
@@ -133,9 +132,11 @@
 
         // 서버로 요청보내기.
         function sendRequest(interviewInfo) {
+            console.log(interviewInfo);
+
             sendBtn.prop("disabled", true); // 전송버튼 잠시 비활성화
-            displayWaitingPanel();
-            scroll();
+            displayWaitingPanel(); // 응답 대기 화면 출력.
+            scroll(); // 채팅 스크롤 밑으로 내리기.
             decreaseInterval = setInterval(decreaseRemainingTime, 100);
 
             $.ajax({
