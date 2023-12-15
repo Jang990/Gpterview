@@ -1,8 +1,8 @@
 package com.mock.interview.infrastructure.interview.setting;
 
-import com.mock.interview.infrastructure.fomatter.FormatConstGetter;
-import com.mock.interview.infrastructure.fomatter.StringFormatter;
-import com.mock.interview.infrastructure.gpt.AISpecification;
+import com.mock.interview.infrastructure.interview.fomatter.FormatConstGetter;
+import com.mock.interview.infrastructure.interview.fomatter.StringFormatter;
+import com.mock.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.presentaion.web.dto.CandidateProfileDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

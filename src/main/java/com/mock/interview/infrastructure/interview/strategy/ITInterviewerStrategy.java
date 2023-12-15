@@ -1,13 +1,13 @@
 package com.mock.interview.infrastructure.interview.strategy;
 
 import com.mock.interview.domain.Category;
-import com.mock.interview.infrastructure.dto.MessageHistory;
-import com.mock.interview.infrastructure.gpt.AISpecification;
-import com.mock.interview.infrastructure.gpt.InterviewAIRequest;
+import com.mock.interview.infrastructure.interview.dto.MessageHistory;
+import com.mock.interview.infrastructure.interview.gpt.AISpecification;
+import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.presentaion.web.dto.InterviewInfo;
-import com.mock.interview.infrastructure.dto.Message;
+import com.mock.interview.infrastructure.interview.dto.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

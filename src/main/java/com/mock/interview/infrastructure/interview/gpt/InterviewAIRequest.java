@@ -1,7 +1,7 @@
-package com.mock.interview.infrastructure.gpt;
+package com.mock.interview.infrastructure.interview.gpt;
 
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
-import com.mock.interview.infrastructure.dto.Message;
+import com.mock.interview.infrastructure.interview.dto.Message;
 import lombok.Getter;
 import lombok.ToString;
 

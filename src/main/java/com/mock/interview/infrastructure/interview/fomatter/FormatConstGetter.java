@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.fomatter;
+package com.mock.interview.infrastructure.interview.fomatter;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

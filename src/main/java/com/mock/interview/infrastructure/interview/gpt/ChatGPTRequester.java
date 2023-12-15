@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.gpt;
+package com.mock.interview.infrastructure.interview.gpt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,12 +6,12 @@ import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
 import com.knuddels.jtokkit.api.EncodingRegistry;
 import com.knuddels.jtokkit.api.EncodingType;
-import com.mock.interview.infrastructure.gpt.dto.openai.OpenAIMessage;
-import com.mock.interview.infrastructure.gpt.dto.openai.GptFunctionResult;
-import com.mock.interview.infrastructure.gpt.dto.openai.ChatGptRequest;
-import com.mock.interview.infrastructure.gpt.dto.openai.ChatGptResponse;
+import com.mock.interview.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
+import com.mock.interview.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
+import com.mock.interview.infrastructure.interview.gpt.dto.openai.ChatGptRequest;
+import com.mock.interview.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
+import com.mock.interview.infrastructure.interview.dto.Message;
 import com.mock.interview.presentaion.web.dto.InterviewRole;
-import com.mock.interview.infrastructure.dto.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

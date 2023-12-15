@@ -1,10 +1,10 @@
 package com.mock.interview.presentaion.api;
 
-import com.mock.interview.application.AIService;
-import com.mock.interview.infrastructure.dto.MessageHistory;
+import com.mock.interview.infrastructure.interview.AIService;
+import com.mock.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.infrastructure.interview.AIObjectConvertor;
 import com.mock.interview.presentaion.web.dto.InterviewDTO;
-import com.mock.interview.infrastructure.dto.Message;
+import com.mock.interview.infrastructure.interview.dto.Message;
 import com.mock.interview.presentaion.web.dto.MessageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

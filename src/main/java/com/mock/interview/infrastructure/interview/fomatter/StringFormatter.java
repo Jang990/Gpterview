@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.fomatter;
+package com.mock.interview.infrastructure.interview.fomatter;
 
 import java.util.ArrayList;
 import java.util.List;

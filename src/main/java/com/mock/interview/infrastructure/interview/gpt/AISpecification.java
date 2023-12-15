@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.gpt;
+package com.mock.interview.infrastructure.interview.gpt;
 
 /**
  * AI 종류에 따른 스펙을 알려주는 인터페이스

@@ -1,6 +1,6 @@
 package com.mock.interview.infrastructure;
 
-import com.mock.interview.infrastructure.fomatter.StringFormatter;
+import com.mock.interview.infrastructure.interview.fomatter.StringFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class StringFormatterTest {
 

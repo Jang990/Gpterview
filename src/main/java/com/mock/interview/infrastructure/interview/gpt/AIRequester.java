@@ -1,6 +1,6 @@
-package com.mock.interview.infrastructure.gpt;
+package com.mock.interview.infrastructure.interview.gpt;
 
-import com.mock.interview.infrastructure.dto.Message;
+import com.mock.interview.infrastructure.interview.dto.Message;
 
 /**
  * AI별 인터뷰 Requester

@@ -2,7 +2,7 @@ package com.mock.interview.infrastructure.interview;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mock.interview.infrastructure.dto.MessageHistory;
+import com.mock.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.presentaion.web.dto.MessageHistoryDTO;
 
 public class AIObjectConvertor {
