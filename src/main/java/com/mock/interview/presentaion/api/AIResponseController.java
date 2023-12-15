@@ -3,7 +3,7 @@ package com.mock.interview.presentaion.api;
 import com.mock.interview.infrastructure.interview.AIService;
 import com.mock.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.infrastructure.interview.AIObjectConvertor;
-import com.mock.interview.presentaion.web.dto.InterviewDTO;
+import com.mock.interview.presentaion.web.dto.InterviewRequestDTO;
 import com.mock.interview.infrastructure.interview.dto.Message;
 import com.mock.interview.presentaion.web.dto.MessageDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +21,9 @@ public class AIResponseController {
     private final AIService service;
 
     @PostMapping("/interview/response")
-    public ResponseEntity<MessageDTO> chat(@RequestBody InterviewDTO interviewDTO) {
-        MessageHistory history = AIObjectConvertor.dtoToObject(interviewDTO.getMessageHistory());
-        Message response = service.service(interviewDTO.getInterviewSetting(), history);
+    public ResponseEntity<MessageDTO> chat(@RequestBody InterviewRequestDTO interviewRequestDTO) {
+        MessageHistory history = AIObjectConvertor.dtoToObject(interviewRequestDTO.getMessageHistory());
+        Message response = service.service(interviewRequestDTO.getInterviewSetting(), history);
         MessageDTO message = new MessageDTO(response.getRole(), response.getContent());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

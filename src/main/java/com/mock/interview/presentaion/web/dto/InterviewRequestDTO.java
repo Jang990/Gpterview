@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InterviewDTO {
+public class InterviewRequestDTO {
     private InterviewInfo interviewSetting;
     private MessageHistoryDTO messageHistory;
 }
