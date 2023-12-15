@@ -72,16 +72,12 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     private InterviewAIRequest createRequestForTechnical(AISpecification aiSpec, InterviewInfo interviewInfo) {
         System.out.println("기술 면접 전략 실행");
         String technicalSetting = interviewConcept.getTechnical();
-        List<Message> messageHistory = interviewInfo.getMessageHistory().getMessages();
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
-        List<Message> requestMessages = messageHistory;
-        System.out.println();
-        System.out.println("===>로그들: " + requestMessages);
-        System.out.println();
-
+        List<Message> messageHistory = interviewInfo.getMessageHistory().getMessages();
+        // aiSpec.getMaxToken();
         InterviewSetting setting = interviewSettingCreator.create(aiSpec, interviewInfo.getProfile(), technicalSetting);
-        System.out.println(setting);
-        return new InterviewAIRequest(requestMessages, setting);
+
+        return new InterviewAIRequest(messageHistory, setting);
     }
 }

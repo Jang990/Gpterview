@@ -9,7 +9,8 @@ import com.mock.interview.presentaion.web.dto.InterviewInfo;
  * 인터뷰 타입에 따라 각 분야(ex IT, 회계, 영업)별 인터뷰 형식 설정.
  * IT의 경우 기술 면접을 깊게...
  * 영업의 경우 인성을 깊게...
- * AI에게 보낼 메시지 리스트 세팅.
+ *
+ * AI에게 보내기 위해 AI 스펙에 맞도록 메시지 리스트 세팅.
  * return 값을 AIRequest에 전달해서 실제 요청.
  */
 public interface InterviewerStrategy {
