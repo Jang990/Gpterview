@@ -30,7 +30,7 @@
                                             <p class="small mb-0 content" name="content" th:text="${message.content}">면접 지원자 텍스트</p>
                                         </div>
                                         <img src="../image/applicant.png" alt="avatar" style="width: 50px; height: 50px;"
-                                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong">
+                                             class="rounded-circle d-flex align-self-start shadow-1-strong">
                                     </div>
 
                                     <!-- 면접관 대화 내역 -->
@@ -133,8 +133,6 @@
             // sendRequest를 하고 success를 했을 때 재전송 기능의 버튼이 보임 -> 그리고 다시 sendRequest를 하면 최근 인터뷰어는 버튼을 없앰
             // 채팅할 때 컨트롤 엔터로 보낼 수 있도록 만들기.
             const popElement = talkHistory.pop();
-
-
         }
 
         // InterviewDTO와 형식을 맞출 것.
@@ -264,7 +262,7 @@
                                 <p class="small mb-0 content" name="content">${msg}</p>
                             </div>
                             <img src="../image/applicant.png" alt="avatar"
-                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+                             class="rounded-circle d-flex align-self-start shadow-1-strong"
                              style="width: 50px; height: 50px;">
                         </div>
                    </li>`;
