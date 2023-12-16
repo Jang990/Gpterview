@@ -7,53 +7,73 @@
 <section style="background-color: #eee;" th:object="${interviewInfo.messageHistory}">
 <!--    <script th:src="@{/js/talk.js}" src="../../static/js/talk.js"></script>-->
     <div class="d-flex justify-content-center p-4">
-        <div class="d-flex justify-content-center flex-fill" style="max-width:1000px;">
-            <div class="col-md-6 col-lg-7 col-xl-8">
-                <ul class="list-unstyled" id="talk">
-                    <!-- INTERVIEWER, USER 등등 하드코딩 수정하기 -->
-                    <article id="talk-history" style="height: 500px; overflow-y: scroll;">
-                        <li th:each="message : *{messages}" class="mb-4 d-flex"
-                            th:classappend="${#strings.equals(message.role, 'USER')} ? justify-content-start : justify-content-end">
-                            <img th:if="${#strings.equals(message.role, 'USER')}" src="../image/applicant.png" alt="avatar"
-                                 class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
-                            <div class="card w-100">
-                                <div class="card-header d-flex justify-content-between p-3">
-                                    <p class="fw-bold mb-0"th:text="${#strings.equals(message.role, 'USER')} ? 지원자 : 면접관">역할</p>
-                                    <input type="hidden" name="role" class="role" th:value="${message.role}">
-                                    <p class="text-muted small mb-0"><i class="far fa-clock"></i> 현재 시간 </p>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-0 content" name="content" th:text="${message.content}">말한 내용</p>
-                                </div>
-                            </div>
-                            <img th:if="${#strings.equals(message.role, 'INTERVIEWER')}" src="../image/interviewer.png" alt="avatar"
-                                 class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
-                        </li>
-                    </article>
-
-                    <li class="d-flex justify-content-center mb-4 mt-4">
-                        <div>
-
+        <div class="d-flex justify-content-center flex-fill">
+            <div class="row d-flex justify-content-center flex-fill ">
+                <div class="col-md-10 col-lg-9 col-xl-8">
+                    <div class="card" id="chat1" style="border-radius: 15px;">
+                        <!--가장 위 패널-->
+                        <div
+                                class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
+                                style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                            <p class="mb-0 fw-bold">면접 진행 로그</p>
                         </div>
-                    </li>
-                    <!--                    <img th:src="@{/image/applicant.png}" alt="avatar"-->
-                    <!--                         class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">-->
-                    <li class="mb-4">
-                        <div class="card p-3">
-                            <div class="form-outline w-100">
-                                <textarea class="form-control" id="result" rows="3" placeholder="질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!"></textarea>
-                            </div>
 
-                            <div class="py-1 border-0">
-                                <div class="float-end mt-2 pt-1 pl-3">
-                                    <button type="button" class="btn btn-success btn-sm" id="speckBtn" onclick="startRecognition()">말하기</button>
-                                    <button type="submit" class="btn btn-primary btn-sm sendBtn" onclick="sendMessage()">응답완료</button>
-                                </div>
-                            </div>
+                        <div class="card-body" id="talk-card" style="overflow-y: scroll; min-height: 350px; max-height: 350px;">
+                            <article id="talk-history">
+                                <li th:each="message : *{messages}" class="d-flex mb-3"
+                                    th:classappend="${#strings.equals(message.role, 'USER')} ? justify-content-end : justify-content-start">
+
+                                    <!-- 지원자 대화 내역 -->
+                                    <div th:if="${#strings.equals(message.role, 'USER')}" class="d-flex flex-row justify-content-start">
+                                        <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                                            <input type="hidden" name="role" class="role" th:value="${message.role}">
+                                            <p class="small mb-0 content" name="content" th:text="${message.content}">면접 지원자 텍스트</p>
+                                        </div>
+                                        <img src="../image/applicant.png" alt="avatar" style="width: 50px; height: 50px;"
+                                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong">
+                                    </div>
+
+                                    <!-- 면접관 대화 내역 -->
+                                    <div th:unless="${#strings.equals(message.role, 'USER')}" class="d-flex flex-row justify-content-start">
+                                        <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
+                                        <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                            <input type="hidden" name="role" class="role" th:value="${message.role}">
+                                            <p class="small mb-0 content" name="content" th:text="${message.content}">면접관의 텍스트</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </article>
                         </div>
-                    </li>
-                </ul>
+<!--                        <div class="form-outline">-->
+<!--                            <textarea class="form-control" id="result" rows="3" placeholder="질문을 확인하고 대답해주세요!"></textarea>-->
+<!--                        </div>-->
+                        <!-- 사용자 응답창 -->
+                        <div class="flex-fill">
+                            <ul class="list-unstyled mb-0" id="talk">
+                                <!-- INTERVIEWER, USER 등등 하드코딩 수정하기 -->
+                                <!--                    <img th:src="@{/image/applicant.png}" alt="avatar"-->
+                                <!--                         class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">-->
+                                <li class="">
+                                    <div class="p-3">
+                                        <div class="form-outline w-100">
+                                            <textarea class="form-control" id="result" rows="3" placeholder="질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!"></textarea>
+                                        </div>
+
+                                        <div class="py-1 border-0">
+                                            <div class="float-end mt-2 mb-3 pt-1 pl-3">
+                                                <button type="button" class="btn btn-success btn-sm" id="speckBtn" onclick="startRecognition()">말하기</button>
+                                                <button type="submit" class="btn btn-primary btn-sm sendBtn" onclick="sendMessage()">응답완료</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
         </div>
     </div>
 
@@ -71,6 +91,7 @@
         let talkHistory = [];
         let remainingTime = loadingTime;
         let decreaseInterval;
+
 
         function startRecognition() {
             recognition = new window.webkitSpeechRecognition();
@@ -108,6 +129,11 @@
 
         // 현재 내용을 토대로 응답을 다시 받음.
         function retryResponse() {
+            // 화면에 마지막이 interviewer일 때만 사용가능
+            // sendRequest를 하고 success를 했을 때 재전송 기능의 버튼이 보임 -> 그리고 다시 sendRequest를 하면 최근 인터뷰어는 버튼을 없앰
+            // 채팅할 때 컨트롤 엔터로 보낼 수 있도록 만들기.
+            const popElement = talkHistory.pop();
+
 
         }
 
@@ -149,6 +175,7 @@
                     clearInterval(decreaseInterval);
                     setTimeout(function () {
                         // speak(data.content); // 응답 메시지를 음성으로 전달
+                        removeWaitingPanel();
                         displayResponse(data);
 
                         pushTalkHistory(data.role, data.content); // GPT 응답 기록
@@ -197,13 +224,14 @@
         // 서버로 받은 응답 값을 화면에 면접관으로 표시
         function displayResponse(data) {
             const msg = data.content;
-
-            // waiting 패널 지우기
-            $('#talk-history .temporary').remove();
-
             const newConversationItem = createGptMessage(msg);
             $('#talk-history').append(newConversationItem);
             scroll();
+        }
+
+        // waiting 패널 지우기
+        function removeWaitingPanel() {
+            $('#talk-history .temporary').remove();
         }
 
         function getCurrentTime() {
@@ -216,57 +244,42 @@
         function createWaitingPanel(msg) {
         // 로딩 이미지 출처 - https://icons8.com/preloaders/
             return `
-                    <li class="d-flex justify-content-end mb-4 temporary">
-                        <div class="card w-100">
-                            <div class="card-header d-flex justify-content-between p-3">
-                                <p class="fw-bold mb-0 role">면접관</p>
-                                <input type="hidden" name="role" class="role" th:value="INTERVIEWER">
-                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
-                            </div>
-                            <div class="card-body d-flex align-items-center">
-                                <img src="../image/loading.gif" alt="loading..." style="width: 40px;">
+                    <li class="mb-3 d-flex justify-content-start temporary">
+                        <div class="d-flex flex-row justify-content-start">
+                            <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
+                            <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                <img src="../image/loading.gif" alt="loading..." style="width: 40px; rgba(57, 192, 237,.2); ">
                                 <p class="ps-2 mb-0 content" name="content">${msg}</p>
-
                             </div>
                         </div>
-                        <img src="../image/interviewer.png" alt="avatar"
-                             class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                     </li>`;
         }
 
         function createUserMessage(msg) {
             return `
-                   <li class="d-flex justify-content-start mb-4">
-                        <img src="../image/applicant.png" alt="avatar"
-                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
-                        <div class="card w-100">
-                            <div class="card-header d-flex justify-content-between p-3">
-                                <p class="fw-bold mb-0">지원자</p>
-                                <input type="hidden" name="role" class="role" th:value="USER">
-                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
+                   <li class="mb-3 d-flex justify-content-end">
+                        <div class="d-flex flex-row justify-content-start">
+                            <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                                <input type="hidden" name="role" class="role" value="USER">
+                                <p class="small mb-0 content" name="content">${msg}</p>
                             </div>
-                            <div class="card-body">
-                                <p class="mb-0 content" name="content">${msg}</p>
-                            </div>
+                            <img src="../image/applicant.png" alt="avatar"
+                             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+                             style="width: 50px; height: 50px;">
                         </div>
-                    </li>`;
+                   </li>`;
         }
 
         function createGptMessage(msg) {
             return `
-                    <li class="d-flex justify-content-end mb-4">
-                        <div class="card w-100">
-                            <div class="card-header d-flex justify-content-between p-3">
-                                <p class="fw-bold mb-0 role">면접관</p>
-                                <input type="hidden" name="role" class="role" th:value="INTERVIEWER">
-                                <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${getCurrentTime()}</p>
-                            </div>
-                            <div class="card-body">
-                                <p class="mb-0 content" name="content">${msg}</p>
+                    <li class="mb-3 d-flex justify-content-start">
+                        <div class="d-flex flex-row justify-content-start">
+                            <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
+                            <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                <input type="hidden" name="role" class="role" value="INTERVIEWER">
+                                <p class="small mb-0 content" name="content">${msg}</p>
                             </div>
                         </div>
-                        <img src="../image/interviewer.png" alt="avatar"
-                             class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong" width="60">
                     </li>`;
         }
 
@@ -286,7 +299,7 @@
         }
 
         function scroll() {
-            const talkHistoryArticle = $('#talk-history');
+            const talkHistoryArticle = $('#talk-card');
             talkHistoryArticle.scrollTop(talkHistoryArticle[0].scrollHeight);
         }
     </script>
