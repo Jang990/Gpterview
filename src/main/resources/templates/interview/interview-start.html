@@ -24,8 +24,8 @@
                                     th:classappend="${#strings.equals(message.role, 'USER')} ? justify-content-end : justify-content-start">
 
                                     <!-- 지원자 대화 내역 -->
-                                    <div th:if="${#strings.equals(message.role, 'USER')}" class="d-flex flex-row justify-content-start">
-                                        <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                                    <div th:if="${#strings.equals(message.role, 'USER')}" class="d-flex flex-row justify-content-start" style="min-width:0px;">
+                                        <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb; min-width:0px;">
                                             <input type="hidden" name="role" class="role" th:value="${message.role}">
                                             <p class="small mb-0 content" name="content" th:text="${message.content}">면접 지원자 텍스트</p>
                                         </div>
@@ -34,9 +34,9 @@
                                     </div>
 
                                     <!-- 면접관 대화 내역 -->
-                                    <div th:unless="${#strings.equals(message.role, 'USER')}" class="d-flex flex-row justify-content-start">
+                                    <div th:unless="${#strings.equals(message.role, 'USER')}" class="d-flex flex-row justify-content-start" style="min-width:0px;">
                                         <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
-                                        <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                        <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
                                             <input type="hidden" name="role" class="role" th:value="${message.role}">
                                             <p class="small mb-0 content" name="content" th:text="${message.content}">면접관의 텍스트</p>
                                         </div>
@@ -243,9 +243,9 @@
         // 로딩 이미지 출처 - https://icons8.com/preloaders/
             return `
                     <li class="mb-3 d-flex justify-content-start temporary">
-                        <div class="d-flex flex-row justify-content-start">
+                        <div class="d-flex flex-row justify-content-start" style="min-width:0px;">
                             <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
-                            <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                            <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
                                 <img src="../image/loading.gif" alt="loading..." style="width: 40px; rgba(57, 192, 237,.2); ">
                                 <p class="ps-2 mb-0 content" name="content">${msg}</p>
                             </div>
@@ -256,8 +256,8 @@
         function createUserMessage(msg) {
             return `
                    <li class="mb-3 d-flex justify-content-end">
-                        <div class="d-flex flex-row justify-content-start">
-                            <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb;">
+                        <div class="d-flex flex-row justify-content-start" style="min-width:0px;">
+                            <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb; min-width:0px;">
                                 <input type="hidden" name="role" class="role" value="USER">
                                 <p class="small mb-0 content" name="content">${msg}</p>
                             </div>
@@ -271,9 +271,9 @@
         function createGptMessage(msg) {
             return `
                     <li class="mb-3 d-flex justify-content-start">
-                        <div class="d-flex flex-row justify-content-start">
+                        <div class="d-flex flex-row justify-content-start" style="min-width:0px;">
                             <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
-                            <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                            <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
                                 <input type="hidden" name="role" class="role" value="INTERVIEWER">
                                 <p class="small mb-0 content" name="content">${msg}</p>
                             </div>
