@@ -56,7 +56,7 @@
                                 <li class="">
                                     <div class="p-3">
                                         <div class="form-outline w-100">
-                                            <textarea class="form-control" id="result" rows="3" placeholder="질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!"></textarea>
+                                            <textarea class="form-control" id="result" rows="3" placeholder="질문을 듣고 답변해주세요! Ctrl+Enter로 메시지 전송 가능합니다."></textarea>
                                         </div>
 
                                         <div class="py-1 border-0">
@@ -105,7 +105,7 @@
                 var transcript = event.results[0][0].transcript;
                 const text = $('#result').val() + transcript + "\n";
                 $('#result').val(text);
-                $('#result').attr("placeholder", "질문을 듣고 '말하기' 버튼을 눌러서 대답해주세요!");
+                $('#result').attr("placeholder", "질문을 듣고 답변해주세요! Ctrl+Enter로 메시지 전송 가능합니다.");
             };
             recognition.start();
         }
@@ -166,8 +166,11 @@
             return ({"interviewSetting" : {"profile" : profile}, "messageHistory" : {messages : talkHistory}});
         }
 
-        // 응답완료 버튼 클릭시 동작
+        // 응답완료 버튼 클릭시 동작 - sendBtn에 disabled 여부에 따라 함수 실행여부가 결정된다.
         function sendMessage() {
+            if(sendBtn.prop("disabled"))
+                return;
+
             const nowMsg = $('#result').val(); // 현재 사용자 작성 답변 가져오기.
             pushTalkHistory("user", nowMsg); // UserMessage 기록하기
             const interviewInfo = createInterviewObject();
@@ -330,6 +333,17 @@
             const talkHistoryArticle = $('#talk-card');
             talkHistoryArticle.scrollTop(talkHistoryArticle[0].scrollHeight);
         }
+
+
+
+        // result TextArea에서 Ctrl+Enter 입력시 메시지를 보내는 기능
+        const taResult = $("#result");
+        taResult.on("keydown", function (event) {
+            // Ctrl (또는 Command on Mac) 키와 Enter 키를 동시에 눌렀을 때
+            if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+                sendMessage();
+            }
+        });
     </script>
 </section>
 </body>
