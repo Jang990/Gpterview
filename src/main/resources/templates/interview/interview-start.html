@@ -135,6 +135,23 @@
             const popElement = talkHistory.pop();
         }
 
+        // 재전송 버튼 지우기
+        function removeRetryingBtn() {
+            // retryBtn을 가지고 있는 Div 찾기
+            const retryBtnDiv = $("#retryBtnDiv");
+
+            // retryBtn이 존재하는 경우에만 실행
+            if (retryBtnDiv.length > 0) {
+                // 버튼 제거에 따라 버튼 부모의 너비를 10 -> 8로 변경
+                var col10Div = retryBtnDiv.closest(".col-10");
+                col10Div.removeClass("col-10").addClass("col-8");
+
+                // retryBtn 제거
+                retryBtnDiv.remove();
+            }
+        }
+
+
         // InterviewDTO와 형식을 맞출 것.
         function createInterviewObject() {
             return ({"interviewSetting" : {"profile" : profile}, "messageHistory" : {messages : talkHistory}});
@@ -147,6 +164,7 @@
             const interviewInfo = createInterviewObject();
 
             $('#result').val(''); // 사용자 응답창 지워주기
+            removeRetryingBtn(); // 다른 질문을 요청할 수 없도록 버튼 제거
 
             const newConversationItem = createUserMessage(nowMsg);
             $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
@@ -271,11 +289,14 @@
         function createGptMessage(msg) {
             return `
                     <li class="mb-3 d-flex justify-content-start">
-                        <div class="d-flex flex-row justify-content-start col-8" style="min-width:0px;">
+                        <div class="d-flex flex-row justify-content-start col-10" style="min-width:0px;">
                             <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
                             <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
                                 <input type="hidden" name="role" class="role" value="INTERVIEWER">
                                 <p class="small mb-0 content" name="content">${msg}</p>
+                            </div>
+                            <div class="d-flex align-items-end col-2 ps-2" style="min-width:0px;" id="retryBtnDiv">
+                                <button id="retryBtn" class="btn btn-primary btn-sm"><p class="small mb-0" onclick="retryResponse()">다른 질문</p></button>
                             </div>
                         </div>
                     </li>`;
