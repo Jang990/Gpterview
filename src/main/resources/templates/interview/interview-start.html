@@ -129,10 +129,19 @@
 
         // 현재 내용을 토대로 응답을 다시 받음.
         function retryResponse() {
-            // 화면에 마지막이 interviewer일 때만 사용가능
-            // sendRequest를 하고 success를 했을 때 재전송 기능의 버튼이 보임 -> 그리고 다시 sendRequest를 하면 최근 인터뷰어는 버튼을 없앰
-            // 채팅할 때 컨트롤 엔터로 보낼 수 있도록 만들기.
-            const popElement = talkHistory.pop();
+            talkHistory.pop();
+            removeLastChatting();
+            const interviewInfo = createInterviewObject();
+            sendRequest(interviewInfo);
+        }
+
+        // 마지막 채팅 제거
+        function removeLastChatting() {
+            var lastChatting = $("#talk-history li:last");
+
+            if (lastChatting.length > 0) {
+                lastChatting.remove();
+            }
         }
 
         // 재전송 버튼 지우기
