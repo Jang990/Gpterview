@@ -1,6 +1,8 @@
 #hello: 안녕하세요
 
 spring:
+  messages:
+    basename: messages,errors
   output:
     ansi:
       enabled: always
