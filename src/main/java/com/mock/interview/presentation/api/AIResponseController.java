@@ -29,5 +29,13 @@ public class AIResponseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @PostMapping("/interview/changing-topic")
+    public ResponseEntity<MessageDto> changingTopic(@Valid @RequestBody InterviewRequestDTO interviewRequestDTO) {
+        MessageHistory history = AIObjectConvertor.dtoToObject(interviewRequestDTO.getMessageHistory());
+        Message response = service.changeTopic(interviewRequestDTO.getInterviewSetting(), history);
+        MessageDto message = new MessageDto(response.getRole(), response.getContent());
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }
 
