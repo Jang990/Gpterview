@@ -55,18 +55,15 @@
                                 <!--                         class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">-->
                                 <li class="">
                                     <div class="p-3">
-                                        asdasldklas여기에요
-                                        <div class="toast align-items-center" id="chattingErrorToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
-                                            <div class="d-flex">
-                                                <div class="toast-body">
-                                                    <p id="errorMessageField">안녕 넌 잘못입력했어!</p>
-                                                </div>
-                                                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                        </div>
-                                        --
-
                                         <div class="form-outline w-100">
+                                            <div class="toast align-items-center bg-danger" id="chattingErrorToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+                                                <div class="d-flex">
+                                                    <div class="toast-body">
+                                                        <span class="text-white" id="errorMessageField">잘못 입력한 필드</span>
+                                                    </div>
+                                                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                </div>
+                                            </div>
                                             <textarea class="form-control" id="result" rows="3" placeholder="질문을 듣고 답변해주세요! Ctrl+Enter로 메시지 전송 가능합니다."></textarea>
                                         </div>
 
@@ -97,7 +94,8 @@
         };
         const loadingTime = 1500;
         const sendBtn = $('.sendBtn');
-        const errorMessageField = $('.errorMessageField');
+        const errorMessageField = $('#errorMessageField');
+        const contentMinLength = 3;
         let chattingErrorToast = new bootstrap.Toast(document.getElementById('chattingErrorToast'));
 
         let recognition;
@@ -185,6 +183,11 @@
                 return;
 
             const nowMsg = $('#result').val(); // 현재 사용자 작성 답변 가져오기.
+            if(validChattingMessage(nowMsg)) {
+                showChattingErrorMessage(contentMinLength + '자 이상 입력해주세요.');
+                return;
+            }
+
             pushTalkHistory("user", nowMsg); // UserMessage 기록하기
             const interviewInfo = createInterviewObject();
 
@@ -197,11 +200,23 @@
             sendRequest(interviewInfo);
         }
 
+        function validChattingMessage(message) {
+            return message.length <= 3;
+        }
+
+        function disableSendBtn() {
+            sendBtn.prop("disabled", true);
+        }
+
+        function enableSendBtn() {
+            sendBtn.prop("disabled", false);
+        }
+
         // 서버로 요청보내기.
         function sendRequest(interviewInfo) {
             console.log(interviewInfo);
 
-            sendBtn.prop("disabled", true); // 전송버튼 잠시 비활성화
+            disableSendBtn(); // 전송버튼 잠시 비활성화
             displayWaitingPanel(); // 응답 대기 화면 출력.
             scroll(); // 채팅 스크롤 밑으로 내리기.
             decreaseInterval = setInterval(decreaseRemainingTime, 100);
@@ -223,14 +238,15 @@
                         scroll();
                         remainingTime = loadingTime;
                         // console.log(talkHistory);
-                        sendBtn.prop("disabled", false);
+                        enableSendBtn();
                     }, remainingTime);
                 },
                 error: function(error) {
                     console.log(error);
                     let errorMessage;
                     if(error.status == 400) {
-                        showChattingErrorMessage(errorMessage);
+                        showChattingErrorMessage(error.responseJSON.errorMessage);
+                        enableSendBtn();
                         return;
                     }
                     else if(error.status == 401)
@@ -238,13 +254,14 @@
                     else
                         errorMessage = error.responseJSON.message;
                     $('#creationGroupError').text(errorMessage);
+                    enableSendBtn();
                     console.log(errorMessage);
                 }
             });
         }
 
         function showChattingErrorMessage(errorMessage) {
-            console.log(errorMessage);
+            // console.log(errorMessage);
             errorMessageField.text(errorMessage);
             chattingErrorToast.show();
         }
@@ -259,7 +276,7 @@
             const waitingMessages = [
                 "머리를 굴리는중...",
                 "잠시 커피를 마시는 중...",
-                "멋진 질문을 고민 중...",
+                "질문을 고민 중...",
                 "이력서를 확인하는 중...",
                 "미소 짓는 중...",
                 "잠시 물을 마시는 중...",
