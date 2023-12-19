@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InterviewRequestDTO {
-    private InterviewInfoDto interviewSetting;
+    private InterviewSettingDto interviewSetting;
     @Valid
     private MessageHistoryDto messageHistory;
 }

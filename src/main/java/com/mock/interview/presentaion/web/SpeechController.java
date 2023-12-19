@@ -21,12 +21,12 @@ public class SpeechController {
             InterviewDetailsDto interviewDetails
     ) {
         // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
-        InterviewInfoDto interviewInfoDto = new InterviewInfoDto();
-        interviewInfoDto.setProfile(profile);
-        interviewInfoDto.setInterviewDetails(interviewDetails);
+        InterviewSettingDto interviewSettingDto = new InterviewSettingDto();
+        interviewSettingDto.setProfile(profile);
+        interviewSettingDto.setInterviewDetails(interviewDetails);
         MessageHistoryDto historyDTO = initHistory();
 
-        InterviewRequestDTO interviewRequestDTO = new InterviewRequestDTO(interviewInfoDto, historyDTO);
+        InterviewRequestDTO interviewRequestDTO = new InterviewRequestDTO(interviewSettingDto, historyDTO);
 
         model.addAttribute("interviewInfo", interviewRequestDTO);
         return "interview/interview-start";

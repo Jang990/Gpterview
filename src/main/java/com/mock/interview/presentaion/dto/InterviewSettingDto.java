@@ -4,7 +4,7 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
-public class InterviewInfoDto {
+public class InterviewSettingDto {
     private CandidateProfileDto profile;
     private InterviewDetailsDto interviewDetails;
 }
