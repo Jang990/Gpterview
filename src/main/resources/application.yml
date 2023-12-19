@@ -2,7 +2,7 @@
 
 spring:
   messages:
-    basename: messages,errors
+    basename: errors
   output:
     ansi:
       enabled: always

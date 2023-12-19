@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 @Slf4j
 @RestControllerAdvice
@@ -23,11 +25,25 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ErrorResponse> bindingExceptionHandler(BindException e, Locale locale) {
-        StringBuilder errorStringBuilder = new StringBuilder();
-        for (ObjectError errors : e.getAllErrors()) {
-            String errorMessage = messageSource.getMessage(errors, LocaleContextHolder.getLocale());
-            errorStringBuilder.append(errorMessage).append("\n");
-        }
+        Set<String> uniqueErrorMessages = getUniqueErrorMessages(e, locale);
+        StringBuilder errorStringBuilder = createMessageString(uniqueErrorMessages);
         return new ResponseEntity<>(new ErrorResponse(errorStringBuilder.toString()), HttpStatus.BAD_REQUEST);
+    }
+
+    private static StringBuilder createMessageString(Set<String> uniqueErrorMessages) {
+        StringBuilder errorStringBuilder = new StringBuilder();
+        for (String uniqueErrorMessage : uniqueErrorMessages) {
+            errorStringBuilder.append(uniqueErrorMessage).append("\n");
+        }
+        return errorStringBuilder;
+    }
+
+    private Set<String> getUniqueErrorMessages(BindException e, Locale locale) {
+        Set<String> uniqueErrorMessages = new HashSet<>();
+        for (ObjectError error : e.getAllErrors()) {
+            String errorMessage = messageSource.getMessage(error, locale);
+            uniqueErrorMessages.add(errorMessage);
+        }
+        return uniqueErrorMessages;
     }
 }
