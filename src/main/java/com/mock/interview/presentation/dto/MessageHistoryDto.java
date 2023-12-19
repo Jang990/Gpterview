@@ -1,4 +1,4 @@
-package com.mock.interview.presentaion.dto;
+package com.mock.interview.presentation.dto;
 
 import jakarta.validation.Valid;
 import lombok.Data;

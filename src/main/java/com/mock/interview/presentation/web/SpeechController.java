@@ -1,7 +1,7 @@
-package com.mock.interview.presentaion.web;
+package com.mock.interview.presentation.web;
 
 import com.mock.interview.domain.Category;
-import com.mock.interview.presentaion.dto.*;
+import com.mock.interview.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

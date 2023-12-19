@@ -1,11 +1,11 @@
-package com.mock.interview.presentaion.api;
+package com.mock.interview.presentation.api;
 
 import com.mock.interview.infrastructure.interview.AIService;
 import com.mock.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.infrastructure.interview.AIObjectConvertor;
-import com.mock.interview.presentaion.dto.InterviewRequestDTO;
+import com.mock.interview.presentation.dto.InterviewRequestDTO;
 import com.mock.interview.infrastructure.interview.dto.Message;
-import com.mock.interview.presentaion.dto.MessageDto;
+import com.mock.interview.presentation.dto.MessageDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

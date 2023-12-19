@@ -123,7 +123,7 @@
                         <label for="interviewType" class="col-sm-1 col-form-label">면접 타입</label>
                         <div class="col-sm-3">
                             <select id="interviewType" name="interviewType" class="form-select" aria-label="Select Type">
-                                <option th:each="interviewType : ${T(com.mock.interview.presentaion.web.dto.InterviewType).values()}"
+                                <option th:each="interviewType : ${T(com.mock.interview.presentation.dto.InterviewType).values()}"
                                         th:value="${interviewType}"
                                         th:text="${interviewType.name}">
                                     면접 진행 방식
