@@ -29,6 +29,7 @@ interview:
         항상 5문장 이하로 응답해. 항상 마지막 문장으로 면접자를 평가할 수 있는 질문을 해.
       skills: ${interview.format.role.user}는 ${interview.format.profile.skills} 등의 기술을 보유.
       experience: ${interview.format.role.user}는 다음과 같은 경험을 함 ${interview.format.profile.experience}.
+      skip: 마지막 너의 질문은 사용자가 매우 싫어하는 질문이야. 다른 주제를 질문해.
     IT:
       personal: |
         ${interview.strategy.common.rule}

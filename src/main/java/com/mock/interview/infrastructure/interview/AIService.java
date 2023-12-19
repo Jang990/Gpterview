@@ -4,6 +4,7 @@ import com.mock.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.gpt.AIRequester;
+import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.strategy.ITInterviewerStrategy;
 import com.mock.interview.presentation.dto.InterviewSettingDto;
 import com.mock.interview.presentation.dto.InterviewRole;
@@ -26,6 +27,19 @@ public class AIService {
         convertRole(requester, request.getHistory()); // AIRequester로 보낼 수 있는 role로 수정.
         return requester.sendRequest(request); // AI로 부터 받은 응답.
         // TODO: DB 저장 기능 나중에 추가
+    }
+
+    /**
+     * 이상한 주제가 와서 사용자가 다른 주제로 변경 요청.
+     *
+     *  예시
+     * 사용자 : 저는 AOP를 모릅니다.
+     * 면접관 : AOP를 모르신다니 아쉽습니다. AOP를 활용한 사례를 들어서 설명해보세요.
+     */
+    public Message changeTopic(InterviewSettingDto interviewSettingDto, MessageHistory history) {
+        InterviewAIRequest request = interviewerStrategy.changeTopic(requester, interviewSettingDto, history);
+        convertRole(requester, request.getHistory());
+        return requester.sendRequest(request);
     }
 
     private void convertRole(AISpecification aiSpec, List<Message> history) {
