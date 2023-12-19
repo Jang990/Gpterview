@@ -6,7 +6,7 @@ import com.mock.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.setting.InterviewSettingCreator;
-import com.mock.interview.presentaion.web.dto.InterviewInfoDto;
+import com.mock.interview.presentaion.dto.InterviewInfoDto;
 import com.mock.interview.infrastructure.interview.dto.Message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

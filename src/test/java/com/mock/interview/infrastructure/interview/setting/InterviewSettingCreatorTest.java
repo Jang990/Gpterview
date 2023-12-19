@@ -3,7 +3,7 @@ package com.mock.interview.infrastructure.interview.setting;
 import com.mock.interview.infrastructure.MockAiSpecCreator;
 import com.mock.interview.infrastructure.interview.fomatter.FormatConstGetter;
 import com.mock.interview.infrastructure.interview.gpt.AISpecification;
-import com.mock.interview.presentaion.web.dto.CandidateProfileDto;
+import com.mock.interview.presentaion.dto.CandidateProfileDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
