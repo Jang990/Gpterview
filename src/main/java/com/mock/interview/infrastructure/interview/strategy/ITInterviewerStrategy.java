@@ -28,6 +28,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
+        isInterviewFinished(history);
         String rawStrategy = getRawInterviewStrategy(history);
 
         List<Message> messageHistory = history.getMessages();
@@ -35,6 +36,11 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
 
         InterviewSetting setting = interviewSettingCreator.create(aiSpec, interviewSettingDto.getProfile(), rawStrategy);
         return new InterviewAIRequest(messageHistory, setting);
+    }
+
+    private void isInterviewFinished(MessageHistory history) {
+        if (history.getMessages().size() > STEP1 + STEP2 + STEP3)
+            throw new AlreadyFinishedInterviewException();
     }
 
     @Override
