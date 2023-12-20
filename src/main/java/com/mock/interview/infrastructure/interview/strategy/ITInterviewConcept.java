@@ -13,4 +13,7 @@ public class ITInterviewConcept {
     private String experience;
     @Value("${interview.strategy.IT.technical}")
     private String technical;
+
+    @Value("${interview.strategy.common.skip}")
+    private String changingTopicCommand;
 }

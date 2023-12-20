@@ -6,6 +6,7 @@ import com.mock.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.setting.InterviewSettingCreator;
+import com.mock.interview.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
 import com.mock.interview.presentation.dto.InterviewSettingDto;
 import com.mock.interview.infrastructure.interview.dto.Message;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +17,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ITInterviewerStrategy implements InterviewerStrategy {
-
-    private final DefaultInterviewConst defaultInterviewConst;
     private final ITInterviewConcept interviewConcept;
     private final InterviewSettingCreator interviewSettingCreator;
 
@@ -41,7 +40,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     @Override
     public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
         String rawStrategy = getRawInterviewStrategy(history);
-        rawStrategy += defaultInterviewConst.getChangingTopicCommand();
+        rawStrategy += interviewConcept.getChangingTopicCommand();
 
         List<Message> messageHistory = history.getMessages();
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
