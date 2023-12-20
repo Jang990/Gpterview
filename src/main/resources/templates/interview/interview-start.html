@@ -143,7 +143,7 @@
             talkHistory.pop();
             removeLastChatting();
             const interviewInfo = createInterviewObject();
-            sendRequest(interviewInfo);
+            sendRequest("/api/interview/changing-topic", interviewInfo);
         }
 
         // 마지막 채팅 제거
@@ -197,7 +197,7 @@
             const newConversationItem = createUserMessage(nowMsg);
             $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
 
-            sendRequest(interviewInfo);
+            sendRequest("/api/interview/response", interviewInfo);
         }
 
         function validChattingMessage(message) {
@@ -213,7 +213,7 @@
         }
 
         // 서버로 요청보내기.
-        function sendRequest(interviewInfo) {
+        function sendRequest(requestURL, interviewInfo) {
             console.log(interviewInfo);
 
             disableSendBtn(); // 전송버튼 잠시 비활성화
@@ -223,7 +223,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '/api/interview/response',
+                url: requestURL,
                 contentType: 'application/json',
                 data: JSON.stringify(interviewInfo),
                 success: function(data) {
@@ -361,7 +361,7 @@
             });
 
             const interviewInfo = createInterviewObject();
-            sendRequest(interviewInfo);
+            sendRequest("/api/interview/response", interviewInfo);
         });
 
         function pushTalkHistory(role, content) {

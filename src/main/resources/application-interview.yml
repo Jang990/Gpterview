@@ -26,10 +26,11 @@ interview:
       rule: |
         너는 ${interview.format.profile.department} 분야 ${interview.format.profile.field} 포지션의 면접관이야.
         항상 단 하나의 질문만 해. 이미 대화한 주제를 질문하지마.
-        항상 5문장 이하로 응답해. 항상 마지막 문장으로 면접자를 평가할 수 있는 질문을 해.
+        항상 3문장 이하로 응답해. 항상 마지막 문장으로 면접자를 평가할 수 있는 질문을 해.
+        지원자의 응답에 대한 평가는 간단하게. 질문은 자세하게 해.
       skills: ${interview.format.role.user}는 ${interview.format.profile.skills} 등의 기술을 보유.
       experience: ${interview.format.role.user}는 다음과 같은 경험을 함 ${interview.format.profile.experience}.
-      skip: 마지막 너의 질문은 사용자가 매우 싫어하는 질문이야. 다른 주제를 질문해.
+      skip: 마지막 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
     IT:
       personal: |
         ${interview.strategy.common.rule}
