@@ -7,6 +7,8 @@ import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
+import com.mock.interview.infrastructure.interview.strategy.stage.InterviewProgressTracker;
+import com.mock.interview.infrastructure.interview.strategy.stage.InterviewStage;
 import com.mock.interview.presentation.dto.InterviewSettingDto;
 import com.mock.interview.infrastructure.interview.dto.Message;
 import lombok.RequiredArgsConstructor;
@@ -19,17 +21,14 @@ import java.util.List;
 public class ITInterviewerStrategy implements InterviewerStrategy {
     private final ITInterviewConcept interviewConcept;
     private final InterviewSettingCreator interviewSettingCreator;
+    private final InterviewProgressTracker progressTracker;
 
     private final Category[] SUPPORTED_CATEGORY = {Category.IT};
 
-    private static final int CONVERSATION_UNIT = 2;
-    private static final int MAX_TECHNICAL_CONVERSATIONS = 7 * CONVERSATION_UNIT;
-    private static final int MAX_PROJECT_EXPERIENCE_CONVERSATIONS = 7 * CONVERSATION_UNIT;
-
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
-        isInterviewFinished(history);
-        String rawStrategy = getRawInterviewStrategy(history);
+        InterviewStage currentStage = progressTracker.getCurrentInterviewStage(interviewSettingDto.getInterviewDetails(), history);
+        String rawStrategy = getRawInterviewStrategy(currentStage);
 
         List<Message> messageHistory = history.getMessages();
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
@@ -38,14 +37,10 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
         return new InterviewAIRequest(messageHistory, setting);
     }
 
-    private void isInterviewFinished(MessageHistory history) {
-        if (history.getMessages().size() > STEP1 + STEP2 + STEP3)
-            throw new AlreadyFinishedInterviewException();
-    }
-
     @Override
     public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
-        String rawStrategy = getRawInterviewStrategy(history);
+        InterviewStage currentInterviewStage = progressTracker.getCurrentInterviewStage(interviewSettingDto.getInterviewDetails(), history);
+        String rawStrategy = getRawInterviewStrategy(currentInterviewStage);
         rawStrategy += interviewConcept.getChangingTopicCommand();
 
         List<Message> messageHistory = history.getMessages();
@@ -65,27 +60,12 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
         return false;
     }
 
-    private String getRawInterviewStrategy(MessageHistory history) {
-        // TODO: 단계를 분리하는 임시 코드를 적절한 로직으로 수정할 것 - 나중에 Reids 연동하면서 바꿀 것
-        String strategy;
-        if (isTechStage(history)) {
-            System.out.println("경험 면접 전략 실행");
-            strategy = interviewConcept.getTechnical();
-        } else if (isExperienceStage(history)) {
-            strategy = interviewConcept.getExperience();
-        } else {
-            System.out.println("인성 면접 전략 실행");
-            strategy = interviewConcept.getPersonal();
-        }
-
-        return strategy;
-    }
-
-    private boolean isExperienceStage(MessageHistory history) {
-        return !isTechStage(history) && history.getMessages().size() - MAX_TECHNICAL_CONVERSATIONS <= MAX_PROJECT_EXPERIENCE_CONVERSATIONS;
-    }
-
-    private static boolean isTechStage(MessageHistory history) {
-        return history.getMessages().size() <= MAX_TECHNICAL_CONVERSATIONS;
+    private String getRawInterviewStrategy(InterviewStage stage) {
+        return switch (stage) {
+            case TECHNICAL -> interviewConcept.getTechnical();
+            case EXPERIENCE -> interviewConcept.getExperience();
+            case PERSONAL -> interviewConcept.getPersonal();
+            case FINISHED -> throw new AlreadyFinishedInterviewException();
+        };
     }
 }
