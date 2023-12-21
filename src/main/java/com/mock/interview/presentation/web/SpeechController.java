@@ -25,7 +25,7 @@ public class SpeechController {
         interviewSettingDto.setInterviewDetails(interviewDetails);
         MessageHistoryDto historyDTO = initHistory();
 
-        InterviewRequestDTO interviewRequestDTO = new InterviewRequestDTO(interviewSettingDto, historyDTO);
+        InterviewRequestDto interviewRequestDTO = new InterviewRequestDto(interviewSettingDto, historyDTO);
 
         model.addAttribute("interviewInfo", interviewRequestDTO);
         return "interview/interview-start";
