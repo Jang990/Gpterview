@@ -239,7 +239,7 @@
                     setTimeout(function () {
                         // speak(data.content); // 응답 메시지를 음성으로 전달
                         removeWaitingPanel();
-                        displayResponse(data);
+                        displayResponse(data.content);
 
                         pushTalkHistory(data.role, data.content); // GPT 응답 기록
                         scroll();
@@ -256,7 +256,15 @@
                         enableSendBtn();
                         return;
                     }
-                    else if(error.status == 401)
+                    if(error.status == 413) {
+                        disableSendBtn();
+                        removeWaitingPanel();
+                        displayResponse("수고하셨습니다. 면접이 종료되었습니다.");
+                        removeRetryingBtn();
+                        return;
+                    }
+
+                    if(error.status == 401)
                         errorMessage = '로그인을 다시 진행한 후 시도해주세요.';
                     else
                         errorMessage = error.responseJSON.message;
@@ -296,8 +304,7 @@
         }
 
         // 서버로 받은 응답 값을 화면에 면접관으로 표시
-        function displayResponse(data) {
-            const msg = data.content;
+        function displayResponse(msg) {
             const newConversationItem = createGptMessage(msg);
             $('#talk-history').append(newConversationItem);
             scroll();
