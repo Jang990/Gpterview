@@ -35,5 +35,5 @@ public interface InterviewerStrategy {
      */
     InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history);
 
-    boolean isSupportedCategory(Category category);
+    boolean isSupportedDepartment(String department);
 }

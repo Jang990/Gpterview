@@ -23,7 +23,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     private final InterviewSettingCreator interviewSettingCreator;
     private final InterviewProgressTracker progressTracker;
 
-    private final Category[] SUPPORTED_CATEGORY = {Category.IT};
+    private final String[] SUPPORTED_DEPARTMENT = {Category.IT.getName(), "개발"};
 
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
@@ -51,9 +51,9 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     }
 
     @Override
-    public boolean isSupportedCategory(Category category) {
-        for (Category supportedCategory : SUPPORTED_CATEGORY) {
-            if(supportedCategory == category)
+    public boolean isSupportedDepartment(String department) {
+        for (String supportedDepartment : SUPPORTED_DEPARTMENT) {
+            if(supportedDepartment.equalsIgnoreCase(department))
                 return true;
         }
 
