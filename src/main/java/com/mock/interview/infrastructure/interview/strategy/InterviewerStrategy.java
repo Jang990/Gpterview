@@ -4,6 +4,7 @@ import com.mock.interview.domain.Category;
 import com.mock.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
+import com.mock.interview.presentation.dto.CandidateProfileDto;
 import com.mock.interview.presentation.dto.InterviewSettingDto;
 
 /**
@@ -35,5 +36,5 @@ public interface InterviewerStrategy {
      */
     InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history);
 
-    boolean isSupportedDepartment(String department);
+    boolean isSupportedDepartment(CandidateProfileDto profile);
 }

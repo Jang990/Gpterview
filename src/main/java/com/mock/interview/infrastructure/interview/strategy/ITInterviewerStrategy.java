@@ -9,6 +9,7 @@ import com.mock.interview.infrastructure.interview.setting.InterviewSettingCreat
 import com.mock.interview.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
 import com.mock.interview.infrastructure.interview.strategy.stage.InterviewProgressTracker;
 import com.mock.interview.infrastructure.interview.strategy.stage.InterviewStage;
+import com.mock.interview.presentation.dto.CandidateProfileDto;
 import com.mock.interview.presentation.dto.InterviewSettingDto;
 import com.mock.interview.infrastructure.interview.dto.Message;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ITInterviewerStrategy implements InterviewerStrategy {
-    private final ITInterviewConcept interviewConcept;
-    private final InterviewSettingCreator interviewSettingCreator;
     private final InterviewProgressTracker progressTracker;
+    private final InterviewSettingCreator interviewSettingCreator;
+    private final ITInterviewConcept interviewConcept;
 
     private final String[] SUPPORTED_DEPARTMENT = {Category.IT.getName(), "개발"};
 
@@ -51,9 +52,12 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     }
 
     @Override
-    public boolean isSupportedDepartment(String department) {
+    public boolean isSupportedDepartment(CandidateProfileDto profile) {
+        if(profile == null)
+            return false;
+
         for (String supportedDepartment : SUPPORTED_DEPARTMENT) {
-            if(supportedDepartment.equalsIgnoreCase(department))
+            if(supportedDepartment.equalsIgnoreCase(profile.getDepartment()))
                 return true;
         }
 
