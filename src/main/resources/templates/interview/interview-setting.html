@@ -37,8 +37,8 @@
                 <th:block th:object="${candidateProfile}">
                     <div>
                         <div class="mb-3 row">
-                            <label class="col-sm-1 col-form-label">지원 분야</label>
-                            <div class="col-sm-3">
+                            <label class="col-1 col-form-label">지원 분야</label>
+                            <div class="col-2">
                                 <select name="department" id="department" class="form-select" aria-label="Select Department" required>
                                     <option  disabled hidden selected>선택해주세요</option>
                                     <option th:each="department : ${categoryList}"
@@ -46,17 +46,60 @@
                                     <option disabled>다른 분야 추가 예정</option>
                                 </select>
                             </div>
+                            <div class="col-2">
+                                <button class="btn btn-dark" onclick="showDepartmentToast()">분야 추가</button>
+                            </div>
+                        </div>
+
+                        <!--마음에 안듦. 다른 위치로 옮겨야함-->
+                        <div class="row ms-5 mb-3">
+                            <div class="col-3 toast align-items-center mb-3" id="departmentOptionToast" role="polite" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
+                                <div class="d-flex" style="min-width:0px">
+                                    <div class="toast-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-9">
+                                                <input type="text" class="form-control" id="customDepartment" placeholder="추가할 분야"/>
+                                            </div>
+                                            <div class="col-3">
+                                                <button class="btn btn-sm btn-primary" onclick="addDepartment()">추가</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mb-5 row">
                             <label for="field"  class="col-sm-1 col-form-label">지원 직군</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <select name="field" id="field" class="form-select" aria-label="Select Field" required>
                                     <option disabled hidden selected>선택해주세요</option>
                                     <!-- 동적으로 변해야 함. 이 코드는 임시 코드 -->
                                     <option th:each="field : ${categoryList[0].fields}"
                                             th:value="${field}" th:text="${field.name}">백엔드</option>
                                 </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-dark" onclick="showFieldToast()">직군 추가</button>
+                            </div>
+                        </div>
+
+                        <div class="row ms-5 mb-3">
+                            <div class="col-3 toast align-items-center mb-3" id="fieldOptionToast" role="polite" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
+                                <div class="d-flex" style="min-width:0px">
+                                    <div class="toast-body">
+                                        <div class="row align-items-center">
+                                            <div class="col-9">
+                                                <input type="text" class="form-control" id="customField" placeholder="추가할 직군"/>
+                                            </div>
+                                            <div class="col-3">
+                                                <button class="btn btn-sm btn-primary" onclick="addField()">추가</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -78,7 +121,7 @@
                     <div class="mb-5 col">
                         <div for="company" class="form-floating">
                             <textarea class="form-control" placeholder="여기에 적어주세요." id="company" style="height: 100px"></textarea>
-                            <label>지원 회사 정보 (300자 이하) - 생략가능</label>
+                            <label>지원 회사 정보 (200자 이하) - 생략가능</label>
                         </div>
                         <div class="mt-2">
                             <a class="link-dark mx-1" href="#">회사 예시보기</a>
@@ -89,7 +132,7 @@
                     <div class="mb-5 col">
                         <div for="intro" class="form-floating">
                             <textarea class="form-control" placeholder="여기에 적어주세요." id="intro" style="height: 200px"></textarea>
-                            <label>간단한 지원서 내용 (500자 이하) - 생략가능</label>
+                            <label>간단한 지원서 내용 (300자 이하) - 생략가능</label>
                         </div>
                         <div class="mt-2">
                             <a class="link-dark" href="#">지원서 예시보기</a>
@@ -132,14 +175,56 @@
                         </div>
                     </div>
                 </th:block>
+
+                <hr>
+                <br>
+
+                <input type="submit" class="btn btn-success mb-5" value="면접 시작">
             </form>
-
-            <hr>
-
-            <br>
-
-            <a class="btn btn-success mb-5" href="/interview/start">면접 시작</a>
         </div>
+
+        <script th:inline="javascript">
+            <!-- DB연동해서 분야에 대한 직군을 가져올 수 있도록 만들어야 함.-->
+            const departmentOptionForm = $('#department');
+            const departmentOptionToast = new bootstrap.Toast(document.getElementById('departmentOptionToast'));
+            const customDepartment = $('#customDepartment');
+
+            const fieldOptionForm = $('#field');
+            const fieldOptionToast = new bootstrap.Toast(document.getElementById('fieldOptionToast'));
+            const customField = $('#customField');
+
+            function showDepartmentToast() {
+                departmentOptionToast.show();
+            }
+
+            function addDepartment() {
+                const optionElement = createOption(customDepartment.val());
+                departmentOptionForm.children().last().before(optionElement);
+                customDepartment.val('');
+
+                fieldOptionForm.empty();
+                fieldOptionForm.append(optionElement);
+
+                departmentOptionToast.hide();
+            }
+
+            function showFieldToast() {
+                fieldOptionToast.show();
+            }
+
+            function addField() {
+                const optionElement = createOption(customField.val());
+                fieldOptionForm.append(optionElement);
+                customField.val('');
+                fieldOptionToast.hide();
+            }
+
+            function createOption(value) {
+                return `<option value="${value}" selected>${value}</option>`;
+            }
+
+
+        </script>
     </section>
 </body>
 </html>
