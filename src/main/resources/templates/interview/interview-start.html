@@ -190,7 +190,7 @@
                 return;
 
             const nowMsg = $('#result').val(); // 현재 사용자 작성 답변 가져오기.
-            if(validChattingMessage(nowMsg)) {
+            if(isInvalidChattingMessage(nowMsg)) {
                 showChattingErrorMessage(contentMinLength + '자 이상 입력해주세요.');
                 return;
             }
@@ -207,8 +207,8 @@
             sendRequest("/api/interview/response", interviewInfo);
         }
 
-        function validChattingMessage(message) {
-            return message.length <= 3;
+        function isInvalidChattingMessage(message) {
+            return message.length < 3;
         }
 
         function disableSendBtn() {
