@@ -92,6 +92,13 @@
             "field": /*[[${interviewInfo.interviewSetting.profile.field}]]*/ '',
             "skills": /*[[${interviewInfo.interviewSetting.profile.skills}]]*/ ''
         };
+
+        // 나중에 DB 등 저장 및 로그인 기능 넣으면서 서버에서 관리할 것.
+        const interviewDetails = {
+            "interviewType": /*[[${interviewInfo.interviewSetting.interviewDetails.interviewType}]]*/ '',
+            "field": /*[[${interviewInfo.interviewSetting.interviewDetails.durationMinutes}]]*/ '',
+        }
+
         const loadingTime = 1500;
         const sendBtn = $('.sendBtn');
         const errorMessageField = $('#errorMessageField');
@@ -174,7 +181,7 @@
 
         // InterviewDTO와 형식을 맞출 것.
         function createInterviewObject() {
-            return ({"interviewSetting" : {"profile" : profile}, "messageHistory" : {messages : talkHistory}});
+            return ({"interviewSetting" : {"profile" : profile, "interviewDetails" : interviewDetails}, "messageHistory" : {messages : talkHistory}});
         }
 
         // 응답완료 버튼 클릭시 동작 - sendBtn에 disabled 여부에 따라 함수 실행여부가 결정된다.
