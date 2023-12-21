@@ -31,7 +31,7 @@ interview:
       skills: ${interview.format.role.user}는 ${interview.format.profile.skills} 등의 기술을 보유.
       experience: ${interview.format.role.user}는 다음과 같은 경험을 함 ${interview.format.profile.experience}.
       skip: 마지막 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
-    IT:
+    default: # 기본 인터뷰 전략
       personal: |
         ${interview.strategy.common.rule}
         기술에 관한 질문은 모두 잊고, 컬쳐핏과 인성에 대한 질문에 집중해.
@@ -39,10 +39,23 @@ interview:
         ${interview.strategy.common.rule}
         ${interview.strategy.common.experience}
         ${interview.strategy.common.skills} 
-        진행자가 진행한 프로젝트에서 왜 이런 기술을 썼고, 어떤 문제를 경험했는지 등등 면접자 경험에 기반한 질문을 해줘.
+        지원자가 진행한 프로젝트를 진행하면서 경험한 일들에 대해서 질문해줘.
+      technical: |
+        ${interview.strategy.common.rule}
+        ${interview.strategy.common.skills} 
+        지원자가 가지고 있는 기술들에 대해서 질문해줘.
+    IT: # IT 분야 인터뷰 전략
+      personal: |
+        ${interview.strategy.common.rule}
+        기술에 관한 질문은 모두 잊고, 컬쳐핏과 인성에 대한 질문에 집중해.
+      experience: |
+        ${interview.strategy.common.rule}
+        ${interview.strategy.common.experience}
+        ${interview.strategy.common.skills} 
+        지원자가 진행한 프로젝트에서 왜 이런 기술을 썼고, 어떤 문제를 경험했는지 등등 지원자 경험에 기반한 질문을 해줘.
       technical: |
         ${interview.strategy.common.rule}
         ${interview.strategy.common.skills} 
         운영체제, 네트워크, 데이터베이스, 자료구조, 알고리즘, 지원자 기술에 대한 질문을 해줘.
-        간단한 개념질문보다는 응용질문을 해봐.
+        간단한 개념질문보다는 컴퓨터 전공자 수준의 응용질문을 해봐.
         기술면접을 진행해.
