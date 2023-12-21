@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 public class InterviewProgressTracker {
 
     // TODO: 상수말고 시간으로 설정하는 것을 고려해 볼 것
-    private static final int CONVERSATION_UNIT = 2; // 지원자 - 면접자 : 대화 단위 - Message 2개
-    private static final int MAX_CONVERSATION_COUNT = 15; // 대화 수 (지원자-면접자 단위의 대화가 오간 수)
+    private static final int CONVERSATION_UNIT = 2; // 지원자 - 면접관 : 대화 단위 - Message 2개
+    private static final int INTRO_CONVERSATION_COUNT = 1; // 면접관: 면접시작하겠습니다. 면접자: 준비됐습니다.
+    private static final int MAX_CONVERSATION_COUNT = 6 + INTRO_CONVERSATION_COUNT; // 대화 수 (지원자-면접자 단위의 대화가 오간 수)
     private static final int MAX_HISTORY_SIZE = MAX_CONVERSATION_COUNT * CONVERSATION_UNIT; // 전체 history 수 제한
 
     public InterviewStage getCurrentInterviewStage(InterviewDetailsDto interviewDetails, MessageHistory history) {
@@ -32,7 +33,7 @@ public class InterviewProgressTracker {
     }
 
     private boolean isFinishedStage(MessageHistory history) {
-        return getHistorySize(history) > MAX_HISTORY_SIZE;
+        return getHistorySize(history) >= MAX_HISTORY_SIZE;
     }
 
     private InterviewStage computeCompositeStage(MessageHistory history) {
@@ -61,7 +62,7 @@ public class InterviewProgressTracker {
     }
 
     private int getHistorySize(MessageHistory history) {
-        return history.getMessages().size();
+        return history.getMessages().size() - INTRO_CONVERSATION_COUNT * CONVERSATION_UNIT;
     }
 
 }
