@@ -6,6 +6,8 @@ import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.gpt.AIRequester;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.strategy.ITInterviewerStrategy;
+import com.mock.interview.infrastructure.interview.strategy.InterviewerStrategy;
+import com.mock.interview.presentation.dto.CandidateProfileDto;
 import com.mock.interview.presentation.dto.InterviewSettingDto;
 import com.mock.interview.presentation.dto.InterviewRole;
 import com.mock.interview.infrastructure.interview.dto.Message;
@@ -17,13 +19,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AIService {
-    private final ITInterviewerStrategy interviewerStrategy;
+    private final List<InterviewerStrategy> interviewerStrategyList;
     private final AIRequester requester;
 
     public Message service(InterviewSettingDto interviewSettingDto, MessageHistory history) {
-        // TODO: 여기서 List<Message>를 건드리면서 화면을 표시할 때 ROLE이 잘못되게 된다. 문제가 많다. DTO 분리를 잘 해줘야해...
+        InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewSettingDto.getProfile());
         InterviewAIRequest request = interviewerStrategy.configStrategy(requester, interviewSettingDto, history); // 면접 전략 세팅.
-        System.out.println("=====> 세팅된 전략 : " + request.getInterviewSetting().getConcept());
         convertRole(requester, request.getHistory()); // AIRequester로 보낼 수 있는 role로 수정.
         return requester.sendRequest(request); // AI로 부터 받은 응답.
         // TODO: DB 저장 기능 나중에 추가
@@ -37,9 +38,21 @@ public class AIService {
      * 면접관 : AOP를 모르신다니 아쉽습니다. AOP를 활용한 사례를 들어서 설명해보세요.
      */
     public Message changeTopic(InterviewSettingDto interviewSettingDto, MessageHistory history) {
+        InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewSettingDto.getProfile());
         InterviewAIRequest request = interviewerStrategy.changeTopic(requester, interviewSettingDto, history);
         convertRole(requester, request.getHistory());
         return requester.sendRequest(request);
+    }
+
+    private InterviewerStrategy selectInterviewerStrategy(CandidateProfileDto profile) {
+        for (int i = interviewerStrategyList.size() - 1; i >= 0; i--) {
+            InterviewerStrategy interviewerStrategy = interviewerStrategyList.get(i);
+            if(interviewerStrategy.isSupportedDepartment(profile))
+                return interviewerStrategy;
+        }
+
+        // TODO: 커스텀 예외로 바꿀 것.
+        throw new RuntimeException();
     }
 
     private void convertRole(AISpecification aiSpec, List<Message> history) {
