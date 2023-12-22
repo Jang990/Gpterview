@@ -13,12 +13,4 @@ public record InterviewProgress(InterviewStage stage, double progress) {
         this.stage = stage;
         this.progress = Math.round(progress);
     }
-
-    @Override
-    public String toString() {
-        return "InterviewProgress{" +
-                "stage=" + stage +
-                ", progress=" + progress +
-                '}';
-    }
 }
