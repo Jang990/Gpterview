@@ -7,6 +7,7 @@ import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
+import com.mock.interview.infrastructure.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.infrastructure.interview.strategy.stage.InterviewProgressTracker;
 import com.mock.interview.infrastructure.interview.strategy.stage.InterviewStage;
 import com.mock.interview.presentation.dto.CandidateProfileDto;
@@ -28,8 +29,8 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
-        InterviewStage currentStage = progressTracker.getCurrentInterviewStage(interviewSettingDto.getInterviewDetails(), history);
-        String rawStrategy = getRawInterviewStrategy(currentStage);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewSettingDto.getInterviewDetails(), history);
+        String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
 
         List<Message> messageHistory = history.getMessages();
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
@@ -40,8 +41,8 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
-        InterviewStage currentInterviewStage = progressTracker.getCurrentInterviewStage(interviewSettingDto.getInterviewDetails(), history);
-        String rawStrategy = getRawInterviewStrategy(currentInterviewStage);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewSettingDto.getInterviewDetails(), history);
+        String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         rawStrategy += interviewConcept.getChangingTopicCommand();
 
         List<Message> messageHistory = history.getMessages();

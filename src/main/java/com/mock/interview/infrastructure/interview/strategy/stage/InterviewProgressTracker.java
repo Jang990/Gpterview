@@ -17,28 +17,39 @@ public class InterviewProgressTracker {
     private static final int MAX_CONVERSATION_COUNT = 6 + INTRO_CONVERSATION_COUNT; // 대화 수 (지원자-면접자 단위의 대화가 오간 수)
     private static final int MAX_HISTORY_SIZE = MAX_CONVERSATION_COUNT * CONVERSATION_UNIT; // 전체 history 수 제한
 
-    public InterviewStage getCurrentInterviewStage(InterviewDetailsDto interviewDetails, MessageHistory history) {
+    public InterviewProgress getCurrentInterviewProgress(InterviewDetailsDto interviewDetails, MessageHistory history) {
         // TODO: 단계를 분리하는 임시 코드를 적절한 로직으로 수정할 것 - 시간을 고려하도록 바꾸는게 좋을 듯?
         InterviewType interviewType = interviewDetails.getInterviewType();
         if(isFinishedStage(history))
-            return InterviewStage.FINISHED;
+            return new InterviewProgress(InterviewStage.FINISHED, 0);
 
         return switch (interviewType) {
-            case TECHNICAL -> InterviewStage.TECHNICAL;
-            case EXPERIENCE -> InterviewStage.EXPERIENCE;
-            case PERSONALITY -> InterviewStage.PERSONAL;
-            case TECHNICAL_EXPERIENCE -> computeTechnicalAndExperienceStage(history);
-            case COMPOSITE -> computeCompositeStage(history);
+            case TECHNICAL -> new InterviewProgress(InterviewStage.TECHNICAL, computeProgress(history, MAX_HISTORY_SIZE));
+            case EXPERIENCE -> new InterviewProgress(InterviewStage.EXPERIENCE, computeProgress(history, MAX_HISTORY_SIZE));
+            case PERSONALITY -> new InterviewProgress(InterviewStage.PERSONAL, computeProgress(history, MAX_HISTORY_SIZE));
+            case TECHNICAL_EXPERIENCE -> computeTechnicalAndExperienceInterviewProgress(history);
+            case COMPOSITE -> computeCompositeInterviewProgress(history);
         };
+    }
+
+    private double computeProgress(MessageHistory history, int stageSize) {
+        int historySize = getHistorySize(history);
+        historySize %= stageSize;
+        return (double) historySize / stageSize * 100;
     }
 
     private boolean isFinishedStage(MessageHistory history) {
         return getHistorySize(history) >= MAX_HISTORY_SIZE;
     }
 
-    private InterviewStage computeCompositeStage(MessageHistory history) {
+    private InterviewProgress computeCompositeInterviewProgress(MessageHistory history) {
         final int stageCnt = 3;
         final int stageSize = MAX_HISTORY_SIZE / stageCnt;
+        InterviewStage stage = computeCompositeInterviewStage(history, stageSize);
+        return new InterviewProgress(stage, computeProgress(history, stageSize));
+    }
+
+    private InterviewStage computeCompositeInterviewStage(MessageHistory history, int stageSize) {
         int historySize = getHistorySize(history);
         if(historySize < stageSize)
             return InterviewStage.TECHNICAL;
@@ -47,18 +58,29 @@ public class InterviewProgressTracker {
         if(historySize < stageSize)
             return InterviewStage.EXPERIENCE;
 
-        return InterviewStage.PERSONAL;
+        if(historySize <= stageSize)
+            return InterviewStage.PERSONAL;
+        historySize -= stageSize;
+
+        return InterviewStage.FINISHED;
     }
 
-    private InterviewStage computeTechnicalAndExperienceStage(MessageHistory history) {
+    private InterviewProgress computeTechnicalAndExperienceInterviewProgress(MessageHistory history) {
         final int stageCnt = 2;
         final int stageSize = MAX_HISTORY_SIZE / stageCnt;
+        InterviewStage stage = computeTechnicalAndExperienceStage(history, stageSize);
+        return new InterviewProgress(stage, computeProgress(history, stageSize));
+    }
+
+    private InterviewStage computeTechnicalAndExperienceStage(MessageHistory history, int stageSize) {
         int historySize = getHistorySize(history);
-        System.out.println(stageSize);
         if(historySize < stageSize)
             return InterviewStage.TECHNICAL;
 
-        return InterviewStage.EXPERIENCE;
+        if(historySize <= stageSize)
+            return InterviewStage.EXPERIENCE;
+
+        return InterviewStage.FINISHED;
     }
 
     private int getHistorySize(MessageHistory history) {

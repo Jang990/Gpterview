@@ -7,6 +7,7 @@ import com.mock.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
+import com.mock.interview.infrastructure.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.infrastructure.interview.strategy.stage.InterviewProgressTracker;
 import com.mock.interview.infrastructure.interview.strategy.stage.InterviewStage;
 import com.mock.interview.presentation.dto.CandidateProfileDto;
@@ -27,8 +28,8 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
-        InterviewStage currentStage = progressTracker.getCurrentInterviewStage(interviewSettingDto.getInterviewDetails(), history);
-        String rawStrategy = getRawInterviewStrategy(currentStage);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewSettingDto.getInterviewDetails(), history);
+        String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
 
         List<Message> messageHistory = history.getMessages();
 
@@ -38,8 +39,8 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history) {
-        InterviewStage currentInterviewStage = progressTracker.getCurrentInterviewStage(interviewSettingDto.getInterviewDetails(), history);
-        String rawStrategy = getRawInterviewStrategy(currentInterviewStage);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewSettingDto.getInterviewDetails(), history);
+        String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         rawStrategy += interviewConcept.getChangingTopicCommand();
 
 
