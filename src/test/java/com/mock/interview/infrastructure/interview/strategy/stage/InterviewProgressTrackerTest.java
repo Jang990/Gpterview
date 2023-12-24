@@ -14,21 +14,38 @@ import static org.mockito.Mockito.*;
 class InterviewProgressTrackerTest {
     InterviewProgressTracker tracker = new InterviewProgressTracker();
 
+    // MAX_CONVERSATION_COUNT가 3보다 크고 2,3의 공배수라면 잘 동작함 - 예외에 대한 문제가 있김 함
     @Test
     void testTechnical() {
-        Set<InterviewStage> set = test100(InterviewType.TECHNICAL);
+        int[] answerCnt = new int[1];
+        Set<InterviewStage> set = test100(InterviewType.TECHNICAL, answerCnt);
         assertThat(set).containsExactlyInAnyOrder(InterviewStage.TECHNICAL, InterviewStage.FINISHED);
     }
 
     @Test
-    void testComposite() {
-        Set<InterviewStage> set = test100(InterviewType.COMPOSITE);
-        assertThat(set).containsExactlyInAnyOrder(InterviewStage.values());
-        fail("문제가 많음");
+    void testTechEx() {
+        int[] answerCnt = new int[2];
+        Set<InterviewStage> set = test100(InterviewType.TECHNICAL_EXPERIENCE, answerCnt);
+        assertThat(set).containsExactlyInAnyOrder(InterviewStage.TECHNICAL, InterviewStage.EXPERIENCE, InterviewStage.FINISHED);
+
+        // 각 스테이지별로 골고루 질문을 하는지
+        assertThat(answerCnt[0]).isEqualTo(answerCnt[1]);
     }
 
-    private Set<InterviewStage> test100(InterviewType type) {
+    @Test
+    void testComposite() {
+        int[] answerCnt = new int[3];
+        Set<InterviewStage> set = test100(InterviewType.COMPOSITE, answerCnt);
+        assertThat(set).containsExactlyInAnyOrder(InterviewStage.values());
+
+        // 각 스테이지별로 골고루 질문을 하는지
+        assertThat(answerCnt[0]).isEqualTo(answerCnt[1]);
+        assertThat(answerCnt[0]).isEqualTo(answerCnt[2]);
+    }
+
+    private Set<InterviewStage> test100(InterviewType type, int[] answerCnt) {
         final int testSize = 100;
+        int answerIdx = 0;
         Set<InterviewStage> set = new HashSet<>();
 
         InterviewDetailsDto detailsDto = new InterviewDetailsDto();
@@ -36,23 +53,38 @@ class InterviewProgressTrackerTest {
         MessageHistory history = mock(MessageHistory.class);
         List<Message> list = mock(LinkedList.class);
         when(list.size()).thenReturn(2);
+        when(history.getMessages()).thenReturn(list);
 
-        InterviewProgress initProgress = tracker.getCurrentInterviewProgress(detailsDto, history);
-        InterviewStage prevStage = initProgress.stage();
-        double prevProgress = initProgress.progress();
+        InterviewProgress startProgress = tracker.getCurrentInterviewProgress(detailsDto, history);
+        InterviewStage prevStage = startProgress.stage();
+        double prevProgress = startProgress.progress();
+        int cnt = 0;
 
         for (int historySize = 3; historySize < testSize; historySize++) {
             when(list.size()).thenReturn(historySize);
-            when(history.getMessages()).thenReturn(list);
             InterviewProgress nowProgress = tracker.getCurrentInterviewProgress(detailsDto, history);
 
             if (nowProgress.progress() < prevProgress
                     && nowProgress.stage() == prevStage)
                 fail("HistorySize가 커졌지만 같은 Stage에서 Percent가 낮아짐");
 
+//            if (historySize % 2 == 1) {
+//                cnt++;
+//                System.out.println(cnt + "번째 면접관 질문 - " + historySize + " : " + nowProgress);
+//            } else {
+//                System.out.println("\t질문에 대한 답변 - " + historySize + " : " + nowProgress);
+//            }
+
             set.add(nowProgress.stage());
             if(nowProgress.stage() == InterviewStage.FINISHED)
                 break;
+
+            if (nowProgress.stage() != prevStage) {
+                answerIdx++;
+            }
+            if(historySize % 2 == 1) // 면접관 질문 턴이라면
+                answerCnt[answerIdx]++;
+            prevStage = nowProgress.stage();
         }
 
         return set;
