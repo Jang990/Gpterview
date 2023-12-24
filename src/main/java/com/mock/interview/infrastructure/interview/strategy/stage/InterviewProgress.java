@@ -7,8 +7,8 @@ package com.mock.interview.infrastructure.interview.strategy.stage;
  */
 public record InterviewProgress(InterviewStage stage, double progress) {
     public InterviewProgress(InterviewStage stage, double progress) {
-        if (progress > 100d)
-            throw new IllegalArgumentException(); // TODO: 퍼센트만 받도록.
+        if (progress < 0d || 100d < progress)
+            throw new IllegalArgumentException(); // TODO: 커스텀 예외로 변경
 
         this.stage = stage;
         this.progress = Math.round(progress);
