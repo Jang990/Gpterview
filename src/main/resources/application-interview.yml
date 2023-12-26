@@ -55,7 +55,6 @@ interview:
         지원자가 진행한 프로젝트에서 왜 이런 기술을 썼고, 어떤 문제를 경험했는지 등등 지원자 경험에 기반한 질문을 해줘.
       technical: |
         ${interview.strategy.common.rule}
-        ${interview.strategy.common.skills} 
-        운영체제, 네트워크, 데이터베이스, 자료구조, 알고리즘, 지원자 기술에 대한 질문을 해줘.
-        간단한 개념질문보다는 컴퓨터 전공자 수준의 응용질문을 해봐.
+        ${interview.format.profile.skills} 기술을 주제로 질문해줘. 
+        지원자의 수준을 파악해야해. 간단한 개념질문보다는 컴퓨터 전공자 수준의 응용질문을 해봐.
         기술면접을 진행해.
