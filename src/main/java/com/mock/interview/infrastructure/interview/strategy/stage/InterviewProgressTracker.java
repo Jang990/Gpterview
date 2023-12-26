@@ -30,8 +30,8 @@ public class InterviewProgressTracker {
             case TECHNICAL -> new InterviewProgress(InterviewStage.TECHNICAL, computeStageProgress(history, MAX_CONVERSATION_SIZE));
             case EXPERIENCE -> new InterviewProgress(InterviewStage.EXPERIENCE, computeStageProgress(history, MAX_CONVERSATION_SIZE));
             case PERSONALITY -> new InterviewProgress(InterviewStage.PERSONAL, computeStageProgress(history, MAX_CONVERSATION_SIZE));
-            case TECHNICAL_EXPERIENCE -> computeTechnicalAndExperienceProgress(history);
-            case COMPOSITE -> computeCompositeProgress(history);
+            case TECHNICAL_EXPERIENCE -> getTechnicalAndExperienceProgress(history);
+            case COMPOSITE -> getCompositeProgress(history);
         };
     }
 
@@ -48,14 +48,14 @@ public class InterviewProgressTracker {
         return (double) historySize / eachStageSize;
     }
 
-    private InterviewProgress computeCompositeProgress(MessageHistory history) {
+    private InterviewProgress getCompositeProgress(MessageHistory history) {
         final int numberOfStages = COMPOSITE_STAGE_ORDER.length;
         final int eachStageSize = MAX_CONVERSATION_SIZE / numberOfStages;
         InterviewStage stage = computeStage(COMPOSITE_STAGE_ORDER, history, eachStageSize);
         return new InterviewProgress(stage, computeStageProgress(history, eachStageSize));
     }
 
-    private InterviewProgress computeTechnicalAndExperienceProgress(MessageHistory history) {
+    private InterviewProgress getTechnicalAndExperienceProgress(MessageHistory history) {
         final int numberOfStages = TECH_EX_STAGE_ORDER.length;
         final int eachStageSize = MAX_CONVERSATION_SIZE / numberOfStages;
         InterviewStage stage = computeStage(TECH_EX_STAGE_ORDER, history, eachStageSize);
