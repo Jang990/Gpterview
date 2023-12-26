@@ -45,7 +45,7 @@ public class InterviewProgressTracker {
     private double computeStageProgress(MessageHistory history, int eachStageSize) {
         int historySize = getHistorySizeWithoutIntro(history);
         historySize %= eachStageSize;
-        return (double) historySize / eachStageSize * 100;
+        return (double) historySize / eachStageSize;
     }
 
     private InterviewProgress computeCompositeProgress(MessageHistory history) {

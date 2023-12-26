@@ -6,11 +6,8 @@ package com.mock.interview.infrastructure.interview.strategy.stage;
  * @param progress 현재 단계의 진행도   ex) 33.4%, 50%...
  */
 public record InterviewProgress(InterviewStage stage, double progress) {
-    public InterviewProgress(InterviewStage stage, double progress) {
-        if (progress < 0d || 100d < progress)
+    public InterviewProgress {
+        if (progress < 0d || 1d < progress)
             throw new IllegalArgumentException(); // TODO: 커스텀 예외로 변경
-
-        this.stage = stage;
-        this.progress = Math.round(progress);
     }
 }
