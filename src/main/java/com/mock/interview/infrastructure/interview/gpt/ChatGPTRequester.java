@@ -1,6 +1,7 @@
 package com.mock.interview.infrastructure.interview.gpt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
@@ -21,6 +22,8 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -109,8 +112,15 @@ public class ChatGPTRequester implements AIRequester {
             return new GptFunctionResult(messageString);
 
         try {
-            return om.readValue(messageString, GptFunctionResult.class);
+            JsonNode jsonNode = om.readTree(messageString);
+            return new GptFunctionResult(jsonNode.get("response").asText("재시도 해주세요"));
         } catch (JsonProcessingException e) {
+            // response 내에 \"가 있다면 예외 발생 가능.
+            Pattern pattern = Pattern.compile("\"response\"\\s*:\\s*\"([^\"]*)\"");
+            Matcher matcher = pattern.matcher(messageString);
+            if(matcher.find())
+                return new GptFunctionResult(matcher.group(1));
+
             log.error("원본-{} : ObjectMapper 변환 오류", messageString, e);
             throw new RuntimeException("ObjectMapper 변환 오류", e); // TODO: 커스텀 예외로 바꿀 것
         }
