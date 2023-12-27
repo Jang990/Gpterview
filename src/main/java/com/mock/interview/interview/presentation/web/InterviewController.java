@@ -11,7 +11,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class SpeechController {
+public class InterviewController {
 
     @GetMapping("/interview/start")
     public String startInterviewPage(
