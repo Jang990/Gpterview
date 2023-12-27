@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.interview.gpt;
+package com.mock.interview.interview.infrastructure.interview.gpt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mock.interview.interview.interview.gpt.OpenAIResponseConvertor;

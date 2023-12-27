@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.gpt;
+package com.mock.interview.interview.infrastructure.gpt;
 
 import com.mock.interview.interview.interview.gpt.ChatGPTRequester;
 import com.mock.interview.interview.interview.gpt.InterviewAIRequest;

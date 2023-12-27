@@ -1,4 +1,4 @@
-package com.mock.interview.infrastructure.interview.strategy.stage;
+package com.mock.interview.interview.infrastructure.interview.strategy.stage;
 
 import com.mock.interview.interview.interview.dto.Message;
 import com.mock.interview.interview.interview.dto.MessageHistory;

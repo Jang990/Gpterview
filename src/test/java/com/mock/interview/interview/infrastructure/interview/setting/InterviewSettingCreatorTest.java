@@ -1,6 +1,6 @@
-package com.mock.interview.infrastructure.interview.setting;
+package com.mock.interview.interview.infrastructure.interview.setting;
 
-import com.mock.interview.infrastructure.MockAiSpecCreator;
+import com.mock.interview.interview.infrastructure.MockAiSpecCreator;
 import com.mock.interview.interview.interview.fomatter.FormatConstGetter;
 import com.mock.interview.interview.interview.gpt.AISpecification;
 import com.mock.interview.interview.interview.setting.InterviewSettingCreator;
