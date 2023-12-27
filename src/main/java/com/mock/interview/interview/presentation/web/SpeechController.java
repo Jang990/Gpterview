@@ -49,19 +49,4 @@ public class SpeechController {
         // TODO: 지금은 면접 설정은 생략하고 기술면접으로 진행한다. 추후 면접 설정도 추가해야 한다.
         return "interview/interview-setting";
     }
-
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-
-    @GetMapping("auth/login")
-    public String login() {
-        return "/auth/login";
-    }
-
-    @GetMapping("auth/sign-up")
-    public String signUp() {
-        return "/auth/sign-up";
-    }
 }
