@@ -33,8 +33,7 @@ import java.util.stream.Collectors;
 public class ChatGPTRequester implements AIRequester {
 
     private final RestTemplate openaiRestTemplate;
-    private ObjectMapper om = new ObjectMapper();
-
+    private final OpenAIResponseConvertor convertor;
     @Value("${openai.model}")
     private String model;
 
@@ -57,33 +56,14 @@ public class ChatGPTRequester implements AIRequester {
         ChatGptRequest openAIRequest = ChatGptRequest.createRequestWithFunction(model, request.getInterviewSetting().getConcept(), history);
 
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
-        validateResponse(response);
+        GptFunctionResult content = convertor.convertFunctionResult(response);
 
-        GptFunctionResult content = convertFunctionResult(response.getFunctionResultString());
-        // TODO : "다른 질문 부탁드립니다."로 답변이 올 시에 {} or 빈문자로 응답하는 문제 해결하기.
         log.info("답변: {} - 응답: {}", history.get(history.size()-1).getContent(), content.getResponse());
         return new Message(InterviewRole.INTERVIEWER.toString(), content.getResponse());
     }
 
     private boolean isStartingRequest(InterviewAIRequest request) {
         return request.getHistory().isEmpty() || request.getHistory().size() < 2; // TODO: 매직넘버 쓰지 말 것
-    }
-
-    /**
-     * 서버로 받은 Response 검증.
-     * response가 null이거나, choices가 null이거나 비어있을 시.
-     * GPT를 이용하여 Rule에 맞는 함수 호출로 만든 결과물이 없을 시
-     * 예외를 던짐
-     * @param response
-     */
-    private void validateResponse(ChatGptResponse response) {
-        if (response == null
-                || response.getChoices() == null
-                || response.getChoices().isEmpty()
-                || !StringUtils.hasText(response.getFunctionResultString())
-        ) {
-            throw new RuntimeException("ChatGPT Response 데이터 누락 오류"); // TODO: 커스텀 예외로 바꿀 것
-        }
     }
 
     /**
@@ -100,30 +80,6 @@ public class ChatGPTRequester implements AIRequester {
             throw new RuntimeException("BadRequest or AI 서버 오류", e); // TODO: 커스텀 예외로 바꿀 것
         }
 
-    }
-
-    /**
-     * Json 형식의 String을 GptFunctionResult 객체로 변환
-     * @param messageString "{\n  \"response\": \"안녕하세요\",\n}"
-     * @return
-     */
-    private GptFunctionResult convertFunctionResult(String messageString) {
-        if(!messageString.contains("\"response\":"))
-            return new GptFunctionResult(messageString);
-
-        try {
-            JsonNode jsonNode = om.readTree(messageString);
-            return new GptFunctionResult(jsonNode.get("response").asText("재시도 해주세요"));
-        } catch (JsonProcessingException e) {
-            // response 내에 \"가 있다면 예외 발생 가능.
-            Pattern pattern = Pattern.compile("\"response\"\\s*:\\s*\"([^\"]*)\"");
-            Matcher matcher = pattern.matcher(messageString);
-            if(matcher.find())
-                return new GptFunctionResult(matcher.group(1));
-
-            log.error("원본-{} : ObjectMapper 변환 오류", messageString, e);
-            throw new RuntimeException("ObjectMapper 변환 오류", e); // TODO: 커스텀 예외로 바꿀 것
-        }
     }
 
     private List<OpenAIMessage> convertHistory(List<Message> history) {
