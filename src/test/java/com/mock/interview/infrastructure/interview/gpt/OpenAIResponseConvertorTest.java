@@ -1,21 +1,17 @@
 package com.mock.interview.infrastructure.interview.gpt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mock.interview.infrastructure.interview.dto.Message;
-import com.mock.interview.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
-import com.mock.interview.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
-import com.mock.interview.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
-import com.mock.interview.infrastructure.interview.setting.InterviewSetting;
+import com.mock.interview.interview.interview.gpt.OpenAIResponseConvertor;
+import com.mock.interview.interview.interview.gpt.dto.openai.ChatGptResponse;
+import com.mock.interview.interview.interview.gpt.dto.openai.GptFunctionResult;
+import com.mock.interview.interview.interview.gpt.dto.openai.OpenAIMessage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
