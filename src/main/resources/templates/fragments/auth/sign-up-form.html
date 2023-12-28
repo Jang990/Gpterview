@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <form th:fragment="fragment-sign-up-form" style="width: 400px">
-    <!-- Email input -->
+  <form th:fragment="fragment-sign-up-form" style="width: 400px" method="post" action="/auth/sign-up" th:object="${account}">
     <div class="form-floating mb-4">
-      <input type="email" id="form2Example1" class="form-control" placeholder="ID"/>
-      <label class="form-label" for="form2Example1">ID</label>
+      <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="ID"/>
+      <label class="form-label" for="username">ID</label>
+      <p th:errors="*{username}" class="field-error">Incorrect data</p>
     </div>
 
-    <!-- Password input -->
     <div class="form-floating mb-4">
-      <input type="password" id="form2Example2" class="form-control" placeholder="Password"/>
-      <label class="form-label" for="form2Example2">Password</label>
+      <input type="password" id="password" th:field="*{password}" th:value="*{password}" class="form-control" placeholder="Password"/>
+      <label class="form-label" for="password">Password</label>
+      <p th:errors="*{password}" class="field-error">Incorrect data</p>
     </div>
 
-    <!-- Submit button -->
-    <a class="btn btn-primary btn-block mb-4 col-lg-12" href="#">회원 가입</a>
+    <input type="submit" class="btn btn-primary btn-block mb-4 col-lg-12" value="회원가입">
   </form>
 </html>

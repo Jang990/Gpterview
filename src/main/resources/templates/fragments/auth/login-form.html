@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <form th:fragment="fragment-login-form" action="/login" method="POST" style="width: 400px">
+  <form th:fragment="fragment-login-form" action="/login" method="POST" style="width: 400px" th:object="${account}">
     <!-- Email input -->
     <div class="form-floating mb-4">
-      <input type="text" id="username" name="username" class="form-control" placeholder="ID"/>
+      <input type="text" id="username" name="username" th:value="*{username}" class="form-control" placeholder="ID"/>
       <label class="form-label" for="username">ID</label>
     </div>
 
     <!-- Password input -->
     <div class="form-floating mb-4">
-      <input type="password" id="password" name="password" class="form-control" placeholder="Password"/>
+      <input type="password" id="password" name="password" th:value="*{password}" class="form-control" placeholder="Password"/>
       <label class="form-label" for="password">Password</label>
     </div>
 
