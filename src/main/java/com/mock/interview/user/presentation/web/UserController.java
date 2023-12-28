@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping("auth/sign-up")
     public String signUpPage(Model model) {
-        model.addAttribute("account", new AccountDto("ab","eee"));
+        model.addAttribute("account", new AccountDto());
         return "/auth/sign-up";
     }
 
@@ -37,11 +37,10 @@ public class UserController {
 
     @PostMapping("auth/sign-up")
     public String signUp(@Valid @ModelAttribute("account") AccountDto accountDto, BindingResult bindingResult) {
-        System.out.println(bindingResult);
         if(bindingResult.hasErrors())
             return "auth/sign-up";
-        return "redirect:/";
-//        userService.create(accountDto);
-//        return "/";
+
+        userService.create(accountDto);
+        return "redirect:/auth/login";
     }
 }
