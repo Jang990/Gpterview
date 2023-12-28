@@ -10,3 +10,17 @@ spring:
     active:
       - "openai"
       - "interview"
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/Gpterview
+    hikari:
+      username: root
+      password: 1234
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true

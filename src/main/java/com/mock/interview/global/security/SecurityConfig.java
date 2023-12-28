@@ -1,4 +1,4 @@
-package com.mock.interview.global;
+package com.mock.interview.global.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +28,7 @@ public class SecurityConfig {
                                         .defaultSuccessUrl("/")
                                         .failureUrl("/auth/login")
                                         .loginPage("/auth/login")
+                                        .loginProcessingUrl("/login")
                 )
                 .csrf(csrf -> csrf.disable());
 
