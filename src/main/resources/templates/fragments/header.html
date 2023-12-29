@@ -21,8 +21,8 @@
         <div class="text-end">
           <a sec:authorize="isAnonymous()" class="btn btn-outline-light me-2" href="/auth/login">Login</a>
           <a sec:authorize="isAnonymous()" class="btn btn-warning" href="/auth/sign-up">Sign-up</a>
-          <a sec:authorize="isAuthenticated()" class="btn btn-outline-light me-2" href="/auth/login">마이 페이지</a>
-          <a sec:authorize="isAuthenticated()" class="btn btn-warning" href="/auth/sign-up">Logout</a>
+          <a sec:authorize="isAuthenticated()" class="btn btn-outline-light me-2" th:href="@{/auth/{username}(username=${#authentication.principal.username})}">마이 페이지</a>
+          <a sec:authorize="isAuthenticated()" class="btn btn-warning" href="/logout">Logout</a>
         </div>
       </div>
     </div>

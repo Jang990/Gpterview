@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -33,6 +34,12 @@ public class UserController {
     @GetMapping("/")
     public String indexPage() {
         return "index";
+    }
+
+    @GetMapping("/auth/{username}")
+    public String myPage(@PathVariable(value = "username") String username) {
+        // TODO: 세션정보와 일치하는지 확인할 것
+        return "/auth/my-page";
     }
 
     @PostMapping("auth/sign-up")
