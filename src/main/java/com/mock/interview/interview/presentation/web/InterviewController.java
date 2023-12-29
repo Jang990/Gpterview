@@ -24,6 +24,7 @@ public class InterviewController {
         interviewSettingDto.setProfile(profile);
         interviewSettingDto.setInterviewDetails(interviewDetails);
         MessageHistoryDto historyDTO = initHistory();
+        model.addAttribute("headerActiveTap", "interview");
 
         InterviewRequestDto interviewRequestDTO = new InterviewRequestDto(interviewSettingDto, historyDTO);
 
@@ -40,6 +41,8 @@ public class InterviewController {
 
     @GetMapping("/interview/setting")
     public String speechPage(Model model) {
+        model.addAttribute("headerActiveTap", "interview");
+
         // TODO: Setting DTO를 만들고 Model에 넣어서 타임리프에 th:object로 연결할 것.
         model.addAttribute("categoryList", List.of(Category.IT));
         model.addAttribute("candidateProfile", new CandidateProfileDto());
