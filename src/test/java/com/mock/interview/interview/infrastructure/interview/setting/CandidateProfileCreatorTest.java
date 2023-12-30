@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class InterviewSettingCreatorTest {
+class CandidateProfileCreatorTest {
     InterviewSettingCreator creator;
 
     @BeforeEach

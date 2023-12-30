@@ -1,4 +1,4 @@
-package com.mock.interview;
+package com.mock.interview.temp;
 
 import com.mock.interview.user.presentation.dto.AccountDto;
 import org.springframework.stereotype.Controller;
