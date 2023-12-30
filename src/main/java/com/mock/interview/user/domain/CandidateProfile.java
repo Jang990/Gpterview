@@ -1,5 +1,6 @@
 package com.mock.interview.user.domain;
 
+import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
 import com.mock.interview.user.domain.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,4 +26,16 @@ public class CandidateProfile {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     Users users;
+
+    // TODO: Convertor를 따로 만들어서 빼야 하나? or 팩토리 메소드를 유지해야 하나?
+    public static CandidateProfile createProfile(CandidateProfileDto profileDto, Users users) {
+        CandidateProfile candidateProfile = new CandidateProfile();
+        candidateProfile.department = profileDto.getDepartment();
+        candidateProfile.field = profileDto.getField();
+        candidateProfile.skills = profileDto.getSkills();
+        candidateProfile.experience = profileDto.getExperience();
+        candidateProfile.users = users;
+
+        return candidateProfile;
+    }
 }
