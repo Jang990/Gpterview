@@ -1,6 +1,11 @@
 #hello: 안녕하세요
 
 spring:
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
   messages:
     basename: errors
   output:
