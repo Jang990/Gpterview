@@ -7,6 +7,7 @@ import lombok.*;
  */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class CandidateProfileDto {
     private String department;  // "개발", "영업", "세무"
     private String field; // BE, FE, 디자인

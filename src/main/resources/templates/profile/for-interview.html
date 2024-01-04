@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/layout/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title>지원 프로필</title>
+</head>
+<body>
+    <!-- https://www.bootdey.com/snippets/view/new-customer-list#html -->
+    <section class="section">
+        <link rel="stylesheet" th:href="@{/css/candidate.css}" href="../css/candidate.css">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-12 mb-3 mb-lg-5">
+                    <div class="overflow-hidden card table-nowrap table-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">지원 정보 리스트</h5>
+<!--                            <a href="#!" class="btn btn-light btn-sm">View All</a>-->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0">
+                                <thead class="small text-uppercase bg-body text-muted">
+                                <tr>
+                                    <th>제목</th>
+                                    <th>지원 직무</th>
+                                    <th>지원 직군</th>
+                                    <th>생성일</th>
+                                    <th class="text-end"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="align-middle accordion" th:each="candidateProfile : ${candidateProfileOverviewList}">
+                                    <td><div class="h6 mb-0 lh-1" th:text="${candidateProfile.title}">프로필 제목</div></td>
+                                    <td th:text="${candidateProfile.department}">분야 ex) IT</td>
+                                    <td><span class="d-inline-block align-middle" th:text="${candidateProfile.field}">직군 ex) 백엔드</span></td>
+                                    <td th:text="${#temporals.format(candidateProfile.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
+                                    <td class="text-end">
+                                        <a class="btn btn-primary" th:href="@{/interview/setting/{candidateProfileId}(candidateProfileId=${candidateProfile.id})}">선택</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
