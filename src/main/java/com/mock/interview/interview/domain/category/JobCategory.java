@@ -39,17 +39,17 @@ public class JobCategory {
     /**
      * 필드 생성 - 백엔드, 프론트엔드, 안드로이드 등등
      * @param name 백엔드, 프론트엔드, 안드로이드
-     * @param relationalDepartmentCategory IT, 기획, 인사
+     * @param relatedDepartmentCategory IT, 기획, 인사
      * @return
      */
-    public static JobCategory createFieldCategory(String name, JobCategory relationalDepartmentCategory) {
-        if (relationalDepartmentCategory == null) {
+    public static JobCategory createFieldCategory(String name, JobCategory relatedDepartmentCategory) {
+        if (relatedDepartmentCategory == null) {
             throw new MissingRequiredDepartmentCategoryException();
         }
 
         JobCategory category = new JobCategory();
         insertName(category, name);
-        category.department = relationalDepartmentCategory;
+        category.department = relatedDepartmentCategory;
         return category;
     }
 
