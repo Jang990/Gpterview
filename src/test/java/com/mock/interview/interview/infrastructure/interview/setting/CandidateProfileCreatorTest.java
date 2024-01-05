@@ -3,7 +3,7 @@ package com.mock.interview.interview.infrastructure.interview.setting;
 import com.mock.interview.interview.infrastructure.MockAiSpecCreator;
 import com.mock.interview.interview.infrastructure.interview.fomatter.FormatConstGetter;
 import com.mock.interview.interview.infrastructure.interview.gpt.AISpecification;
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,7 +24,7 @@ class CandidateProfileCreatorTest {
     @Test
     void success() {
         AISpecification spec = MockAiSpecCreator.createMock();
-        CandidateProfileDto profile = createProfile();
+        CandidateProfileForm profile = createProfile();
         String concept = "$_system_ $_user_ $_interviewer_ " +
                 "$_department_ $_field_ $_skills_ " +
                 "$_experience_";
@@ -44,7 +44,7 @@ class CandidateProfileCreatorTest {
     @Test
     void successWithNull() {
         AISpecification spec = MockAiSpecCreator.createMock();
-        CandidateProfileDto profile = createProfile();
+        CandidateProfileForm profile = createProfile();
         String concept = "$_system_ $_user_ $_interviewer_ " +
                 "$_department_ $_WrongKey_ $_field_ $_skills_ ";
 
@@ -60,8 +60,8 @@ class CandidateProfileCreatorTest {
         assertThat(result).contains("null");
     }
 
-    private CandidateProfileDto createProfile() {
-        CandidateProfileDto profile = new CandidateProfileDto();
+    private CandidateProfileForm createProfile() {
+        CandidateProfileForm profile = new CandidateProfileForm();
         profile.setDepartment("IT");
         profile.setField("백엔드");
         profile.setSkills("Java MySQL Spring");

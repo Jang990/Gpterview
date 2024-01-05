@@ -10,7 +10,7 @@ import com.mock.interview.interview.infrastructure.interview.strategy.exception.
 import com.mock.interview.interview.infrastructure.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.interview.infrastructure.interview.strategy.stage.InterviewProgressTracker;
 import com.mock.interview.interview.infrastructure.interview.strategy.stage.InterviewStage;
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
 import com.mock.interview.interview.infrastructure.interview.dto.Message;
 import lombok.RequiredArgsConstructor;
@@ -80,7 +80,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     }
 
     @Override
-    public boolean isSupportedDepartment(CandidateProfileDto profile) {
+    public boolean isSupportedDepartment(CandidateProfileForm profile) {
         if(profile == null)
             return false;
 

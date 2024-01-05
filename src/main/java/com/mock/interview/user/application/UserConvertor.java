@@ -1,6 +1,6 @@
 package com.mock.interview.user.application;
 
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.user.domain.CandidateProfile;
 import com.mock.interview.user.presentation.dto.CandidateProfileOverviewDto;
 
@@ -16,8 +16,8 @@ public class UserConvertor {
                 )).toList();
     }
 
-    public static CandidateProfileDto entityToDto(CandidateProfile profile) {
-        return new CandidateProfileDto(
+    public static CandidateProfileForm entityToDto(CandidateProfile profile) {
+        return new CandidateProfileForm(
                 profile.getDepartment(), profile.getField(),
                 profile.getSkills(), profile.getExperience()
         );

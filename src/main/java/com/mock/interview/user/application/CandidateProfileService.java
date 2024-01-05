@@ -1,6 +1,6 @@
 package com.mock.interview.user.application;
 
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.user.domain.CandidateProfile;
 import com.mock.interview.user.domain.Users;
 import com.mock.interview.user.domain.exception.CandidateProfileNotFoundException;
@@ -20,9 +20,9 @@ public class CandidateProfileService {
     private final UserRepository userRepository;
     private final CandidateProfileRepository profileRepository;
 
-    public void create(CandidateProfileDto candidateProfileDto, long userId) {
+    public void create(CandidateProfileForm candidateProfileForm, long userId) {
         Users user = userRepository.findById(userId).orElseThrow();
-        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileDto, user);
+        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileForm, user);
         profileRepository.save(profile);
     }
 
@@ -31,7 +31,7 @@ public class CandidateProfileService {
         return UserConvertor.entityToOverviewDto(profiles);
     }
 
-    public CandidateProfileDto findProfile(long profileId, long userId) {
+    public CandidateProfileForm findProfile(long profileId, long userId) {
         CandidateProfile profile = profileRepository.findByIdWitUserId(profileId, userId)
                 .orElseThrow(CandidateProfileNotFoundException::new);
         return UserConvertor.entityToDto(profile);

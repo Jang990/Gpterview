@@ -8,7 +8,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateProfileDto {
+public class CandidateProfileForm {
     private String department;  // "개발", "영업", "세무"
     private String field; // BE, FE, 디자인
     private String skills; // Java, Spring, Mysql, Jenkins ...

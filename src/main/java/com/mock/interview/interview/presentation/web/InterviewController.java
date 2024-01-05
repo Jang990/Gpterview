@@ -3,13 +3,11 @@ package com.mock.interview.interview.presentation.web;
 import com.mock.interview.interview.domain.Category;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.user.application.CandidateProfileService;
-import com.mock.interview.user.domain.exception.CandidateProfileNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -26,7 +24,7 @@ public class InterviewController {
     @GetMapping("/interview/start")
     public String startInterviewPage(
             Model model,
-            CandidateProfileDto profile,
+            CandidateProfileForm profile,
             InterviewDetailsDto interviewDetails
     ) {
         // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
@@ -59,7 +57,7 @@ public class InterviewController {
         model.addAttribute("categoryList", List.of(Category.IT));
         model.addAttribute("interviewDetails", new InterviewDetailsDto());
 
-        CandidateProfileDto profileDto = new CandidateProfileDto();
+        CandidateProfileForm profileDto = new CandidateProfileForm();
         if (candidateProfileId.isPresent() && loginId != null) {
             profileDto = candidateProfileService.findProfile(candidateProfileId.get(), loginId);
         }

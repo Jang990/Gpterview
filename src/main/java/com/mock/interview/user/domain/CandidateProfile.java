@@ -1,8 +1,7 @@
 package com.mock.interview.user.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,7 +29,7 @@ public class CandidateProfile extends BaseTimeEntity {
     Users users;
 
     // TODO: Convertor를 따로 만들어서 빼야 하나? or 팩토리 메소드를 유지해야 하나?
-    public static CandidateProfile createProfile(CandidateProfileDto profileDto, Users users) {
+    public static CandidateProfile createProfile(CandidateProfileForm profileDto, Users users) {
         CandidateProfile candidateProfile = new CandidateProfile();
         candidateProfile.title = "새 프로필";
         candidateProfile.department = profileDto.getDepartment();

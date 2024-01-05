@@ -3,7 +3,7 @@ package com.mock.interview.interview.infrastructure.interview.setting;
 import com.mock.interview.interview.infrastructure.interview.fomatter.FormatConstGetter;
 import com.mock.interview.interview.infrastructure.interview.fomatter.StringFormatter;
 import com.mock.interview.interview.infrastructure.interview.gpt.AISpecification;
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class InterviewSettingCreator {
      * @param concept $_user_는 지원자. $_interviewer_는 면접관입니다. $_user_의 기술은 $_skills_입니다.
      * @return user는 지원자. assistant는 면접관입니다. user의 기술은 Java, MySQL, Spring입니다.
      */
-    public InterviewSetting create(AISpecification aiSpec, CandidateProfileDto profile, String concept) {
+    public InterviewSetting create(AISpecification aiSpec, CandidateProfileForm profile, String concept) {
         Map<String, Object> parameters = this.getFormatParameter(aiSpec, profile);
         return new InterviewSetting(StringFormatter.format(concept, parameters));
     }
@@ -44,7 +44,7 @@ public class InterviewSettingCreator {
      *     {"experience":"저는 ~프로젝트를 진행하며 ... ~문제를 해결. ~기술 사용 ..."},
      * }
      */
-    private Map<String, Object> getFormatParameter(AISpecification aiSpec, CandidateProfileDto profile) {
+    private Map<String, Object> getFormatParameter(AISpecification aiSpec, CandidateProfileForm profile) {
         Map<String, Object> map = new HashMap<>();
         map.put(formatConstGetter.getSystemRole(), aiSpec.getSystemRole());
         map.put(formatConstGetter.getUserRole(), aiSpec.getUserRole());

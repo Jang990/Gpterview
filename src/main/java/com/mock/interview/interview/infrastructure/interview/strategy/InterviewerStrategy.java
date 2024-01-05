@@ -3,7 +3,7 @@ package com.mock.interview.interview.infrastructure.interview.strategy;
 import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.interview.infrastructure.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
 
 /**
@@ -35,5 +35,5 @@ public interface InterviewerStrategy {
      */
     InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewSettingDto interviewSettingDto, MessageHistory history);
 
-    boolean isSupportedDepartment(CandidateProfileDto profile);
+    boolean isSupportedDepartment(CandidateProfileForm profile);
 }

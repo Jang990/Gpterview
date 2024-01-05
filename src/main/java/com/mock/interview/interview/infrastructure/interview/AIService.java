@@ -6,7 +6,7 @@ import com.mock.interview.interview.infrastructure.interview.gpt.AIRequester;
 import com.mock.interview.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.interview.infrastructure.interview.strategy.InterviewerStrategy;
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class AIService {
         return requester.sendRequest(request);
     }
 
-    private InterviewerStrategy selectInterviewerStrategy(CandidateProfileDto profile) {
+    private InterviewerStrategy selectInterviewerStrategy(CandidateProfileForm profile) {
         for (int i = interviewerStrategyList.size() - 1; i >= 0; i--) {
             InterviewerStrategy interviewerStrategy = interviewerStrategyList.get(i);
             if(interviewerStrategy.isSupportedDepartment(profile))

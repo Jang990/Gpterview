@@ -11,7 +11,7 @@ import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.interview.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.interview.infrastructure.interview.strategy.stage.InterviewStage;
 import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
-import com.mock.interview.interview.presentation.dto.CandidateProfileDto;
+import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -51,7 +51,7 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
     }
 
     @Override
-    public boolean isSupportedDepartment(CandidateProfileDto profile) {
+    public boolean isSupportedDepartment(CandidateProfileForm profile) {
         return true;
     }
 
