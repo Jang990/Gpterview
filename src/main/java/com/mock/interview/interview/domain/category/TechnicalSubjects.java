@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TechnicalSubjects {
     @Id
-    @Column(name = "job_category_id")
+    @Column(name = "technical_subjects_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
