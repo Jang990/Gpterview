@@ -1,11 +1,20 @@
 package com.mock.interview.user.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
+import com.mock.interview.interview.domain.ProfileJobCategoryLink;
+import com.mock.interview.interview.domain.ProfileTechLink;
+import com.mock.interview.interview.domain.category.JobCategory;
+import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -16,28 +25,69 @@ public class CandidateProfile extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-
-    // TODO -1: {분야,직군,스킬}을 따로 테이블로 빼고 프론트에서 검색창처럼 지원해줄 것. Category enum 같은 방식
-    // TODO -2: 테이블에 없는 {분야,직군,스킬}이라면 커스텀으로 만들 수 있게도 해줄 것.
-    private String department;  // "개발", "영업", "세무"
-    private String field; // BE, FE, 디자인
-    private String skills; // Java, Spring, Mysql, Jenkins ...
     private String experience;
+
+    @Cascade(CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    private List<ProfileJobCategoryLink> jobLink = new ArrayList<>();
+
+    @Cascade(CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    private List<ProfileTechLink> techLink = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    Users users;
+    private Users users;
 
-    // TODO: Convertor를 따로 만들어서 빼야 하나? or 팩토리 메소드를 유지해야 하나?
-    public static CandidateProfile createProfile(CandidateProfileForm profileDto, Users users) {
+    // TODO: 임시로 techList는 null로 전부 적용해놓음
+    public static CandidateProfile createProfile(CandidateProfileForm profileDto, Users users, JobCategory department, JobCategory field, List<TechnicalSubjects> techList) {
         CandidateProfile candidateProfile = new CandidateProfile();
         candidateProfile.title = "새 프로필";
-        candidateProfile.department = profileDto.getDepartment();
-        candidateProfile.field = profileDto.getField();
-        candidateProfile.skills = profileDto.getSkills();
         candidateProfile.experience = profileDto.getExperience();
         candidateProfile.users = users;
 
+        verifyJobCategory(department, field);
+        candidateProfile.jobLink = createJobCategoryLinks(candidateProfile, department, field);
+
+        if(techList != null)
+            candidateProfile.techLink = createTechLinks(candidateProfile, techList);
+
         return candidateProfile;
+    }
+
+    private static List<ProfileTechLink> createTechLinks(CandidateProfile candidateProfile, List<TechnicalSubjects> techList) {
+
+        return techList.stream().map((tech) -> ProfileTechLink.createLink(candidateProfile, tech)).toList();
+    }
+
+    private static void verifyJobCategory(JobCategory department, JobCategory field) {
+        if (department == null || department.isField()
+                || field == null || field.isDepartment())
+            throw new IllegalArgumentException("분야와 직무는 항상 있어야 함");
+    }
+
+    private static List<ProfileJobCategoryLink> createJobCategoryLinks(CandidateProfile candidateProfile, JobCategory department, JobCategory field) {
+        return List.of(
+                ProfileJobCategoryLink.createLink(candidateProfile, department),
+                ProfileJobCategoryLink.createLink(candidateProfile, field)
+        );
+    }
+
+    public JobCategory getDepartment() {
+        if (jobLink.get(0).getJobCategory().isDepartment()) {
+            return jobLink.get(0).getJobCategory();
+        }
+        return jobLink.get(1).getJobCategory();
+    }
+
+    public JobCategory getField() {
+        if (jobLink.get(0).getJobCategory().isField()) {
+            return jobLink.get(0).getJobCategory();
+        }
+        return jobLink.get(1).getJobCategory();
+    }
+
+    public List<TechnicalSubjects> getTechSubjects() {
+        return techLink.stream().map(ProfileTechLink::getTechnicalSubjects).toList();
     }
 }

@@ -43,7 +43,8 @@ public class JobCategory {
      * @return
      */
     public static JobCategory createFieldCategory(String name, JobCategory relatedDepartmentCategory) {
-        if (relatedDepartmentCategory == null) {
+        System.out.println(relatedDepartmentCategory);
+        if (relatedDepartmentCategory == null || relatedDepartmentCategory.isField()) {
             throw new MissingRequiredDepartmentCategoryException();
         }
 
@@ -58,5 +59,13 @@ public class JobCategory {
      */
     private static void insertName(JobCategory category, String name) {
         category.name = name.toUpperCase();
+    }
+
+    public boolean isDepartment() {
+        return department == null;
+    }
+
+    public boolean isField() {
+        return department != null;
     }
 }

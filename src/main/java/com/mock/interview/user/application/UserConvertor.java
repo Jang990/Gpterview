@@ -11,15 +11,15 @@ public class UserConvertor {
         return entityList.stream()
                 .map((entity) -> new CandidateProfileOverviewDto(
                         entity.getId(),
-                        entity.getTitle(), entity.getDepartment(),
-                        entity.getField(), entity.getCreatedAt()
+                        entity.getTitle(), entity.getDepartment().getName(),
+                        entity.getField().getName(), entity.getCreatedAt()
                 )).toList();
     }
 
     public static CandidateProfileForm entityToDto(CandidateProfile profile) {
         return new CandidateProfileForm(
-                profile.getDepartment(), profile.getField(),
-                profile.getSkills(), profile.getExperience()
+                profile.getDepartment().getName(), profile.getField().getName(),
+                profile.getTechSubjects().toString(), profile.getExperience()
         );
     }
 }

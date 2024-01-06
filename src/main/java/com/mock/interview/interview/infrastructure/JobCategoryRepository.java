@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JobCategoryRepository extends JpaRepository<JobCategory, Long> {
@@ -15,4 +16,7 @@ public interface JobCategoryRepository extends JpaRepository<JobCategory, Long> 
 
     @Query("Select jc From JobCategory jc Where jc.department.id = :departmentId")
     List<JobCategory> findDepartmentField(@Param("departmentId") long departmentId);
+
+    @Query("Select jc From JobCategory jc join fetch jc.department Where jc.id = :fieldId")
+    Optional<JobCategory> findFieldWithDepartment(@Param("fieldId") long fieldId);
 }
