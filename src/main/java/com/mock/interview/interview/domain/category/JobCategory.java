@@ -20,7 +20,7 @@ public class JobCategory {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(CascadeType.PERSIST)
     @JoinColumn(name = "job_parent_id")
     private JobCategory department;
