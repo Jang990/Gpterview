@@ -10,6 +10,10 @@ $(function(){
   fieldOptionForm = $('#field');
   fieldOptionToast = new bootstrap.Toast(document.getElementById('fieldOptionToast'));
   customField = $('#customField');
+
+  departmentOptionForm.change(function() {
+    loadField(this);
+  });
 });
 
 
@@ -31,7 +35,6 @@ function addDepartment() {
 }
 
 function showFieldToast() {
-    console.log(fieldOptionToast);
     fieldOptionToast.show();
 }
 
@@ -43,5 +46,34 @@ function addField() {
 }
 
 function createOption(value) {
+    // value와 text를 분리할 것.
     return `<option value="${value}" selected>${value}</option>`;
 }
+
+// 밑은 loading 관련 부분
+function loadField(departmentElement) {
+    console.log(departmentElement);
+    $.ajax({
+        type: 'GET',
+        url: `/api/job/category/department/${departmentElement.value}/field`,
+        contentType: 'application/json',
+//        data: JSON.stringify(interviewInfo),
+        success: function(data) {
+            changeFieldOptions(data);
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+
+function changeFieldOptions(fields) {
+    fieldOptionForm.empty();
+    $.each(fields, function(index, value) {
+        fieldOptionForm.append($('<option>', {
+            value: value.id,
+            text: value.name
+        }));
+    });
+}
+

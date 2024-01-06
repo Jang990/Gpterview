@@ -42,7 +42,7 @@
             -->
             <form action="/interview/start" method="GET">
                 <th:block th:object="${candidateProfile}">
-                    <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(departmentList=${categoryList},fieldList=${categoryList[0].fields})}">분야, 직무 카테고리 선택 구역</div>
+                    <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(departmentList=${categoryList})}">분야, 직무 카테고리 선택 구역</div>
 
                     <div class="mb-5 col">
                         <div for="skills" class="form-floating">

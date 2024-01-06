@@ -1,6 +1,7 @@
 package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.global.security.form.UsersContext;
+import com.mock.interview.interview.application.JobCategoryService;
 import com.mock.interview.interview.domain.Category;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.user.application.CandidateProfileService;
@@ -23,6 +24,7 @@ import java.util.Optional;
 public class InterviewController {
 
     private final CandidateProfileService candidateProfileService;
+    private final JobCategoryService categoryService;
 
     @GetMapping("/interview/start")
     public String startInterviewPage(
@@ -57,7 +59,7 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
         // TODO: Setting DTO를 만들고 Model에 넣어서 타임리프에 th:object로 연결할 것.
-        model.addAttribute("categoryList", List.of(Category.IT));
+        model.addAttribute("categoryList", categoryService.findAllDepartment());
         model.addAttribute("interviewDetails", new InterviewDetailsDto());
 
         CandidateProfileForm profileDto = new CandidateProfileForm();
