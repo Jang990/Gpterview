@@ -1,11 +1,14 @@
 package com.mock.interview.interview.presentation.web;
 
+import com.mock.interview.global.security.form.UsersContext;
 import com.mock.interview.interview.domain.Category;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.user.application.CandidateProfileService;
+import com.mock.interview.user.domain.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,7 +52,7 @@ public class InterviewController {
 
     @GetMapping(value = {"/interview/setting","/interview/setting/{candidateProfileId}"})
     public String speechPage(
-            Model model, @AuthenticationPrincipal(expression = "id") Long loginId,
+            Model model, @AuthenticationPrincipal Users users,
             @PathVariable(required = false, value = "candidateProfileId") Optional<Long> candidateProfileId
     ) {
         model.addAttribute("headerActiveTap", "interview");
@@ -58,14 +61,22 @@ public class InterviewController {
         model.addAttribute("interviewDetails", new InterviewDetailsDto());
 
         CandidateProfileForm profileDto = new CandidateProfileForm();
-        if (candidateProfileId.isPresent() && loginId != null) {
-            profileDto = candidateProfileService.findProfile(candidateProfileId.get(), loginId);
+        if (candidateProfileId.isPresent()) {
+            validateAuthenticatedUser(users);
+            profileDto = candidateProfileService.findProfile(candidateProfileId.get(), users.getId());
         }
         model.addAttribute("candidateProfile", profileDto);
 
         // TODO: Ajax로 분야에 맞는 필드를 가져오도록 수정해야 한다. 일단 임시로 each문 돌린다.
         // TODO: 지금은 면접 설정은 생략하고 기술면접으로 진행한다. 추후 면접 설정도 추가해야 한다.
         return "interview/interview-setting";
+    }
+
+    private void validateAuthenticatedUser(Users users) {
+        // TODO: 커스텀 예외로 변경
+        if (users == null || users.getId() == null) {
+            throw new IllegalAccessError();
+        }
     }
 
     @GetMapping("/interview/setting/")
