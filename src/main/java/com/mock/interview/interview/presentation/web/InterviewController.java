@@ -58,6 +58,27 @@ public class InterviewController {
         return "redirect:/interview/" + interviewId;
     }
 
+    // TODO: 앞에 startInterviePage 메소드 삭제
+    @GetMapping("/interview/{interviewId}")
+    public String interviewPage(
+            Model model,
+//            @AuthenticationPrincipal(expression = "id") Long loginId,
+//            @PathVariable(name = "interviewId") long interviewId
+            CandidateProfileForm profile,
+            InterviewDetailsDto interviewDetails
+    ) {
+        InterviewSettingDto interviewSettingDto = new InterviewSettingDto();
+        interviewSettingDto.setProfile(profile);
+        interviewSettingDto.setInterviewDetails(interviewDetails);
+        MessageHistoryDto historyDTO = initHistory();
+        model.addAttribute("headerActiveTap", "interview");
+
+        InterviewRequestDto interviewRequestDTO = new InterviewRequestDto(interviewSettingDto, historyDTO);
+
+        model.addAttribute("interviewInfo", interviewRequestDTO);
+        return "interview/interview-start";
+    }
+
     private MessageHistoryDto initHistory() {
         MessageHistoryDto historyDTO = new MessageHistoryDto();
         historyDTO.getMessages().add(new MessageDto(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
@@ -65,25 +86,15 @@ public class InterviewController {
         return historyDTO;
     }
 
-    @GetMapping(value = {"/interview/setting","/interview/setting/{candidateProfileId}"})
+    @GetMapping("/interview/setting")
     public String speechPage(
-            Model model, @AuthenticationPrincipal Users users,
-            @PathVariable(required = false, value = "candidateProfileId") Optional<Long> candidateProfileId
+            Model model, @AuthenticationPrincipal Users users
+//            @PathVariable(required = false, value = "candidateProfileId") Optional<Long> candidateProfileId
     ) {
         model.addAttribute("headerActiveTap", "interview");
-        // TODO: Setting DTO를 만들고 Model에 넣어서 타임리프에 th:object로 연결할 것.
         model.addAttribute("categoryList", categoryService.findAllDepartment());
         model.addAttribute("interviewDetails", new InterviewDetailsDto());
-
-        CandidateProfileForm profileDto = new CandidateProfileForm();
-        if (candidateProfileId.isPresent()) {
-            validateAuthenticatedUser(users);
-            profileDto = candidateProfileService.findProfile(candidateProfileId.get(), users.getId());
-        }
-        model.addAttribute("candidateProfile", profileDto);
-
-        // TODO: Ajax로 분야에 맞는 필드를 가져오도록 수정해야 한다. 일단 임시로 each문 돌린다.
-        // TODO: 지금은 면접 설정은 생략하고 기술면접으로 진행한다. 추후 면접 설정도 추가해야 한다.
+        model.addAttribute("candidateProfile", new CandidateProfileForm());
         return "interview/interview-setting";
     }
 

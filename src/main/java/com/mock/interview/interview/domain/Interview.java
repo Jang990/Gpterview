@@ -1,6 +1,7 @@
 package com.mock.interview.interview.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
+import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.user.domain.CandidateProfile;
@@ -34,6 +35,7 @@ public class Interview extends BaseTimeEntity {
     private boolean isActive;
     private boolean isDeleted;
 
+    private int durationMinutes;
     private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
@@ -49,6 +51,7 @@ public class Interview extends BaseTimeEntity {
         interview.title = createTimeTitle(interview, now);
         interview.endTime = now.plusMinutes(interviewSetting.getDurationMinutes());
         interview.type = interviewSetting.getInterviewType();
+        interview.durationMinutes = interviewSetting.getDurationMinutes();
         interview.isActive = true;
         interview.isDeleted = false;
         interview.users = user;
@@ -62,17 +65,14 @@ public class Interview extends BaseTimeEntity {
         return DateTimeFormatter.ofPattern("yy.MM.dd HH시 mm분 면접").format(now);
     }
 
-    private boolean isTimeout() {
-        return LocalDateTime.now().isAfter(endTime);
+    public boolean isActive() {
+        return LocalDateTime.now().isBefore(endTime);
     }
 
-    public boolean timeout() {
-//        if(!this.isActive)
-//            throw new IsAleardyTimeoutInterviewException();
+    public void timeout() {
+        if(!this.isActive)
+            throw new IsAlreadyTimeoutInterviewException();
 
-        boolean timeout = isTimeout();
-        if(timeout)
-            this.isActive = false;
-        return timeout;
+        this.isActive = false;
     }
 }

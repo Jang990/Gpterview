@@ -1,5 +1,6 @@
 package com.mock.interview.interview.infrastructure.interview.strategy.stage;
 
+import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.interview.infrastructure.interview.dto.Message;
 import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
@@ -48,21 +49,20 @@ class InterviewProgressTrackerTest {
         int answerIdx = 0;
         Set<InterviewStage> set = new HashSet<>();
 
-        InterviewDetailsDto detailsDto = new InterviewDetailsDto();
-        detailsDto.setInterviewType(type);
+        InterviewConfig config = new InterviewConfig(type, 30);
         MessageHistory history = mock(MessageHistory.class);
         List<Message> list = mock(LinkedList.class);
         when(list.size()).thenReturn(2);
         when(history.getMessages()).thenReturn(list);
 
-        InterviewProgress startProgress = tracker.getCurrentInterviewProgress(detailsDto, history);
+        InterviewProgress startProgress = tracker.getCurrentInterviewProgress(config, history);
         InterviewStage prevStage = startProgress.stage();
         double prevProgress = startProgress.progress();
         int cnt = 0;
 
         for (int historySize = 3; historySize < testSize; historySize++) {
             when(list.size()).thenReturn(historySize);
-            InterviewProgress nowProgress = tracker.getCurrentInterviewProgress(detailsDto, history);
+            InterviewProgress nowProgress = tracker.getCurrentInterviewProgress(config, history);
 
             if (nowProgress.progress() < prevProgress
                     && nowProgress.stage() == prevStage)

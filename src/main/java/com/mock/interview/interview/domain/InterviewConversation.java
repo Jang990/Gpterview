@@ -1,6 +1,7 @@
 package com.mock.interview.interview.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
+import com.mock.interview.interview.presentation.dto.MessageDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,12 +19,41 @@ public class InterviewConversation extends BaseTimeEntity {
     @Column(updatable = false)
     private String content;
 
-    private String topic;
-
     @Enumerated(EnumType.STRING)
     private InterviewConversationType interviewConversationType;
+
+    @Column(nullable = false)
+    private boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interview_id", updatable = false)
     private Interview interview;
+
+    public static InterviewConversation createAnswer(Interview interview, MessageDto answer) {
+        if (answer.getRole() == null || answer.getContent() == null
+                || !answer.getRole().equals("INTERVIEWER")) {
+            throw new IllegalArgumentException();
+        }
+
+        InterviewConversation conversation = new InterviewConversation();
+        conversation.interviewConversationType = InterviewConversationType.QUESTION;
+        conversation.content = answer.getContent();
+        conversation.interview = interview;
+        conversation.isDeleted = false;
+        return conversation;
+    }
+
+    public static InterviewConversation createQuestion(Interview interview, MessageDto question) {
+        if (question.getRole() == null || question.getContent() == null
+                || !question.getRole().equals("INTERVIEWER")) {
+            throw new IllegalArgumentException();
+        }
+
+        InterviewConversation conversation = new InterviewConversation();
+        conversation.interviewConversationType = InterviewConversationType.ANSWER;
+        conversation.content = question.getContent();
+        conversation.interview = interview;
+        conversation.isDeleted = false;
+        return conversation;
+    }
 }

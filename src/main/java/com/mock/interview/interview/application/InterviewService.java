@@ -1,7 +1,14 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.interview.InterviewDomain;
 import com.mock.interview.interview.domain.Interview;
+import com.mock.interview.interview.domain.category.TechnicalSubjects;
+import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
+import com.mock.interview.interview.infrastructure.InterviewConversationRepository;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;
+import com.mock.interview.interview.infrastructure.interview.dto.InterviewInfo;
+import com.mock.interview.interview.infrastructure.interview.dto.InterviewProfile;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
 import com.mock.interview.user.domain.CandidateProfile;
@@ -11,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -18,6 +27,8 @@ public class InterviewService {
 
     private final InterviewRepository repository;
     private final CandidateProfileRepository profileRepository;
+    private final InterviewConversationRepository conversationRepository;
+    private final InterviewDomain interviewDomain;
 
     public long create(long loginId,long candidateProfileId, InterviewDetailsDto interviewSetting) {
         CandidateProfile candidateProfile = profileRepository.findByIdWitUserId(candidateProfileId, loginId)
@@ -26,4 +37,34 @@ public class InterviewService {
         return repository.save(interview).getId();
     }
 
+    @Transactional(readOnly = true)
+    public InterviewInfo findInterviewForAIRequest(long loginId, long interviewId) {
+        Interview interview = repository.findInterviewSetting(interviewId, loginId)
+                .orElseThrow(InterviewNotFoundException::new);
+        return convert(interview);
+    }
+
+    private static InterviewInfo convert(Interview interview) {
+        CandidateProfile profile = interview.getCandidateProfile();
+        return new InterviewInfo(
+                new InterviewProfile(
+                        profile.getDepartment().getName(), profile.getField().getName(),
+                        profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(), List.of(profile.getExperience())
+                ),
+                new InterviewConfig(interview.getType(), interview.getDurationMinutes())
+        );
+    }
+
+    public void startInterview(CandidateProfileForm profile, InterviewDetailsDto interviewDetails) {
+        // TODO: Redis - 인터뷰 횟수 검증
+        // TODO: Redis - 인터뷰 정보 캐싱(인터뷰 정보, 진행시간 등등)
+        // TODO: DB - 인터뷰 정보 영구 저장
+    }
+
+    public void proceedInterview() {
+        // TODO: Redis - 캐싱된 인터뷰 시작 정보 불러오기
+        // TODO: AI - 시작 정보 기반 요청 : Response 반환
+        // TODO: DB - Response 저장
+        // return MSG
+    }
 }

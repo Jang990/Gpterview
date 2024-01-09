@@ -1,5 +1,6 @@
 package com.mock.interview.interview.infrastructure.interview.strategy.stage;
 
+import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
@@ -20,9 +21,9 @@ public class InterviewProgressTracker {
     private final InterviewStage[] COMPOSITE_STAGE_ORDER = {InterviewStage.TECHNICAL, InterviewStage.EXPERIENCE, InterviewStage.PERSONAL};
     private final InterviewStage[] TECH_EX_STAGE_ORDER = {InterviewStage.TECHNICAL, InterviewStage.EXPERIENCE};
 
-    public InterviewProgress getCurrentInterviewProgress(InterviewDetailsDto interviewDetails, MessageHistory history) {
+    public InterviewProgress getCurrentInterviewProgress(InterviewConfig config, MessageHistory history) {
         // TODO: 단계를 분리하는 임시 코드를 적절한 로직으로 수정할 것 - 시간을 고려하도록 바꾸는게 좋을 듯?
-        InterviewType interviewType = interviewDetails.getInterviewType();
+        InterviewType interviewType = config.interviewType();
         if(isFinishedStage(history))
             return new InterviewProgress(InterviewStage.FINISHED, 0);
 
