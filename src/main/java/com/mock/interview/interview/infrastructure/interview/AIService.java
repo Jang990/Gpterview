@@ -25,12 +25,24 @@ public class AIService {
 
     public Message service(long loginId, long interviewId) {
         InterviewInfo interviewInfo = interviewService.findInterviewForAIRequest(loginId, interviewId);
+        System.out.println(interviewInfo);
         MessageHistory history = conversationService.findConversationsForAIRequest(interviewId);
+        if (history.getMessages().isEmpty()) {
+            history = initHistory();
+        }
+        System.out.println(history);
 
         InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
         InterviewAIRequest request = interviewerStrategy.configStrategy(requester, interviewInfo, history); // 면접 전략 세팅.
         convertRole(requester, request.getHistory()); // AIRequester로 보낼 수 있는 role로 수정.
         return requester.sendRequest(request); // AI로 부터 받은 응답.
+    }
+
+    private MessageHistory initHistory() {
+        MessageHistory history = new MessageHistory();
+        history.getMessages().add(new Message(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
+        history.getMessages().add(new Message(InterviewRole.USER.toString(), "네. 준비됐습니다."));
+        return history;
     }
 
     /**
