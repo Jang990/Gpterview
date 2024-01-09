@@ -4,7 +4,7 @@
     <title>말하기 테스트</title>
 </head>
 <body>
-<section style="background-color: #eee;" th:object="${interviewInfo.messageHistory}">
+<section style="background-color: #eee;" th:object="${messageHistory}">
 <!--    <script th:src="@{/js/talk.js}" src="../../static/js/talk.js"></script>-->
     <div class="min-vh-100 d-flex justify-content-center p-4">
         <div class="d-flex justify-content-center flex-fill" style="min-width:0">
@@ -85,19 +85,9 @@
         </div>
     </div>
 
-
+    <script th:src="@{/js/SpeackContent.js}" href="../js/SpeackContent.js"></script>
     <script th:inline="javascript">
-        const profile = {
-            "department": /*[[${interviewInfo.interviewSetting.profile.department}]]*/ '',
-            "field": /*[[${interviewInfo.interviewSetting.profile.field}]]*/ '',
-            "skills": /*[[${interviewInfo.interviewSetting.profile.skills}]]*/ ''
-        };
-
-        // 나중에 DB 등 저장 및 로그인 기능 넣으면서 서버에서 관리할 것.
-        const interviewDetails = {
-            "interviewType": /*[[${interviewInfo.interviewSetting.interviewDetails.interviewType}]]*/ '',
-            "field": /*[[${interviewInfo.interviewSetting.interviewDetails.durationMinutes}]]*/ '',
-        }
+        const interviewUriPrefix = "/api/interview/[[${interviewId}]]";
 
         const loadingTime = 1500;
         const sendBtn = $('.sendBtn');
@@ -105,35 +95,8 @@
         const contentMinLength = 3;
         let chattingErrorToast = new bootstrap.Toast(document.getElementById('chattingErrorToast'));
 
-        let recognition;
-        let talkHistory = [];
         let remainingTime = loadingTime;
         let decreaseInterval;
-
-
-        function startRecognition() {
-            recognition = new window.webkitSpeechRecognition();
-
-            recognition.onstart = function(event) {
-                $('#result').attr("placeholder", "음성 인식 중...");
-            };
-
-            recognition.onresult = function(event) {
-                // 음성 인식 결과 나옴
-                var transcript = event.results[0][0].transcript;
-                const text = $('#result').val() + transcript + "\n";
-                $('#result').val(text);
-                $('#result').attr("placeholder", "질문을 듣고 답변해주세요! Ctrl+Enter로 메시지 전송 가능합니다.");
-            };
-            recognition.start();
-        }
-
-        function speak(text) {
-          var msg = new SpeechSynthesisUtterance(text);
-          msg.voice = window.speechSynthesis.getVoices()[0]; // 첫번째 목소리로 설정
-          msg.rate = 1.5; // 속도 설정 (기본값은 1)
-          window.speechSynthesis.speak(msg);
-        }
 
         // 응답을 최소 1.5초의 뒤에 보여주기 위한 함수
         function decreaseRemainingTime() {
@@ -147,10 +110,8 @@
 
         // 현재 내용을 토대로 응답을 다시 받음.
         function retryResponse() {
-            talkHistory.pop();
             removeLastChatting();
-            const interviewInfo = createInterviewObject();
-            sendRequest("/api/interview/changing-topic", interviewInfo);
+            sendRequest(interviewUriPrefix+"/changing-topic", null);
         }
 
         // 마지막 채팅 제거
@@ -179,9 +140,9 @@
         }
 
 
-        // InterviewDTO와 형식을 맞출 것.
-        function createInterviewObject() {
-            return ({"interviewSetting" : {"profile" : profile, "interviewDetails" : interviewDetails}, "messageHistory" : {messages : talkHistory}});
+        // 서버에서 받는 Message 형식을 맞출 것.
+        function createMessage(role, message) {
+            return ({"role": role, "content": content});
         }
 
         // 응답완료 버튼 클릭시 동작 - sendBtn에 disabled 여부에 따라 함수 실행여부가 결정된다.
@@ -195,16 +156,14 @@
                 return;
             }
 
-            pushTalkHistory("user", nowMsg); // UserMessage 기록하기
-            const interviewInfo = createInterviewObject();
-
             $('#result').val(''); // 사용자 응답창 지워주기
             removeRetryingBtn(); // 다른 질문을 요청할 수 없도록 버튼 제거
 
             const newConversationItem = createUserMessage(nowMsg);
             $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
 
-            sendRequest("/api/interview/response", interviewInfo);
+            const message = createMessage("USER", nowMsg); // TODO: USER를 타임리프로 변경
+            sendRequest(interviewUriPrefix+"/response", message);
         }
 
         function isInvalidChattingMessage(message) {
@@ -220,8 +179,8 @@
         }
 
         // 서버로 요청보내기.
-        function sendRequest(requestURL, interviewInfo) {
-            console.log(interviewInfo);
+        function sendRequest(requestURL, message) {
+            console.log(message);
 
             disableSendBtn(); // 전송버튼 잠시 비활성화
             displayWaitingPanel(); // 응답 대기 화면 출력.
@@ -232,7 +191,7 @@
                 type: 'POST',
                 url: requestURL,
                 contentType: 'application/json',
-                data: JSON.stringify(interviewInfo),
+                data: JSON.stringify(message),
                 success: function(data) {
                     // console.log(data);
                     clearInterval(decreaseInterval);
@@ -240,11 +199,8 @@
                         // speak(data.content); // 응답 메시지를 음성으로 전달
                         removeWaitingPanel();
                         displayResponse(data.content);
-
-                        pushTalkHistory(data.role, data.content); // GPT 응답 기록
                         scroll();
                         remainingTime = loadingTime;
-                        // console.log(talkHistory);
                         enableSendBtn();
                     }, remainingTime);
                 },
@@ -368,25 +324,13 @@
         }
 
         $(document).ready(function () {
-            $("#talk-history li").each(function () {
-              let role = $(this).find(".role").val();
-              let content = $(this).find(".content").text();
-              pushTalkHistory(role, content);
-            });
-
-            const interviewInfo = createInterviewObject();
-            sendRequest("/api/interview/response", interviewInfo);
+            sendRequest(interviewUriPrefix + "/init", null);
         });
-
-        function pushTalkHistory(role, content) {
-            talkHistory.push({ role: role, content: content });
-        }
 
         function scroll() {
             const talkHistoryArticle = $('#talk-card');
             talkHistoryArticle.scrollTop(talkHistoryArticle[0].scrollHeight);
         }
-
 
 
         // result TextArea에서 Ctrl+Enter 입력시 메시지를 보내는 기능

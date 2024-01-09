@@ -62,20 +62,12 @@ public class InterviewController {
     @GetMapping("/interview/{interviewId}")
     public String interviewPage(
             Model model,
-//            @AuthenticationPrincipal(expression = "id") Long loginId,
-//            @PathVariable(name = "interviewId") long interviewId
-            CandidateProfileForm profile,
-            InterviewDetailsDto interviewDetails
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable(name = "interviewId") long interviewId
     ) {
-        InterviewSettingDto interviewSettingDto = new InterviewSettingDto();
-        interviewSettingDto.setProfile(profile);
-        interviewSettingDto.setInterviewDetails(interviewDetails);
-        MessageHistoryDto historyDTO = initHistory();
         model.addAttribute("headerActiveTap", "interview");
-
-        InterviewRequestDto interviewRequestDTO = new InterviewRequestDto(interviewSettingDto, historyDTO);
-
-        model.addAttribute("interviewInfo", interviewRequestDTO);
+        model.addAttribute("interviewId", interviewId);
+        model.addAttribute("messageHistory", initHistory()); // TODO: 임시코드 - 만약 DB에 있다면 가져와야 한다.
         return "interview/interview-start";
     }
 

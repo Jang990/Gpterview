@@ -35,7 +35,9 @@
                                     <td><span class="d-inline-block align-middle" th:text="${candidateProfile.field}">직군 ex) 백엔드</span></td>
                                     <td th:text="${#temporals.format(candidateProfile.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
                                     <td class="text-end">
-                                        <a class="btn btn-primary" th:href="@{/interview/setting/{candidateProfileId}(candidateProfileId=${candidateProfile.id})}">선택</a>
+                                        <form method="POST" th:action="@{/interview/candidate/profile/{candidateProfileId}/start(candidateProfileId=${candidateProfile.id})}">
+                                            <input type="submit" class="btn btn-primary" value="선택">
+                                        </form>
                                     </td>
                                 </tr>
                                 </tbody>
