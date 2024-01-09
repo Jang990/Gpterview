@@ -1,6 +1,7 @@
 package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.global.security.form.UsersContext;
+import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.application.JobCategoryService;
 import com.mock.interview.interview.domain.Category;
 import com.mock.interview.interview.presentation.dto.*;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class InterviewController {
 
     private final CandidateProfileService candidateProfileService;
+    private final InterviewService interviewService;
     private final JobCategoryService categoryService;
 
     @GetMapping("/interview/start")
@@ -43,6 +46,16 @@ public class InterviewController {
 
         model.addAttribute("interviewInfo", interviewRequestDTO);
         return "interview/interview-start";
+    }
+
+    @PostMapping("/interview/candidate/profile/{profileId}/start")
+    public String startInterviewPage(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable(name = "profileId") long profileId,
+            InterviewDetailsDto interviewDetails
+    ) {
+        long interviewId = interviewService.create(loginId, profileId, interviewDetails);
+        return "redirect:/interview/" + interviewId;
     }
 
     private MessageHistoryDto initHistory() {
