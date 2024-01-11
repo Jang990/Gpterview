@@ -40,7 +40,7 @@
             어느 기술을 가지고 있는지.
             관련 자기소개서가 있는지.
             -->
-            <form action="/interview/start" method="GET">
+            <form action="/interview" method="POST">
                 <th:block th:object="${candidateProfile}">
                     <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(departmentList=${categoryList})}">분야, 직무 카테고리 선택 구역</div>
 

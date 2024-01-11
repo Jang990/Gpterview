@@ -24,12 +24,12 @@ public class CandidateProfileService {
     private final CandidateProfileRepository profileRepository;
     private final JobCategoryRepository jobCategoryRepository;
 
-    public void create(CandidateProfileForm candidateProfileForm, long userId) {
-        long tempFieldId = 11; // TODO: candidateProfileForm를 long으로 바꾸고 temp를 변경
+    public long create(CandidateProfileForm candidateProfileForm, long userId) {
         Users user = userRepository.findById(userId).orElseThrow();
-        JobCategory field = jobCategoryRepository.findFieldWithDepartment(tempFieldId).orElseThrow(JobCategoryNotFoundException::new);
-        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileForm, user, field.getDepartment(), field, null);
-        profileRepository.save(profile);
+        JobCategory field = jobCategoryRepository.findFieldWithDepartment(candidateProfileForm.getField())
+                .orElseThrow(JobCategoryNotFoundException::new);
+        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileForm, user, field.getDepartment(), field, null); // TODO: techList 조회 및 초기화 필요.
+        return profileRepository.save(profile).getId();
     }
 
     public List<CandidateProfileOverviewDto> findProfiles(long userId) {

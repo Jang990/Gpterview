@@ -29,23 +29,19 @@ public class InterviewController {
     private final InterviewService interviewService;
     private final JobCategoryService categoryService;
 
-    @GetMapping("/interview/start")
+    @PostMapping("/interview")
     public String startInterviewPage(
             Model model,
             CandidateProfileForm profile,
-            InterviewDetailsDto interviewDetails
+            InterviewDetailsDto interviewDetails,
+            @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
-        // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
-        InterviewSettingDto interviewSettingDto = new InterviewSettingDto();
-        interviewSettingDto.setProfile(profile);
-        interviewSettingDto.setInterviewDetails(interviewDetails);
-        MessageHistoryDto historyDTO = initHistory();
         model.addAttribute("headerActiveTap", "interview");
 
-        InterviewRequestDto interviewRequestDTO = new InterviewRequestDto(interviewSettingDto, historyDTO);
-
-        model.addAttribute("interviewInfo", interviewRequestDTO);
-        return "interview/interview-start";
+        // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
+        long candidateProfileId = candidateProfileService.create(profile, loginId);
+        long interviewId = interviewService.create(loginId, candidateProfileId, interviewDetails);
+        return "redirect:/interview/" + interviewId;
     }
 
     @PostMapping("/interview/candidate/profile/{profileId}/start")
