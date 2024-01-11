@@ -19,4 +19,9 @@ public interface JobCategoryRepository extends JpaRepository<JobCategory, Long> 
 
     @Query("Select jc From JobCategory jc join fetch jc.department Where jc.id = :fieldId")
     Optional<JobCategory> findFieldWithDepartment(@Param("fieldId") long fieldId);
+
+    @Query("Select jc From JobCategory jc " +
+            "Join ProfileJobCategoryLink pjc On pjc.jobCategory.id = jc.id " +
+            "Where pjc.profile.id = :profileId")
+    List<JobCategory> findInterviewCategory(@Param("profileId") long profileId);
 }

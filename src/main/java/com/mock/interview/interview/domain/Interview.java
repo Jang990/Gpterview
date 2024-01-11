@@ -25,6 +25,7 @@ public class Interview extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,12 +34,18 @@ public class Interview extends BaseTimeEntity {
 
     @Column(nullable = false)
     private boolean isActive;
+
+    @Column(nullable = false)
     private boolean isDeleted;
 
+    @Column(nullable = false)
     private int durationMinutes;
+
+    @Column(nullable = false)
     private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private InterviewType type; // TODO: DB에 넣어야 할 듯?
 
     @ManyToOne(fetch = FetchType.LAZY)

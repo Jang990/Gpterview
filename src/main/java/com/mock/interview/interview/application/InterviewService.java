@@ -2,10 +2,12 @@ package com.mock.interview.interview.application;
 
 import com.mock.interview.interview.InterviewDomain;
 import com.mock.interview.interview.domain.Interview;
+import com.mock.interview.interview.domain.category.JobCategory;
 import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.infrastructure.InterviewConversationRepository;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interview.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewProfile;
@@ -28,6 +30,7 @@ public class InterviewService {
     private final InterviewRepository repository;
     private final CandidateProfileRepository profileRepository;
     private final InterviewConversationRepository conversationRepository;
+    private final JobCategoryRepository jobCategoryRepository;
     private final InterviewDomain interviewDomain;
 
     public long create(long loginId,long candidateProfileId, InterviewDetailsDto interviewSetting) {
@@ -41,15 +44,22 @@ public class InterviewService {
     public InterviewInfo findInterviewForAIRequest(long loginId, long interviewId) {
         Interview interview = repository.findInterviewSetting(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-        return convert(interview);
+
+        List<JobCategory> category = jobCategoryRepository.findInterviewCategory(interview.getCandidateProfile().getId());
+        if (category.get(0).isDepartment()) {
+            return convert(interview, category.get(0), category.get(1));
+        } else {
+            return convert(interview, category.get(1), category.get(0));
+        }
     }
 
-    private static InterviewInfo convert(Interview interview) {
+    private static InterviewInfo convert(Interview interview, JobCategory department, JobCategory field) {
         CandidateProfile profile = interview.getCandidateProfile();
         return new InterviewInfo(
                 new InterviewProfile(
-                        profile.getDepartment().getName(), profile.getField().getName(),
-                        profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(), List.of(profile.getExperience())
+                        department.getName(), field.getName(),
+                        profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
+                        List.of(profile.getExperience())
                 ),
                 new InterviewConfig(interview.getType(), interview.getDurationMinutes())
         );

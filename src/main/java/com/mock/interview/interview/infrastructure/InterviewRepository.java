@@ -10,13 +10,11 @@ import java.util.Optional;
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv " +
             "join fetch iv.candidateProfile " +
-            "join fetch iv.candidateProfile.jobLink " +
-            "join fetch iv.candidateProfile.jobLink.jobCategory " +
             "left join fetch iv.candidateProfile.techLink " +
-            "join fetch iv.candidateProfile.techLink.technicalSubjects " +
-            "Where iv.id = :profileId and iv.users.id = :userId")
-    Optional<Interview> findInterviewSetting(@Param("profileId") long interviewId, @Param("userId") long userId);
+            "left join fetch iv.candidateProfile.techLink.technicalSubjects " +
+            "Where iv.id = :interviewId And iv.users.id = :userId")
+    Optional<Interview> findInterviewSetting(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
-    @Query("Select iv From Interview iv Where iv.id = :profileId and iv.users.id = :userId")
-    Optional<Interview> findByIdWitUserId(@Param("profileId") long interviewId, @Param("userId") long userId);
+    @Query("Select iv From Interview iv Where iv.id = :interviewId and iv.users.id = :userId")
+    Optional<Interview> findByIdWitUserId(@Param("interviewId") long interviewId, @Param("userId") long userId);
 }
