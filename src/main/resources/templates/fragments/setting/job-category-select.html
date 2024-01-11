@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="fragment-job-category-select(departmentList)">
+  <div th:fragment="fragment-job-category-select(loadField,departmentList)">
     <script th:src="@{/js/jobCategoryForm.js}" href="../js/jobCategoryForm.js"></script>
+    <input th:if="${loadField != null}" type="hidden" id="loadField" th:value="${loadField}">
     <div class="mb-3 row">
       <label class="col-1 col-form-label">지원 분야</label>
+
       <div class="col-2">
         <select name="department" id="department" class="form-select" aria-label="Select Department" required>
           <option  disabled hidden selected>선택해주세요</option>

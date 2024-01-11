@@ -21,6 +21,7 @@
                             <table class="table mb-0">
                                 <thead class="small text-uppercase bg-body text-muted">
                                 <tr>
+                                    <th>번호</th>
                                     <th>제목</th>
                                     <th>지원 직무</th>
                                     <th>지원 직군</th>
@@ -29,15 +30,15 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="align-middle accordion" th:each="candidateProfile : ${candidateProfileOverviewList}">
+                                <tr class="align-middle accordion" th:each="candidateProfile, candidateProfileStat : ${candidateProfileOverviewList}">
+                                    <td th:text="${candidateProfileStat.count}"></td>
                                     <td><div class="h6 mb-0 lh-1" th:text="${candidateProfile.title}">프로필 제목</div></td>
                                     <td th:text="${candidateProfile.department}">분야 ex) IT</td>
                                     <td><span class="d-inline-block align-middle" th:text="${candidateProfile.field}">직군 ex) 백엔드</span></td>
                                     <td th:text="${#temporals.format(candidateProfile.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
-                                    <td class="text-end">
-                                        <form method="POST" th:action="@{/interview/candidate/profile/{candidateProfileId}/start(candidateProfileId=${candidateProfile.id})}">
-                                            <input type="submit" class="btn btn-primary" value="선택">
-                                        </form>
+                                    <td class="d-flex justify-content-end">
+                                        <a class="btn btn-primary me-3" th:href="@{/interview/candidate/profile/{candidateProfileId}(candidateProfileId=${candidateProfile.id})}">불러오기</a>
+                                        <a class="btn btn-secondary" th:href="@{/candidate/profile/{candidateProfileId}(candidateProfileId=${candidateProfile.id})}">자세히</a>
                                     </td>
                                 </tr>
                                 </tbody>

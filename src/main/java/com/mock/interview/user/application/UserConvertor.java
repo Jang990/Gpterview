@@ -18,7 +18,7 @@ public class UserConvertor {
 
     public static CandidateProfileForm entityToDto(CandidateProfile profile) {
         return new CandidateProfileForm(
-                profile.getDepartment().getName(), profile.getField().getId(),
+                profile.getField().getId(),
                 profile.getTechSubjects().toString(), profile.getExperience()
         );
     }

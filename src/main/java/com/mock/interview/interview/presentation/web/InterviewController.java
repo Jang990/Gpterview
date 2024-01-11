@@ -44,14 +44,19 @@ public class InterviewController {
         return "redirect:/interview/" + interviewId;
     }
 
-    @PostMapping("/interview/candidate/profile/{profileId}/start")
-    public String startInterviewPage(
+    @GetMapping("/interview/candidate/profile/{profileId}")
+    public String loadProfileInInterviewSettingPage(
+            Model model,
             @AuthenticationPrincipal(expression = "id") Long loginId,
-            @PathVariable(name = "profileId") long profileId,
-            InterviewDetailsDto interviewDetails
+            @PathVariable(name = "profileId") long profileId
     ) {
-        long interviewId = interviewService.create(loginId, profileId, interviewDetails);
-        return "redirect:/interview/" + interviewId;
+        model.addAttribute("headerActiveTap", "interview");
+        model.addAttribute("categoryList", categoryService.findAllDepartment());
+        model.addAttribute("interviewDetails", new InterviewDetailsDto());
+        CandidateProfileForm form = candidateProfileService.findProfile(profileId, loginId);
+        System.out.println(form);
+        model.addAttribute("candidateProfile", form);
+        return "interview/interview-setting";
     }
 
     // TODO: 앞에 startInterviePage 메소드 삭제

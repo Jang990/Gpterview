@@ -1,6 +1,7 @@
 package com.mock.interview.interview.presentation.api;
 
 import com.mock.interview.interview.application.JobCategoryService;
+import com.mock.interview.interview.presentation.dto.response.DepartmentCategoryDetailResponse;
 import com.mock.interview.interview.presentation.dto.response.JobCategoryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -23,6 +23,11 @@ public class JobCategoryController {
     @GetMapping("/department")
     public ResponseEntity<List<JobCategoryResponse>> getDepartments() {
         return ResponseEntity.ok(service.findAllDepartment());
+    }
+
+    @GetMapping("/field/{fieldId}")
+    public ResponseEntity<DepartmentCategoryDetailResponse> getDepartmentAndField(@PathVariable(name = "fieldId") long fieldId) {
+        return ResponseEntity.ok(service.findDepartmentAndField(fieldId));
     }
 
     @GetMapping("/department/{departmentId}/field")
