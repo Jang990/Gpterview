@@ -1,9 +1,10 @@
 package com.mock.interview.interview.infrastructure.interview.gpt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
-import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
-import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
+import com.mock.interview.conversation.infrastructure.interview.gpt.OpenAIResponseConvertor;
+import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
+import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
+import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

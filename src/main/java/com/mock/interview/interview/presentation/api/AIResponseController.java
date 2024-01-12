@@ -2,13 +2,13 @@ package com.mock.interview.interview.presentation.api;
 
 import com.mock.interview.conversation.application.InterviewConversationService;
 import com.mock.interview.interview.application.InterviewService;
-import com.mock.interview.interview.infrastructure.interview.AIService;
-import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
-import com.mock.interview.interview.infrastructure.interview.AIObjectConvertor;
+import com.mock.interview.conversation.infrastructure.interview.AIService;
+import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
+import com.mock.interview.conversation.infrastructure.interview.AIObjectConvertor;
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.interview.presentation.dto.InterviewRequestDto;
-import com.mock.interview.interview.infrastructure.interview.dto.Message;
+import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

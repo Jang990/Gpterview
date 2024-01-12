@@ -1,9 +1,11 @@
 package com.mock.interview.interview.infrastructure.interview.strategy.stage;
 
-import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;
-import com.mock.interview.interview.infrastructure.interview.dto.Message;
-import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
-import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
+import com.mock.interview.conversation.infrastructure.interview.dto.InterviewConfig;
+import com.mock.interview.conversation.infrastructure.interview.dto.Message;
+import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
+import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgress;
+import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgressTracker;
+import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import org.junit.jupiter.api.Test;
 

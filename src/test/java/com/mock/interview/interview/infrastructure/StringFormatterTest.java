@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infrastructure;
 
-import com.mock.interview.interview.infrastructure.interview.fomatter.StringFormatter;
+import com.mock.interview.conversation.infrastructure.interview.fomatter.StringFormatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

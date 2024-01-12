@@ -1,14 +1,14 @@
 package com.mock.interview.interview.infrastructure.gpt;
 
-import com.mock.interview.interview.infrastructure.interview.gpt.ChatGPTRequester;
-import com.mock.interview.interview.infrastructure.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interview.infrastructure.interview.gpt.OpenAIResponseConvertor;
-import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
-import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
-import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
-import com.mock.interview.interview.infrastructure.interview.setting.InterviewSetting;
+import com.mock.interview.conversation.infrastructure.interview.gpt.ChatGPTRequester;
+import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIRequest;
+import com.mock.interview.conversation.infrastructure.interview.gpt.OpenAIResponseConvertor;
+import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
+import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
+import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
+import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
-import com.mock.interview.interview.infrastructure.interview.dto.Message;
+import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
