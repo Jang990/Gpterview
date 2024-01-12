@@ -5,7 +5,7 @@ import com.mock.interview.interview.domain.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
-import com.mock.interview.interview.infrastructure.InterviewConversationRepository;
+import com.mock.interview.conversation.infrastructure.InterviewConversationRepository;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;

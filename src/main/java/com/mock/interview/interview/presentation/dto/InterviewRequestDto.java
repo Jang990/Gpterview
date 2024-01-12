@@ -1,5 +1,6 @@
 package com.mock.interview.interview.presentation.dto;
 
+import com.mock.interview.conversation.presentation.dto.MessageHistoryDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;

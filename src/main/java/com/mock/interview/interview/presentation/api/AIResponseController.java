@@ -1,12 +1,12 @@
 package com.mock.interview.interview.presentation.api;
 
-import com.mock.interview.interview.application.InterviewConversationService;
+import com.mock.interview.conversation.application.InterviewConversationService;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infrastructure.interview.AIService;
 import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.interview.infrastructure.interview.AIObjectConvertor;
-import com.mock.interview.interview.presentation.dto.InterviewRole;
-import com.mock.interview.interview.presentation.dto.MessageDto;
+import com.mock.interview.conversation.presentation.dto.InterviewRole;
+import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.interview.presentation.dto.InterviewRequestDto;
 import com.mock.interview.interview.infrastructure.interview.dto.Message;
 import jakarta.validation.Valid;

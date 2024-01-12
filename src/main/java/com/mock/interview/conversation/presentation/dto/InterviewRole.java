@@ -1,4 +1,4 @@
-package com.mock.interview.interview.presentation.dto;
+package com.mock.interview.conversation.presentation.dto;
 
 import lombok.Getter;
 

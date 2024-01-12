@@ -1,6 +1,9 @@
 package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.conversation.presentation.dto.InterviewRole;
+import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.conversation.presentation.dto.MessageHistoryDto;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.candidate.application.CandidateProfileService;

@@ -1,7 +1,8 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.conversation.domain.model;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.interview.presentation.dto.MessageDto;
+import com.mock.interview.interview.domain.Interview;
+import com.mock.interview.conversation.presentation.dto.MessageDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

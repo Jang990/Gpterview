@@ -1,24 +1,23 @@
-package com.mock.interview.interview.application;
+package com.mock.interview.conversation.application;
 
 import com.mock.interview.interview.InterviewDomain;
 import com.mock.interview.interview.domain.Interview;
-import com.mock.interview.interview.domain.InterviewConversation;
-import com.mock.interview.interview.domain.InterviewConversationType;
+import com.mock.interview.conversation.domain.model.InterviewConversation;
+import com.mock.interview.conversation.domain.model.InterviewConversationType;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
-import com.mock.interview.interview.infrastructure.InterviewConversationRepository;
+import com.mock.interview.conversation.infrastructure.InterviewConversationRepository;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.interview.infrastructure.interview.dto.Message;
 import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
-import com.mock.interview.interview.presentation.dto.InterviewRole;
-import com.mock.interview.interview.presentation.dto.MessageDto;
+import com.mock.interview.conversation.presentation.dto.InterviewRole;
+import com.mock.interview.conversation.presentation.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 

@@ -9,7 +9,7 @@ import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.Chat
 import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
 import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
 import com.mock.interview.interview.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
-import com.mock.interview.interview.presentation.dto.InterviewRole;
+import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

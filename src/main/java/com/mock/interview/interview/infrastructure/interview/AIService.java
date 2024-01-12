@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infrastructure.interview;
 
-import com.mock.interview.interview.application.InterviewConversationService;
+import com.mock.interview.conversation.application.InterviewConversationService;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.interview.infrastructure.interview.dto.Message;
@@ -9,7 +9,7 @@ import com.mock.interview.interview.infrastructure.interview.gpt.AIRequester;
 import com.mock.interview.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.interview.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.interview.infrastructure.interview.strategy.InterviewerStrategy;
-import com.mock.interview.interview.presentation.dto.InterviewRole;
+import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

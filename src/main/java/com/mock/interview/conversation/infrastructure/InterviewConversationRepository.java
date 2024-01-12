@@ -1,6 +1,6 @@
-package com.mock.interview.interview.infrastructure;
+package com.mock.interview.conversation.infrastructure;
 
-import com.mock.interview.interview.domain.InterviewConversation;
+import com.mock.interview.conversation.domain.model.InterviewConversation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

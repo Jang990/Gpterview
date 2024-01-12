@@ -1,6 +1,6 @@
 package com.mock.interview.temp.domain;
 
-import com.mock.interview.interview.domain.InterviewConversation;
+import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.user.domain.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
