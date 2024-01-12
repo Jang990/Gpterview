@@ -1,5 +1,6 @@
 package com.mock.interview.user.application;
 
+import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.user.domain.CandidateProfile;
 import com.mock.interview.user.presentation.dto.CandidateProfileOverviewDto;
@@ -19,7 +20,8 @@ public class UserConvertor {
     public static CandidateProfileForm entityToDto(CandidateProfile profile) {
         return new CandidateProfileForm(
                 profile.getField().getId(),
-                profile.getTechSubjects().toString(), profile.getExperience()
+                profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
+                profile.getExperience()
         );
     }
 }
