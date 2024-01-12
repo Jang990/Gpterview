@@ -1,6 +1,6 @@
 package com.mock.interview.category.domain.model;
 
-import com.mock.interview.interview.domain.exception.MissingRequiredDepartmentCategoryException;
+import com.mock.interview.category.domain.exception.MissingRequiredDepartmentCategoryException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

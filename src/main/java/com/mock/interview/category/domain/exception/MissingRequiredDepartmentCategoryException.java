@@ -1,4 +1,4 @@
-package com.mock.interview.interview.domain.exception;
+package com.mock.interview.category.domain.exception;
 
 import com.mock.interview.global.exception.CustomClientException;
 import org.springframework.http.HttpStatus;

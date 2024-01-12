@@ -2,7 +2,7 @@ package com.mock.interview.user.application;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.domain.category.TechnicalSubjects;
-import com.mock.interview.interview.domain.exception.JobCategoryNotFoundException;
+import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.infrastructure.TechnicalSubjectsRepository;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
