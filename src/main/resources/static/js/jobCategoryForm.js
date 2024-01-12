@@ -24,7 +24,6 @@ $(function(){
 function loadProfileField() {
     const loadFieldValue = $('#loadField').val();
     $.get(`/api/job/category/field/${loadFieldValue}`, function(data) {
-        console.log(data);
         $('#department option:selected').prop('selected', false);
         $('#department').prepend($('<option>', {
             value: data.department.id,
@@ -76,7 +75,6 @@ function createOption(value) {
 
 // 밑은 loading 관련 부분
 function loadField(departmentElement) {
-    console.log(departmentElement);
     $.ajax({
         type: 'GET',
         url: `/api/job/category/department/${departmentElement.value}/field`,
