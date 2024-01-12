@@ -1,4 +1,4 @@
-package com.mock.interview.interview.domain.category;
+package com.mock.interview.category.domain.model;
 
 import com.mock.interview.interview.domain.exception.MissingRequiredDepartmentCategoryException;
 import jakarta.persistence.*;

@@ -1,8 +1,8 @@
-package com.mock.interview.interview.application;
+package com.mock.interview.category.application;
 
-import com.mock.interview.interview.domain.category.JobCategory;
+import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.domain.exception.JobCategoryNotFoundException;
-import com.mock.interview.interview.infrastructure.JobCategoryRepository;
+import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.presentation.dto.response.DepartmentCategoryDetailResponse;
 import com.mock.interview.interview.presentation.dto.response.JobCategoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j

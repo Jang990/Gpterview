@@ -1,9 +1,9 @@
 package com.mock.interview.user.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.interview.domain.ProfileJobCategoryLink;
+import com.mock.interview.category.domain.model.ProfileJobCategoryLink;
 import com.mock.interview.interview.domain.ProfileTechLink;
-import com.mock.interview.interview.domain.category.JobCategory;
+import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import jakarta.persistence.*;

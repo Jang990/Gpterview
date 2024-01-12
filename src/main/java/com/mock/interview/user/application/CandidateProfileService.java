@@ -1,9 +1,9 @@
 package com.mock.interview.user.application;
 
-import com.mock.interview.interview.domain.category.JobCategory;
+import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.JobCategoryNotFoundException;
-import com.mock.interview.interview.infrastructure.JobCategoryRepository;
+import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.infrastructure.TechnicalSubjectsRepository;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.user.domain.CandidateProfile;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 @Transactional

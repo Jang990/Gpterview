@@ -1,6 +1,5 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.category.domain.model;
 
-import com.mock.interview.interview.domain.category.JobCategory;
 import com.mock.interview.user.domain.CandidateProfile;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

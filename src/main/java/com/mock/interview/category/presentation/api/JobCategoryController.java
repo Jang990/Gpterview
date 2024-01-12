@@ -1,6 +1,6 @@
-package com.mock.interview.interview.presentation.api;
+package com.mock.interview.category.presentation.api;
 
-import com.mock.interview.interview.application.JobCategoryService;
+import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.interview.presentation.dto.response.DepartmentCategoryDetailResponse;
 import com.mock.interview.interview.presentation.dto.response.JobCategoryResponse;
 import lombok.RequiredArgsConstructor;

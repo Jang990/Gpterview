@@ -1,6 +1,6 @@
-package com.mock.interview.interview.infrastructure;
+package com.mock.interview.category.infrastructure;
 
-import com.mock.interview.interview.domain.category.JobCategory;
+import com.mock.interview.category.domain.model.JobCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

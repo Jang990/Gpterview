@@ -2,12 +2,12 @@ package com.mock.interview.interview.application;
 
 import com.mock.interview.interview.InterviewDomain;
 import com.mock.interview.interview.domain.Interview;
-import com.mock.interview.interview.domain.category.JobCategory;
+import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.infrastructure.InterviewConversationRepository;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interview.infrastructure.JobCategoryRepository;
+import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewProfile;
