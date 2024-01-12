@@ -29,6 +29,7 @@ public class CandidateProfileForm {
             this.skills = new ArrayList<>();
         else
             this.skills = Arrays.stream(skills.split(","))
-                    .map(String::trim).filter(StringUtils::hasText).toList();
+                    .map(String::trim).map(String::toUpperCase)
+                    .filter(StringUtils::hasText).toList();
     }
 }

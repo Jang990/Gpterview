@@ -42,6 +42,7 @@ public class CandidateProfileService {
 
         List<String> savedNames = techList.stream().map(TechnicalSubjects::getName).toList();
         skills.stream()
+                .map(String::toUpperCase)
                 .filter(notSavedSkill -> !savedNames.contains(notSavedSkill))
                 .map(TechnicalSubjects::create)
                 .map(technicalSubjectsRepository::save)
