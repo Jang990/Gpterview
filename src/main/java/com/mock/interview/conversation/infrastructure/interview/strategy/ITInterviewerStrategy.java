@@ -4,7 +4,6 @@ import com.mock.interview.conversation.infrastructure.interview.dto.*;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.interview.domain.Category;
-import com.mock.interview.interview.infrastructure.interview.dto.*;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.conversation.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
