@@ -4,7 +4,7 @@ import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
 import com.mock.interview.interview.presentation.dto.InterviewType;
-import com.mock.interview.user.domain.CandidateProfile;
+import com.mock.interview.candidate.domain.model.CandidateProfile;
 import com.mock.interview.user.domain.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

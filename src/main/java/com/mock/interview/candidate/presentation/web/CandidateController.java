@@ -1,15 +1,13 @@
-package com.mock.interview.user.presentation.web;
+package com.mock.interview.candidate.presentation.web;
 
-import com.mock.interview.user.application.CandidateProfileService;
-import com.mock.interview.user.presentation.dto.CandidateProfileOverviewDto;
+import com.mock.interview.candidate.application.CandidateProfileService;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileOverviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller

@@ -2,8 +2,8 @@ package com.mock.interview.user.application;
 
 import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
-import com.mock.interview.user.domain.CandidateProfile;
-import com.mock.interview.user.presentation.dto.CandidateProfileOverviewDto;
+import com.mock.interview.candidate.domain.model.CandidateProfile;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileOverviewDto;
 
 import java.util.List;
 

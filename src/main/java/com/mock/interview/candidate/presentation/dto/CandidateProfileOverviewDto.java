@@ -1,4 +1,4 @@
-package com.mock.interview.user.presentation.dto;
+package com.mock.interview.candidate.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

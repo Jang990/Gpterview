@@ -1,6 +1,6 @@
-package com.mock.interview.user.infrastructure;
+package com.mock.interview.candidate.infrastructure;
 
-import com.mock.interview.user.domain.CandidateProfile;
+import com.mock.interview.candidate.domain.model.CandidateProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

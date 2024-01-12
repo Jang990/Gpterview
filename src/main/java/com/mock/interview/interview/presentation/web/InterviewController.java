@@ -2,7 +2,7 @@ package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.presentation.dto.*;
-import com.mock.interview.user.application.CandidateProfileService;
+import com.mock.interview.candidate.application.CandidateProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
