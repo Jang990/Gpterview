@@ -1,4 +1,4 @@
-package com.mock.interview.interview.domain.category;
+package com.mock.interview.tech.domain.model;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

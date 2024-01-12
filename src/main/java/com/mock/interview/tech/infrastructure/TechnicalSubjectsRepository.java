@@ -1,7 +1,6 @@
-package com.mock.interview.interview.infrastructure;
+package com.mock.interview.tech.infrastructure;
 
-import com.mock.interview.interview.domain.category.TechnicalSubjects;
-import lombok.Getter;
+import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
