@@ -1,5 +1,6 @@
 package com.mock.interview.interview.presentation.dto;
 
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import lombok.*;
 
 @Data

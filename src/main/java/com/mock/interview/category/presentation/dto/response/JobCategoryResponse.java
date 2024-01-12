@@ -1,4 +1,4 @@
-package com.mock.interview.interview.presentation.dto.response;
+package com.mock.interview.category.presentation.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

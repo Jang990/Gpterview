@@ -11,7 +11,7 @@ import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.interview.infrastructure.interview.dto.InterviewProfile;
-import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
 import com.mock.interview.candidate.domain.model.CandidateProfile;
 import com.mock.interview.candidate.domain.exception.CandidateProfileNotFoundException;

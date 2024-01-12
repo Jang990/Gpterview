@@ -1,7 +1,7 @@
 package com.mock.interview.user.application;
 
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.candidate.domain.model.CandidateProfile;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileOverviewDto;
 

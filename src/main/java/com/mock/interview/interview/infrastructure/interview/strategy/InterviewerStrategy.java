@@ -4,8 +4,6 @@ import com.mock.interview.interview.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.interview.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.interview.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.interview.infrastructure.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
-import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
 
 /**
  * 인터뷰 타입에 따라 각 분야(ex IT, 회계, 영업)별 인터뷰 형식 설정.

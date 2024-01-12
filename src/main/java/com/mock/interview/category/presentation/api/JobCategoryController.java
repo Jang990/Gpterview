@@ -1,8 +1,8 @@
 package com.mock.interview.category.presentation.api;
 
 import com.mock.interview.category.application.JobCategoryService;
-import com.mock.interview.interview.presentation.dto.response.DepartmentCategoryDetailResponse;
-import com.mock.interview.interview.presentation.dto.response.JobCategoryResponse;
+import com.mock.interview.category.presentation.dto.response.DepartmentCategoryDetailResponse;
+import com.mock.interview.category.presentation.dto.response.JobCategoryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
