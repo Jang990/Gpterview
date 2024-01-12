@@ -1,24 +1,17 @@
 package com.mock.interview.interview.presentation.web;
 
-import com.mock.interview.global.security.form.UsersContext;
 import com.mock.interview.interview.application.InterviewService;
-import com.mock.interview.interview.application.JobCategoryService;
-import com.mock.interview.interview.domain.Category;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.user.application.CandidateProfileService;
-import com.mock.interview.user.domain.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -27,7 +20,6 @@ public class InterviewController {
 
     private final CandidateProfileService candidateProfileService;
     private final InterviewService interviewService;
-    private final JobCategoryService categoryService;
 
     @PostMapping("/interview")
     public String startInterviewPage(
@@ -44,22 +36,6 @@ public class InterviewController {
         return "redirect:/interview/" + interviewId;
     }
 
-    @GetMapping("/interview/candidate/profile/{profileId}")
-    public String loadProfileInInterviewSettingPage(
-            Model model,
-            @AuthenticationPrincipal(expression = "id") Long loginId,
-            @PathVariable(name = "profileId") long profileId
-    ) {
-        model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("categoryList", categoryService.findAllDepartment());
-        model.addAttribute("interviewDetails", new InterviewDetailsDto());
-        CandidateProfileForm form = candidateProfileService.findProfile(profileId, loginId);
-        System.out.println(form);
-        model.addAttribute("candidateProfile", form);
-        return "interview/interview-setting";
-    }
-
-    // TODO: 앞에 startInterviePage 메소드 삭제
     @GetMapping("/interview/{interviewId}")
     public String interviewPage(
             Model model,
@@ -77,29 +53,5 @@ public class InterviewController {
         historyDTO.getMessages().add(new MessageDto(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
         historyDTO.getMessages().add(new MessageDto(InterviewRole.USER.toString(), "네. 준비됐습니다."));
         return historyDTO;
-    }
-
-    @GetMapping("/interview/setting")
-    public String speechPage(
-            Model model, @AuthenticationPrincipal Users users
-//            @PathVariable(required = false, value = "candidateProfileId") Optional<Long> candidateProfileId
-    ) {
-        model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("categoryList", categoryService.findAllDepartment());
-        model.addAttribute("interviewDetails", new InterviewDetailsDto());
-        model.addAttribute("candidateProfile", new CandidateProfileForm());
-        return "interview/interview-setting";
-    }
-
-    private void validateAuthenticatedUser(Users users) {
-        // TODO: 커스텀 예외로 변경
-        if (users == null || users.getId() == null) {
-            throw new IllegalAccessError();
-        }
-    }
-
-    @GetMapping("/interview/setting/")
-    public String redirectSettingPage() {
-        return "redirect:/interview/setting";
     }
 }
