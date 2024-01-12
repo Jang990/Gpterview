@@ -1,8 +1,10 @@
 package com.mock.interview.user.application;
 
 import com.mock.interview.interview.domain.category.JobCategory;
+import com.mock.interview.interview.domain.category.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.interview.infrastructure.JobCategoryRepository;
+import com.mock.interview.interview.infrastructure.TechnicalSubjectsRepository;
 import com.mock.interview.interview.presentation.dto.CandidateProfileForm;
 import com.mock.interview.user.domain.CandidateProfile;
 import com.mock.interview.user.domain.Users;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -23,13 +26,28 @@ public class CandidateProfileService {
     private final UserRepository userRepository;
     private final CandidateProfileRepository profileRepository;
     private final JobCategoryRepository jobCategoryRepository;
+    private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     public long create(CandidateProfileForm candidateProfileForm, long userId) {
         Users user = userRepository.findById(userId).orElseThrow();
+        List<TechnicalSubjects> savedTech = saveTech(candidateProfileForm.getSkills());
         JobCategory field = jobCategoryRepository.findFieldWithDepartment(candidateProfileForm.getField())
                 .orElseThrow(JobCategoryNotFoundException::new);
-        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileForm, user, field.getDepartment(), field, null); // TODO: techList 조회 및 초기화 필요.
+        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileForm, user, field.getDepartment(), field, savedTech); // TODO: techList 조회 및 초기화 필요.
         return profileRepository.save(profile).getId();
+    }
+
+    private List<TechnicalSubjects> saveTech(List<String> skills) {
+        List<TechnicalSubjects> techList = technicalSubjectsRepository.findTech(skills);
+
+        List<String> savedNames = techList.stream().map(TechnicalSubjects::getName).toList();
+        skills.stream()
+                .filter(notSavedSkill -> !savedNames.contains(notSavedSkill))
+                .map(TechnicalSubjects::create)
+                .map(technicalSubjectsRepository::save)
+                .forEach(techList::add);
+
+        return techList;
     }
 
     public List<CandidateProfileOverviewDto> findProfiles(long userId) {
