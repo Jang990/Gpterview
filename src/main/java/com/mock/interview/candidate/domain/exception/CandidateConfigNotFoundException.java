@@ -5,12 +5,12 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class CandidateProfileNotFoundException extends CustomClientException {
-    public CandidateProfileNotFoundException() {
+public class CandidateConfigNotFoundException extends CustomClientException {
+    public CandidateConfigNotFoundException() {
         super(HttpStatus.NOT_FOUND, "candidate.profile.not.found");
     }
 
-    public CandidateProfileNotFoundException(Throwable cause) {
+    public CandidateConfigNotFoundException(Throwable cause) {
         super(cause, HttpStatus.NOT_FOUND, "candidate.profile.not.found");
     }
 }

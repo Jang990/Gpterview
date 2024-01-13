@@ -1,7 +1,6 @@
 package com.mock.interview.interview.application;
 
-import com.mock.interview.candidate.domain.model.CandidateProfile;
-import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.interview.domain.Interview;
@@ -33,15 +32,15 @@ public class InterviewReadOnlyService {
     public InterviewSettingDto findInterviewConfig(long interviewId, long loginId) {
         Interview interview = interviewRepository.findInterviewSetting(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-        List<JobCategory> interviewCategory = jobCategoryRepository.findInterviewCategory(interview.getCandidateProfile().getId());
+        List<JobCategory> interviewCategory = jobCategoryRepository.findInterviewCategory(interview.getCandidateConfig().getId());
         return convert(interview, interviewCategory);
     }
 
     private InterviewSettingDto convert(Interview interview, List<JobCategory> interviewCategory) {
-        CandidateProfileForm profileForm = new CandidateProfileForm(
+        CandidateConfigForm profileForm = new CandidateConfigForm(
                 null,
-                convert(interview.getCandidateProfile().getTechLink()).stream().map(TechnicalSubjectsResponse::getName).toList(),
-                interview.getCandidateProfile().getExperience()
+                convert(interview.getCandidateConfig().getTechLink()).stream().map(TechnicalSubjectsResponse::getName).toList(),
+                interview.getCandidateConfig().getExperience()
         );
         if(interviewCategory.get(0).isField())
             profileForm.setField(interviewCategory.get(0).getId());
@@ -60,7 +59,7 @@ public class InterviewReadOnlyService {
                         interview -> new InterviewCandidateOverview(
                                 interview.getId(), interview.getTitle(),
                                 interview.getType(), interview.getDurationMinutes(),
-                                convert(interview.getCandidateProfile().getTechLink()),
+                                convert(interview.getCandidateConfig().getTechLink()),
                                 interview.getCreatedAt()
                         )
                 ).toList();

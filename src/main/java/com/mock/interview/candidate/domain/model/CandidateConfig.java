@@ -5,7 +5,7 @@ import com.mock.interview.category.domain.model.ProfileJobCategoryLink;
 import com.mock.interview.tech.domain.model.ProfileTechLink;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
 import com.mock.interview.user.domain.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CandidateProfile extends BaseTimeEntity {
+public class CandidateConfig extends BaseTimeEntity {
     @Id
     @Column(name = "candidate_profile_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,25 +40,24 @@ public class CandidateProfile extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    // TODO: 임시로 techList는 null로 전부 적용해놓음
-    public static CandidateProfile createProfile(CandidateProfileForm profileDto, Users users, JobCategory department, JobCategory field, List<TechnicalSubjects> techList) {
-        CandidateProfile candidateProfile = new CandidateProfile();
-        candidateProfile.title = "새 프로필";
-        candidateProfile.experience = profileDto.getExperience();
-        candidateProfile.users = users;
+    public static CandidateConfig createProfile(CandidateConfigForm profileDto, Users users, JobCategory department, JobCategory field, List<TechnicalSubjects> techList) {
+        CandidateConfig candidateConfig = new CandidateConfig();
+        candidateConfig.title = String.format("%s-%s 지원", department.getName(), field.getName());
+        candidateConfig.experience = profileDto.getExperience();
+        candidateConfig.users = users;
 
         verifyJobCategory(department, field);
-        candidateProfile.jobLink = createJobCategoryLinks(candidateProfile, department, field);
+        candidateConfig.jobLink = createJobCategoryLinks(candidateConfig, department, field);
 
         if(techList != null)
-            candidateProfile.techLink = createTechLinks(candidateProfile, techList);
+            candidateConfig.techLink = createTechLinks(candidateConfig, techList);
 
-        return candidateProfile;
+        return candidateConfig;
     }
 
-    private static List<ProfileTechLink> createTechLinks(CandidateProfile candidateProfile, List<TechnicalSubjects> techList) {
+    private static List<ProfileTechLink> createTechLinks(CandidateConfig candidateConfig, List<TechnicalSubjects> techList) {
 
-        return techList.stream().map((tech) -> ProfileTechLink.createLink(candidateProfile, tech)).toList();
+        return techList.stream().map((tech) -> ProfileTechLink.createLink(candidateConfig, tech)).toList();
     }
 
     private static void verifyJobCategory(JobCategory department, JobCategory field) {
@@ -67,10 +66,10 @@ public class CandidateProfile extends BaseTimeEntity {
             throw new IllegalArgumentException("분야와 직무는 항상 있어야 함");
     }
 
-    private static List<ProfileJobCategoryLink> createJobCategoryLinks(CandidateProfile candidateProfile, JobCategory department, JobCategory field) {
+    private static List<ProfileJobCategoryLink> createJobCategoryLinks(CandidateConfig candidateConfig, JobCategory department, JobCategory field) {
         return List.of(
-                ProfileJobCategoryLink.createLink(candidateProfile, department),
-                ProfileJobCategoryLink.createLink(candidateProfile, field)
+                ProfileJobCategoryLink.createLink(candidateConfig, department),
+                ProfileJobCategoryLink.createLink(candidateConfig, field)
         );
     }
 

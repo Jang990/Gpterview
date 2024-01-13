@@ -11,11 +11,11 @@ import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewProfile;
-import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
-import com.mock.interview.candidate.domain.model.CandidateProfile;
-import com.mock.interview.candidate.domain.exception.CandidateProfileNotFoundException;
-import com.mock.interview.candidate.infrastructure.CandidateProfileRepository;
+import com.mock.interview.candidate.domain.model.CandidateConfig;
+import com.mock.interview.candidate.domain.exception.CandidateConfigNotFoundException;
+import com.mock.interview.candidate.infrastructure.CandidateConfigRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +28,15 @@ import java.util.List;
 public class InterviewService {
 
     private final InterviewRepository repository;
-    private final CandidateProfileRepository profileRepository;
+    private final CandidateConfigRepository profileRepository;
     private final InterviewConversationRepository conversationRepository;
     private final JobCategoryRepository jobCategoryRepository;
     private final InterviewDomain interviewDomain;
 
-    public long create(long loginId,long candidateProfileId, InterviewDetailsDto interviewSetting) {
-        CandidateProfile candidateProfile = profileRepository.findByIdWitUserId(candidateProfileId, loginId)
-                .orElseThrow(CandidateProfileNotFoundException::new);
-        Interview interview = Interview.startInterview(interviewSetting, candidateProfile.getUsers(), candidateProfile);
+    public long create(long loginId,long candidateConfigId, InterviewDetailsDto interviewSetting) {
+        CandidateConfig candidateConfig = profileRepository.findByIdWitUserId(candidateConfigId, loginId)
+                .orElseThrow(CandidateConfigNotFoundException::new);
+        Interview interview = Interview.startInterview(interviewSetting, candidateConfig.getUsers(), candidateConfig);
         return repository.save(interview).getId();
     }
 
@@ -45,7 +45,7 @@ public class InterviewService {
         Interview interview = repository.findInterviewSetting(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
 
-        List<JobCategory> category = jobCategoryRepository.findInterviewCategory(interview.getCandidateProfile().getId());
+        List<JobCategory> category = jobCategoryRepository.findInterviewCategory(interview.getCandidateConfig().getId());
         if (category.get(0).isDepartment()) {
             return convert(interview, category.get(0), category.get(1));
         } else {
@@ -54,7 +54,7 @@ public class InterviewService {
     }
 
     private static InterviewInfo convert(Interview interview, JobCategory department, JobCategory field) {
-        CandidateProfile profile = interview.getCandidateProfile();
+        CandidateConfig profile = interview.getCandidateConfig();
         return new InterviewInfo(
                 new InterviewProfile(
                         department.getName(), field.getName(),
@@ -65,7 +65,7 @@ public class InterviewService {
         );
     }
 
-    public void startInterview(CandidateProfileForm profile, InterviewDetailsDto interviewDetails) {
+    public void startInterview(CandidateConfigForm profile, InterviewDetailsDto interviewDetails) {
         // TODO: Redis - 인터뷰 횟수 검증
         // TODO: Redis - 인터뷰 정보 캐싱(인터뷰 정보, 진행시간 등등)
         // TODO: DB - 인터뷰 정보 영구 저장

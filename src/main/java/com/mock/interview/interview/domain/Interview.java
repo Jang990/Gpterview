@@ -4,7 +4,7 @@ import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
 import com.mock.interview.interview.presentation.dto.InterviewType;
-import com.mock.interview.candidate.domain.model.CandidateProfile;
+import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.user.domain.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -48,9 +48,9 @@ public class Interview extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidate_profile_id")
-    private CandidateProfile candidateProfile;
+    private CandidateConfig candidateConfig;
 
-    public static Interview startInterview(InterviewDetailsDto interviewSetting, Users user, CandidateProfile profile) {
+    public static Interview startInterview(InterviewDetailsDto interviewSetting, Users user, CandidateConfig profile) {
         Interview interview = new Interview();
         LocalDateTime now = LocalDateTime.now();
         interview.title = createTimeTitle(interview, now);
@@ -60,7 +60,7 @@ public class Interview extends BaseTimeEntity {
         interview.isActive = true;
         interview.isDeleted = false;
         interview.users = user;
-        interview.candidateProfile = profile;
+        interview.candidateConfig = profile;
 
         return interview;
     }

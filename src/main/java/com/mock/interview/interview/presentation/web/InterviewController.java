@@ -1,13 +1,13 @@
 package com.mock.interview.interview.presentation.web;
 
-import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.conversation.presentation.dto.MessageHistoryDto;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
 import com.mock.interview.interview.presentation.dto.*;
-import com.mock.interview.candidate.application.CandidateProfileService;
+import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InterviewController {
 
-    private final CandidateProfileService candidateProfileService;
+    private final CandidateConfigService candidateConfigService;
     private final InterviewService interviewService;
     private final TechnicalSubjectsService technicalSubjectsService;
 
@@ -36,7 +36,7 @@ public class InterviewController {
     @InterviewUserLock
     public String startInterviewPage(
             Model model,
-            CandidateProfileForm profile,
+            CandidateConfigForm profile,
             InterviewDetailsDto interviewDetails,
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
@@ -44,8 +44,8 @@ public class InterviewController {
 
         List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTech(profile.getSkills());
         // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
-        long candidateProfileId = candidateProfileService.create(profile, loginId, relationalTech);
-        long interviewId = interviewService.create(loginId, candidateProfileId, interviewDetails);
+        long candidateConfigId = candidateConfigService.create(profile, loginId, relationalTech);
+        long interviewId = interviewService.create(loginId, candidateConfigId, interviewDetails);
         return "redirect:/interview/" + interviewId;
     }
 

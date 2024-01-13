@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv " +
-            "join fetch iv.candidateProfile " +
-            "left join fetch iv.candidateProfile.techLink " +
-            "left join fetch iv.candidateProfile.techLink.technicalSubjects " +
+            "join fetch iv.candidateConfig " +
+            "left join fetch iv.candidateConfig.techLink " +
+            "left join fetch iv.candidateConfig.techLink.technicalSubjects " +
             "Where iv.id = :interviewId And iv.users.id = :userId")
     Optional<Interview> findInterviewSetting(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
@@ -20,9 +20,9 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     Optional<Interview> findByIdWitUserId(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
     @Query("Select iv From Interview iv " +
-            "join fetch iv.candidateProfile " +
-            "left join fetch iv.candidateProfile.techLink " +
-            "left join fetch iv.candidateProfile.techLink.technicalSubjects " +
+            "join fetch iv.candidateConfig " +
+            "left join fetch iv.candidateConfig.techLink " +
+            "left join fetch iv.candidateConfig.techLink.technicalSubjects " +
             "Where iv.users.id = :userId")
     List<Interview> findUserInterviewWithProfileAndTech(@Param("userId") long userId);
 }

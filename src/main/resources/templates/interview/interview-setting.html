@@ -53,7 +53,7 @@
                 <hr>
 
                 <h3 class="my-3">지원자 정보 설정</h3>
-                <th:block th:object="${candidateProfile}">
+                <th:block th:object="${candidateConfig}">
                     <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(loadField=*{field},departmentList=${categoryList})}">분야, 직무 카테고리 선택 구역</div>
 
                     <div class="mb-5 col">

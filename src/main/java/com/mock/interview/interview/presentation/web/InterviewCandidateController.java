@@ -1,11 +1,11 @@
 package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.category.application.JobCategoryService;
-import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
 import com.mock.interview.interview.application.InterviewReadOnlyService;
 import com.mock.interview.interview.presentation.dto.InterviewCandidateOverview;
 import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
-import com.mock.interview.candidate.application.CandidateProfileService;
+import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
 import com.mock.interview.user.domain.Users;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.util.List;
 public class InterviewCandidateController {
 
     private final JobCategoryService categoryService;
-    private final CandidateProfileService candidateProfileService;
+    private final CandidateConfigService candidateConfigService;
     private final InterviewReadOnlyService interviewReadOnlyService;
 
     @GetMapping("/interview/setting")
@@ -35,7 +35,7 @@ public class InterviewCandidateController {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("categoryList", categoryService.findAllDepartment());
         model.addAttribute("interviewDetails", new InterviewDetailsDto());
-        model.addAttribute("candidateProfile", new CandidateProfileForm());
+        model.addAttribute("candidateConfig", new CandidateConfigForm());
         return "interview/interview-setting";
     }
 
@@ -62,7 +62,7 @@ public class InterviewCandidateController {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("categoryList", categoryService.findAllDepartment());
         model.addAttribute("interviewDetails", interviewConfig.getInterviewDetails());
-        model.addAttribute("candidateProfile", interviewConfig.getProfile());
+        model.addAttribute("candidateConfig", interviewConfig.getProfile());
         return "interview/interview-setting";
     }
 }

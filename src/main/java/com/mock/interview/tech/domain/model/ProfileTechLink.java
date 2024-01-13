@@ -1,6 +1,6 @@
 package com.mock.interview.tech.domain.model;
 
-import com.mock.interview.candidate.domain.model.CandidateProfile;
+import com.mock.interview.candidate.domain.model.CandidateConfig;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,13 +17,13 @@ public class ProfileTechLink {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidate_profile_id")
-    private CandidateProfile profile;
+    private CandidateConfig profile;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "technical_subjects_id")
     private TechnicalSubjects technicalSubjects;
 
-    public static ProfileTechLink createLink(CandidateProfile profile, TechnicalSubjects tech) {
+    public static ProfileTechLink createLink(CandidateConfig profile, TechnicalSubjects tech) {
         ProfileTechLink link = new ProfileTechLink();
         link.profile = profile;
         link.technicalSubjects = tech;

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateProfileOverviewDto {
+public class CandidateConfigOverviewDto {
     private long id;
     private String title;
     private String department;  // "개발", "영업", "세무"
