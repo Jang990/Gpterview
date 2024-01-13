@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <th:block th:fragment="fragment-interview-config-select">
+  <th:block th:fragment="fragment-interview-config-select(selectedType)">
     <label for="interviewType" class="col-sm-1 col-form-label">면접 타입</label>
     <div class="col-sm-3">
       <select id="interviewType" name="interviewType" class="form-select" aria-label="Select Type">
-        <option th:each="interviewType : ${T(com.mock.interview.interview.presentation.dto.InterviewType).values()}"
+        <option th:each="interviewType, interviewTypeStat : ${T(com.mock.interview.interview.presentation.dto.InterviewType).values()}"
                 th:value="${interviewType}"
+                th:selected="(interviewTypeStat.count == 1 and ${interviewType} == null) or ${interviewType} == ${selectedType}"
                 th:text="${interviewType.name}">
           면접 진행 방식
         </option>

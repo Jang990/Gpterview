@@ -5,6 +5,7 @@ import lombok.*;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class InterviewSettingDto {
     private CandidateProfileForm profile;
     private InterviewDetailsDto interviewDetails;

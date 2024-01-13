@@ -23,22 +23,29 @@
                                 <tr>
                                     <th>번호</th>
                                     <th>제목</th>
-                                    <th>지원 직무</th>
-                                    <th>지원 직군</th>
+                                    <th>면접 타입</th>
+                                    <th>면접 시간</th>
+                                    <th>관련 기술</th>
                                     <th>생성일</th>
                                     <th class="text-end"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="align-middle accordion" th:each="candidateProfile, candidateProfileStat : ${candidateProfileOverviewList}">
-                                    <td th:text="${candidateProfileStat.count}"></td>
-                                    <td><div class="h6 mb-0 lh-1" th:text="${candidateProfile.title}">프로필 제목</div></td>
-                                    <td th:text="${candidateProfile.department}">분야 ex) IT</td>
-                                    <td><span class="d-inline-block align-middle" th:text="${candidateProfile.field}">직군 ex) 백엔드</span></td>
-                                    <td th:text="${#temporals.format(candidateProfile.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
+                                <tr class="align-middle accordion" th:each="candidateOverview, candidateOverviewStat : ${candidateOverviewList}">
+                                    <td th:text="${candidateOverviewStat.count}"></td>
+                                    <td><div class="h6 mb-0 lh-1" th:text="${candidateOverview.title}">면접 제목</div></td>
+                                    <td th:text="${candidateOverview.type}">면접 타입</td>
+                                    <td th:text="|${candidateOverview.durationMinutes}분|">면접 시간</td>
+                                    <td>
+                                        <span th:if="${#lists.isEmpty(candidateOverview.skills)}">관련 기술 없음</span>
+                                        <th:block th:each="skill : ${candidateOverview.skills}">
+                                            <a class="btn btn-secondary btn-sm" th:href="@{/skill/{skillId}(skillId=${skill.id})}" th:text="${skill.name}"></a>
+                                        </th:block>
+                                    </td>
+                                    <td th:text="${#temporals.format(candidateOverview.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
                                     <td class="d-flex justify-content-end">
-                                        <a class="btn btn-primary me-3" th:href="@{/interview/candidate/profile/{candidateProfileId}(candidateProfileId=${candidateProfile.id})}">불러오기</a>
-                                        <a class="btn btn-secondary" th:href="@{/candidate/profile/{candidateProfileId}(candidateProfileId=${candidateProfile.id})}">자세히</a>
+                                        <a class="btn btn-primary me-3" th:href="@{/interview/candidate/{interviewId}(interviewId=${candidateOverview.interviewId})}">불러오기</a>
+                                        <a class="btn btn-secondary" th:href="@{/candidate/profile/{candidateProfileId}(candidateProfileId=${candidateOverview.interviewId})}">자세히</a>
                                     </td>
                                 </tr>
                                 </tbody>
