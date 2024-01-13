@@ -12,35 +12,47 @@
             <!-- 모의 면접을 시작하기 앞서 초기 세팅을 하는 페이지 입니다. -->
 
             <!--
-            기존에 저장한 인터뷰 설정이 있는지 확인합니다.
-            로그인을 한 사용자라면, 기존 세팅을 불러올 수 있습니다.
-            -->
-            <div>
-                <div sec:authorize="isAnonymous()">
-                    <lable>로그인을 하면 기존 설정을 불러올 수 있어요!</lable>
-                    <a href="/interview/setting" class="btn btn-primary">Login</a>
-                </div>
-
-                <div sec:authorize="isAuthenticated()">
-                    <!-- TODO: 저장하기 눌렀을 때 프로필 타이틀 설정 Toast -->
-                    <!-- <input type="submit" sec:authorize="isAuthenticated()" class="btn btn-success" value="저장하기"> -->
-                    <!-- TODO: 가장 최근 정보 불러오기. -->
-                    <a class="btn btn-secondary" href="/interview/candidate">인터뷰 설정 불러오기</a>
-                </div>
-            </div>
-
-            <hr>
-
-
-            <h3 class="my-3">지원자 정보 설정</h3>
-
-            <!--
             어느 분야에 지원했는지.
             어느 직군에 지원했는지.
             어느 기술을 가지고 있는지.
             관련 자기소개서가 있는지.
             -->
             <form action="/interview" method="POST">
+                <!--
+            기존에 저장한 인터뷰 설정이 있는지 확인합니다.
+            로그인을 한 사용자라면, 기존 세팅을 불러올 수 있습니다.
+            -->
+                <div>
+                    <div sec:authorize="isAnonymous()">
+                        <input type="submit" class="btn btn-success" value="면접 시작">
+                        <lable>로그인을 하면 기존 설정을 불러올 수 있어요!</lable>
+                        <a href="/interview/setting" class="btn btn-primary">Login</a>
+                    </div>
+
+                    <div sec:authorize="isAuthenticated()">
+                        <input type="submit" class="btn btn-success" value="면접 시작">
+                        <!-- TODO: 저장하기 눌렀을 때 프로필 타이틀 설정 Toast -->
+                        <!-- <input type="submit" sec:authorize="isAuthenticated()" class="btn btn-success" value="저장하기"> -->
+                        <!-- TODO: 가장 최근 정보 불러오기. -->
+                        <a class="btn btn-secondary" href="/interview/candidate">인터뷰 설정 불러오기</a>
+                    </div>
+                </div>
+
+                <hr>
+
+                <h3 class="my-3">모의면접 설정</h3>
+                <!--
+                면접 시간을 어느정도로 설정할 것인지. 30분 40분 등등...
+                인성 면접 or 기술 면접 or 인성 + 기술면접 으로 진행할 것인지...
+                등의 면접 진행 방식을 세팅해줍니다.
+                -->
+                <div class="mb-3 row" th:object="${interviewDetails}">
+                    <div th:replace="~{fragments/setting/interview-config-select :: fragment-interview-config-select(selectedMinutes=*{durationMinutes},selectedType=*{interviewType})}">인터뷰 설정 부분</div>
+                </div>
+
+                <hr>
+
+                <h3 class="my-3">지원자 정보 설정</h3>
                 <th:block th:object="${candidateProfile}">
                     <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(loadField=*{field},departmentList=${categoryList})}">분야, 직무 카테고리 선택 구역</div>
 
@@ -82,35 +94,6 @@
 
                 <hr>
 
-
-                <h3 class="my-3">모의면접 설정</h3>
-                <!--
-                면접 시간을 어느정도로 설정할 것인지. 30분 40분 등등...
-                인성 면접 or 기술 면접 or 인성 + 기술면접 으로 진행할 것인지...
-                등의 면접 진행 방식을 세팅해줍니다.
-                -->
-                <th:block th:object="${interviewDetails}">
-                    <div class="mb-3 row">
-                        <label for="durationMinutes" class="col-sm-1 col-form-label">면접 시간</label>
-                        <div class="col-sm-3">
-                            <select id="durationMinutes" name="durationMinutes" class="form-select" aria-label="Select Time" required>
-                                <option value="30" th:selected="*{durationMinutes eq 30}">30분</option>
-                                <option value="40" th:selected="*{durationMinutes eq 40}">40분</option>
-                                <option value="50" th:selected="*{durationMinutes eq 50}">50분</option>
-                                <option value="60" th:selected="*{durationMinutes eq 60}">60분</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-3 row">
-                        <div th:replace="~{fragments/setting/interview-config-select :: fragment-interview-config-select(selectedType=*{interviewType})}">인터뷰 설정 부분</div>
-                    </div>
-                </th:block>
-
-                <hr>
-                <br>
-
-                <input type="submit" class="btn btn-success mb-5" value="면접 시작">
             </form>
         </div>
     </section>
