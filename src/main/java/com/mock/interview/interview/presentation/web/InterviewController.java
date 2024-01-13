@@ -5,6 +5,7 @@ import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.conversation.presentation.dto.MessageHistoryDto;
 import com.mock.interview.interview.application.InterviewService;
+import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.candidate.application.CandidateProfileService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class InterviewController {
     private final InterviewService interviewService;
 
     @PostMapping("/interview")
+    @InterviewUserLock
     public String startInterviewPage(
             Model model,
             CandidateProfileForm profile,
