@@ -7,10 +7,12 @@ import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.tech.infrastructure.TechnicalSubjectsRepository;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.candidate.domain.model.CandidateProfile;
+import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import com.mock.interview.user.application.UserConvertor;
 import com.mock.interview.user.domain.Users;
 import com.mock.interview.candidate.domain.exception.CandidateProfileNotFoundException;
 import com.mock.interview.candidate.infrastructure.CandidateProfileRepository;
+import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.infrastructure.UserRepository;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileOverviewDto;
 import lombok.RequiredArgsConstructor;
@@ -28,27 +30,19 @@ public class CandidateProfileService {
     private final JobCategoryRepository jobCategoryRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
-    public long create(CandidateProfileForm candidateProfileForm, long userId) {
-        Users user = userRepository.findById(userId).orElseThrow();
-        List<TechnicalSubjects> savedTech = saveTech(candidateProfileForm.getSkills());
+    public long create(CandidateProfileForm candidateProfileForm, long userId, List<TechnicalSubjectsResponse> relationalTech) {
+        Users user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+        List<TechnicalSubjects> techs = technicalSubjectsRepository.findAllById(convertToTechId(relationalTech));
         JobCategory field = jobCategoryRepository.findFieldWithDepartment(candidateProfileForm.getField())
                 .orElseThrow(JobCategoryNotFoundException::new);
-        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileForm, user, field.getDepartment(), field, savedTech); // TODO: techList 조회 및 초기화 필요.
+
+        CandidateProfile profile = CandidateProfile.createProfile(candidateProfileForm, user, field.getDepartment(), field, techs);
         return profileRepository.save(profile).getId();
     }
 
-    private List<TechnicalSubjects> saveTech(List<String> skills) {
-        List<TechnicalSubjects> techList = technicalSubjectsRepository.findTech(skills);
-
-        List<String> savedNames = techList.stream().map(TechnicalSubjects::getName).toList();
-        skills.stream()
-                .map(String::toUpperCase)
-                .filter(notSavedSkill -> !savedNames.contains(notSavedSkill))
-                .map(TechnicalSubjects::create)
-                .map(technicalSubjectsRepository::save)
-                .forEach(techList::add);
-
-        return techList;
+    private List<Long> convertToTechId(List<TechnicalSubjectsResponse> relationalTech) {
+        return relationalTech.stream().map(TechnicalSubjectsResponse::getId).toList();
     }
 
     public List<CandidateProfileOverviewDto> findProfiles(long userId) {

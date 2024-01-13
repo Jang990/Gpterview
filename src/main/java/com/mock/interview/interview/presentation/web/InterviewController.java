@@ -8,6 +8,8 @@ import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.candidate.application.CandidateProfileService;
+import com.mock.interview.tech.application.TechnicalSubjectsService;
+import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 
 @Slf4j
 @Controller
@@ -25,6 +29,8 @@ public class InterviewController {
 
     private final CandidateProfileService candidateProfileService;
     private final InterviewService interviewService;
+    private final TechnicalSubjectsService technicalSubjectsService;
+
 
     @PostMapping("/interview")
     @InterviewUserLock
@@ -36,8 +42,9 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
 
+        List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTech(profile.getSkills());
         // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
-        long candidateProfileId = candidateProfileService.create(profile, loginId);
+        long candidateProfileId = candidateProfileService.create(profile, loginId, relationalTech);
         long interviewId = interviewService.create(loginId, candidateProfileId, interviewDetails);
         return "redirect:/interview/" + interviewId;
     }
