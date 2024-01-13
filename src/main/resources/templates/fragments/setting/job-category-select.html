@@ -8,7 +8,6 @@
 
       <div class="col-2">
         <select name="department" id="department" class="form-select" aria-label="Select Department" required>
-          <option  disabled hidden selected>선택해주세요</option>
           <option th:each="department : ${departmentList}"
                   th:value="${department.id}" th:text="${department.name}">IT (프로그래밍)</option>
           <option disabled>다른 분야 추가 예정</option>
@@ -42,7 +41,7 @@
       <label for="field"  class="col-sm-1 col-form-label">지원 직군</label>
       <div class="col-sm-2">
         <select name="field" id="field" class="form-select" aria-label="Select Field" required>
-          <option disabled hidden selected>분야를 선택해주세요.</option>
+          <option disabled>분야를 선택해주세요.</option>
         </select>
       </div>
       <div class="col-sm-2">
