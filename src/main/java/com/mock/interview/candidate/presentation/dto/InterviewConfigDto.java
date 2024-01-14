@@ -1,4 +1,4 @@
-package com.mock.interview.interview.presentation.dto;
+package com.mock.interview.candidate.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InterviewDetailsDto {
+public class InterviewConfigDto {
     // TODO: 클래스명을 InterviewConfig로 변경할 것.
     private InterviewType interviewType;
     private int durationMinutes;

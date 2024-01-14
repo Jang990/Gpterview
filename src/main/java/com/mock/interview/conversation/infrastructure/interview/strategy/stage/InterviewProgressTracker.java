@@ -2,7 +2,7 @@ package com.mock.interview.conversation.infrastructure.interview.strategy.stage;
 
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
-import com.mock.interview.interview.presentation.dto.InterviewType;
+import com.mock.interview.candidate.presentation.dto.InterviewType;
 import org.springframework.stereotype.Component;
 
 /**

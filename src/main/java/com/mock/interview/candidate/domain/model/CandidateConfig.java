@@ -1,13 +1,13 @@
 package com.mock.interview.candidate.domain.model;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
-import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
-import com.mock.interview.interview.presentation.dto.InterviewType;
+import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
+import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.ProfileTechLink;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.user.domain.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -48,10 +48,10 @@ public class CandidateConfig extends BaseTimeEntity {
     private Users users;
 
     public static CandidateConfig createProfile(
-            InterviewSettingDto interviewSettingDto,
+            InterviewCandidateForm interviewCandidateForm,
             Users users, JobCategory field, List<TechnicalSubjects> techList) {
-        CandidateConfigForm profileDto = interviewSettingDto.getProfile();
-        InterviewDetailsDto interviewDetails = interviewSettingDto.getInterviewDetails();
+        CandidateProfileForm profileDto = interviewCandidateForm.getProfile();
+        InterviewConfigDto interviewDetails = interviewCandidateForm.getInterviewDetails();
 
         CandidateConfig candidateConfig = new CandidateConfig();
         candidateConfig.users = users;
@@ -67,7 +67,7 @@ public class CandidateConfig extends BaseTimeEntity {
     }
 
     private static void setCandidateProfile(
-            CandidateConfig candidateConfig, CandidateConfigForm profileDto,
+            CandidateConfig candidateConfig, CandidateProfileForm profileDto,
             List<TechnicalSubjects> techList, JobCategory field
     ) {
         candidateConfig.experience = profileDto.getExperience();
@@ -77,9 +77,9 @@ public class CandidateConfig extends BaseTimeEntity {
         setCategory(candidateConfig, field);
     }
 
-    private static void configInterviewSetting(CandidateConfig candidateConfig, InterviewDetailsDto interviewDetailsDto) {
-        candidateConfig.type = interviewDetailsDto.getInterviewType();
-        candidateConfig.durationMinutes = interviewDetailsDto.getDurationMinutes();
+    private static void configInterviewSetting(CandidateConfig candidateConfig, InterviewConfigDto interviewConfigDto) {
+        candidateConfig.type = interviewConfigDto.getInterviewType();
+        candidateConfig.durationMinutes = interviewConfigDto.getDurationMinutes();
     }
 
     private static List<ProfileTechLink> createTechLinks(CandidateConfig candidateConfig, List<TechnicalSubjects> techList) {

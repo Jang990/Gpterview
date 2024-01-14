@@ -3,10 +3,10 @@ package com.mock.interview.candidate.application;
 import com.mock.interview.candidate.domain.exception.CandidateConfigNotFoundException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.candidate.infrastructure.CandidateConfigRepository;
-import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
-import com.mock.interview.interview.presentation.dto.InterviewCandidateOverview;
-import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
-import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.InterviewCandidateOverview;
+import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.tech.domain.model.ProfileTechLink;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
@@ -26,7 +26,7 @@ public class CandidateConfigReadOnlyService {
         return convertToInterviewOverview(userInterview);
     }
 
-    public InterviewSettingDto findCandidate(long candidateId, long loginId) {
+    public InterviewCandidateForm findCandidate(long candidateId, long loginId) {
         CandidateConfig candidateConfig = candidateConfigRepository.findInterviewConfig(candidateId, loginId)
                 .orElseThrow(CandidateConfigNotFoundException::new);
         return convert(candidateConfig);
@@ -50,11 +50,11 @@ public class CandidateConfigReadOnlyService {
                 .map(tech -> new TechnicalSubjectsResponse(tech.getId(), tech.getName())).toList();
     }
 
-    private InterviewSettingDto convert(CandidateConfig candidateConfig) {
-        return new InterviewSettingDto(
-                new CandidateConfigForm(candidateConfig.getAppliedJob().getId(),
+    private InterviewCandidateForm convert(CandidateConfig candidateConfig) {
+        return new InterviewCandidateForm(
+                new CandidateProfileForm(candidateConfig.getAppliedJob().getId(),
                         convertStringList(candidateConfig.getTechLink()), candidateConfig.getExperience()),
-                new InterviewDetailsDto(candidateConfig.getType(), candidateConfig.getDurationMinutes())
+                new InterviewConfigDto(candidateConfig.getType(), candidateConfig.getDurationMinutes())
         );
     }
 

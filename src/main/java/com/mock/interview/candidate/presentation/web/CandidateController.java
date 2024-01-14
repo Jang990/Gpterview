@@ -1,13 +1,11 @@
 package com.mock.interview.candidate.presentation.web;
 
 import com.mock.interview.candidate.application.CandidateConfigReadOnlyService;
-import com.mock.interview.candidate.application.CandidateConfigService;
-import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.category.application.JobCategoryService;
-import com.mock.interview.interview.application.InterviewReadOnlyService;
-import com.mock.interview.interview.presentation.dto.InterviewCandidateOverview;
-import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
-import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
+import com.mock.interview.candidate.presentation.dto.InterviewCandidateOverview;
+import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.user.domain.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,8 +29,8 @@ public class CandidateController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("categoryList", categoryService.findAllDepartment());
-        model.addAttribute("interviewDetails", new InterviewDetailsDto());
-        model.addAttribute("candidateConfig", new CandidateConfigForm());
+        model.addAttribute("interviewDetails", new InterviewConfigDto());
+        model.addAttribute("candidateConfig", new CandidateProfileForm());
         return "interview/interview-candidate-form";
     }
 
@@ -50,7 +48,7 @@ public class CandidateController {
             @PathVariable(name = "candidateId") long candidateId,
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
-        InterviewSettingDto interviewConfig = candidateConfigReadOnlyService.findCandidate(candidateId, loginId);
+        InterviewCandidateForm interviewConfig = candidateConfigReadOnlyService.findCandidate(candidateId, loginId);
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("categoryList", categoryService.findAllDepartment());
         model.addAttribute("interviewDetails", interviewConfig.getInterviewDetails());

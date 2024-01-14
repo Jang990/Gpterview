@@ -6,7 +6,7 @@ import com.mock.interview.conversation.infrastructure.interview.dto.MessageHisto
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgressTracker;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
-import com.mock.interview.interview.presentation.dto.InterviewType;
+import com.mock.interview.candidate.presentation.dto.InterviewType;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

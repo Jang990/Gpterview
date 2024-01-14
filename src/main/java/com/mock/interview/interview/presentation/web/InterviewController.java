@@ -1,12 +1,13 @@
 package com.mock.interview.interview.presentation.web;
 
-import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
+import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.conversation.presentation.dto.MessageHistoryDto;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
-import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
@@ -36,15 +37,15 @@ public class InterviewController {
     @InterviewUserLock
     public String startInterviewPage(
             Model model,
-            CandidateConfigForm profile,
-            InterviewDetailsDto interviewDetails,
+            CandidateProfileForm profile,
+            InterviewConfigDto interviewDetails,
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
         model.addAttribute("headerActiveTap", "interview");
 
-        InterviewSettingDto interviewSettingDto = new InterviewSettingDto(profile, interviewDetails);
+        InterviewCandidateForm interviewCandidateForm = new InterviewCandidateForm(profile, interviewDetails);
         List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTech(profile.getSkills());
-        long candidateConfigId = candidateConfigService.create(interviewSettingDto, loginId, relationalTech);
+        long candidateConfigId = candidateConfigService.create(interviewCandidateForm, loginId, relationalTech);
         long interviewId = interviewService.create(loginId, candidateConfigId);
         return "redirect:/interview/" + interviewId;
     }
