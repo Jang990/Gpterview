@@ -44,8 +44,11 @@
                                     </td>
                                     <td th:text="${#temporals.format(candidateOverview.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
                                     <td class="d-flex justify-content-end">
-                                        <a class="btn btn-primary me-3" th:href="@{/interview/candidate/{candidateId}/form(candidateId=${candidateOverview.candidateId})}">불러오기</a>
-                                        <a class="btn btn-secondary" th:href="@{/interview/candidate/{candidateId}(candidateId=${candidateOverview.candidateId})}">자세히</a>
+                                        <form method="post" th:action="|/interview/candidate/${candidateOverview.candidateId}|" >
+                                            <input type="submit" class="btn btn-success me-1 btn-sm" value="바로시작">
+                                        </form>
+                                        <a class="btn btn-primary me-1 btn-sm" th:href="@{/interview/candidate/{candidateId}/form(candidateId=${candidateOverview.candidateId})}">불러오기</a>
+                                        <a class="btn btn-secondary btn-sm" th:href="@{/interview/candidate/{candidateId}(candidateId=${candidateOverview.candidateId})}">자세히</a>
                                     </td>
                                 </tr>
                                 </tbody>

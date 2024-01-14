@@ -35,18 +35,25 @@ public class InterviewController {
 
     @PostMapping("/interview")
     @InterviewUserLock
-    public String startInterviewPage(
-            Model model,
+    public String startInterviewRequest(
             CandidateProfileForm profile,
             InterviewConfigDto interviewDetails,
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
-        model.addAttribute("headerActiveTap", "interview");
-
         InterviewCandidateForm interviewCandidateForm = new InterviewCandidateForm(profile, interviewDetails);
         List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTech(profile.getSkills());
         long candidateConfigId = candidateConfigService.create(interviewCandidateForm, loginId, relationalTech);
         long interviewId = interviewService.create(loginId, candidateConfigId);
+        return "redirect:/interview/" + interviewId;
+    }
+
+    @PostMapping("/interview/candidate/{candidateId}")
+    @InterviewUserLock
+    public String startInterviewWithConfigRequest(
+            @PathVariable(name = "candidateId") long candidateId,
+            @AuthenticationPrincipal(expression = "id") Long loginId
+    ) {
+        long interviewId = interviewService.create(loginId, candidateId);
         return "redirect:/interview/" + interviewId;
     }
 
