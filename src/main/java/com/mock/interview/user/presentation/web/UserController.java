@@ -1,10 +1,16 @@
 package com.mock.interview.user.presentation.web;
 
+import com.mock.interview.global.exception.CustomClientException;
+import com.mock.interview.interview.application.InterviewReadOnlyService;
+import com.mock.interview.interview.application.InterviewService;
+import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.user.application.UserService;
+import com.mock.interview.user.domain.Users;
 import com.mock.interview.user.presentation.dto.AccountDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,11 +19,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Optional;
+
 @Controller
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final InterviewService interviewService;
 
     @GetMapping("auth/login")
     public String loginPage(Model model) {
@@ -32,8 +41,23 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public String indexPage() {
+    public String indexPage(Model model, @AuthenticationPrincipal Users users) {
+        if(users != null)
+            containActiveInterview(model, users.getId());
+        else
+            model.addAttribute("activeInterview", new InterviewResponse());
+
         return "index";
+    }
+
+    private void containActiveInterview(Model model, Long loginId) {
+        InterviewResponse activeInterview;
+        try {
+            activeInterview = interviewService.findActiveInterview(loginId);
+        } catch (CustomClientException e) {
+            activeInterview = new InterviewResponse();
+        }
+        model.addAttribute("activeInterview", activeInterview);
     }
 
     @GetMapping("/auth/{username}")

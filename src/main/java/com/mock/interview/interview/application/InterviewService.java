@@ -3,11 +3,10 @@ package com.mock.interview.interview.application;
 import com.mock.interview.interview.InterviewDomain;
 import com.mock.interview.interview.domain.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
-import com.mock.interview.conversation.infrastructure.InterviewConversationRepository;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewProfile;
@@ -27,12 +26,25 @@ public class InterviewService {
 
     private final InterviewRepository repository;
     private final CandidateConfigRepository profileRepository;
+    private final InterviewDomain interviewDomain;
 
     public long create(long loginId,long candidateConfigId) {
         CandidateConfig candidateConfig = profileRepository.findInterviewConfig(candidateConfigId, loginId)
                 .orElseThrow(CandidateConfigNotFoundException::new);
         Interview interview = Interview.startInterview(candidateConfig, candidateConfig.getUsers());
         return repository.save(interview).getId();
+    }
+
+    public InterviewResponse findActiveInterview(long userId) {
+        Interview activeInterview = repository.findActiveInterview(userId)
+                .orElseThrow(InterviewNotFoundException::new);
+
+        interviewDomain.verifyActiveInterview(activeInterview);
+        return convert(activeInterview);
+    }
+
+    private InterviewResponse convert(Interview activeInterview) {
+        return new InterviewResponse(activeInterview.getId(), activeInterview.getTitle().getTitle());
     }
 
     @Transactional(readOnly = true)

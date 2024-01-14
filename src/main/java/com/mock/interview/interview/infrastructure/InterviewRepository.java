@@ -27,4 +27,7 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
             "left join fetch iv.candidateConfig.techLink.technicalSubjects " +
             "Where iv.users.id = :userId")
     List<Interview> findUserInterviewWithProfileAndTech(@Param("userId") long userId);
+
+    @Query("Select iv From Interview iv Where iv.isActive = true")
+    Optional<Interview> findActiveInterview(Long loginId);
 }
