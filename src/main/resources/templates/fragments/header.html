@@ -9,7 +9,7 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/interview/setting" class="nav-link px-2" th:classappend="${headerActiveTap == 'interview'} ? text-secondary : text-white">면접시작</a></li>
+          <li><a href="/interview/candidate/form" class="nav-link px-2" th:classappend="${headerActiveTap == 'interview'} ? text-secondary : text-white">면접시작</a></li>
           <li><a href="/history" class="nav-link px-2" th:classappend="${headerActiveTap == 'history'} ? text-secondary : text-white">면접기록</a></li>
           <li><a href="/tech" class="nav-link px-2" th:classappend="${headerActiveTap == 'tech'} ? text-secondary : text-white">기술준비</a></li>
         </ul>
@@ -19,10 +19,11 @@
         </form>
 
         <div class="text-end">
-          <a sec:authorize="isAnonymous()" class="btn btn-outline-light me-2" href="/auth/login">Login</a>
-          <a sec:authorize="isAnonymous()" class="btn btn-warning" href="/auth/sign-up">Sign-up</a>
-          <a sec:authorize="isAuthenticated()" class="btn btn-outline-light me-2" th:href="@{/auth/{username}(username=${#authentication.principal.username})}">마이 페이지</a>
-          <a sec:authorize="isAuthenticated()" class="btn btn-warning" href="/logout">Logout</a>
+          <a sec:authorize="isAnonymous()" class="btn btn-outline-light me-2" href="#">검색</a>
+          <a sec:authorize="isAnonymous()" class="btn btn-primary" href="/auth/login">로그인</a>
+          <a sec:authorize="isAnonymous()" class="btn btn-warning" href="/auth/sign-up">회원가입</a>
+          <a sec:authorize="isAuthenticated()" class="btn btn-outline-light me-2" th:href="@{/auth/{username}(username=${#authentication.principal.username})}">내 정보</a>
+          <a sec:authorize="isAuthenticated()" class="btn btn-warning" href="/logout">로그아웃</a>
         </div>
       </div>
     </div>
