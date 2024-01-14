@@ -24,7 +24,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CandidateConfig extends BaseTimeEntity {
     @Id
-    @Column(name = "candidate_profile_id")
+    @Column(name = "candidate_config_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
