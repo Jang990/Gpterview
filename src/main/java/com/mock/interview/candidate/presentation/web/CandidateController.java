@@ -33,7 +33,7 @@ public class CandidateController {
         model.addAttribute("categoryList", categoryService.findAllDepartment());
         model.addAttribute("interviewDetails", new InterviewDetailsDto());
         model.addAttribute("candidateConfig", new CandidateConfigForm());
-        return "interview/interview-setting";
+        return "interview/interview-candidate-form";
     }
 
     @GetMapping("interview/candidate")
@@ -41,7 +41,7 @@ public class CandidateController {
         model.addAttribute("headerActiveTap", "interview");
         List<InterviewCandidateOverview> overviewList = candidateConfigReadOnlyService.findOverviews(loginId);
         model.addAttribute("candidateOverviewList", overviewList);
-        return "/profile/for-interview";
+        return "/candidate/overview-list";
     }
 
     @GetMapping("interview/candidate/{candidateId}/form")
@@ -55,6 +55,6 @@ public class CandidateController {
         model.addAttribute("categoryList", categoryService.findAllDepartment());
         model.addAttribute("interviewDetails", interviewConfig.getInterviewDetails());
         model.addAttribute("candidateConfig", interviewConfig.getProfile());
-        return "interview/interview-setting";
+        return "interview/interview-candidate-form";
     }
 }
