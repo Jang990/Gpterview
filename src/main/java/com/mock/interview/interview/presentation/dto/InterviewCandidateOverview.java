@@ -10,8 +10,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class InterviewCandidateOverview {
-    private long interviewId;
-    private String title;
+    private long candidateId;
+    private String appliedJob;
     private InterviewType type;
     private int durationMinutes;
     private List<TechnicalSubjectsResponse> skills;

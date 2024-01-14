@@ -11,9 +11,25 @@ import java.util.Optional;
 
 @Repository
 public interface CandidateConfigRepository extends JpaRepository<CandidateConfig, Long> {
-    @Query("Select cp From CandidateConfig cp Where cp.users.id = :userId")
+    @Query("Select cc From CandidateConfig cc Where cc.users.id = :userId")
     List<CandidateConfig> findByUserId(@Param("userId") long userId);
 
-    @Query("Select cp From CandidateConfig cp Where cp.id = :profileId and cp.users.id = :userId")
-    Optional<CandidateConfig> findByIdWitUserId(@Param("profileId") long profileId, @Param("userId") long userId);
+    @Query("Select cc From CandidateConfig cc Where cc.id = :profileId and cc.users.id = :userId")
+    Optional<CandidateConfig> findByIdAndUserId(@Param("profileId") long profileId, @Param("userId") long userId);
+
+    @Query("Select cc From CandidateConfig cc " +
+            "join fetch cc.appliedJob " +
+            "join fetch cc.appliedJob.department " +
+            "left join fetch cc.techLink " +
+            "left join fetch cc.techLink.technicalSubjects " +
+            "Where cc.users.id = :userId")
+    List<CandidateConfig> findInterviewConfigByUserId(@Param("userId") long userId);
+
+    @Query("Select cc From CandidateConfig cc " +
+            "join fetch cc.appliedJob " +
+            "join fetch cc.appliedJob.department " +
+            "left join fetch cc.techLink " +
+            "left join fetch cc.techLink.technicalSubjects " +
+            "Where cc.id = :candidateId and cc.users.id = :userId")
+    Optional<CandidateConfig> findInterviewConfig(@Param("candidateId") long candidateId, @Param("userId") long userId);
 }

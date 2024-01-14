@@ -2,8 +2,6 @@ package com.mock.interview.interview.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
-import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
-import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.user.domain.Users;
 import jakarta.persistence.*;
@@ -12,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -23,8 +20,8 @@ public class Interview extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
+    @Embedded
+    private InterviewTitle title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -37,37 +34,23 @@ public class Interview extends BaseTimeEntity {
     private boolean isDeleted;
 
     @Column(nullable = false)
-    private int durationMinutes;
-
-    @Column(nullable = false)
     private LocalDateTime endTime;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private InterviewType type; // TODO: DB에 넣어야 할 듯?
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidate_profile_id")
     private CandidateConfig candidateConfig;
 
-    public static Interview startInterview(InterviewDetailsDto interviewSetting, Users user, CandidateConfig profile) {
+    public static Interview startInterview(CandidateConfig config, Users user) {
         Interview interview = new Interview();
+        interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
         LocalDateTime now = LocalDateTime.now();
-        interview.title = createTimeTitle(interview, now);
-        interview.endTime = now.plusMinutes(interviewSetting.getDurationMinutes());
-        interview.type = interviewSetting.getInterviewType();
-        interview.durationMinutes = interviewSetting.getDurationMinutes();
+        interview.endTime = now.plusMinutes(config.getDurationMinutes());
         interview.isActive = true;
         interview.isDeleted = false;
         interview.users = user;
-        interview.candidateConfig = profile;
+        interview.candidateConfig = config;
 
         return interview;
-    }
-
-    private static String createTimeTitle(Interview interview, LocalDateTime now) {
-        // TODO: DateTimeFormatter 상수로 빼기
-        return DateTimeFormatter.ofPattern("yy.MM.dd HH시 mm분 면접").format(now);
     }
 
     public boolean isActive() {

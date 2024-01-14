@@ -42,10 +42,10 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
 
+        InterviewSettingDto interviewSettingDto = new InterviewSettingDto(profile, interviewDetails);
         List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTech(profile.getSkills());
-        // TODO: interviewDetails에 시간으로 Redis로 만료시간 설정할 것.
-        long candidateConfigId = candidateConfigService.create(profile, loginId, relationalTech);
-        long interviewId = interviewService.create(loginId, candidateConfigId, interviewDetails);
+        long candidateConfigId = candidateConfigService.create(interviewSettingDto, loginId, relationalTech);
+        long interviewId = interviewService.create(loginId, candidateConfigId);
         return "redirect:/interview/" + interviewId;
     }
 

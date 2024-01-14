@@ -1,7 +1,9 @@
 package com.mock.interview.candidate.domain.model;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.category.domain.model.ProfileJobCategoryLink;
+import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
+import com.mock.interview.interview.presentation.dto.InterviewSettingDto;
+import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.ProfileTechLink;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -25,12 +27,17 @@ public class CandidateConfig extends BaseTimeEntity {
     @Column(name = "candidate_profile_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private InterviewType type; // TODO: DB에 넣어야
+    @Column(nullable = false)
+    private int durationMinutes;
+
     private String experience;
 
-    @Cascade(CascadeType.ALL)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
-    private List<ProfileJobCategoryLink> jobLink = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    private JobCategory appliedJob;
 
     @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
@@ -40,51 +47,52 @@ public class CandidateConfig extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    public static CandidateConfig createProfile(CandidateConfigForm profileDto, Users users, JobCategory department, JobCategory field, List<TechnicalSubjects> techList) {
+    public static CandidateConfig createProfile(
+            InterviewSettingDto interviewSettingDto,
+            Users users, JobCategory field, List<TechnicalSubjects> techList) {
+        CandidateConfigForm profileDto = interviewSettingDto.getProfile();
+        InterviewDetailsDto interviewDetails = interviewSettingDto.getInterviewDetails();
+
         CandidateConfig candidateConfig = new CandidateConfig();
-        candidateConfig.title = String.format("%s-%s 지원", department.getName(), field.getName());
-        candidateConfig.experience = profileDto.getExperience();
         candidateConfig.users = users;
-
-        verifyJobCategory(department, field);
-        candidateConfig.jobLink = createJobCategoryLinks(candidateConfig, department, field);
-
-        if(techList != null)
-            candidateConfig.techLink = createTechLinks(candidateConfig, techList);
+        configInterviewSetting(candidateConfig, interviewDetails);
+        setCandidateProfile(candidateConfig, profileDto, techList, field);
 
         return candidateConfig;
     }
 
-    private static List<ProfileTechLink> createTechLinks(CandidateConfig candidateConfig, List<TechnicalSubjects> techList) {
+    private static void setCategory(CandidateConfig candidateConfig, JobCategory field) {
+        verifyJobCategory(field);
+        candidateConfig.appliedJob = field;
+    }
 
+    private static void setCandidateProfile(
+            CandidateConfig candidateConfig, CandidateConfigForm profileDto,
+            List<TechnicalSubjects> techList, JobCategory field
+    ) {
+        candidateConfig.experience = profileDto.getExperience();
+        if(techList != null)
+            candidateConfig.techLink = createTechLinks(candidateConfig, techList);
+
+        setCategory(candidateConfig, field);
+    }
+
+    private static void configInterviewSetting(CandidateConfig candidateConfig, InterviewDetailsDto interviewDetailsDto) {
+        candidateConfig.type = interviewDetailsDto.getInterviewType();
+        candidateConfig.durationMinutes = interviewDetailsDto.getDurationMinutes();
+    }
+
+    private static List<ProfileTechLink> createTechLinks(CandidateConfig candidateConfig, List<TechnicalSubjects> techList) {
         return techList.stream().map((tech) -> ProfileTechLink.createLink(candidateConfig, tech)).toList();
     }
 
-    private static void verifyJobCategory(JobCategory department, JobCategory field) {
-        if (department == null || department.isField()
-                || field == null || field.isDepartment())
-            throw new IllegalArgumentException("분야와 직무는 항상 있어야 함");
-    }
-
-    private static List<ProfileJobCategoryLink> createJobCategoryLinks(CandidateConfig candidateConfig, JobCategory department, JobCategory field) {
-        return List.of(
-                ProfileJobCategoryLink.createLink(candidateConfig, department),
-                ProfileJobCategoryLink.createLink(candidateConfig, field)
-        );
+    private static void verifyJobCategory(JobCategory field) {
+        if (field == null || field.isDepartment())
+            throw new IllegalArgumentException("직무는 항상 있어야 함");
     }
 
     public JobCategory getDepartment() {
-        if (jobLink.get(0).getJobCategory().isDepartment()) {
-            return jobLink.get(0).getJobCategory();
-        }
-        return jobLink.get(1).getJobCategory();
-    }
-
-    public JobCategory getField() {
-        if (jobLink.get(0).getJobCategory().isField()) {
-            return jobLink.get(0).getJobCategory();
-        }
-        return jobLink.get(1).getJobCategory();
+        return getAppliedJob().getDepartment();
     }
 
     public List<TechnicalSubjects> getTechSubjects() {

@@ -11,8 +11,6 @@ import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewConfig;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewProfile;
-import com.mock.interview.candidate.presentation.dto.CandidateConfigForm;
-import com.mock.interview.interview.presentation.dto.InterviewDetailsDto;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.candidate.domain.exception.CandidateConfigNotFoundException;
 import com.mock.interview.candidate.infrastructure.CandidateConfigRepository;
@@ -29,14 +27,11 @@ public class InterviewService {
 
     private final InterviewRepository repository;
     private final CandidateConfigRepository profileRepository;
-    private final InterviewConversationRepository conversationRepository;
-    private final JobCategoryRepository jobCategoryRepository;
-    private final InterviewDomain interviewDomain;
 
-    public long create(long loginId,long candidateConfigId, InterviewDetailsDto interviewSetting) {
-        CandidateConfig candidateConfig = profileRepository.findByIdWitUserId(candidateConfigId, loginId)
+    public long create(long loginId,long candidateConfigId) {
+        CandidateConfig candidateConfig = profileRepository.findInterviewConfig(candidateConfigId, loginId)
                 .orElseThrow(CandidateConfigNotFoundException::new);
-        Interview interview = Interview.startInterview(interviewSetting, candidateConfig.getUsers(), candidateConfig);
+        Interview interview = Interview.startInterview(candidateConfig, candidateConfig.getUsers());
         return repository.save(interview).getId();
     }
 
@@ -44,13 +39,7 @@ public class InterviewService {
     public InterviewInfo findInterviewForAIRequest(long loginId, long interviewId) {
         Interview interview = repository.findInterviewSetting(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-
-        List<JobCategory> category = jobCategoryRepository.findInterviewCategory(interview.getCandidateConfig().getId());
-        if (category.get(0).isDepartment()) {
-            return convert(interview, category.get(0), category.get(1));
-        } else {
-            return convert(interview, category.get(1), category.get(0));
-        }
+        return convert(interview, interview.getCandidateConfig().getDepartment(), interview.getCandidateConfig().getAppliedJob());
     }
 
     private static InterviewInfo convert(Interview interview, JobCategory department, JobCategory field) {
@@ -61,20 +50,7 @@ public class InterviewService {
                         profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
                         List.of(profile.getExperience())
                 ),
-                new InterviewConfig(interview.getType(), interview.getDurationMinutes())
+                new InterviewConfig(interview.getCandidateConfig().getType(), interview.getEndTime())
         );
-    }
-
-    public void startInterview(CandidateConfigForm profile, InterviewDetailsDto interviewDetails) {
-        // TODO: Redis - 인터뷰 횟수 검증
-        // TODO: Redis - 인터뷰 정보 캐싱(인터뷰 정보, 진행시간 등등)
-        // TODO: DB - 인터뷰 정보 영구 저장
-    }
-
-    public void proceedInterview() {
-        // TODO: Redis - 캐싱된 인터뷰 시작 정보 불러오기
-        // TODO: AI - 시작 정보 기반 요청 : Response 반환
-        // TODO: DB - Response 저장
-        // return MSG
     }
 }

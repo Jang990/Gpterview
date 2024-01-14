@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv " +
             "join fetch iv.candidateConfig " +
+            "join fetch iv.candidateConfig.appliedJob " +
+            "join fetch iv.candidateConfig.appliedJob.department " +
             "left join fetch iv.candidateConfig.techLink " +
             "left join fetch iv.candidateConfig.techLink.technicalSubjects " +
             "Where iv.id = :interviewId And iv.users.id = :userId")
