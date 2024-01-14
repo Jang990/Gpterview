@@ -87,7 +87,7 @@
 
     <script th:src="@{/js/SpeackContent.js}" href="../js/SpeackContent.js"></script>
     <script th:inline="javascript">
-        const interviewUriPrefix = "/api/interview/[[${interviewId}]]";
+        const interviewUriPrefix = "/api/interview/[[${interviewId}]]/conversation";
 
         const loadingTime = 1500;
         const sendBtn = $('.sendBtn');
