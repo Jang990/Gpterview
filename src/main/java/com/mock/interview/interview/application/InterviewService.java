@@ -36,10 +36,10 @@ public class InterviewService {
     }
 
     public InterviewResponse findActiveInterview(long userId) {
+        // TODO: 면접이 endTime이 끝나면 종료된다는 것을 가정한 코드이다.
+        //      - endTime이 끝나면 실제로 active가 false가 되도록 구현해야 한다.
         Interview activeInterview = repository.findActiveInterview(userId)
                 .orElseThrow(InterviewNotFoundException::new);
-
-        interviewDomain.verifyActiveInterview(activeInterview);
         return convert(activeInterview);
     }
 

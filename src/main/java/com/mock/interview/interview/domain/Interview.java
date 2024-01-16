@@ -1,6 +1,7 @@
 package com.mock.interview.interview.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
+import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.user.domain.Users;
@@ -53,11 +54,18 @@ public class Interview extends BaseTimeEntity {
         return interview;
     }
 
-    public boolean isActive() {
+    public void timeout() {
+        if(isInterviewInProgressTime())
+            throw new InterviewNotExpiredException();
+
+        expire();
+    }
+
+    private boolean isInterviewInProgressTime() {
         return LocalDateTime.now().isBefore(endTime);
     }
 
-    public void timeout() {
+    public void expire() {
         if(!this.isActive)
             throw new IsAlreadyTimeoutInterviewException();
 

@@ -19,7 +19,7 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     Optional<Interview> findInterviewSetting(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
     @Query("Select iv From Interview iv Where iv.id = :interviewId and iv.users.id = :userId")
-    Optional<Interview> findByIdWitUserId(@Param("interviewId") long interviewId, @Param("userId") long userId);
+    Optional<Interview> findByIdAndUserId(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
     @Query("Select iv From Interview iv " +
             "join fetch iv.candidateConfig " +
