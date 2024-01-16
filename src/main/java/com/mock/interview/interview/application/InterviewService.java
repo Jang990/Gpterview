@@ -36,8 +36,8 @@ public class InterviewService {
     }
 
     public InterviewResponse findActiveInterview(long userId) {
-        // TODO: 면접이 endTime이 끝나면 종료된다는 것을 가정한 코드이다.
-        //      - endTime이 끝나면 실제로 active가 false가 되도록 구현해야 한다.
+        // TODO: 면접이 expiredTime이 끝나면 종료된다는 것을 가정한 코드이다.
+        //      - expiredTime이 끝나면 실제로 active가 false가 되도록 구현해야 한다.
         Interview activeInterview = repository.findActiveInterview(userId)
                 .orElseThrow(InterviewNotFoundException::new);
         return convert(activeInterview);
@@ -62,7 +62,7 @@ public class InterviewService {
                         profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
                         List.of(profile.getExperience())
                 ),
-                new InterviewConfig(interview.getCandidateConfig().getType(), interview.getEndTime())
+                new InterviewConfig(interview.getCandidateConfig().getType(), interview.getExpiredTime())
         );
     }
 }

@@ -35,7 +35,7 @@ public class Interview extends BaseTimeEntity {
     private boolean isDeleted;
 
     @Column(nullable = false)
-    private LocalDateTime endTime;
+    private LocalDateTime expiredTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidate_profile_id")
@@ -45,7 +45,7 @@ public class Interview extends BaseTimeEntity {
         Interview interview = new Interview();
         interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
         LocalDateTime now = LocalDateTime.now();
-        interview.endTime = now.plusMinutes(config.getDurationMinutes());
+        interview.expiredTime = now.plusMinutes(config.getDurationMinutes());
         interview.isActive = true;
         interview.isDeleted = false;
         interview.users = user;
@@ -62,7 +62,7 @@ public class Interview extends BaseTimeEntity {
     }
 
     private boolean isInterviewInProgressTime() {
-        return LocalDateTime.now().isBefore(endTime);
+        return LocalDateTime.now().isBefore(expiredTime);
     }
 
     public void expire() {
