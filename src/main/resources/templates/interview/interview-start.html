@@ -20,6 +20,30 @@
 
                         <div class="card-body" id="talk-card" style="overflow-y: scroll; min-height: 350px; max-height: 350px;">
                             <article id="talk-history">
+                                <li class="d-flex mb-3 justify-content-start">
+                                    <div class="d-flex flex-row justify-content-start col-8" style="min-width:0px;">
+                                        <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
+                                        <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
+                                            <input type="hidden" name="role" class="role" value="INTERVIEWER">
+                                            <p class="small mb-0 content" name="content">안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="d-flex mb-3 justify-content-end">
+
+                                    <!-- 지원자 대화 내역 -->
+                                    <div class="d-flex flex-row justify-content-end col-8" style="min-width:0px;">
+                                        <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb; min-width:0px;">
+                                            <input type="hidden" name="role" class="role" value="USER">
+                                            <p class="small mb-0 content" name="content">네. 준비됐습니다.</p>
+                                        </div>
+                                        <img src="../image/applicant.png" alt="avatar" style="width: 50px; height: 50px;" class="rounded-circle d-flex align-self-start shadow-1-strong">
+                                    </div>
+
+                                    <!-- 면접관 대화 내역 -->
+
+                                </li>
+
                                 <li th:each="message : *{messages}" class="d-flex mb-3"
                                     th:classappend="${#strings.equals(message.role, 'USER')} ? justify-content-end : justify-content-start">
 

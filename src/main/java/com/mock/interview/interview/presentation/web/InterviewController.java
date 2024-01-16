@@ -65,14 +65,7 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("interviewId", interviewId);
-        model.addAttribute("messageHistory", initHistory()); // TODO: 임시코드 - 만약 DB에 있다면 가져와야 한다.
+        model.addAttribute("messageHistory", new MessageHistoryDto());
         return "interview/interview-start";
-    }
-
-    private MessageHistoryDto initHistory() {
-        MessageHistoryDto historyDTO = new MessageHistoryDto();
-        historyDTO.getMessages().add(new MessageDto(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
-        historyDTO.getMessages().add(new MessageDto(InterviewRole.USER.toString(), "네. 준비됐습니다."));
-        return historyDTO;
     }
 }
