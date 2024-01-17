@@ -8,7 +8,7 @@ import com.mock.interview.tech.domain.model.ProfileTechLink;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

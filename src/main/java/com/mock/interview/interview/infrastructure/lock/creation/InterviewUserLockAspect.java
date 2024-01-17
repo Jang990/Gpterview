@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infrastructure.lock.creation;
 
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

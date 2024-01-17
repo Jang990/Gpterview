@@ -1,6 +1,6 @@
 package com.mock.interview.global.security.form;
 
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

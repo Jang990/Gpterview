@@ -1,6 +1,6 @@
 package com.mock.interview.user.infrastructure;
 
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

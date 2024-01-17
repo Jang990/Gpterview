@@ -1,7 +1,7 @@
 package com.mock.interview.interview.application;
 
 import com.mock.interview.interview.InterviewDomain;
-import com.mock.interview.interview.domain.Interview;
+import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;

@@ -6,7 +6,7 @@ import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateOverview;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

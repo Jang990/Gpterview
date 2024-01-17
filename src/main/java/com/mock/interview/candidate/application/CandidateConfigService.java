@@ -9,7 +9,7 @@ import com.mock.interview.category.infrastructure.JobCategoryRepository;
 import com.mock.interview.tech.infrastructure.TechnicalSubjectsRepository;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.candidate.infrastructure.CandidateConfigRepository;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.infrastructure.UserRepository;

@@ -1,7 +1,6 @@
 package com.mock.interview.conversation.application;
 
-import com.mock.interview.interview.InterviewDomain;
-import com.mock.interview.interview.domain.Interview;
+import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.conversation.domain.model.InterviewConversationType;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;

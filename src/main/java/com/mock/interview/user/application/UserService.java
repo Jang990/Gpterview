@@ -1,6 +1,6 @@
 package com.mock.interview.user.application;
 
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
 import com.mock.interview.user.presentation.dto.AccountDto;
 import jakarta.transaction.Transactional;

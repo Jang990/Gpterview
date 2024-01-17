@@ -1,15 +1,13 @@
 package com.mock.interview.user.presentation.web;
 
 import com.mock.interview.global.exception.CustomClientException;
-import com.mock.interview.interview.application.InterviewReadOnlyService;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.user.application.UserService;
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.presentation.dto.AccountDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor

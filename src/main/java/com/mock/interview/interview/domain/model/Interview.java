@@ -1,10 +1,10 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
-import com.mock.interview.user.domain.Users;
+import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

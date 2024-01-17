@@ -1,4 +1,4 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.interview.domain.model;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
