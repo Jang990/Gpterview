@@ -3,6 +3,7 @@ package com.mock.interview.interview.application;
 import com.mock.interview.interview.InterviewDomain;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -15,6 +16,7 @@ import com.mock.interview.candidate.domain.exception.CandidateConfigNotFoundExce
 import com.mock.interview.candidate.infrastructure.CandidateConfigRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,10 +30,12 @@ public class InterviewService {
     private final CandidateConfigRepository profileRepository;
     private final InterviewDomain interviewDomain;
 
+    @InterviewUserLock
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public long create(long loginId,long candidateConfigId) {
         CandidateConfig candidateConfig = profileRepository.findInterviewConfig(candidateConfigId, loginId)
                 .orElseThrow(CandidateConfigNotFoundException::new);
-        Interview interview = Interview.startInterview(candidateConfig, candidateConfig.getUsers());
+        Interview interview = Interview.startInterview(repository, candidateConfig, candidateConfig.getUsers());
         return repository.save(interview).getId();
     }
 

@@ -1,9 +1,11 @@
 package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
+import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
 import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
+import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -41,7 +43,13 @@ public class Interview extends BaseTimeEntity {
     @JoinColumn(name = "candidate_profile_id")
     private CandidateConfig candidateConfig;
 
-    public static Interview startInterview(CandidateConfig config, Users user) {
+    public static Interview startInterview(
+            InterviewRepository interviewRepository,
+            CandidateConfig config, Users user
+    ) {
+        if (interviewRepository.findActiveInterview(user.getId()).isPresent()) // TODO: QueryDSL로 최적화
+            throw new InterviewAlreadyInProgressException();
+
         Interview interview = new Interview();
         interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
         LocalDateTime now = LocalDateTime.now();

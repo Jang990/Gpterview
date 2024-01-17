@@ -7,7 +7,6 @@ import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.conversation.presentation.dto.MessageHistoryDto;
 import com.mock.interview.interview.application.InterviewService;
-import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
 import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
@@ -34,7 +33,6 @@ public class InterviewController {
 
 
     @PostMapping("/interview")
-    @InterviewUserLock
     public String startInterviewRequest(
             CandidateProfileForm profile,
             InterviewConfigDto interviewDetails,
@@ -48,7 +46,6 @@ public class InterviewController {
     }
 
     @PostMapping("/interview/candidate/{candidateId}")
-    @InterviewUserLock
     public String startInterviewWithConfigRequest(
             @PathVariable(name = "candidateId") long candidateId,
             @AuthenticationPrincipal(expression = "id") Long loginId
