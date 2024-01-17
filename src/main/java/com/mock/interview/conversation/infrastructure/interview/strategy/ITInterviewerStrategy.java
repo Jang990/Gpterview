@@ -3,7 +3,6 @@ package com.mock.interview.conversation.infrastructure.interview.strategy;
 import com.mock.interview.conversation.infrastructure.interview.dto.*;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interview.domain.Category;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.conversation.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
@@ -24,7 +23,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     private final ITInterviewConcept interviewConcept;
 
     private final List<String> basicKnowledge = List.of("운영체제", "네트워크", "데이터베이스", "자료구조", "알고리즘");
-    private final String[] SUPPORTED_DEPARTMENT = {Category.IT.getName(), "개발"};
+    private final String[] SUPPORTED_DEPARTMENT = {"IT", "개발"};
 
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
