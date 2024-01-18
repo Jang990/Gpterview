@@ -1,6 +1,8 @@
 package com.mock.interview.interview.domain.model;
 
+import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
+import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
 import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
@@ -49,6 +51,7 @@ public class Interview extends BaseTimeEntity {
     ) {
         if (interviewRepository.findActiveInterview(user.getId()).isPresent()) // TODO: QueryDSL로 최적화
             throw new InterviewAlreadyInProgressException();
+        Events.raise(new InterviewStartedEvent(user.getId()));
 
         Interview interview = new Interview();
         interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
