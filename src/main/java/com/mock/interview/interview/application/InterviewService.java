@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -39,12 +40,18 @@ public class InterviewService {
         return repository.save(interview).getId();
     }
 
-    public InterviewResponse findActiveInterview(long userId) {
+    public Optional<InterviewResponse> findActiveInterview(long userId) {
         // TODO: 면접이 expiredTime이 끝나면 종료된다는 것을 가정한 코드이다.
         //      - expiredTime이 끝나면 실제로 active가 false가 되도록 구현해야 한다.
-        Interview activeInterview = repository.findActiveInterview(userId)
-                .orElseThrow(InterviewNotFoundException::new);
-        return convert(activeInterview);
+        Optional<Interview> optionalInterview = repository.findActiveInterview(userId);
+        if(optionalInterview.isEmpty())
+            return Optional.empty();
+
+        Interview activeInterview = optionalInterview.get();
+        if(interviewDomain.tryTimeOut(activeInterview))
+            return Optional.empty();
+
+        return Optional.of(convert(activeInterview));
     }
 
     private InterviewResponse convert(Interview activeInterview) {

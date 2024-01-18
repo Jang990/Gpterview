@@ -39,21 +39,16 @@ public class UserController {
     @GetMapping("/")
     public String indexPage(Model model, @AuthenticationPrincipal Users users) {
         if(users != null)
-            containActiveInterview(model, users.getId());
+            model.addAttribute("activeInterview", getActiveInterview(users.getId()));
         else
             model.addAttribute("activeInterview", new InterviewResponse());
 
         return "index";
     }
 
-    private void containActiveInterview(Model model, Long loginId) {
-        InterviewResponse activeInterview;
-        try {
-            activeInterview = interviewService.findActiveInterview(loginId);
-        } catch (CustomClientException e) {
-            activeInterview = new InterviewResponse();
-        }
-        model.addAttribute("activeInterview", activeInterview);
+    private InterviewResponse getActiveInterview(long loginId) {
+        return interviewService.findActiveInterview(loginId)
+                .orElseGet(InterviewResponse::new);
     }
 
     @GetMapping("/auth/{username}")
