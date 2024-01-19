@@ -62,13 +62,13 @@ public class Interview extends BaseTimeEntity {
 
     // TODO: 사용자가 면접을 강제 종료할 수 있게 만들어야 함.
     public void expire() {
-        if(!isInterviewInProgressTime())
+        if(isTimeout())
             throw new IsAlreadyTimeoutInterviewException();
 
         expiredTime = LocalDateTime.now();
     }
 
-    private boolean isInterviewInProgressTime() {
-        return LocalDateTime.now().isBefore(expiredTime);
+    public boolean isTimeout() {
+        return expiredTime.isBefore(LocalDateTime.now());
     }
 }
