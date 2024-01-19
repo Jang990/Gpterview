@@ -4,7 +4,6 @@ import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
-import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
@@ -33,9 +32,6 @@ public class Interview extends BaseTimeEntity {
     private Users users;
 
     @Column(nullable = false)
-    private boolean isActive;
-
-    @Column(nullable = false)
     private boolean isDeleted;
 
     @Column(nullable = false)
@@ -57,7 +53,6 @@ public class Interview extends BaseTimeEntity {
         interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
         LocalDateTime now = LocalDateTime.now();
         interview.expiredTime = now.plusMinutes(config.getDurationMinutes());
-        interview.isActive = true;
         interview.isDeleted = false;
         interview.users = user;
         interview.candidateConfig = config;
@@ -65,21 +60,15 @@ public class Interview extends BaseTimeEntity {
         return interview;
     }
 
-    public void timeout() {
-        if(isInterviewInProgressTime())
-            throw new InterviewNotExpiredException();
+    // TODO: 사용자가 면접을 강제 종료할 수 있게 만들어야 함.
+    public void expire() {
+        if(!isInterviewInProgressTime())
+            throw new IsAlreadyTimeoutInterviewException();
 
-        expire();
+        expiredTime = LocalDateTime.now();
     }
 
     private boolean isInterviewInProgressTime() {
         return LocalDateTime.now().isBefore(expiredTime);
-    }
-
-    public void expire() {
-        if(!this.isActive)
-            throw new IsAlreadyTimeoutInterviewException();
-
-        this.isActive = false;
     }
 }
