@@ -4,10 +4,12 @@ import com.mock.interview.interview.domain.model.Interview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv " +
             "join fetch iv.candidateConfig " +
@@ -28,6 +30,6 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
             "Where iv.users.id = :userId")
     List<Interview> findUserInterviewWithProfileAndTech(@Param("userId") long userId);
 
-    @Query("Select iv From Interview iv Where iv.expiredTime < current_timestamp")
+    @Query("Select iv From Interview iv Where iv.expiredTime > current_timestamp")
     Optional<Interview> findActiveInterview(Long loginId);
 }
