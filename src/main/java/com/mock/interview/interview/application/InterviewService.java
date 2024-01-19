@@ -39,6 +39,7 @@ public class InterviewService {
         return repository.save(interview).getId();
     }
 
+    @Transactional(readOnly = true)
     public Optional<InterviewResponse> findActiveInterview(long userId) {
         Optional<Interview> optionalInterview = repository.findActiveInterview(userId);
         if(optionalInterview.isEmpty())
