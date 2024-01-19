@@ -29,7 +29,6 @@ public class InterviewService {
 
     private final InterviewRepository repository;
     private final CandidateConfigRepository profileRepository;
-    private final InterviewDomain interviewDomain;
 
     @InterviewUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -41,17 +40,11 @@ public class InterviewService {
     }
 
     public Optional<InterviewResponse> findActiveInterview(long userId) {
-        // TODO: 면접이 expiredTime이 끝나면 종료된다는 것을 가정한 코드이다.
-        //      - expiredTime이 끝나면 실제로 active가 false가 되도록 구현해야 한다.
         Optional<Interview> optionalInterview = repository.findActiveInterview(userId);
         if(optionalInterview.isEmpty())
             return Optional.empty();
 
-        Interview activeInterview = optionalInterview.get();
-        if(interviewDomain.tryTimeOut(activeInterview))
-            return Optional.empty();
-
-        return Optional.of(convert(activeInterview));
+        return Optional.of(convert(optionalInterview.get()));
     }
 
     private InterviewResponse convert(Interview activeInterview) {

@@ -28,6 +28,6 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
             "Where iv.users.id = :userId")
     List<Interview> findUserInterviewWithProfileAndTech(@Param("userId") long userId);
 
-    @Query("Select iv From Interview iv Where iv.isActive = true")
+    @Query("Select iv From Interview iv Where iv.expiredTime < current_timestamp")
     Optional<Interview> findActiveInterview(Long loginId);
 }
