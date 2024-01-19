@@ -9,6 +9,7 @@ import com.mock.interview.conversation.infrastructure.interview.strategy.stage.I
 import com.mock.interview.candidate.presentation.dto.InterviewType;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
@@ -51,7 +52,7 @@ class InterviewProgressTrackerTest {
         int answerIdx = 0;
         Set<InterviewStage> set = new HashSet<>();
 
-        InterviewConfig config = new InterviewConfig(type, 30);
+        InterviewConfig config = new InterviewConfig(type, LocalDateTime.now());
         MessageHistory history = mock(MessageHistory.class);
         List<Message> list = mock(LinkedList.class);
         when(list.size()).thenReturn(2);
