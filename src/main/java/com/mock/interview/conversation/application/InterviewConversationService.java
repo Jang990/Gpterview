@@ -1,5 +1,6 @@
 package com.mock.interview.conversation.application;
 
+import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.conversation.domain.model.InterviewConversationType;
@@ -30,11 +31,12 @@ public class InterviewConversationService {
     private final int FIRST_PAGE = 0;
     private final int CONVERSATION_OFFSET = 20;
 
-    // TODO: saveAnswer와 saveQuestion은 앞단에서 이미 interview가 검증됐음을 가정하도 동작함.
+    // TODO: saveAnswer와 saveQuestion을 합치고 AIService를 DIP를 통해 도메인 영역으로 올려야함.
     public void saveAnswer(Long loginId, long interviewId, MessageDto message) {
-        // TODO: 추후 타임아웃 로직 삭제하고, Redis같은 캐시로 타임아웃 관리 + timeout 처리
         Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
+        if(interview.isTimeout())
+            throw new IsAlreadyTimeoutInterviewException();
         InterviewConversation conversation = InterviewConversation.createAnswer(interview, message);
         conversationRepository.save(conversation);
     }
@@ -42,6 +44,8 @@ public class InterviewConversationService {
     public void saveQuestion(Long loginId, long interviewId, MessageDto message) {
         Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
+        if(interview.isTimeout())
+            throw new IsAlreadyTimeoutInterviewException();
         InterviewConversation conversation = InterviewConversation.createQuestion(interview, message);
         conversationRepository.save(conversation);
     }
