@@ -14,11 +14,5 @@ public class UsersEventListener {
 
     private final UserRepository userRepository;
 
-    @EventListener(InterviewStartedEvent.class)
-    public void increaseInterviewUsageCount(InterviewStartedEvent event) {
-        Users users = userRepository.findById(event.userId())
-                .orElseThrow(UserNotFoundException::new);
 
-        users.increaseInterviewUsage();
-    }
 }
