@@ -20,17 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class InterviewConversationController {
     private final AIService service;
     private final InterviewConversationService conversationService;
-    @PostMapping("/interview/{interviewId}/conversation/init")
-    public ResponseEntity<MessageDto> requestAiResponse(
-            @AuthenticationPrincipal(expression = "id") Long loginId,
-            @PathVariable(name = "interviewId") long interviewId
-    ) {
-        Message response = service.service(loginId, interviewId);
-        MessageDto question = new MessageDto(response.getRole(), response.getContent());
-        conversationService.saveQuestion(loginId, interviewId, question);
-
-        return new ResponseEntity<>(question, HttpStatus.OK);
-    }
 
     @PostMapping("/interview/{interviewId}/conversation/response")
     public ResponseEntity<MessageDto> requestAiResponse(

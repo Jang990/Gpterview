@@ -35,18 +35,6 @@ public class AIResponseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PostMapping("/interview/{interviewId}/init")
-    public ResponseEntity<MessageDto> requestAiResponse(
-            @AuthenticationPrincipal(expression = "id") Long loginId,
-            @PathVariable(name = "interviewId") long interviewId
-    ) {
-        Message response = service.service(loginId, interviewId);
-        MessageDto question = new MessageDto(response.getRole(), response.getContent());
-        conversationService.saveQuestion(loginId, interviewId, question);
-
-        return new ResponseEntity<>(question, HttpStatus.OK);
-    }
-
     @PostMapping("/interview/{interviewId}/response")
     public ResponseEntity<MessageDto> requestAiResponse(
             @AuthenticationPrincipal(expression = "id") Long loginId,
