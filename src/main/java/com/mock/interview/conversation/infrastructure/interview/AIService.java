@@ -87,4 +87,14 @@ public class AIService {
         else
             message.setRole(aiSpec.getUserRole());
     }
+
+    public Message serviceTemp() {
+        System.out.println("2초대기한다.");
+        try {
+            Thread.sleep(2_000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return new Message(InterviewRole.INTERVIEWER.toString(), "Hello World!");
+    }
 }

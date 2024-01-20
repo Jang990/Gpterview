@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,21 +33,11 @@ public class InterviewConversationService {
     private final int CONVERSATION_OFFSET = 20;
 
     // TODO: saveAnswer와 saveQuestion을 합치고 AIService를 DIP를 통해 도메인 영역으로 올려야함.
-    public void saveAnswer(Long loginId, long interviewId, MessageDto message) {
+    public void saveUserAnswer(Long loginId, long interviewId, MessageDto message) {
         Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-        if(interview.isTimeout())
-            throw new IsAlreadyTimeoutInterviewException();
-        InterviewConversation conversation = InterviewConversation.createAnswer(interview, message);
-        conversationRepository.save(conversation);
-    }
-
-    public void saveQuestion(Long loginId, long interviewId, MessageDto message) {
-        Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
-                .orElseThrow(InterviewNotFoundException::new);
-        if(interview.isTimeout())
-            throw new IsAlreadyTimeoutInterviewException();
-        InterviewConversation conversation = InterviewConversation.createQuestion(interview, message);
+        Optional<InterviewConversation> lastConversation = conversationRepository.findLastConversation(interview.getId());
+        InterviewConversation conversation = InterviewConversation.createAnswer(interview, message, lastConversation);
         conversationRepository.save(conversation);
     }
 

@@ -35,19 +35,19 @@ public class AIResponseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PostMapping("/interview/{interviewId}/response")
-    public ResponseEntity<MessageDto> requestAiResponse(
-            @AuthenticationPrincipal(expression = "id") Long loginId,
-            @PathVariable(name = "interviewId") long interviewId,
-            MessageDto message // TODO: Request로 이름 변경
-    ) {
-        conversationService.saveAnswer(loginId, interviewId, message);
-        Message response = service.service(loginId, interviewId);
-        MessageDto question = new MessageDto(response.getRole(), response.getContent());
-        conversationService.saveQuestion(loginId, interviewId, question);
-
-        return new ResponseEntity<>(question, HttpStatus.OK);
-    }
+//    @PostMapping("/interview/{interviewId}/response")
+//    public ResponseEntity<MessageDto> requestAiResponse(
+//            @AuthenticationPrincipal(expression = "id") Long loginId,
+//            @PathVariable(name = "interviewId") long interviewId,
+//            MessageDto message // TODO: Request로 이름 변경
+//    ) {
+//        conversationService.saveUserAnswer(loginId, interviewId, message);
+//        Message response = service.service(loginId, interviewId);
+//        MessageDto question = new MessageDto(response.getRole(), response.getContent());
+//        conversationService.saveQuestion(loginId, interviewId, question);
+//
+//        return new ResponseEntity<>(question, HttpStatus.OK);
+//    }
 
     @PostMapping("/interview/changing-topic")
     public ResponseEntity<MessageDto> changingTopic(

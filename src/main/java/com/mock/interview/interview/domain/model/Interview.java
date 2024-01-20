@@ -47,7 +47,6 @@ public class Interview extends BaseTimeEntity {
     ) {
         if (interviewRepository.findActiveInterview(user.getId()).isPresent()) // TODO: QueryDSL로 최적화
             throw new InterviewAlreadyInProgressException();
-        Events.raise(new InterviewStartedEvent(user.getId()));
 
         Interview interview = new Interview();
         interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
@@ -57,6 +56,8 @@ public class Interview extends BaseTimeEntity {
         interview.users = user;
         interview.candidateConfig = config;
 
+        interview = interviewRepository.save(interview);
+        Events.raise(new InterviewStartedEvent(interview.id)); // TODO: 인터뷰 ID를 UUID로 변경할 것.
         return interview;
     }
 

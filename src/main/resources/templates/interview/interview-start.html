@@ -108,8 +108,9 @@
 
         </div>
     </div>
-
     <script th:src="@{/js/SpeackContent.js}" href="../js/SpeackContent.js"></script>
+
+    <!--TODO: 동기처리가 아니기 때문에 STOMP를 사용하도록 만들어야함. -->
     <script th:inline="javascript">
         const interviewUriPrefix = "/api/interview/[[${interviewId}]]/conversation";
 
