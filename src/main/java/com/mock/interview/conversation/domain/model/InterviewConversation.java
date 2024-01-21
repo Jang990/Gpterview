@@ -38,19 +38,10 @@ public class InterviewConversation extends BaseTimeEntity {
     @JoinColumn(name = "interview_id", updatable = false)
     private Interview interview;
 
-    public static InterviewConversation createAnswer(
-            Interview interview, MessageDto answer,
-            Optional<InterviewConversation> lastConversation
-    ) {
-        System.out.println(answer);
+    static InterviewConversation createAnswer(Interview interview, MessageDto answer) {
         if (answer.getRole() == null || answer.getContent() == null
                 || !answer.getRole().equals("USER")) {
             throw new IllegalArgumentException();
-        }
-
-        if (interview.isTimeout()
-                && (lastConversation.isEmpty() || lastConversation.get().isUserAnswer())) {
-            throw new IsAlreadyTimeoutInterviewException();
         }
 
         InterviewConversation conversation = new InterviewConversation();
@@ -58,10 +49,6 @@ public class InterviewConversation extends BaseTimeEntity {
         conversation.content = answer.getContent();
         conversation.interview = interview;
         conversation.isDeleted = false;
-
-        if (!interview.isTimeout()) {
-            Events.raise(new UserAnsweredEvent(interview.getId()));
-        }
         return conversation;
     }
 

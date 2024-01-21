@@ -1,5 +1,6 @@
 package com.mock.interview.conversation.application;
 
+import com.mock.interview.conversation.domain.model.ConversationCreationService;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
@@ -28,6 +29,7 @@ public class InterviewConversationService {
 
     private final InterviewRepository interviewRepository;
     private final InterviewConversationRepository conversationRepository;
+    private final ConversationCreationService conversationCreationService;
 
     private final int FIRST_PAGE = 0;
     private final int CONVERSATION_OFFSET = 20;
@@ -37,7 +39,7 @@ public class InterviewConversationService {
         Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
         Optional<InterviewConversation> lastConversation = conversationRepository.findLastConversation(interview.getId());
-        InterviewConversation conversation = InterviewConversation.createAnswer(interview, message, lastConversation);
+        InterviewConversation conversation = conversationCreationService.createAnswer(interview, message, lastConversation);
         conversationRepository.save(conversation);
     }
 
