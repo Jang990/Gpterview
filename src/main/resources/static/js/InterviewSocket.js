@@ -18,8 +18,17 @@ function initSocket() {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         console.log('/queue/interview/' + interviewId);
-        stompClient.subscribe('/queue/interview/' + interviewId, function (greeting) {
-            console.log(greeting);
+        stompClient.subscribe('/queue/interview/' + interviewId, function (data) {
+            console.log(data);
+            clearInterval(decreaseInterval);
+            setTimeout(function () {
+                // speak(data.content); // 응답 메시지를 음성으로 전달
+                removeWaitingPanel();
+                displayResponse(JSON.parse(data.body).content);
+                scroll();
+                remainingTime = loadingTime;
+                enableSendBtn();
+            }, remainingTime);
         });
     });
 

@@ -104,16 +104,7 @@ function sendRequest(requestURL, message) {
         contentType: 'application/json',
         data: JSON.stringify(message),
         success: function(data) {
-            // console.log(data);
-            clearInterval(decreaseInterval);
-            setTimeout(function () {
-                // speak(data.content); // 응답 메시지를 음성으로 전달
-                removeWaitingPanel();
-                displayResponse(data.content);
-                scroll();
-                remainingTime = loadingTime;
-                enableSendBtn();
-            }, remainingTime);
+
         },
         error: function(error) {
             console.log(error);
