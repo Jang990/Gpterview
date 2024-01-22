@@ -1,0 +1,41 @@
+let stompClient = null;
+let socket = null;
+let interviewId;
+
+$(document).ready(function () {
+    interviewId = getInterviewId();
+    initSocket();
+});
+
+function getInterviewId() {
+    const currentUrl = window.location.pathname;
+    return currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+}
+
+function initSocket() {
+    socket = new SockJS('/ws/interview');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);
+        console.log('/queue/interview/' + interviewId);
+        stompClient.subscribe('/queue/interview/' + interviewId, function (greeting) {
+            console.log(greeting);
+        });
+    });
+
+    // 에러가 발생했을 때 실행되는 콜백 함수
+    socket.onerror = function (error) {
+        console.error('WebSocket 오류:', error);
+    };
+
+    // 연결이 닫혔을 때 실행되는 콜백 함수
+    socket.onclose = function (event) {
+        console.log('WebSocket 연결이 닫혔습니다.');
+    };
+
+    // 페이지를 떠날 때 WebSocket 연결을 닫음
+    window.onbeforeunload = function () {
+        stompClient.disconnect();
+    };
+
+}
