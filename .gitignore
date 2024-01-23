@@ -37,3 +37,4 @@ out/
 .vscode/
 
 application-openai.yml
+/src/main/generated/
