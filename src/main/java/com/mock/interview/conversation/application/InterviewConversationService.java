@@ -1,7 +1,6 @@
 package com.mock.interview.conversation.application;
 
 import com.mock.interview.conversation.domain.model.ConversationCreationService;
-import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.conversation.domain.model.InterviewConversationType;
@@ -57,7 +56,7 @@ public class InterviewConversationService {
     }
 
     private static String getRole(InterviewConversation msg) {
-        return msg.getInterviewConversationType() == InterviewConversationType.ANSWER
+        return msg.getInterviewConversationType() == InterviewConversationType.AI
                 ? InterviewRole.INTERVIEWER.toString() : InterviewRole.USER.toString();
     }
 }

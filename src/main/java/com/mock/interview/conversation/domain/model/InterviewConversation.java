@@ -1,20 +1,15 @@
 package com.mock.interview.conversation.domain.model;
 
 import com.mock.interview.conversation.domain.AiAnsweredEvent;
-import com.mock.interview.conversation.domain.UserAnsweredEvent;
-import com.mock.interview.conversation.infrastructure.InterviewConversationRepository;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Optional;
 
 @Entity
 @Getter
@@ -45,7 +40,7 @@ public class InterviewConversation extends BaseTimeEntity {
         }
 
         InterviewConversation conversation = new InterviewConversation();
-        conversation.interviewConversationType = InterviewConversationType.QUESTION;
+        conversation.interviewConversationType = InterviewConversationType.USER;
         conversation.content = answer.getContent();
         conversation.interview = interview;
         conversation.isDeleted = false;
@@ -59,7 +54,7 @@ public class InterviewConversation extends BaseTimeEntity {
         }
 
         InterviewConversation conversation = new InterviewConversation();
-        conversation.interviewConversationType = InterviewConversationType.ANSWER;
+        conversation.interviewConversationType = InterviewConversationType.AI;
         conversation.content = question.getContent();
         conversation.interview = interview;
         conversation.isDeleted = false;
@@ -69,6 +64,6 @@ public class InterviewConversation extends BaseTimeEntity {
     }
 
     boolean isUserAnswer() {
-        return interviewConversationType == InterviewConversationType.ANSWER;
+        return interviewConversationType == InterviewConversationType.AI;
     }
 }
