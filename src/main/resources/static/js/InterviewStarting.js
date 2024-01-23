@@ -9,6 +9,10 @@ let chattingErrorToast = new bootstrap.Toast(document.getElementById('chattingEr
 let remainingTime = loadingTime;
 let decreaseInterval;
 
+$(document).ready(function () {
+    scroll();
+});
+
 // 응답을 최소 1.5초의 뒤에 보여주기 위한 함수
 function decreaseRemainingTime() {
     if(remainingTime <= 0){
@@ -89,14 +93,18 @@ function enableSendBtn() {
     sendBtn.prop("disabled", false);
 }
 
-// 서버로 요청보내기.
-function sendRequest(requestURL, message) {
-    console.log(message);
-
+function waitAiResponse() {
     disableSendBtn(); // 전송버튼 잠시 비활성화
     displayWaitingPanel(); // 응답 대기 화면 출력.
     scroll(); // 채팅 스크롤 밑으로 내리기.
     decreaseInterval = setInterval(decreaseRemainingTime, 100);
+}
+
+// 서버로 요청보내기.
+function sendRequest(requestURL, message) {
+    console.log(message);
+
+
 
     $.ajax({
         type: 'POST',

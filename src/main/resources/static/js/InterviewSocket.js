@@ -1,9 +1,11 @@
 let stompClient = null;
 let socket = null;
-let interviewId;
+let interviewId = null;
 
 $(document).ready(function () {
     interviewId = getInterviewId();
+    if($('#talk-history').find('li').length === 0)
+        waitAiResponse();
     initSocket();
 });
 
@@ -17,7 +19,6 @@ function initSocket() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        console.log('/queue/interview/' + interviewId);
         stompClient.subscribe('/queue/interview/' + interviewId, function (data) {
             console.log(data);
             clearInterval(decreaseInterval);
