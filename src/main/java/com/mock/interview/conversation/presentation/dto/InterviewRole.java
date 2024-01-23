@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum InterviewRole {
-    SYSTEM("system"), USER("user"), INTERVIEWER("interviewer");
+    SYSTEM("system"), USER("user"), AI("AI");
     private final String name;
     InterviewRole(String name) {
         this.name = name;

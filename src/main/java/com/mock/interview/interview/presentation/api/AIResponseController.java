@@ -31,7 +31,7 @@ public class AIResponseController {
     public ResponseEntity<MessageDto> chat(@Valid @RequestBody InterviewRequestDto interviewRequestDTO) {
         MessageHistory history = AIObjectConvertor.dtoToObject(interviewRequestDTO.getMessageHistory());
 //        Message response = service.service(interviewRequestDTO.getInterviewSetting(), history);
-        MessageDto message = new MessageDto(InterviewRole.INTERVIEWER.toString(), "test");
+        MessageDto message = new MessageDto(InterviewRole.AI.toString(), "test");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

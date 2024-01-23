@@ -57,6 +57,6 @@ public class InterviewConversationService {
 
     private static String getRole(InterviewConversation msg) {
         return msg.getInterviewConversationType() == InterviewConversationType.AI
-                ? InterviewRole.INTERVIEWER.toString() : InterviewRole.USER.toString();
+                ? InterviewRole.AI.toString() : InterviewRole.USER.toString();
     }
 }

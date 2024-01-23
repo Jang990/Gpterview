@@ -51,7 +51,7 @@ class ChatGPTRequesterTest {
         Message message = requester.sendRequest(new InterviewAIRequest(history, mockSetting));
 
         Assertions.assertThat(message.getContent()).isEqualTo(responseContent);
-        Assertions.assertThat(message.getRole()).isEqualTo(InterviewRole.INTERVIEWER.toString());
+        Assertions.assertThat(message.getRole()).isEqualTo(InterviewRole.AI.toString());
     }
 
     private void setTestResponse(ChatGptResponse chatGptResponse) {

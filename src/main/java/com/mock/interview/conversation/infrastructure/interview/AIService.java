@@ -40,7 +40,7 @@ public class AIService {
 
     private MessageHistory initHistory() {
         MessageHistory history = new MessageHistory();
-        history.getMessages().add(new Message(InterviewRole.INTERVIEWER.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
+        history.getMessages().add(new Message(InterviewRole.AI.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
         history.getMessages().add(new Message(InterviewRole.USER.toString(), "네. 준비됐습니다."));
         return history;
     }
@@ -82,7 +82,7 @@ public class AIService {
     private void convertRole(AISpecification aiSpec, Message message) {
         if(InterviewRole.SYSTEM.toString().equalsIgnoreCase(message.getRole()))
             message.setRole(aiSpec.getSystemRole());
-        else if(InterviewRole.INTERVIEWER.toString().equalsIgnoreCase(message.getRole()))
+        else if(InterviewRole.AI.toString().equalsIgnoreCase(message.getRole()))
             message.setRole(aiSpec.getInterviewerRole());
         else
             message.setRole(aiSpec.getUserRole());
@@ -95,6 +95,6 @@ public class AIService {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        return new Message(InterviewRole.INTERVIEWER.toString(), "Hello World!");
+        return new Message(InterviewRole.AI.toString(), "Hello World!");
     }
 }
