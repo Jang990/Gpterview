@@ -44,7 +44,7 @@
 
                                 </li>
 
-                                <li th:each="message : *{messages}" class="d-flex mb-3"
+                                <li th:each="message : ${messageHistory.content}" class="d-flex mb-3"
                                     th:classappend="${#strings.equals(message.role, 'USER')} ? justify-content-end : justify-content-start">
 
                                     <!-- 지원자 대화 내역 -->
