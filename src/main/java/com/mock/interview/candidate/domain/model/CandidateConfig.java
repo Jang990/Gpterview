@@ -96,6 +96,6 @@ public class CandidateConfig extends BaseTimeEntity {
     }
 
     public List<TechnicalSubjects> getTechSubjects() {
-        return techLink.stream().map(ProfileTechLink::getTechnicalSubjects).toList();
+        return getTechLink().stream().map(ProfileTechLink::getTechnicalSubjects).toList();
     }
 }

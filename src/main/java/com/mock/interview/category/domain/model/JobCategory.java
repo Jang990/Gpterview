@@ -43,7 +43,6 @@ public class JobCategory {
      * @return
      */
     public static JobCategory createFieldCategory(String name, JobCategory relatedDepartmentCategory) {
-        System.out.println(relatedDepartmentCategory);
         if (relatedDepartmentCategory == null || relatedDepartmentCategory.isField()) {
             throw new MissingRequiredDepartmentCategoryException();
         }
