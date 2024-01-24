@@ -8,13 +8,13 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * AI에게 요청을 보낼 정보를 캐싱하고 가져올 때 쓸 것.
@@ -23,31 +23,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InterviewCacheForAiRequest {
 
-    private final RedisTemplate<String, InterviewInfo> interviewRedisTemplate;
+    private final InterviewRedisRepository redisRepository;
     private final InterviewRepository interviewRepository;
 
-    private final String INTERVIEW_PROGRESS_KEY_PREFIX = "INTERVIEW:PROGRESS:";
-
     public InterviewInfo findAiInterviewSetting(long interviewId) {
-        String key = INTERVIEW_PROGRESS_KEY_PREFIX + interviewId;
-        InterviewInfo result = interviewRedisTemplate.opsForValue().get(key);
-        if (result != null) {
-            return result;
+        Optional<InterviewInfo> cache = redisRepository.findActiveInterview(interviewId);
+        if (cache.isPresent()) {
+            return cache.get();
         }
 
         Interview interview = interviewRepository.findInterviewSetting(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        result = convert(interview);
+        InterviewInfo result = convert(interview);
 
-        long diffMinute = calculateMinuteDifference(interview.getExpiredTime());
-        if(diffMinute > 0)
-            interviewRedisTemplate.opsForValue().set(key, result, Duration.ofMinutes(diffMinute));
-
+        redisRepository.saveInterviewIfActive(interviewId, result);
         return result;
-    }
-
-    private long calculateMinuteDifference(LocalDateTime expiredTime) {
-        return ChronoUnit.MINUTES.between(LocalDateTime.now(), expiredTime);
     }
 
     public InterviewInfo convert(Interview interview) {
