@@ -35,7 +35,7 @@ public class InterviewConversation extends BaseTimeEntity {
 
     static InterviewConversation createAnswer(Interview interview, MessageDto answer) {
         if (answer.getRole() == null || answer.getContent() == null
-                || !answer.getRole().equals("USER")) {
+                || !answer.getRole().equals(InterviewConversationType.USER.toString())) {
             throw new IllegalArgumentException();
         }
 
@@ -49,7 +49,7 @@ public class InterviewConversation extends BaseTimeEntity {
 
     public static InterviewConversation createQuestion(Interview interview, Message question) {
         if (question.getRole() == null || question.getContent() == null
-                || !question.getRole().equals("INTERVIEWER")) {
+                || !question.getRole().equals(InterviewConversationType.AI.toString())) {
             throw new IllegalArgumentException();
         }
 
