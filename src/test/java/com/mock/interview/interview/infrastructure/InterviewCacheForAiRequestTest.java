@@ -86,7 +86,7 @@ class InterviewCacheForAiRequestTest {
     }
 
     private void isEqual(InterviewInfo result, Interview mockInterview) {
-        assertThat(result.config().end()).isEqualTo(mockInterview.getExpiredTime());
+        assertThat(result.config().expiredTime()).isEqualTo(mockInterview.getExpiredTime());
         assertThat(result.config().interviewType()).isEqualTo(mockInterview.getCandidateConfig().getType());
         assertThat(result.profile().department()).isEqualTo(mockInterview.getCandidateConfig().getDepartment().getName());
         assertThat(result.profile().field()).isEqualTo(mockInterview.getCandidateConfig().getAppliedJob().getName());

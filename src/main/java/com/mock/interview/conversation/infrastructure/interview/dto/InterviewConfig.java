@@ -12,6 +12,6 @@ public record InterviewConfig(
         InterviewType interviewType,
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-        LocalDateTime end
+        LocalDateTime expiredTime
 ) {
 }
