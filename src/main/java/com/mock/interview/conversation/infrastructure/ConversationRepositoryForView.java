@@ -36,7 +36,7 @@ public class ConversationRepositoryForView {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
-                .orderBy(interviewConversation.createdAt.asc())
+                .orderBy(interviewConversation.createdAt.desc())
                 .fetch();
 
         Collections.reverse(result);
