@@ -36,7 +36,10 @@ public class InterviewCacheForAiRequest {
                 .orElseThrow(InterviewNotFoundException::new);
         InterviewInfo result = convert(interview);
 
-        redisRepository.saveInterviewIfActive(interviewId, result);
+        long diffMinute = calculateMinuteDifference(interview.getExpiredTime());
+        if (diffMinute > 0) {
+            redisRepository.saveInterviewIfActive(interviewId, result, diffMinute);
+        }
         return result;
     }
 
@@ -50,6 +53,10 @@ public class InterviewCacheForAiRequest {
         );
         InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interview.getExpiredTime());
         return new InterviewInfo(profile, interviewConfig);
+    }
+
+    private long calculateMinuteDifference(LocalDateTime expiredTime) {
+        return ChronoUnit.MINUTES.between(LocalDateTime.now(), expiredTime);
     }
 
 }

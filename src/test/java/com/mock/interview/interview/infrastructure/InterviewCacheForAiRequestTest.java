@@ -50,18 +50,37 @@ class InterviewCacheForAiRequestTest {
     }
 
     @Test
-    @DisplayName("캐시 미스")
+    @DisplayName("캐시 미스 - 진행중인 인터뷰 저장")
     void test2() {
+        LocalDateTime activeTime = LocalDateTime.now().plusHours(1);
+        Interview mockInterview = InterviewEntityCreator.create(activeTime);
+
+        when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.empty());
+        when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
+        when(mockInterview.getExpiredTime()).thenReturn(activeTime);
+
+        InterviewInfo result = cacheRepo.findAiInterviewSetting(testInterviewId);
+
+        verify(interviewRepository, times(1)).findInterviewSetting(testInterviewId);
+        verify(interviewRedisRepository, times(1)).saveInterviewIfActive(eq(testInterviewId), eq(result), anyLong());
+
+        isEqual(result, mockInterview);
+    }
+
+    @Test
+    @DisplayName("캐시 미스 - 만료된 인터뷰")
+    void test3() {
         LocalDateTime expiredTime = LocalDateTime.now().minusHours(1);
         Interview mockInterview = InterviewEntityCreator.create(expiredTime);
 
         when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.empty());
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
+        when(mockInterview.getExpiredTime()).thenReturn(expiredTime);
 
         InterviewInfo result = cacheRepo.findAiInterviewSetting(testInterviewId);
 
         verify(interviewRepository, times(1)).findInterviewSetting(testInterviewId);
-        verify(interviewRedisRepository, times(1)).saveInterviewIfActive(testInterviewId, result);
+        verify(interviewRedisRepository, times(0)).saveInterviewIfActive(eq(testInterviewId), eq(result), anyLong());
 
         isEqual(result, mockInterview);
     }

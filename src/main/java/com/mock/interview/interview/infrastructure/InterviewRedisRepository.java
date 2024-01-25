@@ -25,15 +25,10 @@ public class InterviewRedisRepository {
         return Optional.ofNullable(interviewRedisTemplate.opsForValue().get(key));
     }
 
-    public void saveInterviewIfActive(long interviewId, InterviewInfo data) {
-        long diffMinute = calculateMinuteDifference(data.config().end());
-        if (diffMinute > 0) {
-            String key = createKey(interviewId);
-            interviewRedisTemplate.opsForValue().set(key, data, Duration.ofMinutes(diffMinute));
-        }
+    public void saveInterviewIfActive(long interviewId, InterviewInfo data, long expiredMinute) {
+        String key = createKey(interviewId);
+        interviewRedisTemplate.opsForValue().set(key, data, Duration.ofMinutes(expiredMinute));
     }
 
-    private long calculateMinuteDifference(LocalDateTime expiredTime) {
-        return ChronoUnit.MINUTES.between(LocalDateTime.now(), expiredTime);
-    }
+
 }

@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -44,7 +45,6 @@ class InterviewRedisRepositoryTest {
     void findActiveInterview() {
         when(interviewRedisTemplate.opsForValue()).thenReturn(mockOps);
         InterviewInfo mock = mock(InterviewInfo.class);
-        when(mockOps.get(any())).thenReturn(mock);
 
         Optional<InterviewInfo> result = interviewRedisRepository.findActiveInterview(testId);
 
@@ -53,29 +53,14 @@ class InterviewRedisRepositoryTest {
     }
 
     @Test
-    @DisplayName("만료된 인터뷰 - 캐싱 안함")
+    @DisplayName("캐시 저장")
     void saveExpiredInterview() {
         InterviewInfo data = mock(InterviewInfo.class);
-        InterviewConfig config = mock(InterviewConfig.class);
-        when(data.config()).thenReturn(config);
-        when(config.end()).thenReturn(LocalDateTime.now().minusHours(1));
-
-        interviewRedisRepository.saveInterviewIfActive(testId, data);
-
-        verify(mockOps, times(0)).set(any(), any());
-    }
-
-    @Test
-    @DisplayName("진행중 인터뷰 - 캐싱")
-    void saveActiveInterview() {
+        long testLong = 1L;
         when(interviewRedisTemplate.opsForValue()).thenReturn(mockOps);
+        doNothing().when(mockOps).set(anyString(), eq(data), any());
 
-        InterviewInfo data = mock(InterviewInfo.class);
-        InterviewConfig config = mock(InterviewConfig.class);
-        when(data.config()).thenReturn(config);
-        when(config.end()).thenReturn(LocalDateTime.now().plusHours(1));
-
-        interviewRedisRepository.saveInterviewIfActive(testId, data);
+        interviewRedisRepository.saveInterviewIfActive(testId, data, testLong);
 
         verify(mockOps, times(1)).set(any(), any(), any());
     }
