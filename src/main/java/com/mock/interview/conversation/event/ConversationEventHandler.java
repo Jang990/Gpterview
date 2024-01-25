@@ -43,16 +43,16 @@ public class ConversationEventHandler {
         sendRequestToAi(event.interviewId());
     }
 
-    private InterviewInfo convert(CandidateConfig config, LocalDateTime interviewExpiredTime) {
-        InterviewProfile profile = new InterviewProfile(
-                config.getDepartment().getName(),
-                config.getAppliedJob().getName(),
-                config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-                List.of(config.getExperience())
-        );
-        InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interviewExpiredTime);
-        return new InterviewInfo(profile, interviewConfig);
-    }
+//    private InterviewInfo convert(CandidateConfig config, LocalDateTime interviewExpiredTime) {
+//        InterviewProfile profile = new InterviewProfile(
+//                config.getDepartment().getName(),
+//                config.getAppliedJob().getName(),
+//                config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
+//                List.of(config.getExperience())
+//        );
+//        InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interviewExpiredTime);
+//        return new InterviewInfo(profile, interviewConfig);
+//    }
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)

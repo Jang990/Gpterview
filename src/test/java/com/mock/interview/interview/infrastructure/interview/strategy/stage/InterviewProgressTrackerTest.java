@@ -52,7 +52,7 @@ class InterviewProgressTrackerTest {
         int answerIdx = 0;
         Set<InterviewStage> set = new HashSet<>();
 
-        InterviewConfig config = new InterviewConfig(type, LocalDateTime.now());
+        InterviewConfig config = new InterviewConfig(type, LocalDateTime.now(), LocalDateTime.now());
         MessageHistory history = mock(MessageHistory.class);
         List<Message> list = mock(LinkedList.class);
         when(list.size()).thenReturn(2);

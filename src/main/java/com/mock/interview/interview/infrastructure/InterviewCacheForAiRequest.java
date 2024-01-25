@@ -51,7 +51,7 @@ public class InterviewCacheForAiRequest {
                 config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
                 List.of(config.getExperience())
         );
-        InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interview.getExpiredTime());
+        InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interview.getCreatedAt(), interview.getExpiredTime());
         return new InterviewInfo(profile, interviewConfig);
     }
 

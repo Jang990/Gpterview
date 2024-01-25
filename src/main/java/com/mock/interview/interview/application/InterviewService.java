@@ -67,7 +67,7 @@ public class InterviewService {
                         profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
                         List.of(profile.getExperience())
                 ),
-                new InterviewConfig(interview.getCandidateConfig().getType(), interview.getExpiredTime())
+                new InterviewConfig(interview.getCandidateConfig().getType(), interview.getCreatedAt(), interview.getExpiredTime())
         );
     }
 }
