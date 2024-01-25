@@ -3,6 +3,7 @@ package com.mock.interview.conversation.infrastructure;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,6 @@ public interface InterviewConversationRepository extends JpaRepository<Interview
             LIMIT 1 
             """)
     Optional<InterviewConversation> findLastConversation(@Param("interviewId") long interviewId);
+
+    Slice<InterviewConversation> findByInterviewId(@Param("interviewId") long interviewId, Pageable pageable);
 }

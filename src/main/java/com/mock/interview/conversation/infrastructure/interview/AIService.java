@@ -23,14 +23,10 @@ public class AIService {
     private final InterviewService interviewService;
     private final InterviewConversationService conversationService;
 
-    public Message service(long loginId, long interviewId) {
-        InterviewInfo interviewInfo = interviewService.findInterviewForAIRequest(loginId, interviewId);
-        System.out.println(interviewInfo);
-        MessageHistory history = conversationService.findConversationsForAIRequest(interviewId);
+    public Message service(InterviewInfo interviewInfo, MessageHistory history) {
         if (history.getMessages().isEmpty()) {
             history = initHistory();
         }
-        System.out.println(history);
 
         InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
         InterviewAIRequest request = interviewerStrategy.configStrategy(requester, interviewInfo, history); // 면접 전략 세팅.
