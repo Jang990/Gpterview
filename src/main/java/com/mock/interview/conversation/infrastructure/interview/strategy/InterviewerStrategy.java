@@ -7,16 +7,16 @@ import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIR
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 
 /**
- * 인터뷰 타입에 따라 각 분야(ex IT, 회계, 영업)별 인터뷰 형식 설정.
- * IT의 경우 기술 면접을 깊게...
+ * 인터뷰 정보에 따라 각 분야(ex IT, 회계, 영업)별 AI에게 전달할 프롬프트 생성기
+ *
+ * 다음 상황을 컨트롤 해줘야함.
+ * IT의 경우 기술 면접 위주...
  * 영업의 경우 인성을 깊게...
  *
- * AI에게 보내기 위해 AI 스펙에 맞도록 메시지 리스트 세팅.
- * return 값을 AIRequest에 전달해서 실제 요청.
  */
 public interface InterviewerStrategy {
     /**
-     * AI별로 토큰의 값이 다르기 때문에 적절히 자르는 과정이 필요.
+     * 인터뷰 전략에 맞는 프롬프트 생성
      *
      * @param aiSpec AI 스펙을 확인할 수 있는 인터페이스
      * @param interviewInfo 진행되는 인터뷰 지원자의 정보
@@ -25,7 +25,7 @@ public interface InterviewerStrategy {
     InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo);
 
     /**
-     * 인터뷰 전략에 맞춰 현재 사용자의 주제를 변경해주는 기능
+     * 인터뷰 전략에 맞춰 현재 사용자의 주제를 변경하는 프롬프트 생성
      *
      * @param aiSpec AI 스펙을 확인할 수 있는 인터페이스
      * @param interviewInfo 진행되는 인터뷰 지원자의 정보
