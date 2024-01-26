@@ -4,6 +4,7 @@ const loadingTime = 1500;
 const sendBtn = $('.sendBtn');
 const errorMessageField = $('#errorMessageField');
 const contentMinLength = 3;
+const contentMaxLength = 200;
 let chattingErrorToast = new bootstrap.Toast(document.getElementById('chattingErrorToast'));
 
 let remainingTime = loadingTime;
@@ -67,7 +68,7 @@ function sendMessage() {
 
     const nowMsg = $('#result').val(); // 현재 사용자 작성 답변 가져오기.
     if(isInvalidChattingMessage(nowMsg)) {
-        showChattingErrorMessage(contentMinLength + '자 이상 입력해주세요.');
+        showChattingErrorMessage(contentMinLength + '자 이상 ' + contentMaxLength + '자 이하 입력해주세요.');
         return;
     }
 
@@ -82,7 +83,7 @@ function sendMessage() {
 }
 
 function isInvalidChattingMessage(message) {
-    return message.length < 3;
+    return message.length < contentMinLength || contentMaxLength < message.length;
 }
 
 function disableSendBtn() {

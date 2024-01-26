@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class MessageDto {
     private String role;
 
-    @Size(min = 3)
+    @Size(min = 3, max = 200)
     private String content;
 }

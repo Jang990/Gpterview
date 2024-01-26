@@ -20,7 +20,7 @@ public class InterviewConversation extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(updatable = false)
+    @Column(updatable = false, length = 600) // 한글 200자 제한
     private String content;
 
     @Enumerated(EnumType.STRING)
