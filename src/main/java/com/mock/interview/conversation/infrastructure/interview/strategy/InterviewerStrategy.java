@@ -20,7 +20,6 @@ public interface InterviewerStrategy {
      *
      * @param aiSpec AI 스펙을 확인할 수 있는 인터페이스
      * @param interviewInfo 진행되는 인터뷰 지원자의 정보
-     * @param history 진행된 대화 기록
      * @return
      */
     InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo);
@@ -30,7 +29,6 @@ public interface InterviewerStrategy {
      *
      * @param aiSpec AI 스펙을 확인할 수 있는 인터페이스
      * @param interviewInfo 진행되는 인터뷰 지원자의 정보
-     * @param history 진행된 대화 기록
      * @return
      */
     InterviewSetting changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo);
