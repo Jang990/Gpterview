@@ -64,7 +64,6 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
             case TECHNICAL -> interviewConcept.getTechnical();
             case EXPERIENCE -> interviewConcept.getExperience();
             case PERSONAL -> interviewConcept.getPersonal();
-            case FINISHED -> throw new AlreadyFinishedInterviewException();
         };
     }
 }
