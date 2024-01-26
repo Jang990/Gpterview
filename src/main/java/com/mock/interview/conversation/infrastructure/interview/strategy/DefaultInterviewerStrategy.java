@@ -9,7 +9,7 @@ import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIR
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.conversation.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgressTracker;
+import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgressTimeBasedTracker;
 import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
@@ -21,7 +21,7 @@ import java.util.List;
 //@Component
 @RequiredArgsConstructor
 public class DefaultInterviewerStrategy implements InterviewerStrategy {
-    private final InterviewProgressTracker progressTracker;
+    private final InterviewProgressTimeBasedTracker progressTracker;
     private final InterviewSettingCreator interviewSettingCreator;
     private final DefaultInterviewConcept interviewConcept;
 
@@ -30,7 +30,7 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config(), history);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         InterviewProfile profile = interviewInfo.profile();
 
@@ -49,7 +49,7 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config(), history);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         rawStrategy += interviewConcept.getChangingTopicCommand();
         InterviewProfile profile = interviewInfo.profile();

@@ -7,7 +7,7 @@ import com.mock.interview.conversation.infrastructure.interview.setting.Intervie
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSettingCreator;
 import com.mock.interview.conversation.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgressTracker;
+import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgressTimeBasedTracker;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ITInterviewerStrategy implements InterviewerStrategy {
-    private final InterviewProgressTracker progressTracker;
+    private final InterviewProgressTimeBasedTracker progressTracker;
     private final InterviewSettingCreator interviewSettingCreator;
     private final ITInterviewConcept interviewConcept;
 
@@ -28,7 +28,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     @Override
     public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
         InterviewProfile profile = interviewInfo.profile();
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config(), history);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
 
         List<Message> messageHistory = history.getMessages();
@@ -66,7 +66,7 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     @Override
     public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
         InterviewProfile profile = interviewInfo.profile();
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config(), history);
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         rawStrategy += interviewConcept.getChangingTopicCommand();
 
