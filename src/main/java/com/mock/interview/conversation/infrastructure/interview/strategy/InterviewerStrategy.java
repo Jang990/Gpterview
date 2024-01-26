@@ -4,6 +4,7 @@ import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInf
 import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIRequest;
+import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 
 /**
  * 인터뷰 타입에 따라 각 분야(ex IT, 회계, 영업)별 인터뷰 형식 설정.
@@ -22,7 +23,7 @@ public interface InterviewerStrategy {
      * @param history 진행된 대화 기록
      * @return
      */
-    InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history);
+    InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo);
 
     /**
      * 인터뷰 전략에 맞춰 현재 사용자의 주제를 변경해주는 기능
@@ -32,7 +33,7 @@ public interface InterviewerStrategy {
      * @param history 진행된 대화 기록
      * @return
      */
-    InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history);
+    InterviewSetting changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo);
 
     boolean isSupportedDepartment(InterviewInfo interviewInfo);
 }

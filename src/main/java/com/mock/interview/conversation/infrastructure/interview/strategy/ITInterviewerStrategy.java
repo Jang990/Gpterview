@@ -26,17 +26,13 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     private final String[] SUPPORTED_DEPARTMENT = {"IT", "개발"};
 
     @Override
-    public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
+    public InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
         InterviewProfile profile = interviewInfo.profile();
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
 
-        List<Message> messageHistory = history.getMessages();
-        // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
-
         PromptCreationInfo promptCreationInfo = createPromptCreationInfo(rawStrategy, currentProgress, profile);
-        InterviewSetting setting = interviewSettingCreator.create(aiSpec, promptCreationInfo);
-        return new InterviewAIRequest(messageHistory, setting);
+        return interviewSettingCreator.create(aiSpec, promptCreationInfo);
     }
 
     private PromptCreationInfo createPromptCreationInfo(String rawStrategy, InterviewProgress currentProgress, InterviewProfile profile) {
@@ -64,18 +60,14 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     }
 
     @Override
-    public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
+    public InterviewSetting changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
         InterviewProfile profile = interviewInfo.profile();
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         rawStrategy += interviewConcept.getChangingTopicCommand();
 
-        List<Message> messageHistory = history.getMessages();
-        // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
-
         PromptCreationInfo promptCreationInfo = createPromptCreationInfo(rawStrategy, currentProgress, profile);
-        InterviewSetting setting = interviewSettingCreator.create(aiSpec, promptCreationInfo);
-        return new InterviewAIRequest(messageHistory, setting);
+        return interviewSettingCreator.create(aiSpec, promptCreationInfo);
     }
 
     @Override

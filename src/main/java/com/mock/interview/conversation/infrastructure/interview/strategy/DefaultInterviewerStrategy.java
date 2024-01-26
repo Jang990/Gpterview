@@ -29,15 +29,12 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
     //      -> IT 먼저 끝내고 바꿀 것.
 
     @Override
-    public InterviewAIRequest configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
+    public InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         InterviewProfile profile = interviewInfo.profile();
 
-        List<Message> messageHistory = history.getMessages();
-
-        InterviewSetting setting = createSetting(aiSpec, rawStrategy, profile);
-        return new InterviewAIRequest(messageHistory, setting);
+        return createSetting(aiSpec, rawStrategy, profile);
     }
     private InterviewSetting createSetting(AISpecification aiSpec, String rawStrategy, InterviewProfile profile) {
         PromptCreationInfo creationInfo = new PromptCreationInfo(
@@ -48,16 +45,13 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
     }
 
     @Override
-    public InterviewAIRequest changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo, MessageHistory history) {
+    public InterviewSetting changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         rawStrategy += interviewConcept.getChangingTopicCommand();
         InterviewProfile profile = interviewInfo.profile();
 
-        List<Message> messageHistory = history.getMessages();
-
-        InterviewSetting setting = createSetting(aiSpec, rawStrategy, profile);
-        return new InterviewAIRequest(messageHistory, setting);
+        return createSetting(aiSpec, rawStrategy, profile);
     }
 
     @Override

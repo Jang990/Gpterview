@@ -7,6 +7,7 @@ import com.mock.interview.conversation.infrastructure.interview.dto.MessageHisto
 import com.mock.interview.conversation.infrastructure.interview.gpt.AIRequester;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIRequest;
+import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.conversation.infrastructure.interview.strategy.InterviewerStrategy;
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
@@ -29,7 +30,11 @@ public class AIService {
         }
 
         InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
-        InterviewAIRequest request = interviewerStrategy.configStrategy(requester, interviewInfo, history); // 면접 전략 세팅.
+        InterviewSetting setting = interviewerStrategy.configStrategy(requester, interviewInfo); // 면접 전략 세팅.
+
+        // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
+
+        InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), setting);
         convertRole(requester, request.getHistory()); // AIRequester로 보낼 수 있는 role로 수정.
         return requester.sendRequest(request); // AI로 부터 받은 응답.
     }
@@ -53,7 +58,11 @@ public class AIService {
         MessageHistory history = conversationService.findConversationsForAIRequest(interviewId);
 
         InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
-        InterviewAIRequest request = interviewerStrategy.changeTopic(requester, interviewInfo, history);
+        InterviewSetting setting = interviewerStrategy.changeTopic(requester, interviewInfo);
+
+        // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
+
+        InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), setting);
         convertRole(requester, request.getHistory());
         return requester.sendRequest(request);
     }
