@@ -77,6 +77,7 @@ function sendMessage() {
 
     const newConversationItem = createUserMessage(nowMsg);
     $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
+    scroll();
 
     const message = createMessage("USER", nowMsg); // TODO: USER를 타임리프로 변경
     sendRequest(interviewUriPrefix+"/response", message);
@@ -104,8 +105,6 @@ function waitAiResponse() {
 // 서버로 요청보내기.
 function sendRequest(requestURL, message) {
     console.log(message);
-
-
 
     $.ajax({
         type: 'POST',
