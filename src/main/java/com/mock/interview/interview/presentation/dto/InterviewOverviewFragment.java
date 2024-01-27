@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class InterviewOverviewFragment {
+    private long id;
     private String title;
     private InterviewType type;
     private LocalDateTime createdAt;

@@ -19,12 +19,19 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <!--TODO: 클릭시 이동 처리할 것-->
-                            <tr class="align-middle" th:each="data: ${dataList}" onclick="console.log('helloWorld!')" style="cursor: pointer;">
+                            <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/user/{username}/interview/{interviewId}'( username=${#authentication.principal.username},interviewId=${data.id} )}" style="cursor: pointer;">
                                 <td class="small" th:text="${data.title}">제목 정보</td>
                                 <td class="small" th:text="${data.type}">면접 타입</td>
                                 <td class="small" th:text="${#temporals.format(data.createdAt, 'MM-dd HH:mm')}">생성일</td>
                             </tr>
+
+                            <th:block th:if="${dataList.size() < 3}">
+                                <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
+                                    <td class="small">&nbsp;</td>
+                                    <td class="small">
+                                    </td><td class="small"></td>
+                                </tr>
+                            </th:block>
                         </tbody>
                     </table>
                 </div>

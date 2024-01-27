@@ -19,12 +19,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <!--TODO: 클릭시 이동 처리할 것-->
-                            <tr class="align-middle" th:each="data: ${dataList}" onclick="console.log('helloWorld!')" style="cursor: pointer;">
+                            <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/user/{username}/review/{reviewId}'( username=${#authentication.principal.username},reviewId=${data.id} )}" style="cursor: pointer;">
                                 <td class="small" th:text="${data.id}">리뷰 ID</td>
                                 <td class="small text-truncate" style="max-width: 300px; overflow: hidden;" th:text="${data.content}">리뷰 내용</td>
                                 <td class="small" th:text="${data.memoCount}">나의 메모 수</td>
                             </tr>
+                            <th:block th:if="${dataList.size() < 3}">
+                                <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
+                                    <td class="small">&nbsp;</td>
+                                    <td class="small">
+                                    </td><td class="small"></td>
+                                </tr>
+                            </th:block>
                         </tbody>
                     </table>
                 </div>

@@ -51,15 +51,13 @@ public class UserController {
 
         List<InterviewOverviewFragment> interviewOverviewList =
                 List.of(
-                        new InterviewOverviewFragment("IT-백엔드 면접", InterviewType.COMPOSITE, LocalDateTime.now()),
-                        new InterviewOverviewFragment("IT-모바일 면접", InterviewType.TECHNICAL, LocalDateTime.now()),
-                        new InterviewOverviewFragment("인사-헤드헌터 면접", InterviewType.TECHNICAL_EXPERIENCE, LocalDateTime.now())
+                        new InterviewOverviewFragment(1, "IT-백엔드 면접", InterviewType.COMPOSITE, LocalDateTime.now()),
+                        new InterviewOverviewFragment(3, "인사-헤드헌터 면접", InterviewType.TECHNICAL_EXPERIENCE, LocalDateTime.now())
                 );
 
         List<ReviewOverviewFragment> reviewOverviewList =
                 List.of(
                         new ReviewOverviewFragment(1, "멀티 프로세싱과 멀티스레딩을 어떤 상황에서 사용하는 것이 적절할까요?", 10),
-                        new ReviewOverviewFragment(2, "멀티스레딩에서 뮤텍스와 세마포어의 차이점을 설명해주세요.", 2),
                         new ReviewOverviewFragment(3, "FIFO 방식의 스케줄링과 라운드 로빈 방식의 스케줄링을 비교해보세요.", 6)
                 );
 
