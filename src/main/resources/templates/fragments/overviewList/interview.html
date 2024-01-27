@@ -14,14 +14,14 @@
                         <thead class="small text-uppercase bg-body text-muted">
                         <tr>
                             <th>면접 제목</th>
-                            <th>면접 타입</th>
+                            <th>진행 시간</th>
                             <th>생성일</th>
                         </tr>
                         </thead>
                         <tbody>
                             <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/interview/{interviewId}'( interviewId=${data.id} )}" style="cursor: pointer;">
                                 <td class="small" th:text="${data.title}">제목 정보</td>
-                                <td class="small" th:text="${data.type}">면접 타입</td>
+                                <td class="small" th:text="|${data.durationMinutes}분|">30분</td>
                                 <td class="small" th:text="${#temporals.format(data.createdAt, 'MM-dd HH:mm')}">생성일</td>
                             </tr>
 

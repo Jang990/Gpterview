@@ -3,6 +3,7 @@ package com.mock.interview.user.presentation.web;
 import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.global.exception.CustomClientException;
 import com.mock.interview.interview.application.InterviewService;
+import com.mock.interview.interview.infrastructure.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.temp.ReviewOverviewFragment;
@@ -11,6 +12,8 @@ import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.presentation.dto.AccountDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -29,6 +33,7 @@ public class UserController {
 
     private final UserService userService;
     private final InterviewService interviewService;
+    private final InterviewRepositoryForView interviewRepositoryForView;
 
     @GetMapping("auth/login")
     public String loginPage(Model model) {
@@ -44,23 +49,25 @@ public class UserController {
 
     @GetMapping("/")
     public String indexPage(Model model, @AuthenticationPrincipal Users users) {
-        if(users != null)
-            model.addAttribute("activeInterview", getActiveInterview(users.getId()));
-        else
+        if (users == null) {
             model.addAttribute("activeInterview", new InterviewResponse());
+            model.addAttribute("interviewOverviewList", new ArrayList<>());
+            model.addAttribute("reviewOverviewList", new ArrayList<>());
+            return "index";
+        }
 
-        List<InterviewOverviewFragment> interviewOverviewList =
-                List.of(
-                        new InterviewOverviewFragment(1, "IT-백엔드 면접", InterviewType.COMPOSITE, LocalDateTime.now()),
-                        new InterviewOverviewFragment(3, "인사-헤드헌터 면접", InterviewType.TECHNICAL_EXPERIENCE, LocalDateTime.now())
-                );
+        final int maxOverviewListSize = 3;
+        List<InterviewOverviewFragment> interviewOverviewList = interviewRepositoryForView
+                .findInterviewOverview(users.getId(), PageRequest.of(0, maxOverviewListSize));
 
+        // TODO: 개발 후 제대로 뺄 것.
         List<ReviewOverviewFragment> reviewOverviewList =
                 List.of(
                         new ReviewOverviewFragment(1, "멀티 프로세싱과 멀티스레딩을 어떤 상황에서 사용하는 것이 적절할까요?", 10),
                         new ReviewOverviewFragment(3, "FIFO 방식의 스케줄링과 라운드 로빈 방식의 스케줄링을 비교해보세요.", 6)
                 );
 
+        model.addAttribute("activeInterview", getActiveInterview(users.getId()));
         model.addAttribute("interviewOverviewList", interviewOverviewList);
         model.addAttribute("reviewOverviewList", reviewOverviewList);
 

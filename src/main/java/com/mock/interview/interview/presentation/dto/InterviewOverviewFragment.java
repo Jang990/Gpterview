@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 public class InterviewOverviewFragment {
     private long id;
     private String title;
-    private InterviewType type;
+    private int durationMinutes;
     private LocalDateTime createdAt;
 }
