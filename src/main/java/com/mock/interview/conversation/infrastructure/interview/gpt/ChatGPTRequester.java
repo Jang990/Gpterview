@@ -53,7 +53,7 @@ public class ChatGPTRequester implements AIRequester {
         GptFunctionResult content = convertor.convertFunctionResult(response);
 
         log.info("답변: {} - 응답: {}", history.get(history.size()-1).getContent(), content.getResponse());
-        return new Message(InterviewRole.AI.toString(), content.getResponse());*/
+        return new Message(InterviewRole.AI.toString(), content.getResponse());
     }
 
     private boolean isStartingRequest(InterviewAIRequest request) {
