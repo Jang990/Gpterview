@@ -30,8 +30,8 @@ public class AiResponseProcessingLockAspect {
             + AISpecification.READ_TIMEOUT_MS
             + EXTRA_PROCESSING_MS;
 
-    @Around("@within(com.mock.interview.conversation.infrastructure.lock.InterviewUserLock) " +
-            "|| @annotation(com.mock.interview.conversation.infrastructure.lock.InterviewUserLock)")
+    @Around("@within(com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock) " +
+            "|| @annotation(com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
         Users authentication = getAuthenticatedUser();
         String key = createKey(authentication);
