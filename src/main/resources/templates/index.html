@@ -10,7 +10,7 @@
           <div class="container my-5">
               <!--    <h1>Welcome to My Website</h1>-->
               <!--    <p>This is the home page.</p>-->
-              <div th:replace="~{fragments/rowtable/row-table :: fragment-row-table}" class="mr-5">RowTable 공간</div>
+              <div th:replace="~{fragments/rowtable/row-table :: fragment-row-table(interviewOverviewList=${interviewOverviewList}, reviewOverviewList=${reviewOverviewList})}" class="mr-5">RowTable 공간</div>
           </div>
       </div>
   </section>
