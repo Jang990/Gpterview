@@ -5,6 +5,9 @@ package com.mock.interview.conversation.infrastructure.interview.gpt;
  * oepnAI의 경우 Role은 system, user, assistant가 있고 MaxToken은 4096
  */
 public interface AISpecification {
+    long CONNECT_TIMEOUT_MS = 2_000;
+    long READ_TIMEOUT_MS = 5_000;
+
     String getSystemRole();
     String getUserRole();
     String getInterviewerRole();
