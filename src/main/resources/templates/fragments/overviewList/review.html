@@ -6,7 +6,7 @@
         <div class="col-12 mb-3 mb-lg-5">
             <div class="position-relative card table-nowrap table-card">
                 <div class="card-header align-items-center">
-                    <h5 class="mb-0">면접 기록</h5>
+                    <h5 class="mb-0">리뷰 기록</h5>
                     <!--<p class="mb-0 small text-muted">1 Pending</p>-->
                 </div>
                 <div class="table-responsive">
@@ -22,7 +22,7 @@
                             <!--TODO: 클릭시 이동 처리할 것-->
                             <tr class="align-middle" th:each="data: ${dataList}" onclick="console.log('helloWorld!')" style="cursor: pointer;">
                                 <td class="small" th:text="${data.id}">리뷰 ID</td>
-                                <td class="small" th:text="${data.content}">리뷰 내용</td>
+                                <td class="small text-truncate" style="max-width: 300px; overflow: hidden;" th:text="${data.content}">리뷰 내용</td>
                                 <td class="small" th:text="${data.memoCount}">나의 메모 수</td>
                             </tr>
                         </tbody>
