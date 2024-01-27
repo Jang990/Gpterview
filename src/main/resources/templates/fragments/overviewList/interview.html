@@ -19,7 +19,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/user/{username}/interview/{interviewId}'( username=${#authentication.principal.username},interviewId=${data.id} )}" style="cursor: pointer;">
+                            <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/interview/{interviewId}'( interviewId=${data.id} )}" style="cursor: pointer;">
                                 <td class="small" th:text="${data.title}">제목 정보</td>
                                 <td class="small" th:text="${data.type}">면접 타입</td>
                                 <td class="small" th:text="${#temporals.format(data.createdAt, 'MM-dd HH:mm')}">생성일</td>
