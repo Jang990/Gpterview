@@ -1,17 +1,14 @@
 package com.mock.interview.conversation.infrastructure.lock;
 
+import com.mock.interview.conversation.domain.UserAnsweredEvent;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
-import com.mock.interview.user.domain.model.Users;
+import com.mock.interview.interview.domain.InterviewStartedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -33,8 +30,11 @@ public class AiResponseProcessingLockAspect {
     @Around("@within(com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock) " +
             "|| @annotation(com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
-        Users authentication = getAuthenticatedUser();
-        String key = createKey(authentication);
+        Long interviewId = getInterviewId(pjp.getArgs());
+        if (interviewId == null)
+            throw new IllegalArgumentException();
+
+        String key = String.format(KEY_FORMAT, interviewId);
         try {
             boolean lockAlreadyExists = !lock(key);
             if(lockAlreadyExists)
@@ -46,9 +46,18 @@ public class AiResponseProcessingLockAspect {
         }
     }
 
-    private String createKey(Users authentication) {
-        long loginId = authentication.getId();
-        return String.format(KEY_FORMAT, loginId);
+    private Long getInterviewId(Object[] args) {
+        for (Object arg : args) {
+            if (arg instanceof InterviewStartedEvent event) {
+                return event.interviewId();
+            }
+
+            if (arg instanceof UserAnsweredEvent event) {
+                return event.interviewId();
+            }
+        }
+
+        return null;
     }
 
     private void release(String key) {
@@ -62,14 +71,5 @@ public class AiResponseProcessingLockAspect {
                         LOCK_VALUE,
                         Duration.ofMillis(LOCK_TIMEOUT_MS)
                 );
-    }
-
-    private Users getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null
-                || authentication instanceof AnonymousAuthenticationToken
-                || !authentication.isAuthenticated())
-            throw new UsernameNotFoundException("사용자 식별 불가");
-        return (Users) authentication.getPrincipal();
     }
 }
