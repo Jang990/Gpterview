@@ -1,4 +1,4 @@
-package com.mock.interview.temp;
+package com.mock.interview.review;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,5 @@
-package com.mock.interview.temp;
+package com.mock.interview.review;
 
-import com.mock.interview.user.presentation.dto.AccountDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

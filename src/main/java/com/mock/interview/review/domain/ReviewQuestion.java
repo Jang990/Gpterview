@@ -1,4 +1,4 @@
-package com.mock.interview.temp.domain;
+package com.mock.interview.review.domain;
 
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.user.domain.model.Users;
