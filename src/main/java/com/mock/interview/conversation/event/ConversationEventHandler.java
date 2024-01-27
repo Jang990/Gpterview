@@ -7,6 +7,7 @@ import com.mock.interview.conversation.infrastructure.ConversationCacheForAiRequ
 import com.mock.interview.conversation.infrastructure.InterviewConversationRepository;
 import com.mock.interview.conversation.infrastructure.interview.AIService;
 import com.mock.interview.conversation.infrastructure.interview.dto.*;
+import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
@@ -34,6 +35,7 @@ public class ConversationEventHandler {
     private final ConversationCacheForAiRequest conversationCache;
 
     @Async
+    @AiResponseProcessingLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
             classes = InterviewStartedEvent.class,
@@ -55,6 +57,7 @@ public class ConversationEventHandler {
 //    }
 
     @Async
+    @AiResponseProcessingLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
             classes = UserAnsweredEvent.class,
