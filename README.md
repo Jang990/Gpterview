@@ -1,6 +1,11 @@
 ## 🎠 About
 ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인적으로 면접을 공부할 수 있는 서비스
 
+<br>
+
+## 👀 Demo
+
+![demo-1](https://github.com/Jang990/Gpterview/assets/88225377/058e4585-3261-49dc-9b45-cae8591b01a6)
 
 <br>
 
@@ -19,7 +24,3 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 
 
 <br>
-
-## 👀 Demo
-
-![demo-1](https://github.com/Jang990/Gpterview/assets/88225377/058e4585-3261-49dc-9b45-cae8591b01a6)
