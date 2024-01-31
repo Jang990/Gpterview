@@ -105,6 +105,7 @@ function waitAiResponse() {
 // 서버로 요청보내기.
 function sendRequest(requestURL, message) {
     console.log(message);
+    waitAiResponse();
 
     $.ajax({
         type: 'POST',
