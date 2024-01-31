@@ -12,18 +12,25 @@ import java.util.Optional;
 @Service
 public class ConversationCreationService {
     public InterviewConversation createAnswer(
-            Interview interview, MessageDto answer,
-            Optional<InterviewConversation> lastConversation
+                Interview interview, MessageDto answer,
+                Optional<InterviewConversation> lastConversation
     ) {
+            if (interview.isTimeout() && isLastConversationByUser(lastConversation))
+                throw new IsAlreadyTimeoutInterviewException();
+
+            InterviewConversation conversation = InterviewConversation.createAnswer(interview, answer);
+
+            if (isInterviewInProgress(interview)) {
+                Events.raise(new UserAnsweredEvent(interview.getId()));
+            }
+            return conversation;
+    }
+
+    public void changeTopic(Interview interview, Optional<InterviewConversation> lastConversation) {
         if (interview.isTimeout() && isLastConversationByUser(lastConversation))
             throw new IsAlreadyTimeoutInterviewException();
 
-        InterviewConversation conversation = InterviewConversation.createAnswer(interview, answer);
-
-        if (isInterviewInProgress(interview)) {
-            Events.raise(new UserAnsweredEvent(interview.getId()));
-        }
-        return conversation;
+        lastConversation.get().changeTopic();
     }
 
     private static boolean isInterviewInProgress(Interview interview) {

@@ -42,6 +42,13 @@ public class InterviewConversationService {
         conversationRepository.save(conversation);
     }
 
+    public void changeAiMessageTopic(long loginId, long interviewId) {
+        Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
+                .orElseThrow(InterviewNotFoundException::new);
+        Optional<InterviewConversation> lastConversation = conversationRepository.findLastConversation(interview.getId());
+        conversationCreationService.changeTopic(interview, lastConversation);
+    }
+
     @Transactional(readOnly = true)
     public MessageHistory findConversationsForAIRequest(long interviewId) {
         return convert(conversationRepository.findConversation(interviewId, PageRequest.of(FIRST_PAGE, CONVERSATION_OFFSET)));

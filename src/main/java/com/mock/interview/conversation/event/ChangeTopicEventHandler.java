@@ -1,13 +1,14 @@
 package com.mock.interview.conversation.event;
 
-import com.mock.interview.conversation.domain.UserAnsweredEvent;
+import com.mock.interview.conversation.domain.ChangeTopicEvent;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.conversation.infrastructure.ConversationCacheForAiRequest;
 import com.mock.interview.conversation.infrastructure.InterviewConversationRepository;
 import com.mock.interview.conversation.infrastructure.interview.AIService;
-import com.mock.interview.conversation.infrastructure.interview.dto.*;
+import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
+import com.mock.interview.conversation.infrastructure.interview.dto.Message;
+import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
-import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
@@ -22,7 +23,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
 @RequiredArgsConstructor
-public class ConversationEventHandler {
+public class ChangeTopicEventHandler {
     private final AIService aiService;
     private final InterviewRepository interviewRepository;
     private final InterviewConversationRepository conversationRepository;
@@ -33,45 +34,16 @@ public class ConversationEventHandler {
     @AiResponseProcessingLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
-            classes = InterviewStartedEvent.class,
+            classes = ChangeTopicEvent.class,
             phase = TransactionPhase.AFTER_COMMIT
     )
-    public void initInterviewConversation(InterviewStartedEvent event) {
-        sendRequestToAi(event.interviewId());
-    }
-
-//    private InterviewInfo convert(CandidateConfig config, LocalDateTime interviewExpiredTime) {
-//        InterviewProfile profile = new InterviewProfile(
-//                config.getDepartment().getName(),
-//                config.getAppliedJob().getName(),
-//                config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-//                List.of(config.getExperience())
-//        );
-//        InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interviewExpiredTime);
-//        return new InterviewInfo(profile, interviewConfig);
-//    }
-
-    @Async
-    @AiResponseProcessingLock
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(
-            classes = UserAnsweredEvent.class,
-            phase = TransactionPhase.AFTER_COMMIT
-    )
-    public void getAiResponse(UserAnsweredEvent event) {
-        System.out.println("AI 요청 옴");
-        // 임시 코드
-        sendRequestToAi(event.interviewId());
-    }
-
-    private void sendRequestToAi(long interviewId) {
-        // TODO: OpenAI 처리 시간이 2~10초 걸리기 때문에 비동기 처리할 것
-        // TODO: 개선 - 몇 분간 지속적으로 사용할 데이터이므로 캐싱하면 좋음
+    public void getAiResponse(ChangeTopicEvent event) {
+        System.out.println(event);
+        long interviewId = event.interviewId();
         InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
         MessageHistory messageHistory = conversationCache.findMessageHistory(interviewId);
-        Message message = aiService.service(interviewInfo, messageHistory);
-//
-//        Message message = aiService.serviceTemp();
+        Message message = aiService.changeTopic(interviewInfo, messageHistory);
+
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         InterviewConversation interviewConversation = InterviewConversation.createQuestion(interview, message);

@@ -32,7 +32,8 @@ public class ConversationRepositoryForView {
                 .join(interviewConversation.interview, interview)
                 .where(
                         interviewConversation.interview.id.eq(interviewId)
-                        .and(interviewConversation.interview.users.id.eq(userId))
+                            .and(interviewConversation.interview.users.id.eq(userId))
+                            .and(interviewConversation.isDeleted.isFalse())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)

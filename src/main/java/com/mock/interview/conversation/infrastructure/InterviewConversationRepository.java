@@ -22,5 +22,9 @@ public interface InterviewConversationRepository extends JpaRepository<Interview
             """)
     Optional<InterviewConversation> findLastConversation(@Param("interviewId") long interviewId);
 
+    @Query("""
+            SELECT ic FROM InterviewConversation ic 
+            WHERE ic.interview.id = :interviewId AND ic.isDeleted = false 
+            """)
     Slice<InterviewConversation> findByInterviewId(@Param("interviewId") long interviewId, Pageable pageable);
 }

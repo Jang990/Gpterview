@@ -53,10 +53,7 @@ public class AIService {
      * 사용자 : 저는 AOP를 모릅니다.
      * 면접관 : AOP를 모르신다니 아쉽습니다. AOP를 활용한 사례를 들어서 설명해보세요.
      */
-    public Message changeTopic(long loginId, long interviewId) {
-        InterviewInfo interviewInfo = interviewService.findInterviewForAIRequest(loginId, interviewId);
-        MessageHistory history = conversationService.findConversationsForAIRequest(interviewId);
-
+    public Message changeTopic(InterviewInfo interviewInfo, MessageHistory history) {
         InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
         InterviewSetting setting = interviewerStrategy.changeTopic(requester, interviewInfo);
 

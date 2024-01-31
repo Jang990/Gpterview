@@ -29,12 +29,11 @@ public class InterviewConversationController {
     }
 
     @PostMapping("/interview/{interviewId}/conversation/changing-topic")
-    public ResponseEntity<MessageDto> changingTopic(
+    public ResponseEntity<Void> changingTopic(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId
     ) {
-        Message response = service.changeTopic(loginId, interviewId);
-        MessageDto message = new MessageDto(response.getRole(), response.getContent());
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        conversationService.changeAiMessageTopic(loginId, interviewId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

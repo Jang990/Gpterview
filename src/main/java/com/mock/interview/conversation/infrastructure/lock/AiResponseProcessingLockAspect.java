@@ -1,5 +1,6 @@
 package com.mock.interview.conversation.infrastructure.lock;
 
+import com.mock.interview.conversation.domain.ChangeTopicEvent;
 import com.mock.interview.conversation.domain.UserAnsweredEvent;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
@@ -53,6 +54,10 @@ public class AiResponseProcessingLockAspect {
             }
 
             if (arg instanceof UserAnsweredEvent event) {
+                return event.interviewId();
+            }
+
+            if (arg instanceof ChangeTopicEvent event) {
                 return event.interviewId();
             }
         }
