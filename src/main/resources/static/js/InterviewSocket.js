@@ -4,9 +4,6 @@ let interviewId = null;
 
 $(document).ready(function () {
     interviewId = getInterviewId();
-    if($('#talk-history').find('li').length === 0)
-        waitAiResponse();
-    initSocket();
 });
 
 function getInterviewId() {

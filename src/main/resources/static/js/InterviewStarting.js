@@ -11,6 +11,9 @@ let remainingTime = loadingTime;
 let decreaseInterval;
 
 $(document).ready(function () {
+    if($('#talk-history').find('li').length === 0)
+        waitAiResponse();
+    initSocket();
     scroll();
 });
 
