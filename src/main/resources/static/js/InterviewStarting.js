@@ -196,7 +196,11 @@ function createWaitingPanel(msg) {
                 <div class="d-flex flex-row justify-content-start col-8" style="min-width:0px;">
                     <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
                     <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
-                        <img src="../image/loading.gif" alt="loading..." style="width: 40px; rgba(57, 192, 237,.2); ">
+                        <div class="bubblingG">
+                            <span id="bubblingG_1"></span>
+                            <span id="bubblingG_2"></span>
+                            <span id="bubblingG_3"></span>
+                        </div>
                         <p class="ps-2 mb-0 content" name="content">${msg}</p>
                     </div>
                 </div>
