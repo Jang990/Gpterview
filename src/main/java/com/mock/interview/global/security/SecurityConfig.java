@@ -19,7 +19,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         (authz) ->
                                 authz
-                                        .requestMatchers("/interview/**", "/profile/**", "/**/users/**").authenticated()
+                                        .requestMatchers("/interview/**", "/profile/**").authenticated()
                                         .anyRequest().permitAll()
                 )
                 .formLogin(
