@@ -24,6 +24,7 @@ public class ConversationRepositoryForView {
     public Slice<MessageDto> findInterviewConversations(long interviewId, long userId, Pageable pageable) {
         List<MessageDto> result = query.select(
                         Projections.constructor(MessageDto.class,
+                                interviewConversation.id,
                                 interviewConversation.interviewConversationType.stringValue(),
                                 interviewConversation.content
                         )

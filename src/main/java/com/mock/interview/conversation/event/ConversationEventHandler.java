@@ -1,5 +1,6 @@
 package com.mock.interview.conversation.event;
 
+import com.mock.interview.conversation.domain.ConversationMessageBroker;
 import com.mock.interview.conversation.domain.UserAnsweredEvent;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.conversation.infrastructure.ConversationCacheForAiRequest;
@@ -7,6 +8,7 @@ import com.mock.interview.conversation.infrastructure.InterviewConversationRepos
 import com.mock.interview.conversation.infrastructure.interview.AIService;
 import com.mock.interview.conversation.infrastructure.interview.dto.*;
 import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
+import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
@@ -28,6 +30,7 @@ public class ConversationEventHandler {
     private final InterviewConversationRepository conversationRepository;
     private final InterviewCacheForAiRequest interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
+    private final ConversationMessageBroker conversationMessageBroker;
 
     @Async
     @AiResponseProcessingLock
@@ -76,5 +79,6 @@ public class ConversationEventHandler {
                 .orElseThrow(InterviewNotFoundException::new);
         InterviewConversation interviewConversation = InterviewConversation.createQuestion(interview, message);
         conversationRepository.save(interviewConversation);
+        conversationMessageBroker.publish(String.valueOf(interviewId), new MessageDto(interviewConversation.getId(), message.getRole(), message.getContent()));
     }
 }

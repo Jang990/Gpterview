@@ -60,8 +60,6 @@ public class InterviewConversation extends BaseTimeEntity {
         conversation.content = question.getContent();
         conversation.interview = interview;
         conversation.isDeleted = false;
-
-        Events.raise(new AiAnsweredEvent(interview.getId(), question));
         return conversation;
     }
 

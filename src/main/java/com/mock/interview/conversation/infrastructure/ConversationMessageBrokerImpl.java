@@ -2,6 +2,7 @@ package com.mock.interview.conversation.infrastructure;
 
 import com.mock.interview.conversation.domain.ConversationMessageBroker;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
+import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.global.WebSocketConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -16,7 +17,7 @@ public class ConversationMessageBrokerImpl implements ConversationMessageBroker 
     public final String template = WebSocketConfig.BROKER_PREFIX + "/interview/%s";
 
     @Override
-    public void publish(String interviewId, Message message) {
+    public void publish(String interviewId, MessageDto message) {
         sendingOperations.convertAndSend(template.formatted(interviewId), message);
     }
 }

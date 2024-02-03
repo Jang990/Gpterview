@@ -1,6 +1,7 @@
 package com.mock.interview.conversation.event;
 
 import com.mock.interview.conversation.domain.ChangeTopicEvent;
+import com.mock.interview.conversation.domain.ConversationMessageBroker;
 import com.mock.interview.conversation.domain.model.InterviewConversation;
 import com.mock.interview.conversation.infrastructure.ConversationCacheForAiRequest;
 import com.mock.interview.conversation.infrastructure.InterviewConversationRepository;
@@ -9,6 +10,7 @@ import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInf
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
+import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
@@ -29,6 +31,7 @@ public class ChangeTopicEventHandler {
     private final InterviewConversationRepository conversationRepository;
     private final InterviewCacheForAiRequest interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
+    private final ConversationMessageBroker conversationMessageBroker;
 
     @Async
     @AiResponseProcessingLock
@@ -43,10 +46,11 @@ public class ChangeTopicEventHandler {
         InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
         MessageHistory messageHistory = conversationCache.findMessageHistory(interviewId);
         Message message = aiService.changeTopic(interviewInfo, messageHistory);
-
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
+
         InterviewConversation interviewConversation = InterviewConversation.createQuestion(interview, message);
         conversationRepository.save(interviewConversation);
+        conversationMessageBroker.publish(String.valueOf(interviewId), new MessageDto(interviewConversation.getId(), message.getRole(), message.getContent()));
     }
 }
