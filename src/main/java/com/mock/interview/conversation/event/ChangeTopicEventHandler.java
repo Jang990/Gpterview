@@ -49,8 +49,6 @@ public class ChangeTopicEventHandler {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
 
-        InterviewConversation interviewConversation = InterviewConversation.createQuestion(interview, message);
-        conversationRepository.save(interviewConversation);
-        conversationMessageBroker.publish(interviewId, new MessageDto(interviewConversation.getId(), message.getRole(), message.getContent()));
+        AiMessageSavingHelper.saveAiMessage(conversationRepository, conversationMessageBroker, interview, message);
     }
 }
