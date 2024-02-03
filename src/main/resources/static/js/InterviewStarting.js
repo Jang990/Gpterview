@@ -235,7 +235,14 @@ function createGptMessage(msg) {
                         <p class="small mb-0 content" name="content">${msg}</p>
                     </div>
                     <div class="d-flex align-items-end col-2 ps-2" style="min-width:0px;" id="retryBtnDiv">
-                        <button id="retryBtn" class="btn btn-primary btn-sm"><p class="small mb-0" onclick="retryResponse()">다른 질문</p></button>
+                        <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryResponse()">
+                            <p class="small mb-0">다른 질문</p>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-end col-2" style="min-width:0px;" id="reviewBtnDiv">
+                        <button id="reviewBtn" class="btn btn-link btn-sm">
+                            <img style="height: 2vh" th:onclick="|review(${msg.id})|" src="../image/review.png" alt="다시보기">
+                        </button>
                     </div>
                 </div>
             </li>`;
