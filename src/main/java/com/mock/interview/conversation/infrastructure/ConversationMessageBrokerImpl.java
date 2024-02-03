@@ -14,10 +14,10 @@ public class ConversationMessageBrokerImpl implements ConversationMessageBroker 
 
 
     private final SimpMessageSendingOperations sendingOperations;
-    public final String template = WebSocketConfig.BROKER_PREFIX + "/interview/%s";
+    public final String template = WebSocketConfig.BROKER_PREFIX + "/interview/%d";
 
     @Override
-    public void publish(String interviewId, MessageDto message) {
+    public void publish(long interviewId, MessageDto message) {
         sendingOperations.convertAndSend(template.formatted(interviewId), message);
     }
 }

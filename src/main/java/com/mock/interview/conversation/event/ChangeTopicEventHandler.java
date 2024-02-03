@@ -51,6 +51,6 @@ public class ChangeTopicEventHandler {
 
         InterviewConversation interviewConversation = InterviewConversation.createQuestion(interview, message);
         conversationRepository.save(interviewConversation);
-        conversationMessageBroker.publish(String.valueOf(interviewId), new MessageDto(interviewConversation.getId(), message.getRole(), message.getContent()));
+        conversationMessageBroker.publish(interviewId, new MessageDto(interviewConversation.getId(), message.getRole(), message.getContent()));
     }
 }
