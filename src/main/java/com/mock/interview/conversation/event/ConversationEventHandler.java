@@ -70,11 +70,7 @@ public class ConversationEventHandler {
     private void sendRequestToAi(long interviewId) {
         // TODO: OpenAI 처리 시간이 2~10초 걸리기 때문에 비동기 처리할 것
         // TODO: 개선 - 몇 분간 지속적으로 사용할 데이터이므로 캐싱하면 좋음
-        InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
-        MessageHistory messageHistory = conversationCache.findMessageHistory(interviewId);
-        Message message = aiService.service(interviewInfo, messageHistory);
-//
-//        Message message = aiService.serviceTemp();
+        Message message = AiMessageSavingHelper.requestAiMessage(aiService, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         AiMessageSavingHelper.saveAiMessage(conversationRepository, conversationMessageBroker, interview, message);

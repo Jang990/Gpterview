@@ -43,12 +43,12 @@ public class ChangeTopicEventHandler {
     public void getAiResponse(ChangeTopicEvent event) {
         System.out.println(event);
         long interviewId = event.interviewId();
-        InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
-        MessageHistory messageHistory = conversationCache.findMessageHistory(interviewId);
-        Message message = aiService.changeTopic(interviewInfo, messageHistory);
+        Message message = AiMessageSavingHelper.requestAiMessage(aiService, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
 
         AiMessageSavingHelper.saveAiMessage(conversationRepository, conversationMessageBroker, interview, message);
     }
+
+
 }
