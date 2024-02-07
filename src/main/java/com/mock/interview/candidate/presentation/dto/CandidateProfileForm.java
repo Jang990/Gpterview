@@ -20,7 +20,7 @@ public class CandidateProfileForm {
      */
     private Long field; // BE, FE, 디자인
     private List<String> skills; // Java, Spring, Mysql, Jenkins ...
-    private String experience;
+    private String experience; // TODO: List로 변경할 것
 //    private int yearsOfExperience;   // 경력 연차
 //    private String jobDescription; // 채용공고 정보
 

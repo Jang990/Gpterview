@@ -49,7 +49,7 @@ public class InterviewCacheForAiRequest {
                 config.getDepartment().getName(),
                 config.getAppliedJob().getName(),
                 config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-                List.of(config.getExperience())
+                config.getExperience()
         );
         InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interview.getCreatedAt(), interview.getExpiredTime());
         return new InterviewInfo(profile, interviewConfig);

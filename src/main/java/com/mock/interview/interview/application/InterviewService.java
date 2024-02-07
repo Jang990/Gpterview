@@ -1,6 +1,5 @@
 package com.mock.interview.interview.application;
 
-import com.mock.interview.interview.InterviewDomain;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,7 +63,7 @@ public class InterviewService {
                 new InterviewProfile(
                         department.getName(), field.getName(),
                         profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-                        List.of(profile.getExperience())
+                        profile.getExperience()
                 ),
                 new InterviewConfig(interview.getCandidateConfig().getType(), interview.getCreatedAt(), interview.getExpiredTime())
         );

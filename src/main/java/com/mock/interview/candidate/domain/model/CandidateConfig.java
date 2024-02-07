@@ -34,7 +34,12 @@ public class CandidateConfig extends BaseTimeEntity {
     @Column(nullable = false)
     private int durationMinutes;
 
-    private String experience;
+    @ElementCollection
+    @CollectionTable(
+            name="candidate_experience",
+            joinColumns = @JoinColumn(name = "candidate_config_id"))
+    @Column(length = 900)
+    private List<String> experience = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private JobCategory appliedJob;
@@ -70,7 +75,7 @@ public class CandidateConfig extends BaseTimeEntity {
             CandidateConfig candidateConfig, CandidateProfileForm profileDto,
             List<TechnicalSubjects> techList, JobCategory field
     ) {
-        candidateConfig.experience = profileDto.getExperience();
+        candidateConfig.experience.add(profileDto.getExperience());
         if(techList != null)
             candidateConfig.techLink = createTechLinks(candidateConfig, techList);
 
