@@ -75,7 +75,7 @@ public class CandidateConfig extends BaseTimeEntity {
             CandidateConfig candidateConfig, CandidateProfileForm profileDto,
             List<TechnicalSubjects> techList, JobCategory field
     ) {
-        candidateConfig.experience.add(profileDto.getExperience());
+        candidateConfig.experience = profileDto.getExperiences();
         if(techList != null)
             candidateConfig.techLink = createTechLinks(candidateConfig, techList);
 

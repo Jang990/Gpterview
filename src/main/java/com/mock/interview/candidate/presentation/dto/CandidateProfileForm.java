@@ -1,5 +1,6 @@
 package com.mock.interview.candidate.presentation.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.util.StringUtils;
 
@@ -20,7 +21,7 @@ public class CandidateProfileForm {
      */
     private Long field; // BE, FE, 디자인
     private List<String> skills; // Java, Spring, Mysql, Jenkins ...
-    private String experience; // TODO: List로 변경할 것
+    private List<@NotBlank String> experiences; // TODO: List로 변경할 것
 //    private int yearsOfExperience;   // 경력 연차
 //    private String jobDescription; // 채용공고 정보
 

@@ -9,6 +9,7 @@ import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +36,7 @@ public class InterviewController {
 
     @PostMapping("/interview")
     public String startInterviewRequest(
-            CandidateProfileForm profile,
+            @Valid CandidateProfileForm profile,
             InterviewConfigDto interviewDetails,
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {

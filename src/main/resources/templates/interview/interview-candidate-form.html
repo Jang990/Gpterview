@@ -80,16 +80,7 @@
                         </div>
                     </div>
 
-                    <!-- Object와 매핑시키지 않음! : 자기소개 및 지원동기 등등 자유 양식 -->
-                    <div class="mb-5 col">
-                        <div for="intro" class="form-floating">
-                            <textarea class="form-control" placeholder="여기에 적어주세요." id="intro" th:field="*{experience}" style="height: 200px"></textarea>
-                            <label>간단한 지원서 내용 (300자 이하) - 생략가능</label>
-                        </div>
-                        <div class="mt-2">
-                            <a class="link-dark" href="#">지원서 예시보기</a>
-                        </div>
-                    </div>
+                    <th:block th:replace="~{fragments/experience/experience-form :: fragment-candidate-experience(experiences=${experiences})}"></th:block>
                 </th:block>
 
                 <hr>

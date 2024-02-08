@@ -54,7 +54,7 @@ public class CandidateConfigReadOnlyService {
         return new InterviewCandidateForm(
                 new CandidateProfileForm(candidateConfig.getAppliedJob().getId(),
                         convertStringList(candidateConfig.getTechLink()),
-                        candidateConfig.getExperience().isEmpty() ? null : candidateConfig.getExperience().get(0)), // TODO:
+                        candidateConfig.getExperience().isEmpty() ? null : candidateConfig.getExperience()),
                 new InterviewConfigDto(candidateConfig.getType(), candidateConfig.getDurationMinutes())
         );
     }
