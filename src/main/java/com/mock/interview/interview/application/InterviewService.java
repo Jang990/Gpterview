@@ -63,7 +63,7 @@ public class InterviewService {
                 new InterviewProfile(
                         department.getName(), field.getName(),
                         profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-                        profile.getExperience()
+                        profile.getExperienceContent()
                 ),
                 new InterviewConfig(interview.getCandidateConfig().getType(), interview.getCreatedAt(), interview.getExpiredTime())
         );

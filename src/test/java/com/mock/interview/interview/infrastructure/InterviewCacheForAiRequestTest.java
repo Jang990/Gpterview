@@ -93,7 +93,7 @@ class InterviewCacheForAiRequestTest {
 
         Assertions.assertIterableEquals(
                 result.profile().experience(),
-                List.of(mockInterview.getCandidateConfig().getExperience())
+                mockInterview.getCandidateConfig().getExperienceContent()
         );
 
         Assertions.assertIterableEquals(

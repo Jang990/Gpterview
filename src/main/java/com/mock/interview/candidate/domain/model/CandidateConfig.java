@@ -34,12 +34,9 @@ public class CandidateConfig extends BaseTimeEntity {
     @Column(nullable = false)
     private int durationMinutes;
 
-    @ElementCollection
-    @CollectionTable(
-            name="candidate_experience",
-            joinColumns = @JoinColumn(name = "candidate_config_id"))
-    @Column(length = 900)
-    private List<String> experience = new ArrayList<>();
+    @Cascade(CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    private List<Experience> experience = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     private JobCategory appliedJob;
@@ -75,11 +72,21 @@ public class CandidateConfig extends BaseTimeEntity {
             CandidateConfig candidateConfig, CandidateProfileForm profileDto,
             List<TechnicalSubjects> techList, JobCategory field
     ) {
-        candidateConfig.experience = profileDto.getExperiences();
+        for (String experience : profileDto.getExperiences()) {
+            candidateConfig.createExperience(experience);
+        }
+
         if(techList != null)
             candidateConfig.techLink = createTechLinks(candidateConfig, techList);
 
         setCategory(candidateConfig, field);
+    }
+
+    public Experience createExperience(String experience) {
+        // TODO: 만약 isDeleted 필드가 생긴다면 체크해줘야함.
+        Experience createdExperience = Experience.create(this, experience);
+        this.experience.add(createdExperience);
+        return createdExperience;
     }
 
     private static void configInterviewSetting(CandidateConfig candidateConfig, InterviewConfigDto interviewConfigDto) {
@@ -94,6 +101,11 @@ public class CandidateConfig extends BaseTimeEntity {
     private static void verifyJobCategory(JobCategory field) {
         if (field == null || field.isDepartment())
             throw new IllegalArgumentException("직무는 항상 있어야 함");
+    }
+
+    public List<String> getExperienceContent() {
+        return experience.stream()
+                .map(Experience::getExperience).toList();
     }
 
     public JobCategory getDepartment() {

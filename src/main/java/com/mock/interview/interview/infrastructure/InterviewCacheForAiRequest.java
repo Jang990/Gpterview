@@ -10,10 +10,8 @@ import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,7 +47,7 @@ public class InterviewCacheForAiRequest {
                 config.getDepartment().getName(),
                 config.getAppliedJob().getName(),
                 config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-                config.getExperience()
+                config.getExperienceContent()
         );
         InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interview.getCreatedAt(), interview.getExpiredTime());
         return new InterviewInfo(profile, interviewConfig);
