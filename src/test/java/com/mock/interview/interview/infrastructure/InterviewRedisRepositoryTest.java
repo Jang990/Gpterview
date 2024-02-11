@@ -45,6 +45,7 @@ class InterviewRedisRepositoryTest {
     void findActiveInterview() {
         when(interviewRedisTemplate.opsForValue()).thenReturn(mockOps);
         InterviewInfo mock = mock(InterviewInfo.class);
+        when(mockOps.get(any())).thenReturn(mock);
 
         Optional<InterviewInfo> result = interviewRedisRepository.findActiveInterview(testId);
 
