@@ -41,12 +41,13 @@ public class ChatGPTRequester implements AIRequester {
 
     @Override
     public Message sendRequest(InterviewAIRequest request) {
-        if(isStartingRequest(request)) {
-            request.getHistory().add(0, new Message(USER_ROLE, "네. 준비됐습니다."));
-            request.getHistory().add(0, new Message(INTERVIEWER_ROLE, "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
+        List<OpenAIMessage> history;
+        if (isStartingRequest(request)) {
+            history = convertHistory(initStartingMessages());
+        } else {
+            history = convertHistory(request.getHistory());
         }
 
-        List<OpenAIMessage> history = convertHistory(request.getHistory());
         ChatGptRequest openAIRequest = ChatGptRequest.createRequestWithFunction(model, request.getInterviewSetting().getConcept(), history);
 
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
@@ -54,6 +55,13 @@ public class ChatGPTRequester implements AIRequester {
 
         log.info("답변: {} - 응답: {}", history.get(history.size()-1).getContent(), content.getResponse());
         return new Message(InterviewRole.AI.toString(), content.getResponse());
+    }
+
+    private List<Message> initStartingMessages() {
+        return List.of(
+                new Message(USER_ROLE, "네. 준비됐습니다."),
+                new Message(INTERVIEWER_ROLE, "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?")
+        );
     }
 
     private boolean isStartingRequest(InterviewAIRequest request) {
@@ -71,6 +79,7 @@ public class ChatGPTRequester implements AIRequester {
             return openaiRestTemplate.postForObject(apiUrl, openAIRequest, ChatGptResponse.class);
         } catch(HttpClientErrorException e) {
             // MaxToken을 초과했을 가능성이 제일 높음. - HttpClientErrorException$BadRequest
+            log.warn(e.getMessage());
             throw new RuntimeException("BadRequest or AI 서버 오류", e); // TODO: 커스텀 예외로 바꿀 것
         }
 
