@@ -17,6 +17,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -105,6 +106,7 @@ public class CandidateConfig extends BaseTimeEntity {
 
     public List<String> getExperienceContent() {
         return experience.stream()
+                .sorted(Comparator.comparing(Experience::getId))
                 .map(Experience::getExperience).toList();
     }
 
