@@ -1,9 +1,6 @@
 package com.mock.interview.conversation.infrastructure.interview.gpt;
 
-import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
-import com.knuddels.jtokkit.api.EncodingRegistry;
-import com.knuddels.jtokkit.api.EncodingType;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.ChatGptRequest;
 import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
@@ -28,6 +25,7 @@ public class ChatGPTRequester implements AIRequester {
 
     private final RestTemplate openaiRestTemplate;
     private final OpenAIResponseConvertor convertor;
+    private final Encoding stringTokenCounter;
     @Value("${openai.model}")
     private String model;
 
@@ -118,9 +116,7 @@ public class ChatGPTRequester implements AIRequester {
         StringBuilder sb = new StringBuilder();
         sb.append(request.getInterviewSetting().getConcept());
         request.getHistory().forEach(sb::append);
-        EncodingRegistry registry = Encodings.newDefaultEncodingRegistry();
-        Encoding enc = registry.getEncoding(EncodingType.CL100K_BASE);
-        int tokens = enc.countTokens(sb.toString());
+        int tokens = stringTokenCounter.countTokens(sb.toString());
         return LIMIT_TOKEN <= tokens;
     }
 }
