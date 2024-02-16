@@ -4,7 +4,6 @@ import com.knuddels.jtokkit.api.Encoding;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.ChatGptRequest;
 import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.ChatGptResponse;
-import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.GptFunctionResult;
 import com.mock.interview.conversation.infrastructure.interview.gpt.dto.openai.OpenAIMessage;
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +25,7 @@ public class ChatGPTRequester implements AIRequester {
     private final RestTemplate openaiRestTemplate;
     private final OpenAIResponseConvertor convertor;
     private final Encoding stringTokenCounter;
+
     @Value("${openai.model}")
     private String model;
 
@@ -35,7 +35,7 @@ public class ChatGPTRequester implements AIRequester {
     private final String USER_ROLE = "user";
     private final String INTERVIEWER_ROLE = "assistant";
     private final String SYSTEM_ROLE = "system";
-    private final int LIMIT_TOKEN = 4096;
+    private final int LIMIT_TOKEN = 4096, FUNCTION_DESCRIPTION_LENGTH_LIMIT = 1024;
 
     @Override
     public Message sendRequest(InterviewAIRequest request) {
@@ -46,13 +46,36 @@ public class ChatGPTRequester implements AIRequester {
             history = convertHistory(request.getHistory());
         }
 
-        ChatGptRequest openAIRequest = ChatGptRequest.createRequestWithFunction(model, request.getInterviewSetting().getConcept(), history);
+        // 경험이 function의 설명으로 들어가면서 너무 길어짐. 그래서 BAD Request가 뜸.
+        // history에 마지막 부분에 추가하는 식으로 만들어야 할 수도.
+        String responseMessage;
+        if (isFunctionDescriptionValid(request.getInterviewSetting().getConcept()))
+            responseMessage = sendRequestWithFunction(request, history);
+        else
+            responseMessage = sendRequestOnlyMessage(request, history);
 
+        log.info("답변: {} - 응답: {}", history.get(history.size()-1).getContent(), responseMessage);
+        return new Message(InterviewRole.AI.toString(), responseMessage);
+    }
+
+    /** GPT의 Function 기능을 사용하지 않고 메시지 내역에 SYSTEM 프롬프트를 넣어서 보냄. */
+    private String sendRequestOnlyMessage(InterviewAIRequest request, List<OpenAIMessage> history) {
+        history.add(new OpenAIMessage(SYSTEM_ROLE, request.getInterviewSetting().getConcept()));
+        ChatGptRequest openAIRequest = ChatGptRequest.createStartingRequest(model, history);
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
-        GptFunctionResult content = convertor.convertFunctionResult(response);
+        return convertor.convertMessageResult(response);
+    }
 
-        log.info("답변: {} - 응답: {}", history.get(history.size()-1).getContent(), content.getResponse());
-        return new Message(InterviewRole.AI.toString(), content.getResponse());
+    private String sendRequestWithFunction(InterviewAIRequest request, List<OpenAIMessage> history) {
+        ChatGptRequest openAIRequest = ChatGptRequest.createRequestWithFunction(model, request.getInterviewSetting().getConcept(), history);
+        ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
+        return convertor.convertFunctionResult(response).getResponse();
+    }
+
+    /** Function Description 필드는 공백 포함 1024자로 제한
+     * 참고 : https://community.openai.com/t/function-call-description-max-length/529902 */
+    private boolean isFunctionDescriptionValid(String functionDescription) {
+        return FUNCTION_DESCRIPTION_LENGTH_LIMIT >= functionDescription.length();
     }
 
     private List<Message> initStartingMessages() {

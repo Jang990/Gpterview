@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.net.http.WebSocketHandshakeException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +24,7 @@ public class OpenAIResponseConvertor {
      * @return
      */
     public GptFunctionResult convertFunctionResult(ChatGptResponse response) {
-        validateResponse(response);
+        validateFunctionResultResponse(response);
 
         String messageString = response.getFunctionResultString();
         if(!messageString.contains("\"response\":"))
@@ -45,19 +46,34 @@ public class OpenAIResponseConvertor {
         }
     }
 
+
     /**
      * 서버로 받은 Response 검증.
      * response가 null이거나, choices가 null이거나 비어있을 시.
      * GPT를 이용하여 Rule에 맞는 함수 호출로 만든 결과물이 없을 시
      * 예외를 던짐
      */
-    private void validateResponse(ChatGptResponse response) {
-        if (response == null
-                || response.getChoices() == null
-                || response.getChoices().isEmpty()
+    private void validateFunctionResultResponse(ChatGptResponse response) {
+        System.out.println(response);
+        if (isChoiceEmpty(response)
+                || response.getFunctionResultString() == null
                 || !StringUtils.hasText(response.getFunctionResultString())
         ) {
-            throw new RuntimeException("ChatGPT Response 데이터 누락 오류"); // TODO: 커스텀 예외로 바꿀 것
+            throw new IllegalArgumentException("ChatGPT Function Response 데이터 누락 오류"); // TODO: 커스텀 예외로 바꿀 것
         }
+    }
+
+    private static boolean isChoiceEmpty(ChatGptResponse response) {
+        return response == null
+                || response.getChoices() == null
+                || response.getChoices().isEmpty();
+    }
+
+    public String convertMessageResult(ChatGptResponse response) {
+        if (isChoiceEmpty(response)) {
+            throw new IllegalArgumentException("ChatGPT Message Response 데이터 누락 오류"); // TODO: 커스텀 예외로 바꿀 것
+        }
+
+        return response.getChoices().get(0).getMessage().getContent();
     }
 }
