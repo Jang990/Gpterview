@@ -6,7 +6,7 @@ package com.mock.interview.conversation.infrastructure.interview.gpt;
  */
 public interface AISpecification {
     long CONNECT_TIMEOUT_MS = 2_000;
-    long READ_TIMEOUT_MS = 5_000;
+    long READ_TIMEOUT_MS = 8_000;
 
     String getSystemRole();
     String getUserRole();
