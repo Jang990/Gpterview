@@ -2,10 +2,8 @@ package com.mock.interview.conversation.infrastructure.interview.strategy;
 
 import com.mock.interview.conversation.infrastructure.interview.dto.*;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
-import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSettingCreator;
-import com.mock.interview.conversation.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgressTimeBasedTracker;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
@@ -27,47 +25,54 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
 
     @Override
     public InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
-        InterviewProfile profile = interviewInfo.profile();
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
-
-        PromptCreationInfo promptCreationInfo = createPromptCreationInfo(rawStrategy, currentProgress, profile);
+        PromptCreationInfo promptCreationInfo = createPromptCreationInfo(interviewInfo);
         return interviewSettingCreator.create(aiSpec, promptCreationInfo);
-    }
-
-    private PromptCreationInfo createPromptCreationInfo(String rawStrategy, InterviewProgress currentProgress, InterviewProfile profile) {
-        if (currentProgress.stage() == InterviewStage.TECHNICAL) {
-            String selectedSkill = selectSkillBasedOnProgress(currentProgress.progress(), profile.skills());
-            return new PromptCreationInfo(
-                    rawStrategy, profile.department(), profile.field(),
-                    selectedSkill, profile.experience().toString()
-            );
-        }
-
-        // TODO: 다른 Stage도 지원할 것.
-        return new PromptCreationInfo(
-                rawStrategy, profile.department(), profile.field(),
-                profile.skills().get(0), profile.experience().toString()
-        );
-    }
-
-    private String selectSkillBasedOnProgress(double progress, List<String> candidateSkills) {
-        List<String> questionTopicList = new ArrayList<>();
-        questionTopicList.addAll(basicKnowledge);
-        questionTopicList.addAll(candidateSkills);
-        int n = (int) Math.floor(progress * questionTopicList.size());
-        return questionTopicList.get(n);
     }
 
     @Override
     public InterviewSetting changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
+        PromptCreationInfo promptCreationInfo = createChangeTopicPromptCreationInfo(interviewInfo);
+        return interviewSettingCreator.create(aiSpec, promptCreationInfo);
+    }
+
+    private PromptCreationInfo createPromptCreationInfo(InterviewInfo interviewInfo) {
         InterviewProfile profile = interviewInfo.profile();
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
-        rawStrategy += interviewConcept.getChangingTopicCommand();
 
-        PromptCreationInfo promptCreationInfo = createPromptCreationInfo(rawStrategy, currentProgress, profile);
-        return interviewSettingCreator.create(aiSpec, promptCreationInfo);
+        return switch (currentProgress.stage()) {
+            case TECHNICAL -> createTechPromptCreationInfo(
+                    interviewConcept.getTechnical(),
+                    profile, currentProgress.progress()
+            );
+            case EXPERIENCE -> createExperiencePromptCreationInfo(
+                    interviewConcept.getExperience(),
+                    profile, currentProgress.progress()
+            );
+            case PERSONAL -> createPersonalPromptCreationInfo(
+                    interviewConcept.getPersonal(),
+                    profile, currentProgress
+            );
+        };
+    }
+
+    private PromptCreationInfo createChangeTopicPromptCreationInfo(InterviewInfo interviewInfo) {
+        InterviewProfile profile = interviewInfo.profile();
+        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
+
+        return switch (currentProgress.stage()) {
+            case TECHNICAL -> createTechPromptCreationInfo(
+                    interviewConcept.getTechnical() + interviewConcept.getChangingTopicCommand(),
+                    profile, currentProgress.progress()
+            );
+            case EXPERIENCE -> createExperiencePromptCreationInfo(
+                    interviewConcept.getExperience() + interviewConcept.getChangingTopicCommand(),
+                    profile, currentProgress.progress()
+            );
+            case PERSONAL -> createPersonalPromptCreationInfo(
+                    interviewConcept.getPersonal() + interviewConcept.getChangingTopicCommand(),
+                    profile, currentProgress
+            );
+        };
     }
 
     @Override
@@ -83,11 +88,35 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
         return false;
     }
 
-    private String getRawInterviewStrategy(InterviewStage stage) {
-        return switch (stage) {
-            case TECHNICAL -> interviewConcept.getTechnical();
-            case EXPERIENCE -> interviewConcept.getExperience();
-            case PERSONAL -> interviewConcept.getPersonal();
-        };
+    private PromptCreationInfo createPersonalPromptCreationInfo(String personalPromptTemplate, InterviewProfile profile, InterviewProgress currentProgress) {
+        return new PromptCreationInfo(
+                personalPromptTemplate,
+                profile.department(), profile.field(),
+                null, null
+        );
+    }
+
+    private PromptCreationInfo createExperiencePromptCreationInfo(String experiencePromptTemplate, InterviewProfile profile, double progress) {
+        String selectedExperience = selectSkillBasedOnProgress(progress, profile.skills());
+        return new PromptCreationInfo(
+                experiencePromptTemplate, profile.department(), profile.field(),
+                null, selectedExperience
+        );
+    }
+
+    private PromptCreationInfo createTechPromptCreationInfo(String techPromptTemplate, InterviewProfile profile, double progress) {
+        String selectedSkills = selectSkillBasedOnProgress(progress, profile.skills());
+        return new PromptCreationInfo(
+                techPromptTemplate, profile.department(), profile.field(),
+                selectedSkills, null
+        );
+    }
+
+    private String selectSkillBasedOnProgress(double progress, List<String> candidateSkills) {
+        List<String> questionTopicList = new ArrayList<>();
+        questionTopicList.addAll(basicKnowledge);
+        questionTopicList.addAll(candidateSkills);
+        int n = (int) Math.floor(progress * questionTopicList.size());
+        return questionTopicList.get(n);
     }
 }
