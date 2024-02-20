@@ -21,7 +21,7 @@ public class Experience extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 900)
+    @Column(length = 1500)
     private String experience;
 
     @ManyToOne(fetch = FetchType.LAZY)
