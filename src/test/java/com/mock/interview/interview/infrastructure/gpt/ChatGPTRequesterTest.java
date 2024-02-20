@@ -26,7 +26,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ChatGPTRequesterInSpringTest {
+class ChatGPTRequesterTest {
 
     @Mock
     RestTemplate openaiRestTemplate;
