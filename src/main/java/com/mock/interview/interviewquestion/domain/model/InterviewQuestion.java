@@ -2,8 +2,11 @@ package com.mock.interview.interviewquestion.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
+import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
+import com.mock.interview.interviewquestion.event.CreatedInterviewQuestionEvent;
+import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
@@ -49,7 +52,10 @@ public class InterviewQuestion extends BaseEntity {
     생성한사람(AI-GPT or 사용자이름), Owner(사용자ID)
      */
 
-    public static InterviewQuestion createInInterview(Users owner, JobCategory appliedJob, PublishedQuestionInfo questionInfo) {
+    public static InterviewQuestion createInInterview(
+            Users owner, JobCategory appliedJob,
+            PublishedQuestionInfo questionInfo
+    ) {
         InterviewQuestion question = new InterviewQuestion();
         question.owner = owner;
         question.appliedJob = appliedJob;

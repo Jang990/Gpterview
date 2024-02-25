@@ -5,9 +5,11 @@ import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.global.WebSocketConfig;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ConversationMessageBrokerImpl implements ConversationMessageBroker {
@@ -18,6 +20,7 @@ public class ConversationMessageBrokerImpl implements ConversationMessageBroker 
 
     @Override
     public void publish(long interviewId, MessageDto message) {
+        log.info("{}번 면접 message({},{}) 발행", interviewId, message.getRole(), message.getContent());
         sendingOperations.convertAndSend(template.formatted(interviewId), message);
     }
 }
