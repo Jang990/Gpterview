@@ -1,5 +1,6 @@
 package com.mock.interview.interview.domain.model;
 
+import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
@@ -41,9 +42,13 @@ public class Interview extends BaseTimeEntity {
     @JoinColumn(name = "candidate_profile_id")
     private CandidateConfig candidateConfig;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applied_job_id")
+    private JobCategory appliedJob;
+
     public static Interview startInterview(
             InterviewRepository interviewRepository,
-            CandidateConfig config, Users user
+            CandidateConfig config, Users user, JobCategory appliedJob
     ) {
         if (interviewRepository.findActiveInterview(user.getId()).isPresent()) // TODO: QueryDSL로 최적화
             throw new InterviewAlreadyInProgressException();
@@ -55,9 +60,10 @@ public class Interview extends BaseTimeEntity {
         interview.isDeleted = false;
         interview.users = user;
         interview.candidateConfig = config;
+        interview.appliedJob = appliedJob;
 
         interview = interviewRepository.save(interview);
-        Events.raise(new InterviewStartedEvent(interview.id)); // TODO: 인터뷰 ID를 UUID로 변경할 것.
+        Events.raise(new InterviewStartedEvent(interview.id));
         return interview;
     }
 

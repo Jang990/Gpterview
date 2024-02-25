@@ -33,7 +33,7 @@ public class InterviewService {
     public long create(long loginId,long candidateConfigId) {
         CandidateConfig candidateConfig = profileRepository.findInterviewConfig(candidateConfigId, loginId)
                 .orElseThrow(CandidateConfigNotFoundException::new);
-        Interview interview = Interview.startInterview(repository, candidateConfig, candidateConfig.getUsers());
+        Interview interview = Interview.startInterview(repository, candidateConfig, candidateConfig.getUsers(), candidateConfig.getAppliedJob());
         return repository.save(interview).getId();
     }
 
