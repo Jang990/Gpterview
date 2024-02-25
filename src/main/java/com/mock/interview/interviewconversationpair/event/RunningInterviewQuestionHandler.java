@@ -5,6 +5,7 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.event.CreatedRunningInterviewQuestionEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
@@ -23,7 +24,7 @@ public class RunningInterviewQuestionHandler {
         Interview interview = interviewRepository.findById(event.interviewId())
                 .orElseThrow(InterviewNotFoundException::new);
         InterviewQuestion question = interviewQuestionRepository.findById(event.questionId())
-                .orElseThrow(InterviewNotFoundException::new);
+                .orElseThrow(InterviewQuestionNotFoundException::new);
 
         InterviewConversationPair conversationPair = InterviewConversationPair.startConversation(interview, question);
         interviewConversationPairRepository.save(conversationPair);
