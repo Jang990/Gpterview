@@ -1,6 +1,7 @@
-package com.mock.interview.temp;
+package com.mock.interview.interviewanswer.domain.model;
 
 import com.mock.interview.global.auditing.BaseEntity;
+import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

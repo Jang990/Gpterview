@@ -1,4 +1,4 @@
-package com.mock.interview.temp;
+package com.mock.interview.interviewquestion.domain.model;
 
 public enum QuestionType {
     TECHNICAL, PERSONALITY, EXPERIENCE;
