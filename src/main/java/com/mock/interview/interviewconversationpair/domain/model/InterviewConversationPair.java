@@ -13,17 +13,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InterviewConversationPair {
     @Id
-    @Column(name = "interview_history_id")
+    @Column(name = "pair_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "interview_id")
     private Interview interview;
 
     @ManyToOne
+    @JoinColumn(name = "question_id")
     private InterviewQuestion question;
 
     @OneToOne
+    @JoinColumn(name = "answer_id")
     private InterviewAnswer answer;
 
     public static InterviewConversationPair startConversation(Interview interview, InterviewQuestion question) {
