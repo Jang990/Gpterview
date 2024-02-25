@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InterviewHistory {
+public class InterviewConversationPair {
     @Id
     @Column(name = "interview_history_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,9 @@ public class InterviewHistory {
 
     @ManyToOne
     private Interview interview;
+
+    @ManyToOne
+    private InterviewQuestion question;
 
     @OneToOne
     private InterviewAnswer answer;
