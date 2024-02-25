@@ -25,4 +25,11 @@ public class InterviewConversationPair {
 
     @OneToOne
     private InterviewAnswer answer;
+
+    public static InterviewConversationPair startConversation(Interview interview, InterviewQuestion question) {
+        InterviewConversationPair conversationPair = new InterviewConversationPair();
+        conversationPair.interview = interview;
+        conversationPair.question = question;
+        return conversationPair;
+    }
 }
