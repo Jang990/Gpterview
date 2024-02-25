@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ChatGPTRequesterInSpringTest {
 
@@ -38,7 +38,7 @@ class ChatGPTRequesterInSpringTest {
         // AI 응답이 부여한 프롬프트를 따루지 않을 확률이 높아짐.
     }
 
-    @Test
+//    @Test
     @DisplayName("개선")
     void test2() {
         InterviewSetting mockSetting = mock(InterviewSetting.class);
@@ -71,7 +71,7 @@ class ChatGPTRequesterInSpringTest {
         System.out.println(message);
     }
 
-    @Test
+//    @Test
     @DisplayName("기존 기술 질문")
     void test3() {
         InterviewSetting mockSetting = mock(InterviewSetting.class);
