@@ -28,20 +28,14 @@ public class InterviewQuestion extends BaseEntity {
     @JoinColumn(name = "preferred_answer_id")
     private InterviewAnswer preferredAnswer;
 
+    /** GPT가 질문을 생성할 수도 있기 떄문에 Owner와 createdBy는 다를 수 있음. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private Users owner;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applied_job_id")
     private JobCategory appliedJob;
-
-    /*
-        TODO: Auditing 리스너 추가해서 createdBy에
-         AI-GPT가 들어갈 수 있도록 만들기
-         GPT가 생성하기 떄문에 Owner와 createdBy는 다를 수 있음.
-     */
-    @Column(updatable = false, nullable = false)
-    private String createdBy;
 
     @Column(nullable = false)
     private String question;
@@ -60,6 +54,7 @@ public class InterviewQuestion extends BaseEntity {
         question.owner = owner;
         question.appliedJob = appliedJob;
         question.createdBy = questionInfo.createdBy();
+        question.lastModifiedBy = questionInfo.createdBy();
         question.question = questionInfo.question();
         question.questionType = convert(questionInfo.progress().stage());
         return question;
