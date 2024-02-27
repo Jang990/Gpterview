@@ -1,5 +1,6 @@
 package com.mock.interview.interviewconversationpair.domain.model;
 
+import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InterviewConversationPair {
+public class InterviewConversationPair extends BaseTimeEntity {
     @Id
     @Column(name = "pair_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
