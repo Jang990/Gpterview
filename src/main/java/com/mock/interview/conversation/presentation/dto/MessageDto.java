@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDto {
-    private long id;
+    private Long id;
     private String role;
 
     @Size(min = 3, max = 200)
