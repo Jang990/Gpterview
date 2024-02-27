@@ -3,10 +3,9 @@ package com.mock.interview.interview.presentation.web;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
-import com.mock.interview.conversation.infrastructure.ConversationRepositoryForView;
-import com.mock.interview.conversation.presentation.dto.MessageHistoryDto;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.candidate.application.CandidateConfigService;
+import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import jakarta.validation.Valid;
@@ -31,7 +30,7 @@ public class InterviewController {
     private final CandidateConfigService candidateConfigService;
     private final InterviewService interviewService;
     private final TechnicalSubjectsService technicalSubjectsService;
-    private final ConversationRepositoryForView conversationRepositoryForView;
+    private final InterviewConversationRepositoryForView conversationRepositoryForView;
 
 
     @PostMapping("/interview")
@@ -64,7 +63,7 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("interviewId", interviewId);
-        model.addAttribute("messageHistory", conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 50)));
+        model.addAttribute("messageHistory", conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25)));
         return "interview/interview-start";
     }
 }
