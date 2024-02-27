@@ -1,9 +1,7 @@
-package com.mock.interview.conversation.presentation.api;
+package com.mock.interview.interviewconversationpair.presentation;
 
-import com.mock.interview.conversation.application.InterviewConversationService;
-import com.mock.interview.conversation.infrastructure.interview.AIService;
-import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.interviewconversationpair.application.InterviewConversationPairService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class InterviewConversationController {
-    private final AIService service;
-    private final InterviewConversationService conversationService;
+public class InterviewConversationPairController {
+    private final InterviewConversationPairService conversationPairService;
 
     @PostMapping("/interview/{interviewId}/conversation/response")
     public ResponseEntity<Void> requestAiResponse(
@@ -23,8 +20,9 @@ public class InterviewConversationController {
             @PathVariable(name = "interviewId") long interviewId,
             @RequestBody MessageDto answer // TODO: Request로 이름 변경
     ) {
-        System.out.println(answer);
-        conversationService.saveUserAnswer(loginId, interviewId, answer);
+        System.out.println("InterviewConversationPairController.requestAiResponse");
+        System.out.println("loginId = " + loginId + ", interviewId = " + interviewId + ", answer = " + answer);
+        conversationPairService.saveUserAnswer(loginId, interviewId, answer);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -33,7 +31,9 @@ public class InterviewConversationController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId
     ) {
-        conversationService.changeAiMessageTopic(loginId, interviewId);
+        System.out.println("InterviewConversationPairController.changingTopic");
+        System.out.println("loginId = " + loginId + ", interviewId = " + interviewId);
+        conversationPairService.changeQuestionTopic(loginId, interviewId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

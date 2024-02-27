@@ -1,6 +1,5 @@
 package com.mock.interview.conversation.infrastructure.interview;
 
-import com.mock.interview.conversation.application.InterviewConversationService;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
@@ -8,7 +7,6 @@ import com.mock.interview.conversation.infrastructure.interview.gpt.AIRequester;
 import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
 import com.mock.interview.conversation.infrastructure.interview.gpt.InterviewAIRequest;
 import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
-import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.conversation.infrastructure.interview.strategy.InterviewerStrategy;
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +19,6 @@ import java.util.List;
 public class AIService {
     private final List<InterviewerStrategy> interviewerStrategyList;
     private final AIRequester requester;
-    private final InterviewService interviewService;
-    private final InterviewConversationService conversationService;
 
     public Message service(InterviewInfo interviewInfo, MessageHistory history) {
         if (history.getMessages().isEmpty()) {
