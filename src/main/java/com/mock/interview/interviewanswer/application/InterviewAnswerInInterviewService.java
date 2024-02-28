@@ -32,13 +32,4 @@ public class InterviewAnswerInInterviewService {
 
         answerInRunningInterviewService.saveAnswerInInterview(interviewAnswerRepository, interview, conversationPair, answerDto);
     }
-
-    // TODO: 대화쌍으로 패키지 이동할 것.
-    public void changeQuestionTopic(long loginId, long interviewId, long pairId) {
-        Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
-                .orElseThrow(InterviewNotFoundException::new);
-        InterviewConversationPair conversationPair = conversationPairRepository.findByIdWithInterviewId(pairId, interviewId)
-                .orElseThrow(InterviewConversationPairNotFoundException::new);
-        answerInRunningInterviewService.changeTopic(interview, conversationPair);
-    }
 }

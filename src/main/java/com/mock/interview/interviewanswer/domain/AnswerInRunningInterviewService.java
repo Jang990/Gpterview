@@ -23,12 +23,4 @@ public class AnswerInRunningInterviewService {
         if(interview.isTimeout())
             Events.raise(new UserAnsweredEvent(interview.getId()));
     }
-
-    // TODO: 대화쌍으로 패키지 이동할 것.
-    public void changeTopic(Interview interview, InterviewConversationPair conversationPair) {
-        if (interview.isTimeout())
-            throw new IsAlreadyTimeoutInterviewException();
-
-        conversationPair.changeTopic();
-    }
 }
