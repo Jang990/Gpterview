@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 public class AnswerInInterviewController {
     private final InterviewAnswerInInterviewService interviewAnswerInInterviewService;
 
-    @PostMapping("/interview/{interviewId}/question/{questionId}/answer")
+    @PostMapping("/interview/{interviewId}/conversation/pair/{pairId}/answer")
     public ResponseEntity<Void> requestAiResponse(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
-            @PathVariable(name = "questionId") long questionId,
+            @PathVariable(name = "pairId") long pairId,
             @RequestBody MessageDto answer // TODO: Request로 이름 변경
     ) {
-        interviewAnswerInInterviewService.create(loginId, interviewId, questionId, answer);
+        interviewAnswerInInterviewService.create(loginId, interviewId, pairId, answer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

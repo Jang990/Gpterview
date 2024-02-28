@@ -23,11 +23,11 @@ public class InterviewAnswerInInterviewService {
     private final InterviewAnswerRepository interviewAnswerRepository;
     private final AnswerInRunningInterviewService answerInRunningInterviewService;
 
-    public void create(long loginId, long interviewId, long questionId, MessageDto answerDto) {
+    public void create(long loginId, long interviewId, long pairId, MessageDto answerDto) {
         InterviewVerificationHelper.verify(interviewRepository, interviewId, loginId);
         Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-        InterviewConversationPair conversationPair = conversationPairRepository.findConversation(interviewId, questionId)
+        InterviewConversationPair conversationPair = conversationPairRepository.findByIdWithInterviewId(pairId, interviewId)
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
         answerInRunningInterviewService.saveAnswerInInterview(interviewAnswerRepository, interview, conversationPair, answerDto);
