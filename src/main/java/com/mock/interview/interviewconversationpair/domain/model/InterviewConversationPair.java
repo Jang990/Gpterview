@@ -5,6 +5,7 @@ import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.PairStatusChangedToChangingEvent;
+import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyAnsweredConversationException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -44,19 +45,25 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     public void answerQuestion(InterviewAnswer answer) {
-        if(cannotAnswer())
-            throw new IllegalStateException(); // TODO: 커스텀 예외 필요
+        verifyCanModifyQuestion();
 
         this.answer = answer;
         this.status = PairStatus.COMPLETED;
     }
 
-    public boolean cannotAnswer() {
-        return status == PairStatus.COMPLETED || status == PairStatus.CHANGING;
-    }
-
     public void changeTopic() {
+        verifyCanModifyQuestion();
+
         status = PairStatus.CHANGING;
         Events.raise(new PairStatusChangedToChangingEvent(id));
+    }
+
+    private void verifyCanModifyQuestion() {
+        if(cannotAnswer())
+            throw new IsAlreadyAnsweredConversationException(); // TODO: 적절한 예외로 변경 필요
+    }
+
+    public boolean cannotAnswer() {
+        return status == PairStatus.COMPLETED || status == PairStatus.CHANGING;
     }
 }
