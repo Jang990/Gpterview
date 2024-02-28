@@ -6,7 +6,7 @@ import com.mock.interview.conversation.infrastructure.ConversationCacheForAiRequ
 import com.mock.interview.conversation.infrastructure.interview.AIService;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
-import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.conversation.presentation.dto.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
@@ -60,7 +60,6 @@ public class QuestionEventHandler {
         Message message = QuestionRequestHelper.requestQuestion(aiService, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        InterviewQuestion question = creationQuestionInRunningInterviewService.save(interviewQuestionRepository, interview, message);
-        conversationMessageBroker.publish(interview.getId(), new MessageDto(question.getId(), message.getRole(), message.getContent()));
+        creationQuestionInRunningInterviewService.save(interviewQuestionRepository, interview, message);
     }
 }

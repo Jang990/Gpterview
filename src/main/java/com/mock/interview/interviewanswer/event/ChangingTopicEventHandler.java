@@ -11,6 +11,7 @@ import com.mock.interview.conversation.infrastructure.interview.strategy.stage.I
 import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
 import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.conversation.presentation.dto.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
@@ -66,7 +67,8 @@ public class ChangingTopicEventHandler {
         conversationPair.changeTopic(question);
 
         // 메시지 전송 과정 - TODO: 메시지 브로커를 이벤트 처리 AFTER_COMMIT으로 통일할 것.
-        conversationMessageBroker.publish(conversationPair.getId(), new MessageDto(question.getId(), message.getRole(), message.getContent()));
+        conversationMessageBroker.publish(conversationPair.getId(),
+                new QuestionInInterviewDto(conversationPair.getId(),question.getId(), message.getRole(), message.getContent()));
     }
 
     private Message getQuestionContent(long interviewId) {

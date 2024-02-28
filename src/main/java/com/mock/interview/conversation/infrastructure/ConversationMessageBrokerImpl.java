@@ -3,6 +3,7 @@ package com.mock.interview.conversation.infrastructure;
 import com.mock.interview.conversation.domain.ConversationMessageBroker;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.conversation.presentation.dto.QuestionInInterviewDto;
 import com.mock.interview.global.WebSocketConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class ConversationMessageBrokerImpl implements ConversationMessageBroker 
     public final String template = WebSocketConfig.BROKER_PREFIX + "/interview/%d";
 
     @Override
-    public void publish(long interviewId, MessageDto message) {
+    public void publish(long interviewId, QuestionInInterviewDto message) {
         log.info("{}번 면접 message({},{}) 발행", interviewId, message.getRole(), message.getContent());
         sendingOperations.convertAndSend(template.formatted(interviewId), message);
     }
