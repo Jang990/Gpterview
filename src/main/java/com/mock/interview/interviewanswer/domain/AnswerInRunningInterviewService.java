@@ -8,7 +8,9 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AnswerInRunningInterviewService {
     public void saveAnswerInInterview(
             InterviewAnswerRepository interviewAnswerRepository,

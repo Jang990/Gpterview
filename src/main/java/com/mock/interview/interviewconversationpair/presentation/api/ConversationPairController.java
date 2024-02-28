@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConversationPairController {
     private final ConversationPairService conversationPairService;
 
-    @PostMapping("/interview/{interviewId}/conversation/pair/${pairId}/changing-topic")
+    @PostMapping("/interview/{interviewId}/conversation/pair/{pairId}/changing-topic")
     public ResponseEntity<Void> changingTopic(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
