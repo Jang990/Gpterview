@@ -19,8 +19,7 @@ public class AnswerInRunningInterviewService {
     ) {
         InterviewAnswer answer = InterviewAnswer.createAnswer(conversationPair.getQuestion(), answerDto.getContent());
         interviewAnswerRepository.save(answer);
-
-        conversationPair.answerQuestion(answer);
+        Events.raise(new AnsweredInCustomInterviewEvent(conversationPair.getId(), answer.getId()));
 
         if(interview.isActive())
             Events.raise(new UserAnsweredEvent(interview.getId()));

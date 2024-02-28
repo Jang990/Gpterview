@@ -7,6 +7,11 @@ import com.mock.interview.interview.domain.exception.InterviewNotExpiredExceptio
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interviewanswer.domain.AnsweredInCustomInterviewEvent;
+import com.mock.interview.interviewanswer.domain.exception.InterviewAnswerNotFoundException;
+import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
+import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
+import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
@@ -23,6 +28,7 @@ public class RunningInterviewQuestionHandler {
     private final InterviewConversationPairRepository interviewConversationPairRepository;
     private final InterviewRepository interviewRepository;
     private final InterviewQuestionRepository interviewQuestionRepository;
+    private final InterviewAnswerRepository answerRepository;
     private final ConversationMessageBroker conversationMessageBroker;
 
     @EventListener(CreatedRunningInterviewQuestionEvent.class)
@@ -38,5 +44,17 @@ public class RunningInterviewQuestionHandler {
         interviewConversationPairRepository.save(conversationPair);
         conversationMessageBroker.publish(interviewId,
                 new QuestionInInterviewDto(conversationPair.getId(), questionId, InterviewRole.USER.name(), question.getQuestion()));
+    }
+
+    @EventListener(AnsweredInCustomInterviewEvent.class)
+    public void handle(AnsweredInCustomInterviewEvent event) {
+        long answerId = event.answerId();
+        long pairId = event.pairId();
+        InterviewAnswer answer = answerRepository.findById(answerId)
+                .orElseThrow(InterviewAnswerNotFoundException::new);
+        InterviewConversationPair conversationPair = interviewConversationPairRepository.findById(pairId)
+                .orElseThrow(InterviewConversationPairNotFoundException::new);
+
+        conversationPair.answerQuestion(answer);
     }
 }

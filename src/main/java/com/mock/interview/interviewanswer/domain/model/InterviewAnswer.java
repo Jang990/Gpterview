@@ -1,5 +1,6 @@
 package com.mock.interview.interviewanswer.domain.model;
 
+import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.persistence.*;
