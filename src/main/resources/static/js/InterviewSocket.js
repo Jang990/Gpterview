@@ -22,7 +22,7 @@ function initSocket() {
             setTimeout(function () {
                 // speak(data.content); // 응답 메시지를 음성으로 전달
                 removeWaitingPanel();
-                displayResponse(JSON.parse(data.body).content);
+                displayResponse(JSON.parse(data.body));
                 scroll();
                 remainingTime = loadingTime;
                 enableSendBtn();

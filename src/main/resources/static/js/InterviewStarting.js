@@ -178,10 +178,10 @@ function createRandomMessage() {
 }
 
 // 서버로 받은 응답 값을 화면에 면접관으로 표시
-function displayResponse(msg) {
-    const newConversationItem = createGptMessage(msg);
+function displayResponse(msgObj) {
+    const newConversationItem = createGptMessage(msgObj.content);
     $('#talk-history').append(newConversationItem);
-    setCurrentConversationPairId(msg.pairId);
+    setCurrentConversationPairId(msgObj.conversationPairId);
     scroll();
 }
 
