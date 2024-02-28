@@ -96,6 +96,9 @@
                 </div>
             </div>
 
+            <input th:if="${lastConversationPairId != null and lastConversationPairId != 0}" type="hidden" id="currentConversationId" th:value="${lastConversationPairId}">
+            <input th:unless="${lastConversationPairId != null and lastConversationPairId != 0}" type="hidden" id="currentConversationId" value="-1">
+
 
         </div>
     </div>
@@ -107,6 +110,7 @@
     <script th:src="@{/js/InterviewSocket.js}" href="../../js/InterviewSocket.js"></script>
     <script th:src="@{/js/InterviewStarting.js}" href="../../js/InterviewStarting.js"></script>
     <script th:src="@{/js/review.js}" href="../../js/review.js"></script>
+    <script th:src="@{/js/ConversationPair.js}" href="../../js/ConversationPair.js"></script>
 </section>
 </body>
 </html>

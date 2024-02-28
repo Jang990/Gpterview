@@ -1,4 +1,6 @@
-const interviewUriPrefix = "/api/interview/" + getInterviewId() + "/conversation";
+function createConversationPairUriPrefix(conversationId) {
+    return "/api/interview/" + getInterviewId() + "/conversation/pair/" + conversationId;
+}
 
 const loadingTime = 1500;
 const sendBtn = $('.sendBtn');
@@ -30,7 +32,8 @@ function decreaseRemainingTime() {
 // 현재 내용을 토대로 응답을 다시 받음.
 function retryResponse() {
     removeLastChatting();
-    sendRequest(interviewUriPrefix+"/changing-topic", null);
+    const conversationPairId = getConversationPairId();
+    sendRequest(createConversationPairUriPrefix(conversationPairId)+"/changing-topic", null);
 }
 
 // 마지막 채팅 제거
@@ -83,7 +86,8 @@ function sendMessage() {
     scroll();
 
     const message = createMessage("USER", nowMsg); // TODO: USER를 타임리프로 변경
-    sendRequest(interviewUriPrefix+"/response", message);
+    const conversationPairId = getConversationPairId();
+    sendRequest(createConversationPairUriPrefix(conversationPairId)+"/answer", message);
 }
 
 function isInvalidChattingMessage(message) {
@@ -177,6 +181,7 @@ function createRandomMessage() {
 function displayResponse(msg) {
     const newConversationItem = createGptMessage(msg);
     $('#talk-history').append(newConversationItem);
+    setCurrentConversationPairId(msg.pairId);
     scroll();
 }
 

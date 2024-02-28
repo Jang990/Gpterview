@@ -29,6 +29,7 @@ public class InterviewConversationRepositoryForView {
     public Slice<InterviewConversationPairDto> findInterviewConversations(long interviewId, long userId, Pageable pageable) {
         List<InterviewConversationPairDto> result = query.select(
                         Projections.constructor(InterviewConversationPairDto.class,
+                                interviewConversationPair.id,
                                 Projections.constructor(MessageDto.class,
                                         interviewConversationPair.question.id,
                                         Expressions.constant(InterviewRole.AI.getName()),

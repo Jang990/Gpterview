@@ -6,12 +6,14 @@ import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
+import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,7 +65,13 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("interviewId", interviewId);
-        model.addAttribute("messageHistory", conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25)));
+
+        Slice<InterviewConversationPairDto> interviewConversations = conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25));
+        model.addAttribute("messageHistory", interviewConversations);
+        if (interviewConversations.hasContent()) {
+            List<InterviewConversationPairDto> content = interviewConversations.getContent();
+            model.addAttribute("lastConversationPairId", content.get(content.size() - 1).getPairId());
+        }
         return "interview/interview-start";
     }
 }
