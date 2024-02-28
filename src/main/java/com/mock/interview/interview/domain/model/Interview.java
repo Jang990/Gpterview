@@ -78,4 +78,8 @@ public class Interview extends BaseTimeEntity {
     public boolean isTimeout() {
         return expiredTime.isBefore(LocalDateTime.now());
     }
+
+    public boolean isActive() {
+        return !isTimeout();
+    }
 }

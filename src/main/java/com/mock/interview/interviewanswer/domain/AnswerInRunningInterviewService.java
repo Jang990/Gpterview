@@ -20,7 +20,7 @@ public class AnswerInRunningInterviewService {
 
         conversationPair.answerQuestion(answer);
 
-        if(interview.isTimeout())
+        if(interview.isActive())
             Events.raise(new UserAnsweredEvent(interview.getId()));
     }
 }
