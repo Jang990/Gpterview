@@ -51,11 +51,19 @@ public class InterviewConversationPair extends BaseTimeEntity {
         this.status = PairStatus.COMPLETED;
     }
 
-    public void changeTopic() {
+    public void changeStatusToChangeTopic() {
         verifyCanModifyQuestion();
 
         status = PairStatus.CHANGING;
         Events.raise(new PairStatusChangedToChangingEvent(id));
+    }
+
+    public void changeTopic(InterviewQuestion question) {
+        if(status != PairStatus.CHANGING)
+            throw new IllegalStateException(); // TODO: 커스텀 예외 필요
+
+        this.question = question;
+        this.status = PairStatus.WAITING;
     }
 
     private void verifyCanModifyQuestion() {

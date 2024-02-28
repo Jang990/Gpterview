@@ -11,6 +11,6 @@ public class ChangingTopicService {
         if (interview.isTimeout())
             throw new IsAlreadyTimeoutInterviewException();
 
-        conversationPair.changeTopic();
+        conversationPair.changeStatusToChangeTopic();
     }
 }
