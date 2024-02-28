@@ -25,13 +25,15 @@ public class AnswerInInterviewController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/interview/{interviewId}/question/{questionId}/changing-topic")
+    // TODO: 대화쌍ID를 넘겨받는게 좋을 것 같다. - 개발 편의성을 고려해서 변경하려면 할 것.
+//    @PostMapping("/interview/{interviewId}/question/${pairId}/changing-topic")
+    @PostMapping("/interview/{interviewId}/conversation/pair/${pairId}/changing-topic")
     public ResponseEntity<Void> changingTopic(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
-            @PathVariable(name = "questionId") long questionId
+            @PathVariable(name = "pairId") long pairId
     ) {
-        interviewAnswerInInterviewService.changeQuestionTopic(loginId, interviewId, questionId);
+        interviewAnswerInInterviewService.changeQuestionTopic(loginId, interviewId, pairId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
