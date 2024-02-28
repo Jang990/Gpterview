@@ -42,4 +42,7 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
 
     @Query("Select iv From Interview iv Where iv.expiredTime > current_timestamp")
     Optional<Interview> findActiveInterview(Long loginId);
+
+    /** 인터뷰 소유자 검증을 위한 쿼리 메소드 */
+    boolean existsByIdAndUsersId(long interviewId, long usersId);
 }

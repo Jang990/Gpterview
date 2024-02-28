@@ -1,5 +1,6 @@
 package com.mock.interview.interviewconversationpair.domain.model;
 
+import com.mock.interview.conversation.presentation.dto.MessageDto;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
@@ -8,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Getter
@@ -35,5 +38,12 @@ public class InterviewConversationPair extends BaseTimeEntity {
         conversationPair.interview = interview;
         conversationPair.question = question;
         return conversationPair;
+    }
+
+    public void answerQuestion(InterviewAnswer answer) {
+        if(answer != null)
+            throw new IllegalArgumentException();
+
+        this.answer = answer;
     }
 }

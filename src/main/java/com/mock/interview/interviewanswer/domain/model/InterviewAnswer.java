@@ -21,4 +21,11 @@ public class InterviewAnswer extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private InterviewQuestion question;
+
+    public static InterviewAnswer createAnswer(InterviewQuestion question, String answer) {
+        InterviewAnswer interviewAnswer = new InterviewAnswer();
+        interviewAnswer.question = question;
+        interviewAnswer.answer = answer;
+        return interviewAnswer;
+    }
 }
