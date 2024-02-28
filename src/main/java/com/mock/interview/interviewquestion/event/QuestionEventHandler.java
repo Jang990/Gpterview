@@ -1,19 +1,16 @@
 package com.mock.interview.interviewquestion.event;
 
-import com.mock.interview.conversation.domain.ConversationMessageBroker;
 import com.mock.interview.conversation.domain.UserAnsweredEvent;
 import com.mock.interview.conversation.infrastructure.ConversationCacheForAiRequest;
 import com.mock.interview.conversation.infrastructure.interview.AIService;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
-import com.mock.interview.conversation.presentation.dto.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.interviewquestion.domain.CreationQuestionInRunningInterviewService;
-import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -30,7 +27,6 @@ public class QuestionEventHandler {
     private final InterviewRepository interviewRepository;
     private final InterviewCacheForAiRequest interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
-    private final ConversationMessageBroker conversationMessageBroker;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final CreationQuestionInRunningInterviewService creationQuestionInRunningInterviewService;
 
