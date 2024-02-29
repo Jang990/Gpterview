@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
+/** @see AiResponseProcessingLock
+ * 해당 어노테이션의 AOP 구현체
+ */
 @Slf4j
 @Aspect
 @Component
