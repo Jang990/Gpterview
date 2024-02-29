@@ -1,4 +1,4 @@
-package com.mock.interview.conversation.domain;
+package com.mock.interview.interviewanswer.domain;
 
 import com.mock.interview.interview.infrastructure.lock.proceeding.LockableCustomInterviewEvent;
 
