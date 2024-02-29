@@ -4,7 +4,7 @@ import com.mock.interview.conversation.domain.UserAnsweredEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.interview.AIService;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
-import com.mock.interview.interviewquestion.infra.lock.AiResponseProcessingLock;
+import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;

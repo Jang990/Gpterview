@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.lock;
+package com.mock.interview.interview.infrastructure.lock.proceeding;
 
 import com.mock.interview.global.exception.CustomClientException;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.lock;
+package com.mock.interview.interview.infrastructure.lock.proceeding;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

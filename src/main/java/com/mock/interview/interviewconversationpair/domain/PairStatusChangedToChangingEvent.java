@@ -1,6 +1,6 @@
 package com.mock.interview.interviewconversationpair.domain;
 
-import com.mock.interview.interviewquestion.infra.lock.LockableCustomInterviewEvent;
+import com.mock.interview.interview.infrastructure.lock.proceeding.LockableCustomInterviewEvent;
 
 public record PairStatusChangedToChangingEvent(long interviewId, long pairId) implements LockableCustomInterviewEvent {
     @Override
