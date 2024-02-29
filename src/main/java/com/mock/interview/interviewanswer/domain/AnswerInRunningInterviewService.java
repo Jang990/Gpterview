@@ -1,6 +1,6 @@
 package com.mock.interview.interviewanswer.domain;
 
-import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;

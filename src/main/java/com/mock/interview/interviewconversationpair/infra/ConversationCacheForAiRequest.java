@@ -1,6 +1,6 @@
 package com.mock.interview.interviewconversationpair.infra;
 
-import com.mock.interview.conversation.presentation.dto.InterviewRole;
+import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import com.mock.interview.interviewquestion.infra.interview.dto.MessageHistory;

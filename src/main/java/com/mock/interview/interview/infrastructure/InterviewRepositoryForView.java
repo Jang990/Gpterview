@@ -1,8 +1,5 @@
 package com.mock.interview.interview.infrastructure;
 
-import com.mock.interview.candidate.domain.model.QCandidateConfig;
-import com.mock.interview.conversation.presentation.dto.MessageDto;
-import com.mock.interview.interview.domain.model.QInterview;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;

@@ -1,6 +1,6 @@
 package com.mock.interview.interviewanswer.application;
 
-import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interview.application.InterviewVerificationHelper;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;

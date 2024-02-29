@@ -1,8 +1,8 @@
 package com.mock.interview.interviewconversationpair.infra;
 
 
-import com.mock.interview.conversation.presentation.dto.InterviewRole;
-import com.mock.interview.conversation.presentation.dto.MessageDto;
+import com.mock.interview.interview.presentation.dto.InterviewRole;
+import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;

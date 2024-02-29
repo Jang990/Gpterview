@@ -1,7 +1,7 @@
-package com.mock.interview.conversation.infrastructure;
+package com.mock.interview.interview.infrastructure;
 
-import com.mock.interview.conversation.domain.ConversationMessageBroker;
-import com.mock.interview.conversation.presentation.dto.QuestionInInterviewDto;
+import com.mock.interview.interview.domain.ConversationMessageBroker;
+import com.mock.interview.interview.presentation.dto.message.QuestionInInterviewDto;
 import com.mock.interview.global.WebSocketConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
