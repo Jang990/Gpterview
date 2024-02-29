@@ -2,8 +2,8 @@ package com.mock.interview.interviewconversationpair.infra;
 
 import com.mock.interview.conversation.presentation.dto.InterviewRole;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
-import com.mock.interview.conversation.infrastructure.interview.dto.Message;
-import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
+import com.mock.interview.interviewquestion.infra.interview.dto.Message;
+import com.mock.interview.interviewquestion.infra.interview.dto.MessageHistory;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import lombok.RequiredArgsConstructor;

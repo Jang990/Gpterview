@@ -1,6 +1,6 @@
 package com.mock.interview.interview.config;
 
-import com.mock.interview.conversation.infrastructure.interview.gpt.AISpecification;
+import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;

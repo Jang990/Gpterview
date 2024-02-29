@@ -1,15 +1,16 @@
 package com.mock.interview.conversation.infrastructure.interview.strategy.stage;
 
 import com.mock.interview.candidate.presentation.dto.InterviewType;
-import com.mock.interview.conversation.infrastructure.interview.dto.InterviewConfig;
-import org.assertj.core.api.Assertions;
+import com.mock.interview.interviewquestion.infra.interview.dto.InterviewConfig;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class InterviewProgressTimeBasedTrackerTest {
     InterviewProgressTimeBasedTracker tracker = new InterviewProgressTimeBasedTracker();

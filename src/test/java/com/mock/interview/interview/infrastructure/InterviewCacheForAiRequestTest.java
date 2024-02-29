@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infrastructure;
 
-import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.creator.InterviewEntityCreator;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;

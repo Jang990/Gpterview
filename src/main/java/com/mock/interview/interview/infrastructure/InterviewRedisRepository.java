@@ -1,13 +1,11 @@
 package com.mock.interview.interview.infrastructure;
 
-import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service

@@ -1,13 +1,13 @@
 package com.mock.interview.conversation.infrastructure.interview.gpt;
 
-import com.mock.interview.conversation.infrastructure.interview.dto.Message;
-import com.mock.interview.conversation.infrastructure.interview.setting.InterviewSetting;
+import com.mock.interview.interviewquestion.infra.interview.dto.Message;
+import com.mock.interview.interviewquestion.infra.interview.gpt.ChatGPTRequester;
+import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
+import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSetting;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ChatGPTRequesterInSpringTest {
 
-    @Autowired ChatGPTRequester requester;
+    @Autowired
+    ChatGPTRequester requester;
 
 //    @Test
     void test() {

@@ -1,9 +1,8 @@
 package com.mock.interview.conversation.domain.model;
 
-import com.mock.interview.conversation.domain.AiAnsweredEvent;
 import com.mock.interview.conversation.domain.ChangeTopicEvent;
 import com.mock.interview.conversation.domain.exception.CannotChangeUserTopicException;
-import com.mock.interview.conversation.infrastructure.interview.dto.Message;
+import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;

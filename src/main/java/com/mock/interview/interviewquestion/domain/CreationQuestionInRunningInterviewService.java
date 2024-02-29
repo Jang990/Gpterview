@@ -1,8 +1,8 @@
 package com.mock.interview.interviewquestion.domain;
 
-import com.mock.interview.conversation.infrastructure.interview.dto.Message;
-import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
+import com.mock.interview.interviewquestion.infra.interview.dto.Message;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
 import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;

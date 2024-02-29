@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;

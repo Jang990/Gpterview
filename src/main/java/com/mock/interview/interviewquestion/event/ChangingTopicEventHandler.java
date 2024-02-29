@@ -3,11 +3,11 @@ package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.conversation.domain.ConversationMessageBroker;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
-import com.mock.interview.conversation.infrastructure.interview.AIService;
-import com.mock.interview.conversation.infrastructure.interview.dto.Message;
-import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.conversation.infrastructure.interview.strategy.stage.InterviewStage;
-import com.mock.interview.conversation.infrastructure.lock.AiResponseProcessingLock;
+import com.mock.interview.interviewquestion.infra.interview.AIService;
+import com.mock.interview.interviewquestion.infra.interview.dto.Message;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
+import com.mock.interview.interviewquestion.infra.lock.AiResponseProcessingLock;
 import com.mock.interview.conversation.presentation.dto.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
@@ -18,7 +18,6 @@ import com.mock.interview.interviewconversationpair.domain.exception.InterviewCo
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.event.QuestionRequestHelper;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
 import lombok.RequiredArgsConstructor;

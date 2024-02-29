@@ -1,6 +1,6 @@
 package com.mock.interview.global;
 
-import com.mock.interview.conversation.infrastructure.interview.strategy.exception.AlreadyFinishedInterviewException;
+import com.mock.interview.interviewquestion.infra.interview.strategy.exception.AlreadyFinishedInterviewException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
