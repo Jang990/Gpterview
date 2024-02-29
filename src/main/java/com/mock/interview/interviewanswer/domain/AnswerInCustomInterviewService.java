@@ -9,7 +9,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import org.springframework.stereotype.Service;
 
 @Service
-public class AnswerInRunningInterviewService {
+public class AnswerInCustomInterviewService {
     public void saveAnswerInInterview(
             InterviewAnswerRepository interviewAnswerRepository,
             Interview interview, InterviewConversationPair conversationPair,

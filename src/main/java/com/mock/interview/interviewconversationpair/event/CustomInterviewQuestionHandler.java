@@ -15,7 +15,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.event.CreatedRunningInterviewQuestionEvent;
+import com.mock.interview.interviewquestion.event.CreatedCustomInterviewQuestionEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -23,15 +23,15 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class RunningInterviewQuestionHandler {
+public class CustomInterviewQuestionHandler {
     private final InterviewConversationPairRepository interviewConversationPairRepository;
     private final InterviewRepository interviewRepository;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final InterviewAnswerRepository answerRepository;
     private final ConversationMessageBroker conversationMessageBroker;
 
-    @EventListener(CreatedRunningInterviewQuestionEvent.class)
-    public void handle(CreatedRunningInterviewQuestionEvent event) {
+    @EventListener(CreatedCustomInterviewQuestionEvent.class)
+    public void handle(CreatedCustomInterviewQuestionEvent event) {
         long interviewId = event.interviewId();
         long questionId = event.questionId();
         Interview interview = interviewRepository.findById(interviewId)

@@ -6,13 +6,13 @@ import com.mock.interview.interviewquestion.infra.interview.strategy.stage.Inter
 import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.event.CreatedRunningInterviewQuestionEvent;
+import com.mock.interview.interviewquestion.event.CreatedCustomInterviewQuestionEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreationQuestionInRunningInterviewService {
+public class CreationQuestionInCustomInterviewService {
     public InterviewQuestion save(
             InterviewQuestionRepository repository,
             Interview interview, Message message
@@ -21,7 +21,7 @@ public class CreationQuestionInRunningInterviewService {
                 "GPT", message.getContent(), new InterviewProgress(InterviewStage.TECHNICAL, 0.3)); // TODO: AI 서비스에서 가져올 것.
         InterviewQuestion question = InterviewQuestion.createInInterview(interview.getUsers(), interview.getAppliedJob(), publishedQuestion);
         repository.save(question);
-        Events.raise(new CreatedRunningInterviewQuestionEvent(interview.getId(), question.getId()));
+        Events.raise(new CreatedCustomInterviewQuestionEvent(interview.getId(), question.getId()));
         return question;
     }
 }

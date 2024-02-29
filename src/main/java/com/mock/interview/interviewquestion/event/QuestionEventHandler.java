@@ -10,7 +10,7 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interviewquestion.domain.CreationQuestionInRunningInterviewService;
+import com.mock.interview.interviewquestion.domain.CreationQuestionInCustomInterviewService;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -28,7 +28,7 @@ public class QuestionEventHandler {
     private final InterviewCacheForAiRequest interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository interviewQuestionRepository;
-    private final CreationQuestionInRunningInterviewService creationQuestionInRunningInterviewService;
+    private final CreationQuestionInCustomInterviewService creationQuestionInCustomInterviewService;
 
     @Async
     @AiResponseProcessingLock
@@ -56,6 +56,6 @@ public class QuestionEventHandler {
         Message message = QuestionRequestHelper.requestQuestion(aiService, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        creationQuestionInRunningInterviewService.save(interviewQuestionRepository, interview, message);
+        creationQuestionInCustomInterviewService.save(interviewQuestionRepository, interview, message);
     }
 }
