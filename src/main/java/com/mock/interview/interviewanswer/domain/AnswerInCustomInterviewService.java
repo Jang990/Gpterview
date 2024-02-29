@@ -15,7 +15,7 @@ public class AnswerInCustomInterviewService {
             Interview interview, InterviewConversationPair conversationPair,
             MessageDto answerDto
     ) {
-        InterviewAnswer answer = InterviewAnswer.createAnswer(conversationPair.getQuestion(), answerDto.getContent());
+        InterviewAnswer answer = InterviewAnswer.createAnswer(conversationPair.getQuestion(), answerDto.getContent(), interview.getUsers());
         interviewAnswerRepository.save(answer);
         Events.raise(new AnsweredInCustomInterviewEvent(conversationPair.getId(), answer.getId()));
 
