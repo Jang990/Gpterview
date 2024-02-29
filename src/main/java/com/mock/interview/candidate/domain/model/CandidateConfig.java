@@ -40,6 +40,7 @@ public class CandidateConfig extends BaseTimeEntity {
     private List<Experience> experience = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "applied_job_id")
     private JobCategory appliedJob;
 
     @Cascade(CascadeType.ALL)

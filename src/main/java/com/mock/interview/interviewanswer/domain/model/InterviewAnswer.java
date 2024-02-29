@@ -23,9 +23,11 @@ public class InterviewAnswer extends BaseTimeEntity {
     private String answer;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
     private InterviewQuestion question;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private Users users;
 
     public static InterviewAnswer createAnswer(InterviewQuestion question, String answer, Users users) {
