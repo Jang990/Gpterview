@@ -1,9 +1,6 @@
 package com.mock.interview.conversation.domain.model;
 
-import com.mock.interview.conversation.domain.ChangeTopicEvent;
-import com.mock.interview.conversation.domain.exception.CannotChangeUserTopicException;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
-import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.conversation.presentation.dto.MessageDto;
@@ -60,14 +57,6 @@ public class InterviewConversation extends BaseTimeEntity {
         conversation.interview = interview;
         conversation.isDeleted = false;
         return conversation;
-    }
-
-    public void changeTopic() {
-        if(isUserAnswer())
-            throw new CannotChangeUserTopicException();
-
-        isDeleted = true;
-        Events.raise(new ChangeTopicEvent(interview.getId()));
     }
 
     boolean isUserAnswer() {
