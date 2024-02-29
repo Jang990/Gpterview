@@ -9,15 +9,16 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ConversationPairService {
     private final InterviewRepository interviewRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
     private final ChangingTopicService changingTopicService;
 
-    // TODO: 대화쌍으로 패키지 이동할 것.
     public void changeQuestionTopic(long loginId, long interviewId, long pairId) {
         Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
