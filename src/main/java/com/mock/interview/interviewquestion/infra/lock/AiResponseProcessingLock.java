@@ -5,8 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-// TODO: Lockable 인터페이스를 만들어서 getInterviewId()를 구현하게 만들까?
-/** 이벤트에서 해당 어노테이션을 사용하길 원하면 getInterviewId()에 이벤트를 추가해서 interviewId를 얻을 수 있도록 만들 것 */
+/**
+ * 커스텀 인터뷰를 진행하면서 인터뷰 ID에 락을 걸어야 하는 작업을 하는 이벤트 발생 시 사용.
+ * 해당 이벤트에 LockableCustomInterviewEvent.class를 구현해야 함.
+ * @see LockableCustomInterviewEvent
+ */
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AiResponseProcessingLock {

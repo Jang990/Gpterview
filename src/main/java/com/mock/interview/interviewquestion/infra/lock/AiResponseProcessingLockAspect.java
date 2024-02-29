@@ -1,9 +1,6 @@
 package com.mock.interview.interviewquestion.infra.lock;
 
-import com.mock.interview.conversation.domain.ChangeTopicEvent;
-import com.mock.interview.conversation.domain.UserAnsweredEvent;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
-import com.mock.interview.interview.domain.InterviewStartedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -49,16 +46,8 @@ public class AiResponseProcessingLockAspect {
 
     private Long getInterviewId(Object[] args) {
         for (Object arg : args) {
-            if (arg instanceof InterviewStartedEvent event) {
-                return event.interviewId();
-            }
-
-            if (arg instanceof UserAnsweredEvent event) {
-                return event.interviewId();
-            }
-
-            if (arg instanceof ChangeTopicEvent event) {
-                return event.interviewId();
+            if (arg instanceof LockableCustomInterviewEvent event) {
+                return event.getInterviewId();
             }
         }
 
