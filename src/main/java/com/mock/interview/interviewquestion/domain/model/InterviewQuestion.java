@@ -5,11 +5,18 @@ import com.mock.interview.interviewquestion.infra.interview.strategy.stage.Inter
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
+import com.mock.interview.tech.domain.model.ProfileTechLink;
+import com.mock.interview.tech.domain.model.QuestionTechLink;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 면접이라는 기능에 초점을 맞추지 말고, 면접 질문 게시판에 초점을 맞추는게 맞는 것 같다.
@@ -42,6 +49,10 @@ public class InterviewQuestion extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
+
+    @Cascade(CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+    private List<QuestionTechLink> techLink = new ArrayList<>(); // TODO: AiService 구조 개선 후 값을 넣을 것
 
     /*
     내용, 분야, 필드
