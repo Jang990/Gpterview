@@ -59,7 +59,8 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     public void changeTopic(InterviewQuestion question) {
-        verifyCanModifyQuestion();
+        if(status != PairStatus.CHANGING)
+            throw new IllegalStateException(); // TODO: 적절한 예외 필요.
 
         this.question = question;
         this.status = PairStatus.WAITING;

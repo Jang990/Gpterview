@@ -36,7 +36,9 @@ public class ConversationCacheForAiRequest {
         List<Message> history = new LinkedList<>();
         messageList.forEach(pair -> {
             history.add(convert(pair.getQuestion()));
-            history.add(convert(pair.getAnswer()));
+            Message answer = convert(pair.getAnswer());
+            if(answer != null)
+                history.add(answer);
         });
 
         return new MessageHistory(history);
