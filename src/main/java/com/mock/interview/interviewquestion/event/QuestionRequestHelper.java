@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.event;
 
-import com.mock.interview.conversation.infrastructure.ConversationCacheForAiRequest;
+import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.conversation.infrastructure.interview.AIService;
 import com.mock.interview.conversation.infrastructure.interview.dto.InterviewInfo;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;

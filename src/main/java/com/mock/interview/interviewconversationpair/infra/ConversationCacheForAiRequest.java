@@ -1,16 +1,16 @@
-package com.mock.interview.conversation.infrastructure;
+package com.mock.interview.interviewconversationpair.infra;
 
-import com.mock.interview.conversation.application.ConversationConvertor;
+import com.mock.interview.conversation.presentation.dto.InterviewRole;
+import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.conversation.infrastructure.interview.dto.Message;
 import com.mock.interview.conversation.infrastructure.interview.dto.MessageHistory;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
-import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,10 +35,20 @@ public class ConversationCacheForAiRequest {
 
         List<Message> history = new LinkedList<>();
         messageList.forEach(pair -> {
-            history.add(ConversationConvertor.convert(pair.getQuestion()));
-            history.add(ConversationConvertor.convert(pair.getAnswer()));
+            history.add(convert(pair.getQuestion()));
+            history.add(convert(pair.getAnswer()));
         });
 
         return new MessageHistory(history);
+    }
+
+    public static Message convert(InterviewQuestion interviewQuestion) {
+        return new Message(InterviewRole.AI.toString(), interviewQuestion.getQuestion());
+    }
+
+    public static Message convert(InterviewAnswer interviewAnswer) {
+        if(interviewAnswer == null)
+            return null;
+        return new Message(InterviewRole.USER.toString(), interviewAnswer.getAnswer());
     }
 }
