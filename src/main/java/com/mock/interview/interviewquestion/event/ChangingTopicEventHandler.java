@@ -54,7 +54,7 @@ public class ChangingTopicEventHandler {
 
         // 요청과정
         long interviewId = conversationPair.getInterview().getId();
-        Message message = QuestionRequestHelper.requestQuestion(aiService, interviewCache, conversationCache, interviewId);
+        Message message = QuestionRequestHelper.changeTopic(aiService, interviewCache, conversationCache, interviewId);
 
         // Question 저장 과정
         InterviewQuestion question = createQuestion(message, interviewId);

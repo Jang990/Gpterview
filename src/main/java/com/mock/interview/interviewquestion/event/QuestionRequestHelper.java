@@ -16,4 +16,13 @@ public class QuestionRequestHelper {
         MessageHistory messageHistory = conversationCache.findCurrentConversation(interviewId);
         return aiService.service(interviewInfo, messageHistory);
     }
+
+    public static Message changeTopic(
+            AIService aiService, InterviewCacheForAiRequest interviewCache,
+            ConversationCacheForAiRequest conversationCache, long interviewId
+    ) {
+        InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
+        MessageHistory messageHistory = conversationCache.findCurrentConversation(interviewId);
+        return aiService.changeTopic(interviewInfo, messageHistory);
+    }
 }
