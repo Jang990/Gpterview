@@ -1,5 +1,6 @@
 package com.mock.interview.interviewconversationpair.domain;
 
+import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -12,5 +13,6 @@ public class ChangingTopicService {
             throw new IsAlreadyTimeoutInterviewException();
 
         conversationPair.changeStatusToChangeTopic();
+        Events.raise(new PairStatusChangedToChangingEvent(interview.getId(), conversationPair.getId()));
     }
 }

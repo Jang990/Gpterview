@@ -51,11 +51,10 @@ public class InterviewConversationPair extends BaseTimeEntity {
         this.status = PairStatus.COMPLETED;
     }
 
+    // TODO: 디폴트 접근 제어자로 수정할 것
     public void changeStatusToChangeTopic() {
         verifyCanModifyQuestion();
-
         status = PairStatus.CHANGING;
-        Events.raise(new PairStatusChangedToChangingEvent(id));
     }
 
     public void changeTopic(InterviewQuestion question) {
