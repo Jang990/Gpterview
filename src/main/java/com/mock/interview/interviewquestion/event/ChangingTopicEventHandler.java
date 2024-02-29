@@ -64,7 +64,7 @@ public class ChangingTopicEventHandler {
         conversationPair.changeTopic(question);
 
         // 메시지 전송 과정 - TODO: 메시지 브로커를 이벤트 처리 AFTER_COMMIT으로 통일할 것.
-        conversationMessageBroker.publish(conversationPair.getId(),
+        conversationMessageBroker.publish(interviewId,
                 new QuestionInInterviewDto(conversationPair.getId(),question.getId(), message.getRole(), message.getContent()));
     }
 

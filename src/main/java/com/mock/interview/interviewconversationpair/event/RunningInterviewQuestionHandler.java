@@ -42,7 +42,7 @@ public class RunningInterviewQuestionHandler {
         InterviewConversationPair conversationPair = InterviewConversationPair.startConversation(interview, question);
         interviewConversationPairRepository.save(conversationPair);
         conversationMessageBroker.publish(interviewId,
-                new QuestionInInterviewDto(conversationPair.getId(), questionId, InterviewRole.USER.name(), question.getQuestion()));
+                new QuestionInInterviewDto(conversationPair.getId(), questionId, InterviewRole.AI.name(), question.getQuestion()));
     }
 
     @EventListener(AnsweredInCustomInterviewEvent.class)
