@@ -1,6 +1,6 @@
 package com.mock.interview.review.domain;
 
-import com.mock.interview.conversation.domain.model.InterviewConversation;
+import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -17,8 +17,8 @@ public class ReviewQuestion {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "interview_conversation_id")
-    private InterviewConversation interviewConversation;
+    @JoinColumn(name = "interview_question_id")
+    private InterviewQuestion interviewQuestion;
 
     private String memo;
 

@@ -1,6 +1,5 @@
 package com.mock.interview.interviewquestion.infra.interview.strategy;
 
-import com.mock.interview.conversation.infrastructure.interview.dto.*;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
