@@ -1,4 +1,4 @@
-package com.mock.interview.interviewanswer.event;
+package com.mock.interview.interviewquestion.event;
 
 
 import com.mock.interview.conversation.domain.ConversationMessageBroker;
