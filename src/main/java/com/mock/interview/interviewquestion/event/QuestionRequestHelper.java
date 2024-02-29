@@ -8,12 +8,12 @@ import com.mock.interview.conversation.infrastructure.interview.dto.MessageHisto
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 
 public class QuestionRequestHelper {
-    static Message requestQuestion(
+    public static Message requestQuestion(
             AIService aiService, InterviewCacheForAiRequest interviewCache,
             ConversationCacheForAiRequest conversationCache, long interviewId
     ) {
         InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
-        MessageHistory messageHistory = conversationCache.findMessageHistory(interviewId);
+        MessageHistory messageHistory = conversationCache.findCurrentConversation(interviewId);
         return aiService.service(interviewInfo, messageHistory);
     }
 }

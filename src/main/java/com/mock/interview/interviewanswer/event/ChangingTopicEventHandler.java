@@ -21,6 +21,7 @@ import com.mock.interview.interviewconversationpair.domain.exception.InterviewCo
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.event.QuestionRequestHelper;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +58,7 @@ public class ChangingTopicEventHandler {
 
         // 요청과정
         long interviewId = conversationPair.getInterview().getId();
-        Message message = getQuestionContent(interviewId);
+        Message message = QuestionRequestHelper.requestQuestion(aiService, interviewCache, conversationCache, interviewId);
 
         // Question 저장 과정
         InterviewQuestion question = createQuestion(message, interviewId);
@@ -69,12 +70,6 @@ public class ChangingTopicEventHandler {
         // 메시지 전송 과정 - TODO: 메시지 브로커를 이벤트 처리 AFTER_COMMIT으로 통일할 것.
         conversationMessageBroker.publish(conversationPair.getId(),
                 new QuestionInInterviewDto(conversationPair.getId(),question.getId(), message.getRole(), message.getContent()));
-    }
-
-    private Message getQuestionContent(long interviewId) {
-        InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
-        MessageHistory messageHistory = conversationCache.findMessageHistory(interviewId);
-        return aiService.changeTopic(interviewInfo, messageHistory);
     }
 
     private InterviewQuestion createQuestion(Message message, long interviewId) {
