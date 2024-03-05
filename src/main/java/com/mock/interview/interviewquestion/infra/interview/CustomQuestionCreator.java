@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AIService {
+public class CustomQuestionCreator {
     private final List<InterviewerStrategy> interviewerStrategyList;
     private final AIRequester requester;
 

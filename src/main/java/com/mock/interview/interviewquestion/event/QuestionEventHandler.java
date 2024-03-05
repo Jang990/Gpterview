@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interviewanswer.domain.UserAnsweredEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
-import com.mock.interview.interviewquestion.infra.interview.AIService;
+import com.mock.interview.interviewquestion.infra.interview.CustomQuestionCreator;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
@@ -23,7 +23,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 @RequiredArgsConstructor
 public class QuestionEventHandler {
-    private final AIService aiService;
+    private final CustomQuestionCreator customQuestionCreator;
     private final InterviewRepository interviewRepository;
     private final InterviewCacheForAiRequest interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
@@ -53,7 +53,7 @@ public class QuestionEventHandler {
     }
 
     private void createQuestion(long interviewId) {
-        Message message = QuestionRequestHelper.requestQuestion(aiService, interviewCache, conversationCache, interviewId);
+        Message message = QuestionRequestHelper.requestQuestion(customQuestionCreator, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         creationQuestionInCustomInterviewService.save(interviewQuestionRepository, interview, message);
