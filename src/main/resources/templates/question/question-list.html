@@ -26,6 +26,9 @@
                             <span class="input-icon input-icon-sm ml-auto w-auto">
                                 <input type="text" class="form-control form-control-sm bg-gray-200 border-gray-200 shadow-none mb-4 mt-4" placeholder="Search forum" />
                             </span>
+                            <p>
+                                <span>검색된 결과 수 : </span><span th:text="${questionPage.totalElements}"></span>
+                            </p>
                         </div>
                         <!-- /Inner main header -->
 
@@ -33,7 +36,7 @@
 
                         <!-- Forum List -->
                         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-                            <div class="card mb-2" th:each="question : ${questionList}">
+                            <div class="card mb-2" th:each="question : ${questionPage.content}">
                                 <!--<a class="btn btn-secondary btn-sm" th:href="@{/skill/{skillId}(skillId=${skill.id})}" th:text="${skill.name}"></a>-->
                                 <div class="card-body p-2 p-sm-3">
                                     <div class="media forum-item">
@@ -43,8 +46,10 @@
                                         </a>
                                         <div class="media-body">
                                             <h6>
-                                                <a href="#" class="text-body"> <span th:text="${question.department}">분야</span>-<span th:text="${question.field}">영역</span></a>
-                                                <a href="#" class="text-body" th:text="${question.tech}">Redis(관련 기술)</a>
+                                                <a href="#" class="text-body"> <span th:text="${question.category.department}">분야</span>-<span th:text="${question.category.field}">영역</span></a>
+                                                <th:block th:each="tech : ${question.tech}">
+                                                    <a href="#" class="text-body" th:text="${tech}">Redis(관련 기술)</a>
+                                                </th:block>
                                                 <span class="text-secondary font-weight-bold" th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd')}">생성일</span>
                                             </h6>
                                             <p class="text-secondary" th:text="${question.content}">질문 내용</p>
@@ -58,7 +63,28 @@
                                 </div>
                             </div>
 
+<!--                            <div th:replace="~{fragments/paging/page-number-nav :: fragment-page-number-nav(page=questionPage)}">페이징 컨트롤 네비게이션 공간</div>-->
                             <ul class="pagination pagination-sm pagination-circle justify-content-center mb-0">
+                                <li class="page-item" th:class="${questionPage.first ? 'disabled' : ''}">
+                                    <a class="page-link has-icon" th:if="${not questionPage.first}" th:href="@{/question(page=${questionPage.number - 1})}">
+                                        <i class="material-icons">이전</i>
+                                    </a>
+                                    <span class="page-link has-icon" th:if="${questionPage.first}"><i class="material-icons">이전</i></span>
+                                </li>
+
+                                <li class="page-item" th:each="pageNumber : ${#numbers.sequence(questionPage.number, questionPage.totalPages)}" th:class="${pageNumber == questionPage.number + 1} ? 'active' : ''">
+                                    <a class="page-link" th:if="${pageNumber != questionPage.number + 1}" th:href="@{/question(page=${pageNumber})}" th:text="${pageNumber}"></a>
+                                    <span class="page-link" th:if="${pageNumber == questionPage.number + 1}" th:text="${pageNumber}"></span>
+                                </li>
+
+                                <li class="page-item" th:class="${questionPage.last ? 'disabled' : ''}">
+                                    <a class="page-link has-icon" th:if="${not questionPage.last}" th:href="@{/question(page=${questionPage.number + 1})}">
+                                        <i class="material-icons">다음</i>
+                                    </a>
+                                    <span class="page-link has-icon" th:if="${questionPage.last}"><i class="material-icons">다음</i></span>
+                                </li>
+                            </ul>
+                            <!--<ul class="pagination pagination-sm pagination-circle justify-content-center mb-0">
                                 <li class="page-item disabled">
                                     <span class="page-link has-icon"><i class="material-icons">이전</i></span>
                                 </li>
@@ -68,7 +94,7 @@
                                 <li class="page-item">
                                     <a class="page-link has-icon" href="javascript:void(0)"><i class="material-icons">다음</i></a>
                                 </li>
-                            </ul>
+                            </ul>-->
                         </div>
                         <!-- /Forum List -->
 
