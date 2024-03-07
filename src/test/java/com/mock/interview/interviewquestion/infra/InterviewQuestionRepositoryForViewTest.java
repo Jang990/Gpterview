@@ -1,6 +1,8 @@
 package com.mock.interview.interviewquestion.infra;
 
+import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +18,19 @@ class InterviewQuestionRepositoryForViewTest {
     @Autowired InterviewQuestionRepositoryForView repositoryForView;
 
 //    @Test
-    void test() {
+    void test0() {
+        QuestionOverview question = repositoryForView.findQuestion(7L, 803L);
+        System.out.println(question);
+    }
+
+//    @Test
+    void test1() {
+        Assertions.assertThrows(InterviewQuestionNotFoundException.class,
+                () -> repositoryForView.findQuestion(7L, 0L));
+    }
+
+//    @Test
+    void test2() {
         Page<QuestionOverview> result = repositoryForView.findOverviewListWithJobCategory(
                 "IT", null, PageRequest.of(0, 30));
         System.out.println(result.getTotalElements()); // 전체 요소 수 90

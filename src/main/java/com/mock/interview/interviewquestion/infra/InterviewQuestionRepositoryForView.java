@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.infra;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.QJobCategory;
 import com.mock.interview.category.presentation.dto.JobCategoryView;
+import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -25,6 +26,21 @@ import static com.mock.interview.interviewquestion.domain.model.QInterviewQuesti
 @RequiredArgsConstructor
 public class InterviewQuestionRepositoryForView {
     private final JPAQueryFactory query;
+
+    public QuestionOverview findQuestion(Long loginIdCond, Long questionIdCond) {
+        QJobCategory field = new QJobCategory("field");
+        QJobCategory department = new QJobCategory("department");
+        InterviewQuestion question = query.selectFrom(interviewQuestion)
+                .leftJoin(interviewQuestion.appliedJob, field)
+                .leftJoin(interviewQuestion.appliedJob.department, department)
+                .where(interviewQuestion.id.eq(questionIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
+                .fetchOne();
+
+        if(question == null)
+            throw new InterviewQuestionNotFoundException();
+
+        return convert(question);
+    }
 
     public Page<QuestionOverview> findOverviewListWithJobCategory(
             String jobCategoryCond, String createdBy, Pageable pageable
@@ -50,13 +66,15 @@ public class InterviewQuestionRepositoryForView {
     }
 
     private List<QuestionOverview> convert(List<InterviewQuestion> questions) {
-        return questions.stream().map(q ->
-                new QuestionOverview(q.getId(), q.getCreatedBy(),
-                        convert(q.getAppliedJob()),
-                        q.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
-                        q.getQuestion(), q.getCreatedAt(), 123, 321
-                )
-        ).toList();
+        return questions.stream().map(InterviewQuestionRepositoryForView::convert).toList();
+    }
+
+    private static QuestionOverview convert(InterviewQuestion question) {
+        return new QuestionOverview(question.getId(), question.getCreatedBy(),
+                convert(question.getAppliedJob()),
+                question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
+                question.getQuestion(), question.getCreatedAt(), 123, 321
+        );
     }
 
     private static JobCategoryView convert(JobCategory category) {
