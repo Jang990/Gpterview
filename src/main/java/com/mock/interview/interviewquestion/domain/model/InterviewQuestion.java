@@ -69,7 +69,6 @@ public class InterviewQuestion extends BaseEntity {
         question.owner = owner;
         question.appliedJob = appliedJob;
         question.createdBy = questionInfo.createdBy();
-        question.lastModifiedBy = questionInfo.createdBy();
         question.question = questionInfo.question();
         question.questionType = convert(questionInfo.progress().stage());
         return question;
@@ -81,6 +80,7 @@ public class InterviewQuestion extends BaseEntity {
         question.questionType = convert(type);
         question.appliedJob = category;
         question.owner = users;
+        question.createdBy = users.getUsername();
 
         if(techList != null)
             question.techLink = createTechLinks(question, techList);
