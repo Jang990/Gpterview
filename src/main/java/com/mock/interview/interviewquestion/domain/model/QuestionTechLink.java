@@ -23,7 +23,7 @@ public class QuestionTechLink {
     @JoinColumn(name = "technical_subjects_id")
     private TechnicalSubjects technicalSubjects;
 
-    public static QuestionTechLink createLink(InterviewQuestion question, TechnicalSubjects tech) {
+    static QuestionTechLink createLink(InterviewQuestion question, TechnicalSubjects tech) {
         QuestionTechLink link = new QuestionTechLink();
         link.question = question;
         link.technicalSubjects = tech;

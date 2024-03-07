@@ -23,7 +23,7 @@ public class ProfileTechLink {
     @JoinColumn(name = "technical_subjects_id")
     private TechnicalSubjects technicalSubjects;
 
-    public static ProfileTechLink createLink(CandidateConfig profile, TechnicalSubjects tech) {
+    static ProfileTechLink createLink(CandidateConfig profile, TechnicalSubjects tech) {
         ProfileTechLink link = new ProfileTechLink();
         link.profile = profile;
         link.technicalSubjects = tech;
