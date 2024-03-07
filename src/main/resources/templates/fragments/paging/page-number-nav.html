@@ -3,6 +3,11 @@
 <div class="row justify-content-md-center" th:fragment="fragment-page-number-nav(isFirst, isLast, currentPageNumber,totalPages, pageUri)">
     <ul class="pagination pagination-sm pagination-circle justify-content-center mb-0">
         <li class="page-item" th:class="${isFirst ? 'disabled' : ''}">
+            <a class="page-link has-icon" th:if="${not isFirst}" th:href="@{${pageUri}(page=${0})}">
+                <i class="material-icons"> << </i>
+            </a>
+        </li>
+        <li class="page-item" th:class="${isFirst ? 'disabled' : ''}">
             <a class="page-link has-icon" th:if="${not isFirst}" th:href="@{${pageUri}(page=${currentPageNumber - 1})}">
                 <i class="material-icons">이전</i>
             </a>
@@ -23,6 +28,11 @@
                 <i class="material-icons">다음</i>
             </a>
             <span class="page-link has-icon" th:if="${isLast}"><i class="material-icons">다음</i></span>
+        </li>
+        <li class="page-item" th:class="${isLast ? 'disabled' : ''}">
+            <a class="page-link has-icon" th:if="${not isLast}" th:href="@{${pageUri}(page=${totalPages - 1})}">
+                <i class="material-icons"> >> </i>
+            </a>
         </li>
     </ul>
 </div>
