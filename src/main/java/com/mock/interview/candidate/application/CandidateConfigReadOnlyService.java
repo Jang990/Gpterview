@@ -7,7 +7,7 @@ import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateOverview;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
-import com.mock.interview.tech.domain.model.ProfileTechLink;
+import com.mock.interview.candidate.domain.model.ProfileTechLink;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;

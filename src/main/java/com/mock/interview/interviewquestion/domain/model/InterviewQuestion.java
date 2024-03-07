@@ -6,7 +6,6 @@ import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
-import com.mock.interview.tech.domain.model.QuestionTechLink;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;

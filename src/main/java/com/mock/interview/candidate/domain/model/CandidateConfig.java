@@ -4,7 +4,6 @@ import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.candidate.presentation.dto.InterviewType;
-import com.mock.interview.tech.domain.model.ProfileTechLink;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
