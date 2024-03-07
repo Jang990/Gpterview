@@ -15,10 +15,12 @@ import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class QuestionSavingService {
     private final InterviewQuestionRepository interviewQuestionRepository;
