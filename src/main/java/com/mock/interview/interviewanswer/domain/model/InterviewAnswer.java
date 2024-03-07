@@ -30,11 +30,14 @@ public class InterviewAnswer extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private Users users;
 
+    private long likes;
+
     public static InterviewAnswer createAnswer(InterviewQuestion question, String answer, Users users) {
         InterviewAnswer interviewAnswer = new InterviewAnswer();
         interviewAnswer.question = question;
         interviewAnswer.answer = answer;
         interviewAnswer.users = users;
+        interviewAnswer.likes = 0L;
         return interviewAnswer;
     }
 }
