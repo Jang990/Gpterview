@@ -18,7 +18,7 @@ public class InterviewQuestionWebPostController {
     private final TechnicalSubjectsService technicalSubjectsService;
     @PostMapping("question")
     public String save(Model model, QuestionForm form) {
-        List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTech(form.getTech());
+        List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTechIfNotExist(form.getTech());
         long savedId = questionSavingService.save(form, relationalTech);
         return "redirect:/question/" + savedId;
     }

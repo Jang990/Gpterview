@@ -42,7 +42,7 @@ public class InterviewController {
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
         InterviewCandidateForm interviewCandidateForm = new InterviewCandidateForm(profile, interviewDetails);
-        List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTech(profile.getSkills());
+        List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTechIfNotExist(profile.getSkills());
         long candidateConfigId = candidateConfigService.create(interviewCandidateForm, loginId, relationalTech);
         long interviewId = interviewService.create(loginId, candidateConfigId);
         return "redirect:/interview/" + interviewId;

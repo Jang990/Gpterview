@@ -15,7 +15,7 @@ import java.util.List;
 public class TechnicalSubjectsService {
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
-    public List<TechnicalSubjectsResponse> saveTech(List<String> skills) {
+    public List<TechnicalSubjectsResponse> saveTechIfNotExist(List<String> skills) {
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findTech(skills);
         List<String> savedNames = techList.stream().map(TechnicalSubjects::getName).toList();
         skills.stream()
