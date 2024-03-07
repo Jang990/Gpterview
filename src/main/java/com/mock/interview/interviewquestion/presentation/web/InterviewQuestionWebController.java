@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class InterviewQuestionWebController {
     private final InterviewQuestionRepositoryForView questionRepositoryForView;
-    private final JobCategoryService categoryService;
 
     @GetMapping("question")
     public String questionListPage(Model model, @PageableDefault Pageable pageable) {
@@ -25,13 +25,4 @@ public class InterviewQuestionWebController {
         model.addAttribute("questionPage", overviewPage);
         return "/question/question-list";
     }
-
-    @GetMapping("question/form")
-    public String questionSavePage(Model model, @PageableDefault Pageable pageable) {
-        model.addAttribute("categoryList", categoryService.findAllDepartment());
-        model.addAttribute("question", new QuestionForm());
-        model.addAttribute("headerActiveTap", "interview-question");
-        return "/question/question-form";
-    }
-
 }

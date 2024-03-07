@@ -1,14 +1,11 @@
 package com.mock.interview.interviewquestion.domain.model;
 
-import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
-import com.mock.interview.tech.domain.model.ProfileTechLink;
 import com.mock.interview.tech.domain.model.QuestionTechLink;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
@@ -78,11 +75,12 @@ public class InterviewQuestion extends BaseEntity {
         return question;
     }
 
-    public static InterviewQuestion create(String content, QuestionTypeForView type, JobCategory category, List<TechnicalSubjects> techList) {
+    public static InterviewQuestion create(String content, QuestionTypeForView type, JobCategory category, List<TechnicalSubjects> techList, Users users) {
         InterviewQuestion question = new InterviewQuestion();
         question.question = content;
         question.questionType = convert(type);
         question.appliedJob = category;
+        question.owner = users;
 
         if(techList != null)
             question.techLink = createTechLinks(question, techList);

@@ -10,9 +10,11 @@ import com.mock.interview.tech.application.TechConvertHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infrastructure.TechnicalSubjectsRepository;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
+import com.mock.interview.user.domain.exception.UserNotFoundException;
+import com.mock.interview.user.domain.model.Users;
+import com.mock.interview.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -22,20 +24,22 @@ public class QuestionSavingService {
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final JobCategoryRepository jobCategoryRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
-    public long save(QuestionForm form, List<TechnicalSubjectsResponse> relationalTech) {
+    private final UserRepository userRepository;
+    public long save(long loginId, QuestionForm form, List<TechnicalSubjectsResponse> relationalTech) {
+        Users users = userRepository.findById(loginId).orElseThrow(UserNotFoundException::new);
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(TechConvertHelper.convertToTechId(relationalTech));
-        JobCategory detailCategory = findMoreDetailCategory(form.getDepartmentName(), form.getFieldName());
+        JobCategory detailCategory = findMoreDetailCategory(form.getDepartment(), form.getField());
 
-        InterviewQuestion question = InterviewQuestion.create(form.getContent(), form.getType(), detailCategory, techList);
+        InterviewQuestion question = InterviewQuestion.create(form.getContent(), form.getType(), detailCategory, techList, users);
         return interviewQuestionRepository.save(question).getId();
     }
 
-    private JobCategory findMoreDetailCategory(String department, String field) {
-        if(StringUtils.hasText(field))
-            return jobCategoryRepository.findByName(field)
+    private JobCategory findMoreDetailCategory(Long department, Long field) {
+        if(field == null)
+            return jobCategoryRepository.findById(department)
                 .orElseThrow(JobCategoryNotFoundException::new);
 
-        return jobCategoryRepository.findByName(department)
+        return jobCategoryRepository.findById(field)
                 .orElseThrow(JobCategoryNotFoundException::new);
     }
 }
