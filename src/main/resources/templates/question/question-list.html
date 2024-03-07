@@ -63,31 +63,9 @@
                                 </div>
                             </div>
 
-<!--                            <div th:replace="~{fragments/paging/page-number-nav :: fragment-page-number-nav(page=questionPage)}">페이징 컨트롤 네비게이션 공간</div>-->
-                            <ul class="pagination pagination-sm pagination-circle justify-content-center mb-0">
-                                <li class="page-item" th:class="${questionPage.first ? 'disabled' : ''}">
-                                    <a class="page-link has-icon" th:if="${not questionPage.first}" th:href="@{/question(page=${questionPage.number - 1})}">
-                                        <i class="material-icons">이전</i>
-                                    </a>
-                                    <span class="page-link has-icon" th:if="${questionPage.first}"><i class="material-icons">이전</i></span>
-                                </li>
-
-                                <li class="page-item" th:each="pageNumber : ${#numbers.sequence(
-                                        questionPage.number - 3 > 0 ? questionPage.number - 3 : 0,
-                                        questionPage.number + 3 < questionPage.totalPages ? questionPage.number + 3 : questionPage.totalPages - 1
-                                    )}"
-                                    th:class="${pageNumber == questionPage.number} ? 'active' : ''">
-                                    <a class="page-link" th:if="${pageNumber != questionPage.number}" th:href="@{/question(page=${pageNumber})}" th:text="${pageNumber + 1}"></a>
-                                    <span class="page-link" th:if="${pageNumber == questionPage.number}" th:text="${pageNumber + 1}"></span>
-                                </li>
-
-                                <li class="page-item" th:class="${questionPage.last ? 'disabled' : ''}">
-                                    <a class="page-link has-icon" th:if="${not questionPage.last}" th:href="@{/question(page=${questionPage.number + 1})}">
-                                        <i class="material-icons">다음</i>
-                                    </a>
-                                    <span class="page-link has-icon" th:if="${questionPage.last}"><i class="material-icons">다음</i></span>
-                                </li>
-                            </ul>
+                            <div th:replace="~{fragments/paging/page-number-nav :: fragment-page-number-nav(
+                                isFirst=${questionPage.first}, isLast=${questionPage.last},
+                                currentPageNumber=${questionPage.number}, totalPages=${questionPage.totalPages}, pageUri='/question')}">페이징 컨트롤 네비게이션 공간</div>
                         </div>
                         <!-- /Forum List -->
 
