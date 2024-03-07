@@ -5,9 +5,10 @@
 <head>
   <title>면접 질문</title>
 </head>
-<!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum */-->
+<!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
 <body>
     <section>
+
         <div class="container">
             <div class="main-body p-0">
                 <div class="inner-wrapper">
@@ -37,30 +38,7 @@
                         <!-- Forum List -->
                         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
                             <div class="card mb-2" th:each="question : ${questionPage.content}">
-                                <!--<a class="btn btn-secondary btn-sm" th:href="@{/skill/{skillId}(skillId=${skill.id})}" th:text="${skill.name}"></a>-->
-                                <div class="card-body p-2 p-sm-3">
-                                    <div class="media forum-item">
-                                        <a href="#">
-                                            <img th:src="@{/image/normal-user-thumbnail.png}" class="mr-3 rounded-circle" width="50" alt="User"/>
-                                            <span th:text="${question.createdBy}">작성자</span>
-                                        </a>
-                                        <div class="media-body">
-                                            <h6>
-                                                <a href="#" class="text-body"> <span th:text="${question.category.department}">분야</span>-<span th:text="${question.category.field}">영역</span></a>
-                                                <th:block th:each="tech : ${question.tech}">
-                                                    <a href="#" class="text-body" th:text="${tech}">Redis(관련 기술)</a>
-                                                </th:block>
-                                                <span class="text-secondary font-weight-bold" th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd')}">생성일</span>
-                                            </h6>
-                                            <p class="text-secondary" th:text="${question.content}">질문 내용</p>
-                                            <p class="text-muted"></p>
-                                        </div>
-                                        <div class="text-muted small text-center align-self-center">
-                                            <span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> <span th:text="${question.hits}">조회수</span></span>
-                                            <span><i class="far fa-comment ml-2"></i> <span th:text="${question.commentCnt}">댓글수</span></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div th:replace="~{fragments/card/question-card :: fragment-question-card(question=${question})}">카드</div>
                             </div>
 
                             <div th:replace="~{fragments/paging/page-number-nav :: fragment-page-number-nav(
