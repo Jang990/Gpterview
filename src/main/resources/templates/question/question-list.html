@@ -38,7 +38,11 @@
                         <!-- Forum List -->
                         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
                             <div class="card mb-2" th:each="question : ${questionPage.content}">
-                                <div th:replace="~{fragments/card/question-card :: fragment-question-card(question=${question})}">카드</div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div th:replace="~{fragments/card/question-card :: fragment-question-card(question=${question},enableLink=false)}">질문 정보</div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div th:replace="~{fragments/paging/page-number-nav :: fragment-page-number-nav(
