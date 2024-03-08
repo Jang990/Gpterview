@@ -1,7 +1,9 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForView;
+import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepositoryForView;
+import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -37,8 +39,12 @@ public class InterviewQuestionWebController {
         Long loginId = null;
         model.addAttribute("headerActiveTap", "interview-question");
         QuestionOverview question = questionRepositoryForView.findQuestion(loginId, questionId);
+        List<AnswerForView> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
+        List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForView.findChildQuestionTop3Likes(questionId);
+
         model.addAttribute("question", question);
-        model.addAttribute("answerTop3", answerRepositoryForView.findAnswerTop3Likes(questionId));
+        model.addAttribute("answerTop3", answerTop3);
+        model.addAttribute("childQuestion", childQuestionTop3);
         return "/question/question-detail";
     }
 }

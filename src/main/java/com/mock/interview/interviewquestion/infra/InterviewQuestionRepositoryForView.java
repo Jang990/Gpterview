@@ -5,8 +5,11 @@ import com.mock.interview.category.domain.model.QJobCategory;
 import com.mock.interview.category.presentation.dto.JobCategoryView;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import static com.mock.interview.interviewquestion.domain.model.QInterviewQuesti
 @RequiredArgsConstructor
 public class InterviewQuestionRepositoryForView {
     private final JPAQueryFactory query;
+    private final int TOP_3 = 3;
 
     public QuestionOverview findQuestion(Long loginIdCond, Long questionIdCond) {
         QJobCategory field = new QJobCategory("field");
@@ -35,12 +39,24 @@ public class InterviewQuestionRepositoryForView {
                 .leftJoin(interviewQuestion.appliedJob.department, department)
                 .where(interviewQuestion.id.eq(questionIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
                 .fetchOne();
-        System.out.println("====>"+question);
 
         if(question == null)
             throw new InterviewQuestionNotFoundException();
 
         return convert(question);
+    }
+
+    public List<ChildQuestionOverview> findChildQuestionTop3Likes(Long questionIdCond) {
+        return query.select(
+                        Projections.constructor(ChildQuestionOverview.class,
+                                interviewQuestion.id, interviewQuestion.createdBy, interviewQuestion.createdAt,
+                                interviewQuestion.question, interviewQuestion.likes)
+                )
+                .from(interviewQuestion)
+                .where(interviewQuestion.parentQuestion.id.eq(questionIdCond))
+                .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
+                .limit(TOP_3)
+                .fetch();
     }
 
     public Page<QuestionOverview> findOverviewListWithJobCategory(
@@ -74,7 +90,7 @@ public class InterviewQuestionRepositoryForView {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
                 convert(question.getAppliedJob()),
                 question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
-                question.getQuestion(), question.getCreatedAt(), 123, 321
+                question.getQuestion(), question.getCreatedAt(), 123, question.getLikes()
         );
     }
 

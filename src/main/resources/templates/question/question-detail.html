@@ -36,6 +36,14 @@
                                     <li class="list-group-item">
                                         <div class="card-body">
                                             <div class="mb-3 ms-2">
+                                                <h4> 관련 질문 </h4>
+                                            </div>
+                                            <div th:replace="~{fragments/overviewList/child-question :: fragment-child-question-overview-list(questionId=${question.id},dataList=${childQuestion})}">꼬리 질문 top3</div>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <div class="card-body">
+                                            <div class="mb-3 ms-2">
                                                 <h4> 대답 정보 </h4>
                                             </div>
                                             <div th:replace="~{fragments/overviewList/answer-top3 :: fragment-answer-overview-list(questionId=${question.id},dataList=${answerTop3})}">질문 응답 top3</div>
