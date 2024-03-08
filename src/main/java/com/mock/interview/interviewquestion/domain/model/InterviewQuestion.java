@@ -54,6 +54,10 @@ public class InterviewQuestion extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
     private List<QuestionTechLink> techLink = new ArrayList<>(); // TODO: AiService 구조 개선 후 값을 넣을 것
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_question_id")
+    private InterviewQuestion parentQuestion;
+
     /*
     내용, 분야, 필드
     추천수, 조회수
