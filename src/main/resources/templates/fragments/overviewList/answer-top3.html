@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div class="container" th:fragment="fragment-answer-overview-list(questionId,dataList)">
+    <link th:href="@{/css/overview-list.css}" href="../css/overview-list.css" rel="stylesheet">
+    <div class="row">
+        <div class="col-12 mb-3 mb-lg-5">
+            <div class="position-relative card table-nowrap table-card">
+                <div class="card-header align-items-center">
+                    <h5 class="mb-0">상위 대답</h5>
+                    <!--<p class="mb-0 small text-muted">1 Pending</p>-->
+                </div>
+                <div class="table-responsive">
+                    <table class="table mb-0 table-hover">
+                        <thead class="small text-uppercase bg-body text-muted">
+                        <tr>
+                            <th>작성자</th>
+                            <th>내용</th>
+                            <th>추천 수</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/question/{questionId}/answer/{answerId}'(questionId=${questionId}, answerId=${data.id})}" style="cursor: pointer;">
+                                <td class="small" th:text="${data.createdBy}">작성자</td>
+                                <td class="small text-wrap" style="max-width: 300px;" th:text="${data.content}">대답 내용</td>
+                                <td class="small" th:text="${data.likes}">추천 수</td>
+                            </tr>
+                            <th:block th:if="${dataList.size() < 3}">
+                                <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
+                                    <td class="small text-center" colspan="3">empty</td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer text-end">
+                    <a sec:authorize="isAuthenticated()" class="btn btn-gray me-2" th:href="@{/question/{questionId}/answer/{username}(questionId=${questionId}, username=${#authentication.principal.username})}">내 대답</a>
+                    <a href="#!" class="btn btn-gray">목록으로</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>
