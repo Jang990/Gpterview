@@ -10,7 +10,7 @@
                     <!--<p class="mb-0 small text-muted">1 Pending</p>-->
                 </div>
                 <div class="table-responsive">
-                    <table class="table mb-0">
+                    <table class="table mb-0 table-hover">
                         <thead class="small text-uppercase bg-body text-muted">
                         <tr>
                             <th>면접 제목</th>
@@ -27,9 +27,7 @@
 
                             <th:block th:if="${dataList.size() < 3}">
                                 <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
-                                    <td class="small">&nbsp;</td>
-                                    <td class="small">
-                                    </td><td class="small"></td>
+                                    <td class="small text-center" colspan="3">empty</td>
                                 </tr>
                             </th:block>
                         </tbody>
