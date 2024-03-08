@@ -40,7 +40,7 @@
                             <div class="card mb-2" th:each="question : ${questionPage.content}">
                                 <div class="card">
                                     <div class="card-body">
-                                        <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=false)}">질문 정보</div>
+                                        <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=true)}">질문 정보</div>
                                     </div>
                                 </div>
                             </div>
