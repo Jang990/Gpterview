@@ -50,6 +50,8 @@ public class InterviewQuestion extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private QuestionType questionType;
 
+    private long likes;
+
     @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
     private List<QuestionTechLink> techLink = new ArrayList<>(); // TODO: AiService 구조 개선 후 값을 넣을 것
@@ -74,6 +76,7 @@ public class InterviewQuestion extends BaseEntity {
         question.createdBy = questionInfo.createdBy();
         question.question = questionInfo.question();
         question.questionType = convert(questionInfo.progress().stage());
+        question.likes = 0;
         return question;
     }
 
@@ -84,6 +87,7 @@ public class InterviewQuestion extends BaseEntity {
         question.appliedJob = category;
         question.owner = users;
         question.createdBy = users.getUsername();
+        question.likes = 0;
 
         if(techList != null)
             question.techLink = createTechLinks(question, techList);
