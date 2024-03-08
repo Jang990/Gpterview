@@ -50,7 +50,6 @@ public class InterviewAnswerRepositoryForView {
                 .innerJoin(interviewAnswer.users, users).on(userIdEq(loginIdCond))
                 .where(questionIdEq(questionIdCond))
                 .orderBy(interviewAnswer.likes.desc(), interviewAnswer.createdAt.desc())
-                .limit(TOP_3)
                 .fetch();
     }
 

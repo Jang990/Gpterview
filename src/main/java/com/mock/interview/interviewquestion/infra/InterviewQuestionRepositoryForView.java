@@ -35,6 +35,7 @@ public class InterviewQuestionRepositoryForView {
                 .leftJoin(interviewQuestion.appliedJob.department, department)
                 .where(interviewQuestion.id.eq(questionIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
                 .fetchOne();
+        System.out.println("====>"+question);
 
         if(question == null)
             throw new InterviewQuestionNotFoundException();
