@@ -27,15 +27,17 @@
                                 <form action="/question" method="post">
                                     <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(departmentList=${categoryList},loadField=${question.field})}">분야, 직무 카테고리 선택 구역</div>
                                     <div class="mb-3 row">
-                                        <label class="col-1 col-form-label">질문타입</label>
-                                        <div class="col-2">
-                                            <select id="questionType" name="type" class="form-select" aria-label="Select Type">
-                                                <option th:each="questionType, questionTypeStat : ${T(com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView).values()}"
-                                                        th:value="${questionType}" th:selected="(questionTypeStat.count == 1 and ${questionType} == null) or ${questionType} == ${question.type}"
-                                                        th:text="${questionType.name}">
-                                                    질문 타입
-                                                </option>
-                                            </select>
+                                        <div class="d-flex justify-content-start">
+                                            <label class="me-3 col-form-label">질문타입</label>
+                                            <div class="me-3">
+                                                <select id="questionType" name="type" class="form-select" aria-label="Select Type">
+                                                    <option th:each="questionType, questionTypeStat : ${T(com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView).values()}"
+                                                            th:value="${questionType}" th:selected="(questionTypeStat.count == 1 and ${questionType} == null) or ${questionType} == ${question.type}"
+                                                            th:text="${questionType.name}">
+                                                        질문 타입
+                                                    </option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
 
