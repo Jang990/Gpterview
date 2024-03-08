@@ -8,14 +8,14 @@
 <!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
 <body>
     <section>
-        <div class="container custom-container-width">
+        <div class="container custom-container-width my-5">
             <div class="main-body p-0">
                 <div class="inner-wrapper">
                     <!-- Inner main -->
                     <div class="inner-main">
                         <!-- Inner main header -->
                         <div class="inner-main-header">
-                            <h3> 질문 추가하기 </h3>
+
                         </div>
                         <!-- /Inner main header -->
 
@@ -23,32 +23,37 @@
 
                         <!-- Forum List -->
                         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-                            <div class="card-body">
-                                <form action="/question" method="post">
-                                    <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(departmentList=${categoryList},loadField=${question.field})}">분야, 직무 카테고리 선택 구역</div>
-                                    <div class="mb-3 row">
-                                        <div class="d-flex justify-content-start">
-                                            <label class="me-3 col-form-label">질문타입</label>
-                                            <div class="me-3">
-                                                <select id="questionType" name="type" class="form-select" aria-label="Select Type">
-                                                    <option th:each="questionType, questionTypeStat : ${T(com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView).values()}"
-                                                            th:value="${questionType}" th:selected="(questionTypeStat.count == 1 and ${questionType} == null) or ${questionType} == ${question.type}"
-                                                            th:text="${questionType.name}">
-                                                        질문 타입
-                                                    </option>
-                                                </select>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <h4> 질문 추가하기 </h4>
+                                    </div>
+                                    <form action="/question" method="post">
+                                        <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(departmentList=${categoryList},loadField=${question.field})}">분야, 직무 카테고리 선택 구역</div>
+                                        <div class="mb-3 row">
+                                            <div class="d-flex justify-content-start">
+                                                <label class="me-3 col-form-label">질문타입</label>
+                                                <div class="me-3">
+                                                    <select id="questionType" name="type" class="form-select" aria-label="Select Type">
+                                                        <option th:each="questionType, questionTypeStat : ${T(com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView).values()}"
+                                                                th:value="${questionType}" th:selected="(questionTypeStat.count == 1 and ${questionType} == null) or ${questionType} == ${question.type}"
+                                                                th:text="${questionType.name}">
+                                                            질문 타입
+                                                        </option>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="mb-3"th:replace="~{fragments/setting/tech :: fragment-tech(tech=${question.tech})}">관련기술 영역</div>
-                                    <div class="mb-3"th:text="${question.content}"></div>
-                                    <div class="mb-3">
-                                        <textarea class="form-control" placeholder="질문 내용을 적어주세요." id="content" name="content" style="height: 100px"></textarea>
-                                    </div>
+                                        <div class="mb-3"th:replace="~{fragments/setting/tech :: fragment-tech(tech=${question.tech})}">관련기술 영역</div>
+                                        <div class="mb-3"th:text="${question.content}"></div>
+                                        <div class="mb-3">
+                                            <textarea class="form-control" placeholder="질문 내용을 적어주세요." id="content" name="content" style="height: 100px"></textarea>
+                                        </div>
 
-                                    <input type="submit" value="저장">
-                                </form>
+                                        <input type="submit" value="저장">
+                                    </form>
+                                </div>
                             </div>
                         </div>
                         <!-- /Forum List -->
