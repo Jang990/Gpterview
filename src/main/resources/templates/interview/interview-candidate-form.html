@@ -56,6 +56,7 @@
                 <th:block th:object="${candidateConfig}">
                     <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(loadField=*{field},departmentList=${categoryList})}">분야, 직무 카테고리 선택 구역</div>
 
+                    <div class="mb-3"th:replace="~{fragments/setting/tech :: fragment-tech(tech=*{skills})}">관련기술 영역</div>
                     <div class="mb-5 col">
                         <div for="skills" class="form-floating">
 <!--                            <th:block th:text="*{skills}"></th:block>-->

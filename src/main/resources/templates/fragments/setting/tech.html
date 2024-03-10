@@ -1,9 +1,14 @@
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div for="tech" class="form-floating" th:fragment="fragment-tech(tech)">
-    <textarea class="form-control" placeholder="여기에 적어주세요." name="tech" id="tech"><th:block th:each="tech, techStat : ${tech}"><th:block th:text="${tech}"></th:block><th:block th:unless="${techStat.last}">,</th:block></th:block></textarea>
-    <label>보유 기술 정보 - 콤마(,)로 구분</label>
+    <script th:inline="javascript">
+        var tagify;
+        $(document).ready(function() {
+            var inputElem = document.querySelector('input[name=tech]');
+            var tagify = new Tagify(inputElem);
+            tagify.addTags([[${tech}]]);
+        });
+    </script>
+    <input name="tech" id="tech" placeholder="보유 기술을 추가해주세요.">
 </div>
 </html>
