@@ -24,7 +24,7 @@ public class InterviewQuestionWebController {
 
     @GetMapping("question")
     public String questionListPage(Model model, @PageableDefault Pageable pageable) {
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewListWithJobCategory(null, null, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, pageable);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("questionPage", overviewPage);
         return "/question/question-list";

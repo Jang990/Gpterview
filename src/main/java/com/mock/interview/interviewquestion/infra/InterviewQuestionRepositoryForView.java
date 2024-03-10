@@ -9,7 +9,6 @@ import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOvervi
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -59,15 +58,16 @@ public class InterviewQuestionRepositoryForView {
                 .fetch();
     }
 
-    public Page<QuestionOverview> findOverviewListWithJobCategory(
-            String jobCategoryCond, String createdBy, Pageable pageable
+    public Page<QuestionOverview> findOverviewList(
+            Long parentQuestionIdCond, String jobCategoryCond, String createdBy, Pageable pageable
     ) {
         QJobCategory field = new QJobCategory("field");
         QJobCategory department = new QJobCategory("department");
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.appliedJob, field)
                 .leftJoin(interviewQuestion.appliedJob.department, department)
-                .where(jobCategoryEq(jobCategoryCond), createdByEq(createdBy))
+                .where(searchChildQuestion(parentQuestionIdCond), jobCategoryEq(jobCategoryCond), createdByEq(createdBy))
+                .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -99,6 +99,11 @@ public class InterviewQuestionRepositoryForView {
             return new JobCategoryView(category.getName(), null);
 
         return new JobCategoryView(category.getDepartment().getName(), category.getName());
+    }
+
+    private BooleanExpression searchChildQuestion(Long parentQuestionIdCond) {
+        return parentQuestionIdCond == null ?
+                null : interviewQuestion.parentQuestion.id.eq(parentQuestionIdCond);
     }
 
     private BooleanExpression jobCategoryEq(String jobCategoryCond) {
