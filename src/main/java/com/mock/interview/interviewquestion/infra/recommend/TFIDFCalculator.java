@@ -7,6 +7,14 @@ import java.util.List;
 @Service
 public class TFIDFCalculator {
 
+    public double[] tfIdfVector(List<String> base, List<String> target, List<List<String>> documents) {
+        double[] vector = new double[base.size()];
+        for (int i = 0; i < base.size(); i++) { // 타겟 문서에서 기준 문서의 단어에 대한 TF-IDF값 구하기
+            vector[i] = tfIdf(target, documents, base.get(i));
+        }
+        return vector;
+    }
+
     /**
      * TF-IDF 계산
      * @param doc 비교할 문서 형태소 처리 결과

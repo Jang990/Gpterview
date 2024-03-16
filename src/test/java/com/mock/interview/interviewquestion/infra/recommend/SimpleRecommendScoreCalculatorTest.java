@@ -13,7 +13,7 @@ class SimpleRecommendScoreCalculatorTest {
 
     @BeforeEach
     void beforeEach() {
-        calculator = new SimpleRecommendScoreCalculator(new TFIDFCalculator());
+        calculator = new SimpleRecommendScoreCalculator();
     }
 
     @Test
@@ -24,12 +24,12 @@ class SimpleRecommendScoreCalculatorTest {
         CurrentQuestion user = new CurrentQuestion(1l, Arrays.asList("Spring", "MVC", "대해", "아는대로", "설명", "해보세요"), "Spring Boot", "백엔드"); // Spring MVC에 대해 아는대로 설명해보세요.
         System.out.println("TF-IDF\t좋아요\t필드 \t테크 \t꼬리질문");
         for (QuestionMetaData data : simpleTestData) {
-            calculator.calculateScore(user, data, questionContents);
+            calculator.calculateScore(user, data);
             System.out.println(data.getNecessaryWords());
         }
     }
 
-    List<QuestionMetaData> createSimpleTestData() {
+    static List<QuestionMetaData> createSimpleTestData() {
         return Arrays.asList(
                 new QuestionMetaData(2, 1L, "프론트엔드", Arrays.asList("React"), Arrays.asList("React", "의", "장점", "무엇"), 45), // React의 장점은 무엇인가요?
                 new QuestionMetaData(3, null, "백엔드", Arrays.asList("데이터베이스", "MySQL"), Arrays.asList("MySQL", "인덱스", "역할", "무엇"), 18), // MySQL에서 인덱스의 역할은 무엇인가요?
