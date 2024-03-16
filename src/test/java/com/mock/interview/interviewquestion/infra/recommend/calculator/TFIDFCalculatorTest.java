@@ -1,6 +1,6 @@
-package com.mock.interview.interviewquestion.infra.calculator;
+package com.mock.interview.interviewquestion.infra.recommend.calculator;
 
-import com.mock.interview.interviewquestion.infra.calculator.TFIDFCalculator;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.TFIDFCalculator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

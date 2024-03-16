@@ -1,8 +1,8 @@
 package com.mock.interview.interviewquestion.infra.recommend;
 
-import com.mock.interview.interviewquestion.infra.calculator.CosineSimilarityCalculator;
-import com.mock.interview.interviewquestion.infra.calculator.SimpleRecommendScoreCalculator;
-import com.mock.interview.interviewquestion.infra.calculator.TFIDFCalculator;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.CosineSimilarityCalculator;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.SimpleRecommendScoreCalculator;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.TFIDFCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CalculatedQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;

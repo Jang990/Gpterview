@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.recommend;
 
-import com.mock.interview.interviewquestion.infra.calculator.SimpleRecommendScoreCalculator;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.SimpleRecommendScoreCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;

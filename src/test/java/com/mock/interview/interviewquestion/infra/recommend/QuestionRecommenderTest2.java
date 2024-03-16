@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.recommend;
 
-import com.mock.interview.interviewquestion.infra.calculator.SimpleRecommendScoreCalculatorTest;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.SimpleRecommendScoreCalculatorTest;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
 import org.springframework.beans.factory.annotation.Autowired;

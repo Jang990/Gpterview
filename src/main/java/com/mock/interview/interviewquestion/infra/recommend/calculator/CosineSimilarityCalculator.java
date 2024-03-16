@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.calculator;
+package com.mock.interview.interviewquestion.infra.recommend.calculator;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
