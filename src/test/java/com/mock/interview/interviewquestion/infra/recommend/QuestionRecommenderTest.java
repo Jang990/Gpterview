@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.infra.recommend;
 
+import com.mock.interview.interviewquestion.infra.calculator.SimpleRecommendScoreCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
@@ -19,7 +20,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class QuestionRecommenderTest {
 
-    @Mock SimpleRecommendScoreCalculator scoreCalculator;
+    @Mock
+    SimpleRecommendScoreCalculator scoreCalculator;
     @InjectMocks
     QuestionRecommender recommender;
 

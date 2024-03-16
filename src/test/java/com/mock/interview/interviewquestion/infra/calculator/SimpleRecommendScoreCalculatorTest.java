@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.recommend;
+package com.mock.interview.interviewquestion.infra.calculator;
 
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-class SimpleRecommendScoreCalculatorTest {
+public class SimpleRecommendScoreCalculatorTest {
     SimpleRecommendScoreCalculator calculator;
 
     @BeforeEach
@@ -29,7 +29,7 @@ class SimpleRecommendScoreCalculatorTest {
         }
     }
 
-    static List<QuestionMetaData> createSimpleTestData() {
+    public static List<QuestionMetaData> createSimpleTestData() {
         return Arrays.asList(
                 new QuestionMetaData(2, 1L, "프론트엔드", Arrays.asList("React"), Arrays.asList("React", "의", "장점", "무엇"), 45), // React의 장점은 무엇인가요?
                 new QuestionMetaData(3, null, "백엔드", Arrays.asList("데이터베이스", "MySQL"), Arrays.asList("MySQL", "인덱스", "역할", "무엇"), 18), // MySQL에서 인덱스의 역할은 무엇인가요?

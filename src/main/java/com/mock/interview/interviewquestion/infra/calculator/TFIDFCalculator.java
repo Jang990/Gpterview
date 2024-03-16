@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.recommend;
+package com.mock.interview.interviewquestion.infra.calculator;
 
 import org.springframework.stereotype.Service;
 

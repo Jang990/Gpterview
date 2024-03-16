@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.recommend;
+package com.mock.interview.interviewquestion.infra.calculator;
 
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;

@@ -1,11 +1,9 @@
-package com.mock.interview.interviewquestion.infra.recommend;
+package com.mock.interview.interviewquestion.infra.calculator;
 
-import org.junit.jupiter.api.DisplayName;
+import com.mock.interview.interviewquestion.infra.calculator.TFIDFCalculator;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TFIDFCalculatorTest {
     TFIDFCalculator calculator = new TFIDFCalculator();

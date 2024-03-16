@@ -1,15 +1,12 @@
 package com.mock.interview.interviewquestion.infra.recommend;
 
+import com.mock.interview.interviewquestion.infra.calculator.SimpleRecommendScoreCalculatorTest;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@SpringBootTest
 class QuestionRecommenderTest2 {
