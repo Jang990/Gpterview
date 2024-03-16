@@ -1,5 +1,6 @@
-package com.mock.interview.interviewquestion.infra.analyzer;
+package com.mock.interview.questiontoken.infra;
 
+import com.mock.interview.questiontoken.domain.KoreaStringAnalyzer;
 import kr.bydelta.koala.data.Morpheme;
 import kr.bydelta.koala.data.Sentence;
 import kr.bydelta.koala.data.Word;
@@ -10,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service
-public class KorAnalyzer {
+public class KorAnalyzer implements KoreaStringAnalyzer {
 
     /** , ! @ . 등등 */
     private final String PUNCTUATION_TYPE = "SF";
@@ -21,7 +22,8 @@ public class KorAnalyzer {
         return tag;
     }
 
-    public List<String> extractNecessaryWords(String base) {
+    @Override
+    public List<String> extractNecessaryTokens(String base) {
         List<String> result = new LinkedList<>();
         List<Sentence> tag = analyzeMorphemes(base);
         for (Sentence sent : tag) { /* 나는 사과,배,귤이 있어요. */

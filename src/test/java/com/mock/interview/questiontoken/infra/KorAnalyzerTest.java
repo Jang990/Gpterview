@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.analyzer;
+package com.mock.interview.questiontoken.infra;
 
 import kr.bydelta.koala.data.Morpheme;
 import kr.bydelta.koala.data.Sentence;
@@ -24,7 +24,7 @@ class KorAnalyzerTest {
     @Test
     @DisplayName("형태소 분석")
     void test() {
-        List<String> result = korAnalyzer.extractNecessaryWords("Spring MVC에 대해 아는대로 설명해보세요.");
+        List<String> result = korAnalyzer.extractNecessaryTokens("Spring MVC에 대해 아는대로 설명해보세요.");
         System.out.println(result);
     }
 
