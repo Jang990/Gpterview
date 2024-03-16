@@ -32,8 +32,11 @@ public class QuestionSavingService {
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(TechConvertHelper.convertToTechId(relationalTech));
         JobCategory detailCategory = findMoreDetailCategory(form.getDepartment(), form.getField());
 
-        InterviewQuestion question = InterviewQuestion.create(form.getContent(), form.getType(), detailCategory, techList, users);
-        return interviewQuestionRepository.save(question).getId();
+        InterviewQuestion question = InterviewQuestion.create(
+                interviewQuestionRepository, form.getContent(),
+                form.getType(), detailCategory, techList, users
+        );
+        return question.getId();
     }
 
     private JobCategory findMoreDetailCategory(Long department, Long field) {

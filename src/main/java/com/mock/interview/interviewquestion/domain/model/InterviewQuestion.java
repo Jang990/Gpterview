@@ -1,6 +1,9 @@
 package com.mock.interview.interviewquestion.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.global.Events;
+import com.mock.interview.interviewquestion.domain.QuestionCreatedEvent;
+import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
@@ -66,29 +69,40 @@ public class InterviewQuestion extends BaseEntity {
     생성한사람(AI-GPT or 사용자이름), Owner(사용자ID)
      */
 
-    public static InterviewQuestion createInInterview(
-            Users owner, JobCategory appliedJob,
-            PublishedQuestionInfo questionInfo
+    private static InterviewQuestion createWithCommonField(
+            InterviewQuestionRepository repository, String content, JobCategory category, Users users,
+            QuestionType questionType, String createdBy
     ) {
         InterviewQuestion question = new InterviewQuestion();
-        question.owner = owner;
-        question.appliedJob = appliedJob;
-        question.createdBy = questionInfo.createdBy();
-        question.question = questionInfo.question();
-        question.questionType = convert(questionInfo.progress().stage());
+        question.question = content;
+        question.appliedJob = category;
+        question.owner = users;
+        question.questionType = questionType;
+        question.createdBy = createdBy;
         question.likes = 0;
+
+        repository.save(question);
+        Events.raise(new QuestionCreatedEvent(question.getId()));
         return question;
     }
 
-    public static InterviewQuestion create(String content, QuestionTypeForView type, JobCategory category, List<TechnicalSubjects> techList, Users users) {
-        InterviewQuestion question = new InterviewQuestion();
-        question.question = content;
-        question.questionType = convert(type);
-        question.appliedJob = category;
-        question.owner = users;
-        question.createdBy = users.getUsername();
-        question.likes = 0;
+    public static InterviewQuestion createInInterview(
+            InterviewQuestionRepository repository,
+            Users owner, JobCategory appliedJob,
+            PublishedQuestionInfo questionInfo
+    ) {
+        InterviewQuestion question = createWithCommonField(
+                repository, questionInfo.question(), appliedJob, owner,
+                convert(questionInfo.progress().stage()), questionInfo.createdBy()
+        );
+        return question;
+    }
 
+    public static InterviewQuestion create(InterviewQuestionRepository repository, String content, QuestionTypeForView type, JobCategory category, List<TechnicalSubjects> techList, Users users) {
+        InterviewQuestion question = createWithCommonField(
+                repository, content, category,
+                users, convert(type), users.getUsername()
+        );
         if(techList != null)
             question.techLink = createTechLinks(question, techList);
 

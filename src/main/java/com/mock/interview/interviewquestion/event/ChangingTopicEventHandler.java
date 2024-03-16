@@ -73,6 +73,6 @@ public class ChangingTopicEventHandler {
                 "GPT", message.getContent(), new InterviewProgress(InterviewStage.TECHNICAL, 0.3)); // TODO: 여기서 변환하지 말고 AI 서비스에서 가져올 것.
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        return InterviewQuestion.createInInterview(interview.getUsers(), interview.getAppliedJob(), publishedQuestion);
+        return InterviewQuestion.createInInterview(questionRepository, interview.getUsers(), interview.getAppliedJob(), publishedQuestion);
     }
 }
