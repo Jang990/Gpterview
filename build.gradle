@@ -44,6 +44,12 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+
+	// 형태소 분석기
+//	implementation "kr.bydelta:koalanlp-eunjeon:2.1.4"
+//	implementation "kr.bydelta:koalanlp-hnn:2.1.4:assembly"
+	implementation "kr.bydelta:koalanlp-okt:2.1.4"
 }
 
 tasks.named('test') {
