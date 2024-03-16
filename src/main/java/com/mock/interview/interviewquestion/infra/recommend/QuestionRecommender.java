@@ -24,9 +24,11 @@ public class QuestionRecommender {
             throw new NotEnoughQuestion();
 
         PriorityQueue<CalculatedQuestion> recommendedQuestions = new PriorityQueue<>();
+        List<List<String>> questionContents = departmentMatchedQuestions.stream()
+                .map(QuestionMetaData::getNecessaryWords).toList();
 
         for (QuestionMetaData question : departmentMatchedQuestions) {
-            double score = simpleScoreCalculator.calculateScore(currentQuestion, question);
+            double score = simpleScoreCalculator.calculateScore(currentQuestion, question, questionContents);
             CalculatedQuestion calculatedQuestion = new CalculatedQuestion(question, score);
 
             boolean hasSpaceInQueue = recommendedQuestions.isEmpty() || recommendedQuestions.size() < maxRecommendedSize;

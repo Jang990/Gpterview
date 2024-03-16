@@ -24,7 +24,7 @@ class KorAnalyzerTest {
     @Test
     @DisplayName("형태소 분석")
     void test() {
-        List<String> result = korAnalyzer.extractNecessaryWords(base);
+        List<String> result = korAnalyzer.extractNecessaryWords("Spring MVC에 대해 아는대로 설명해보세요.");
         System.out.println(result);
     }
 
@@ -32,7 +32,7 @@ class KorAnalyzerTest {
     @DisplayName("샘플 코드")
     void sample() {
         Tagger tagger = new Tagger();
-        List<Sentence> tag = tagger.tag(base);
+        List<Sentence> tag = tagger.tag("React의 장점은 무엇인가요?");
         for (Sentence sent : tag) {
             System.out.println("===== Sentence =====");
             System.out.println(sent.surfaceString()); // 단순히 종류를 나열하는 것이 아닌, get과 post 간의 차이점에 대해 말할 수 있어야 합니다.

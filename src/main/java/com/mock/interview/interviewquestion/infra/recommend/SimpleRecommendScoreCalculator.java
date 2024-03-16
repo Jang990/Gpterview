@@ -2,48 +2,60 @@ package com.mock.interview.interviewquestion.infra.recommend;
 
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SimpleRecommendScoreCalculator {
-    private final double TF_IDF_WEIGHT = 0.3,
-            FIELD_WEIGHT = 0.1,
+    private final TFIDFCalculator tfidfCalculator;
+
+    private final double TF_IDF_WEIGHT = 0.5,
+            FIELD_WEIGHT = 0.05,
             TECH_WEIGHT = 0.15,
-            CHILD_WEIGHT = 0.2,
+            CHILD_WEIGHT = 0.15,
             LIKE_WEIGHT = 0.15;
 
     private final int FULL_LIKES_COUNT = 20;
     private final int MAX_TECH_BOUND = 5;
 
-    public double calculateScore(CurrentQuestion currentQuestion, QuestionMetaData question) {
+    public double calculateScore(CurrentQuestion currentQuestion, QuestionMetaData question, List<List<String>> otherQuestionsContent) {
         double result = 0;
-        result += calculateTFDIFScore(TF_IDF_WEIGHT, currentQuestion.beforeQuestionContent(), question.getContent());
+        result += calculateTFDIFScore(TF_IDF_WEIGHT, currentQuestion.beforeQuestionContent(), question.getNecessaryWords(), otherQuestionsContent);
         result += calculateLikesScore(LIKE_WEIGHT, question.getLikes());
         result += calculateFieldMatchedScore(FIELD_WEIGHT, currentQuestion.field(), question.getField());
         result += calculateTechContainScore(TECH_WEIGHT, question.getTech(), currentQuestion.tech());
         result += calculateChildQuestionScore(CHILD_WEIGHT, currentQuestion.beforeQuestionId(), question.getParentQuestionId());
-        print(currentQuestion, question);
+        print(currentQuestion, question, result, otherQuestionsContent);
         return result;
     }
 
-    private void print(CurrentQuestion currentQuestion, QuestionMetaData question) {
-        System.out.print(String.format("%.4f\t", calculateTFDIFScore(TF_IDF_WEIGHT, currentQuestion.beforeQuestionContent(), question.getContent())));
+    private void print(CurrentQuestion currentQuestion, QuestionMetaData question, double result, List<List<String>> otherQuestionsContent) {
+        System.out.print(String.format("%.4f\t", calculateTFDIFScore(TF_IDF_WEIGHT, currentQuestion.beforeQuestionContent(), question.getNecessaryWords(), otherQuestionsContent)));
         System.out.print(String.format("%.4f\t", calculateLikesScore(LIKE_WEIGHT, question.getLikes())));
         System.out.print(String.format("%.4f\t", calculateFieldMatchedScore(FIELD_WEIGHT, currentQuestion.field(), question.getField())));
         System.out.print(String.format("%.4f\t", calculateTechContainScore(TECH_WEIGHT, question.getTech(), currentQuestion.tech())));
         System.out.print(String.format("%.4f\t", calculateChildQuestionScore(CHILD_WEIGHT, currentQuestion.beforeQuestionId(), question.getParentQuestionId())));
-        System.out.println();
+        System.out.print(String.format("%.7f\t", result));
     }
 
-    private double calculateTFDIFScore(double weight, String base, String content) {
-        boolean eitherEmpty = !StringUtils.hasText(base) || !StringUtils.hasText(content);
-        if(eitherEmpty)
+    private double calculateTFDIFScore(double weight, List<String> base, List<String> content, List<List<String>> otherQuestionsContent) {
+        if(base.isEmpty() || content.isEmpty())
             return 0;
 
-        return weight;
+        double tfidfScoreSum = 0;
+        int numOfWords = base.size();
+        for (String word : base) {
+            tfidfScoreSum += tfidfCalculator.tfIdf(content, otherQuestionsContent, word);
+        }
+
+        double averageTfidfScore = tfidfScoreSum / numOfWords;
+        if(averageTfidfScore >= 1)
+            return weight;
+
+        return weight * averageTfidfScore;
     }
 
     private double calculateLikesScore(double weight, long likes) {

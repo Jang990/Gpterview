@@ -1,5 +1,7 @@
 package com.mock.interview.interviewquestion.infra.recommend.dto;
 
 
-public record CurrentQuestion(long beforeQuestionId, String beforeQuestionContent, String tech, String field) {
+import java.util.List;
+
+public record CurrentQuestion(long beforeQuestionId, List<String> beforeQuestionContent, String tech, String field) {
 }

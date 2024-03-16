@@ -13,7 +13,7 @@ public class QuestionMetaData {
     private long id; // 1
     private Long parentQuestionId; // 상위 질문 ID
     private String field; // 백엔드
-    private List<String> tech; // Redis
-    private String content; // Redis를 왜 사용하나요?
+    private List<String> tech; // [Spring Boot]
+    private List<String> necessaryWords; // [Spring, Boot, 의존, 성, 주입, 방법]
     private long likes; // 32
 }
