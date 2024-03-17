@@ -129,8 +129,17 @@ public class InterviewQuestion extends BaseEntity {
         };
     }
 
-    // TODO: 질문 게시판 추가
+    public void like() {
+        likes++;
+    }
+
+    public void cancelLike() {
+        if(likes <= 0)
+            throw new IllegalStateException();
+        likes--;
+    }
+
     // TODO: boolean 공개여부 추가
-    // TODO: 추천 수, 조회 수 추가하기.
+    // TODO: 조회 수 추가하기.
     // TODO: 질문에 대한 댓글 추가
 }
