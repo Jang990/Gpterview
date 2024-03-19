@@ -37,11 +37,11 @@
         <div class="small d-flex justify-content-start">
             <div>
                 <a href="#!">
-                    <i class="fas fa-thumbs-up me-1" th:text="| ${question.hits} Likes|"></i>
-                </a> &nbsp
+                    <i class="fas fa-thumbs-up me-1" th:text="| ${question.like} Likes |"></i>
+                </a>
 
-                <span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> <span th:text="${question.hits}">조회수</span></span>
-                <span><i class="far fa-comment ml-2"></i> <span th:text="${question.commentCnt}">댓글수</span></span>
+                <!--<span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> <span th:text="${question.like}">(미구현)조회수</span></span>-->
+                <!--<span><i class="far fa-comment ml-2"></i> <span th:text="${question.commentCnt}">댓글수</span></span>-->
             </div>
         </div>
         <div class="text-muted small mb-0"

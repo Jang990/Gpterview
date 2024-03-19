@@ -16,8 +16,9 @@ public class QuestionOverview {
     private List<String> tech; // Redis
     private String content; // Redis를 왜 사용하나요?
     private LocalDateTime createdAt;
-    private long hits; // 32
-    private long commentCnt; // 3
+    private long like; // 32
+//    private long hits; // 조회수
+//    private long commentCnt; 댓글 수
+    // TODO: 조회수, 댓글수 미구현
 
-    // 추천수 비추천수
 }

@@ -90,7 +90,7 @@ public class InterviewQuestionRepositoryForView {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
                 convert(question.getAppliedJob()),
                 question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
-                question.getQuestion(), question.getCreatedAt(), 123, question.getLikes()
+                question.getQuestion(), question.getCreatedAt(), question.getLikes()
         );
     }
 
