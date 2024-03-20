@@ -27,7 +27,8 @@ public class CustomQuestionCreator {
     private final PromptCreator promptCreator;
 
     public Message service(InterviewInfo interviewInfo, MessageHistory history) {
-        AiPrompt prompt = createPrompt(interviewInfo);
+        PromptConfiguration promptConfig = createPromptConfig(interviewInfo);
+        AiPrompt prompt = promptCreator.create(requester, promptConfig);
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
@@ -36,11 +37,10 @@ public class CustomQuestionCreator {
         return requester.sendRequest(request); // AI로 부터 받은 응답.
     }
 
-    private AiPrompt createPrompt(InterviewInfo interviewInfo) {
+    private PromptConfiguration createPromptConfig(InterviewInfo interviewInfo) {
         InterviewPromptConfigurator interviewPromptConfigurator = selectInterviewerStrategy(interviewInfo);
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        PromptConfiguration promptConfiguration = interviewPromptConfigurator.configStrategy(requester, interviewInfo.profile(), progress); // 면접 전략 세팅.
-        return promptCreator.create(requester, promptConfiguration);
+        return interviewPromptConfigurator.configStrategy(requester, interviewInfo.profile(), progress);
     }
 
     /**
@@ -51,12 +51,12 @@ public class CustomQuestionCreator {
      * 면접관 : AOP를 모르신다니 아쉽습니다. AOP를 활용한 사례를 들어서 설명해보세요.
      */
     public Message changeTopic(InterviewInfo interviewInfo, MessageHistory history) {
-        InterviewPromptConfigurator interviewPromptConfigurator = selectInterviewerStrategy(interviewInfo);
-        AiPrompt setting = interviewPromptConfigurator.changeTopic(requester, interviewInfo);
+        PromptConfiguration promptConfig = createPromptConfig(interviewInfo);
+        AiPrompt prompt = promptCreator.changeTopic(requester, promptConfig);
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
-        InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), setting);
+        InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), prompt);
         convertRole(requester, request.getHistory());
         return requester.sendRequest(request);
     }

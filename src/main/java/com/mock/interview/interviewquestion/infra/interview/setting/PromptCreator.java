@@ -5,6 +5,7 @@ import com.mock.interview.interviewquestion.infra.interview.fomatter.FormatConst
 import com.mock.interview.interviewquestion.infra.interview.fomatter.StringFormatter;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -17,6 +18,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PromptCreator {
     private final FormatConstGetter formatConstGetter;
+    @Value("${interview.template.common.skip}")
+    private String changingTopicCommand;
 
     /**
      * @param aiSpec  getUserRole()은 "user", getInterviewerRole()은 "assistant" 일 때... (다른 필드들도 변환해줌)
@@ -27,6 +30,14 @@ public class PromptCreator {
         Map<String, Object> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
         return new AiPrompt(StringFormatter.format(promptConfiguration.promptTemplate(), parameters));
     }
+
+    public AiPrompt changeTopic(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
+        Map<String, Object> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
+        String changeTopicPromptTemplate = promptConfiguration.promptTemplate().concat(changingTopicCommand);
+        return new AiPrompt(StringFormatter.format(changeTopicPromptTemplate, parameters));
+    }
+
+
 
     /**
      * 변환할 키와 값을 담은 Map

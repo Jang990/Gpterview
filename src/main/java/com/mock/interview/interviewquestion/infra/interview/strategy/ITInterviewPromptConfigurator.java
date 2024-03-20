@@ -4,10 +4,7 @@ import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
-import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
 import com.mock.interview.interviewquestion.infra.interview.strategy.template.ITInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,8 +15,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class ITInterviewPromptConfigurator implements InterviewPromptConfigurator {
-    private final InterviewProgressTimeBasedTracker progressTracker;
-    private final PromptCreator promptCreator;
     private final ITInterviewTemplateGetter templateGetter;
 
     private final List<String> basicKnowledge = List.of("운영체제", "네트워크", "데이터베이스", "자료구조", "알고리즘");
@@ -39,52 +34,6 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
             case PERSONAL -> createPersonalPromptCreationInfo(
                     templateGetter.getPersonal(),
                     profile, progress
-            );
-        };
-    }
-
-    @Override
-    public AiPrompt changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
-        PromptConfiguration promptConfiguration = createChangeTopicPromptCreationInfo(interviewInfo);
-        return promptCreator.create(aiSpec, promptConfiguration);
-    }
-
-    private PromptConfiguration createPromptCreationInfo(InterviewInfo interviewInfo) {
-        InterviewProfile profile = interviewInfo.profile();
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-
-        return switch (currentProgress.stage()) {
-            case TECHNICAL -> createTechPromptCreationInfo(
-                    templateGetter.getTechnical(),
-                    profile, currentProgress.progress()
-            );
-            case EXPERIENCE -> createExperiencePromptCreationInfo(
-                    templateGetter.getExperience(),
-                    profile, currentProgress.progress()
-            );
-            case PERSONAL -> createPersonalPromptCreationInfo(
-                    templateGetter.getPersonal(),
-                    profile, currentProgress
-            );
-        };
-    }
-
-    private PromptConfiguration createChangeTopicPromptCreationInfo(InterviewInfo interviewInfo) {
-        InterviewProfile profile = interviewInfo.profile();
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-
-        return switch (currentProgress.stage()) {
-            case TECHNICAL -> createTechPromptCreationInfo(
-                    templateGetter.getTechnical() + templateGetter.getChangingTopicCommand(),
-                    profile, currentProgress.progress()
-            );
-            case EXPERIENCE -> createExperiencePromptCreationInfo(
-                    templateGetter.getExperience() + templateGetter.getChangingTopicCommand(),
-                    profile, currentProgress.progress()
-            );
-            case PERSONAL -> createPersonalPromptCreationInfo(
-                    templateGetter.getPersonal() + templateGetter.getChangingTopicCommand(),
-                    profile, currentProgress
             );
         };
     }

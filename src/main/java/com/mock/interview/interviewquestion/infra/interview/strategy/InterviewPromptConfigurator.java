@@ -25,14 +25,5 @@ public interface InterviewPromptConfigurator {
      */
     PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress);
 
-    /**
-     * 인터뷰 전략에 맞춰 현재 사용자의 주제를 변경하는 프롬프트 생성
-     *
-     * @param aiSpec AI 스펙을 확인할 수 있는 인터페이스
-     * @param interviewInfo 진행되는 인터뷰 지원자의 정보
-     * @return
-     */
-    AiPrompt changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo);
-
     boolean isSupportedDepartment(InterviewInfo interviewInfo);
 }

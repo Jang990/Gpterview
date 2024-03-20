@@ -30,7 +30,7 @@ interview:
         항상 3문장 이하로 응답. 질문 설명은 자세히. 항상 단 하나의 질문만.
       skills: ${interview.format.role.user}는 ${interview.format.profile.skills} 등의 기술을 보유.
       experience: ${interview.format.role.user}는 다음과 같은 경험을 함 ${interview.format.profile.experience}.
-      skip: 마지막 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
+      skip: 마지막 대화의 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
     default: # 기본 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
