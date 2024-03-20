@@ -3,7 +3,7 @@ package com.mock.interview.conversation.infrastructure.interview.gpt;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import com.mock.interview.interviewquestion.infra.interview.gpt.ChatGPTRequester;
 import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSetting;
+import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,7 +25,7 @@ class ChatGPTRequesterInSpringTest {
         /* 400 Bad Request: "{<EOL>  "error": {<EOL>
         "message": "'너는 IT 분야 백엔드 포지션의 면접관이야.\\n메시지가 길다고 마음대로 면접을 마무리하지마.\\n항상 단 하나의 질문만 해. 이미 대화한 주제를 질문하지마.\\n항상 3문장 이하로 응답해. 항상 마지막 문장으로 면접자를 평가할 수 있는 질문을 해.\\n지원자의 응답에 대한 평가는 간단하게. 질문은 자세하게 해.\\n\\nuser는 다음과 같은 경험을 함 [- 개요 |  ChatGPT와 모의 면접을 진행할 수 있는 서비스\\r\\n- 진행인원 |  **개인 프로젝트**\\r\\n- 핵심 기술 |  Java, Spring Boot, JPA, MySQL, Redis, Thymeleaf\\r\\n- 담당 내용 | \\r\\nRedis의 SETNX로 락을 구현하여 동시 요청 제어 기능 구현\\r\\nAI가 지원자에게 적합한 응답을 생성할 수 있는 프롬프트 생성 기능\\r\\nOpenAI API 요청 기능\\r\\n- 개선 경험 |\\r\\nStomp와 비동기 처리로 OpenAI API 연동 시 사용자 대기시간 89% 단축, - 개요 | 지도를 통해 고객 또는 장소를 조회, 관리하는 서비스\\r\\n- 진행 인원 | 디자이너 1, 모바일 2, **백엔드 2**\\r\\n- 핵심 기술 | Java, Spring Boot, JPA, PostgreSQL, Jenkins, Prometheus\\r\\n- 담당 내용 |\\r\\nSpring Data JPA를 활용한 고객 데이터 관리 기능\\r\\n현재 위치에서 반경 내의 고객 필터링 기능\\r\\n엑셀 파일을 이용한 고객 추가 기능 구현 및 관련 웹 페이지 구성\\r\\n비관적 락을 통한 동시성 문제 해결\\r\\nGrafana, Prometheus를 활용한 모니터링 환경 구성\\r\\nJenkins를 활용한 배포 자동화\\r\\n- 개선 경험 |\\r\\nPostgreSQL로 DB를 변경하여 반경 검색 쿼리 속도 93% 향상\\r\\n다수 데이터에 대해 JDBC Template을 사용해 저장 성능 57% 향상\\r\\nSpring의 프로토타입 빈을 활용한 파일 파싱 모듈 구조 개선].\\n지원자가 진행한 프로젝트에서 왜 이런 기술을 썼고, 어떤 문제를 경험했는지 등등 지원자 경험에 기반한 질문을 해줘.\\n마지막 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.'
         is too long - 'tools.0.function.description'",<EOL>    "type": "invalid_request_error",<EOL>    "param": null,<EOL>    "code": null<EOL>  }<EOL>}<EOL>" */
-        InterviewSetting mockSetting = mock(InterviewSetting.class);
+        AiPrompt mockSetting = mock(AiPrompt.class);
         String info = "";
 
         // 1142자 불가능
@@ -42,9 +42,9 @@ class ChatGPTRequesterInSpringTest {
 //    @Test
     @DisplayName("개선")
     void test2() {
-        InterviewSetting mockSetting = mock(InterviewSetting.class);
+        AiPrompt mockSetting = mock(AiPrompt.class);
 
-        when(mockSetting.getConcept()).thenReturn("- 개요 | 지도를 통해 고객 또는 장소를 조회, 관리하는 서비스\\n\" +\n" +
+        when(mockSetting.getPrompt()).thenReturn("- 개요 | 지도를 통해 고객 또는 장소를 조회, 관리하는 서비스\\n\" +\n" +
                 "- 진행 인원 | 디자이너 1, 모바일 2, **백엔드 2**\\n\" +\n" +
                 "- 핵심 기술 | Java, Spring Boot, JPA, PostgreSQL, Jenkins, Prometheus\\n\" +\n" +
                 "- 담당 내용 |\\n\" +\n" +
@@ -75,9 +75,9 @@ class ChatGPTRequesterInSpringTest {
 //    @Test
     @DisplayName("기존 기술 질문")
     void test3() {
-        InterviewSetting mockSetting = mock(InterviewSetting.class);
+        AiPrompt mockSetting = mock(AiPrompt.class);
 
-        when(mockSetting.getConcept()).thenReturn("너는 IT 분야 백엔드 포지션의 면접관이야.\n" +
+        when(mockSetting.getPrompt()).thenReturn("너는 IT 분야 백엔드 포지션의 면접관이야.\n" +
                 "메시지가 길다고 마음대로 면접을 마무리하지마. 이미 대화한 주제를 질문하지마.\n" +
                 "항상 마지막 문장은 질문으로 끝내. 지원자의 응답에 대한 평가는 간단히.\n" +
                 "항상 3문장 이하로 응답. 질문 설명은 자세히. 항상 단 하나의 질문만." +

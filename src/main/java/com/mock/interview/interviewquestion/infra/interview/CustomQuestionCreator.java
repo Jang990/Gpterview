@@ -6,7 +6,7 @@ import com.mock.interview.interviewquestion.infra.interview.dto.MessageHistory;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AIRequester;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSetting;
+import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.strategy.InterviewerStrategy;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +26,11 @@ public class CustomQuestionCreator {
         }
 
         InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
-        InterviewSetting setting = interviewerStrategy.configStrategy(requester, interviewInfo); // 면접 전략 세팅.
+        AiPrompt prompt = interviewerStrategy.configStrategy(requester, interviewInfo); // 면접 전략 세팅.
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
-        InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), setting);
+        InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), prompt);
         convertRole(requester, request.getHistory()); // AIRequester로 보낼 수 있는 role로 수정.
         return requester.sendRequest(request); // AI로 부터 받은 응답.
     }
@@ -51,7 +51,7 @@ public class CustomQuestionCreator {
      */
     public Message changeTopic(InterviewInfo interviewInfo, MessageHistory history) {
         InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
-        InterviewSetting setting = interviewerStrategy.changeTopic(requester, interviewInfo);
+        AiPrompt setting = interviewerStrategy.changeTopic(requester, interviewInfo);
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 

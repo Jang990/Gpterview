@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.interview.gpt;
 
-import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSetting;
+import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,10 +11,10 @@ import java.util.List;
 @ToString
 public class InterviewAIRequest {
     private final List<Message> history;
-    private final InterviewSetting interviewSetting;
+    private final AiPrompt aiPrompt;
 
-    public InterviewAIRequest(List<Message> history, InterviewSetting interviewSetting) {
+    public InterviewAIRequest(List<Message> history, AiPrompt aiPrompt) {
         this.history = history;
-        this.interviewSetting = interviewSetting;
+        this.aiPrompt = aiPrompt;
     }
 }

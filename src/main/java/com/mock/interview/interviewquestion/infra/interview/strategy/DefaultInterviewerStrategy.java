@@ -4,10 +4,10 @@ import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSettingCreator;
+import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
-import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSetting;
+import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
 import lombok.RequiredArgsConstructor;
 
@@ -16,30 +16,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DefaultInterviewerStrategy implements InterviewerStrategy {
     private final InterviewProgressTimeBasedTracker progressTracker;
-    private final InterviewSettingCreator interviewSettingCreator;
+    private final PromptCreator promptCreator;
     private final DefaultInterviewConcept interviewConcept;
 
     // TODO: 수정 많이 필요.
     //      -> IT 먼저 끝내고 바꿀 것.
 
     @Override
-    public InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
+    public AiPrompt configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         InterviewProfile profile = interviewInfo.profile();
 
         return createSetting(aiSpec, rawStrategy, profile);
     }
-    private InterviewSetting createSetting(AISpecification aiSpec, String rawStrategy, InterviewProfile profile) {
+    private AiPrompt createSetting(AISpecification aiSpec, String rawStrategy, InterviewProfile profile) {
         PromptCreationInfo creationInfo = new PromptCreationInfo(
                 rawStrategy, profile.department(), profile.field(),
                 profile.skills().toString(), profile.experience().toString()
         );
-        return interviewSettingCreator.create(aiSpec, creationInfo);
+        return promptCreator.create(aiSpec, creationInfo);
     }
 
     @Override
-    public InterviewSetting changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
+    public AiPrompt changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
         rawStrategy += interviewConcept.getChangingTopicCommand();

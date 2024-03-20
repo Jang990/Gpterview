@@ -46,8 +46,8 @@ public class ChatGPTRequester implements AIRequester {
             history = convertHistory(request.getHistory());
         }
 
-        history.add(new OpenAIMessage(SYSTEM_ROLE, request.getInterviewSetting().getConcept()));
-        ChatGptRequest openAIRequest = ChatGptRequest.create(model, history, request.getInterviewSetting().getConcept());
+        history.add(new OpenAIMessage(SYSTEM_ROLE, request.getAiPrompt().getPrompt()));
+        ChatGptRequest openAIRequest = ChatGptRequest.create(model, history, request.getAiPrompt().getPrompt());
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
         String responseMessage = convertor.convertMessageResult(response);
 
@@ -113,7 +113,7 @@ public class ChatGPTRequester implements AIRequester {
     public boolean isTokenLimitExceeded(InterviewAIRequest request) {
         // TODO: 여유 토큰을 남겨둬서 답변을 받을 수 있도록 만들어야 함.
         StringBuilder sb = new StringBuilder();
-        sb.append(request.getInterviewSetting().getConcept());
+        sb.append(request.getAiPrompt().getPrompt());
         request.getHistory().forEach(sb::append);
         int tokens = stringTokenCounter.countTokens(sb.toString());
         return LIMIT_TOKEN <= tokens;

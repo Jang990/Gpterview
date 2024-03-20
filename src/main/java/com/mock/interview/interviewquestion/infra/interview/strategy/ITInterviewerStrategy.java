@@ -4,8 +4,8 @@ import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSetting;
-import com.mock.interview.interviewquestion.infra.interview.setting.InterviewSettingCreator;
+import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
+import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
 import lombok.RequiredArgsConstructor;
@@ -18,22 +18,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ITInterviewerStrategy implements InterviewerStrategy {
     private final InterviewProgressTimeBasedTracker progressTracker;
-    private final InterviewSettingCreator interviewSettingCreator;
+    private final PromptCreator promptCreator;
     private final ITInterviewConcept interviewConcept;
 
     private final List<String> basicKnowledge = List.of("운영체제", "네트워크", "데이터베이스", "자료구조", "알고리즘");
     private final String[] SUPPORTED_DEPARTMENT = {"IT", "개발"};
 
     @Override
-    public InterviewSetting configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
+    public AiPrompt configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
         PromptCreationInfo promptCreationInfo = createPromptCreationInfo(interviewInfo);
-        return interviewSettingCreator.create(aiSpec, promptCreationInfo);
+        return promptCreator.create(aiSpec, promptCreationInfo);
     }
 
     @Override
-    public InterviewSetting changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
+    public AiPrompt changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
         PromptCreationInfo promptCreationInfo = createChangeTopicPromptCreationInfo(interviewInfo);
-        return interviewSettingCreator.create(aiSpec, promptCreationInfo);
+        return promptCreator.create(aiSpec, promptCreationInfo);
     }
 
     private PromptCreationInfo createPromptCreationInfo(InterviewInfo interviewInfo) {

@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Component
 @RequiredArgsConstructor
-public class InterviewSettingCreator {
+public class PromptCreator {
     private final FormatConstGetter formatConstGetter;
 
     /**
@@ -23,9 +23,9 @@ public class InterviewSettingCreator {
      * @param creationInfo 프롬프트로 변환할 정보들
      * @return user는 지원자. assistant는 면접관입니다. user의 기술은 Java, MySQL, Spring입니다.
      */
-    public InterviewSetting create(AISpecification aiSpec, PromptCreationInfo creationInfo) {
+    public AiPrompt create(AISpecification aiSpec, PromptCreationInfo creationInfo) {
         Map<String, Object> parameters = this.getFormatParameter(aiSpec, creationInfo);
-        return new InterviewSetting(StringFormatter.format(creationInfo.promptTemplate(), parameters));
+        return new AiPrompt(StringFormatter.format(creationInfo.promptTemplate(), parameters));
     }
 
     /**
