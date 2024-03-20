@@ -45,12 +45,12 @@ public class ConversationCacheForAiRequest {
     }
 
     public static Message convert(InterviewQuestion interviewQuestion) {
-        return new Message(InterviewRole.AI.toString(), interviewQuestion.getQuestion());
+        return new Message(InterviewRole.AI, interviewQuestion.getQuestion());
     }
 
     public static Message convert(InterviewAnswer interviewAnswer) {
         if(interviewAnswer == null)
             return null;
-        return new Message(InterviewRole.USER.toString(), interviewAnswer.getAnswer());
+        return new Message(InterviewRole.USER, interviewAnswer.getAnswer());
     }
 }

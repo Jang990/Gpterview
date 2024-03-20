@@ -33,7 +33,6 @@ public class AiQuestionCreator {
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
         InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), prompt);
-        convertRole(requester, request.getHistory()); // AIRequester로 보낼 수 있는 role로 수정.
         return requester.sendRequest(request); // AI로 부터 받은 응답.
     }
 
@@ -57,7 +56,6 @@ public class AiQuestionCreator {
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
         InterviewAIRequest request = new InterviewAIRequest(history.getMessages(), prompt);
-        convertRole(requester, request.getHistory());
         return requester.sendRequest(request);
     }
 
@@ -70,30 +68,5 @@ public class AiQuestionCreator {
 
         // TODO: 커스텀 예외로 바꿀 것.
         throw new RuntimeException();
-    }
-
-    private void convertRole(AISpecification aiSpec, List<Message> history) {
-        for (Message message : history) {
-            convertRole(aiSpec, message);
-        }
-    }
-
-    private void convertRole(AISpecification aiSpec, Message message) {
-        if(InterviewRole.SYSTEM.toString().equalsIgnoreCase(message.getRole()))
-            message.setRole(aiSpec.getSystemRole());
-        else if(InterviewRole.AI.toString().equalsIgnoreCase(message.getRole()))
-            message.setRole(aiSpec.getInterviewerRole());
-        else
-            message.setRole(aiSpec.getUserRole());
-    }
-
-    public Message serviceTemp() {
-        System.out.println("2초대기한다.");
-        try {
-            Thread.sleep(2_000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return new Message(InterviewRole.AI.toString(), "Hello World!");
     }
 }
