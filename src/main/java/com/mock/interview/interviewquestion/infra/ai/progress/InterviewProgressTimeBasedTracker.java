@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.stage;
+package com.mock.interview.interviewquestion.infra.ai.progress;
 
 import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;

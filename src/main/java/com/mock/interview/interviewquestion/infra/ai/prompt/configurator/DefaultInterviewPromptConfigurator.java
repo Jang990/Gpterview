@@ -4,8 +4,8 @@ import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.ai.stage.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.ai.stage.InterviewStage;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.DefaultInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 

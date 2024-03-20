@@ -4,7 +4,7 @@ import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.ai.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
 
 /**
  * 인터뷰 정보에 따라 각 분야(ex IT, 회계, 영업)별 관련 프롬프트 정보 생성기
