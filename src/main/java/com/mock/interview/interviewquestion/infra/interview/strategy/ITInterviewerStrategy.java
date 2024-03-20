@@ -25,9 +25,21 @@ public class ITInterviewerStrategy implements InterviewerStrategy {
     private final String[] SUPPORTED_DEPARTMENT = {"IT", "개발"};
 
     @Override
-    public AiPrompt configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
-        PromptCreationInfo promptCreationInfo = createPromptCreationInfo(interviewInfo);
-        return promptCreator.create(aiSpec, promptCreationInfo);
+    public PromptCreationInfo configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
+        return switch (progress.stage()) {
+            case TECHNICAL -> createTechPromptCreationInfo(
+                    interviewConcept.getTechnical(),
+                    profile, progress.progress()
+            );
+            case EXPERIENCE -> createExperiencePromptCreationInfo(
+                    interviewConcept.getExperience(),
+                    profile, progress.progress()
+            );
+            case PERSONAL -> createPersonalPromptCreationInfo(
+                    interviewConcept.getPersonal(),
+                    profile, progress
+            );
+        };
     }
 
     @Override

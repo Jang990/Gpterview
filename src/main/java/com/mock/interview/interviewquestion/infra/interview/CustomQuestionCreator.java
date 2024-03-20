@@ -3,12 +3,16 @@ package com.mock.interview.interviewquestion.infra.interview;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import com.mock.interview.interviewquestion.infra.interview.dto.MessageHistory;
+import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AIRequester;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
 import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
+import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
 import com.mock.interview.interviewquestion.infra.interview.strategy.InterviewerStrategy;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +23,11 @@ import java.util.List;
 public class CustomQuestionCreator {
     private final List<InterviewerStrategy> interviewerStrategyList;
     private final AIRequester requester;
+    private final InterviewProgressTimeBasedTracker progressTracker;
+    private final PromptCreator promptCreator;
 
     public Message service(InterviewInfo interviewInfo, MessageHistory history) {
-        if (history.getMessages().isEmpty()) {
-            history = initHistory();
-        }
-
-        InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
-        AiPrompt prompt = interviewerStrategy.configStrategy(requester, interviewInfo); // 면접 전략 세팅.
+        AiPrompt prompt = createPrompt(interviewInfo);
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
@@ -35,11 +36,11 @@ public class CustomQuestionCreator {
         return requester.sendRequest(request); // AI로 부터 받은 응답.
     }
 
-    private MessageHistory initHistory() {
-        MessageHistory history = new MessageHistory();
-        history.getMessages().add(new Message(InterviewRole.AI.toString(), "안녕하세요. 면접을 시작하겠습니다. 준비되셨나요?"));
-        history.getMessages().add(new Message(InterviewRole.USER.toString(), "네. 준비됐습니다."));
-        return history;
+    private AiPrompt createPrompt(InterviewInfo interviewInfo) {
+        InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
+        InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
+        PromptCreationInfo promptCreationInfo = interviewerStrategy.configStrategy(requester, interviewInfo.profile(), progress); // 면접 전략 세팅.
+        return promptCreator.create(requester, promptCreationInfo);
     }
 
     /**

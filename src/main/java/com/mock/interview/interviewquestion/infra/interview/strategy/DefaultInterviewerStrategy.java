@@ -21,21 +21,13 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
 
     // TODO: 수정 많이 필요.
     //      -> IT 먼저 끝내고 바꿀 것.
-
     @Override
-    public AiPrompt configStrategy(AISpecification aiSpec, InterviewInfo interviewInfo) {
-        InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
-        InterviewProfile profile = interviewInfo.profile();
-
-        return createSetting(aiSpec, rawStrategy, profile);
-    }
-    private AiPrompt createSetting(AISpecification aiSpec, String rawStrategy, InterviewProfile profile) {
-        PromptCreationInfo creationInfo = new PromptCreationInfo(
+    public PromptCreationInfo configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
+        String rawStrategy = getRawInterviewStrategy(progress.stage());
+        return new PromptCreationInfo(
                 rawStrategy, profile.department(), profile.field(),
                 profile.skills().toString(), profile.experience().toString()
         );
-        return promptCreator.create(aiSpec, creationInfo);
     }
 
     @Override
@@ -46,6 +38,14 @@ public class DefaultInterviewerStrategy implements InterviewerStrategy {
         InterviewProfile profile = interviewInfo.profile();
 
         return createSetting(aiSpec, rawStrategy, profile);
+    }
+
+    private AiPrompt createSetting(AISpecification aiSpec, String rawStrategy, InterviewProfile profile) {
+        PromptCreationInfo creationInfo = new PromptCreationInfo(
+                rawStrategy, profile.department(), profile.field(),
+                profile.skills().toString(), profile.experience().toString()
+        );
+        return promptCreator.create(aiSpec, creationInfo);
     }
 
     @Override
