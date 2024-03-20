@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CustomQuestionCreator {
+public class AiQuestionCreator {
     private final List<InterviewPromptConfigurator> interviewPromptConfiguratorList;
     private final AIRequester requester;
     private final InterviewProgressTimeBasedTracker progressTracker;

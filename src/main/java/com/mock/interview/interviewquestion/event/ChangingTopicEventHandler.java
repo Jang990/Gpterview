@@ -3,7 +3,7 @@ package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interview.domain.ConversationMessageBroker;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
-import com.mock.interview.interviewquestion.infra.ai.CustomQuestionCreator;
+import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
 import com.mock.interview.interviewquestion.infra.ai.stage.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.stage.InterviewStage;
@@ -31,7 +31,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 @RequiredArgsConstructor
 public class ChangingTopicEventHandler {
-    private final CustomQuestionCreator customQuestionCreator;
+    private final AiQuestionCreator aiQuestionCreator;
     private final InterviewRepository interviewRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
     private final InterviewCacheForAiRequest interviewCache;
@@ -54,7 +54,7 @@ public class ChangingTopicEventHandler {
 
         // 요청과정
         long interviewId = conversationPair.getInterview().getId();
-        Message message = QuestionRequestHelper.changeTopic(customQuestionCreator, interviewCache, conversationCache, interviewId);
+        Message message = QuestionRequestHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, interviewId);
 
         // Question 저장 과정
         InterviewQuestion question = createQuestion(message, interviewId);
