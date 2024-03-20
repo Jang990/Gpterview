@@ -8,5 +8,5 @@ package com.mock.interview.interviewquestion.infra.interview.dto;
  * @param skills Spring, Java 등등
  * @param experience ~경험이 있습니다.
  */
-public record PromptCreationInfo(String promptTemplate, String department, String field, String skills, String experience) {
+public record PromptConfiguration(String promptTemplate, String department, String field, String skills, String experience) {
 }

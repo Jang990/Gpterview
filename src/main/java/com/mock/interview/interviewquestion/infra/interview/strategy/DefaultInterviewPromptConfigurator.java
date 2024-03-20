@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.infra.interview.strategy;
 
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
-import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
+import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
@@ -22,9 +22,9 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
     // TODO: 수정 많이 필요.
     //      -> IT 먼저 끝내고 바꿀 것.
     @Override
-    public PromptCreationInfo configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
+    public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
         String rawStrategy = getRawInterviewStrategy(progress.stage());
-        return new PromptCreationInfo(
+        return new PromptConfiguration(
                 rawStrategy, profile.department(), profile.field(),
                 profile.skills().toString(), profile.experience().toString()
         );
@@ -41,7 +41,7 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
     }
 
     private AiPrompt createSetting(AISpecification aiSpec, String rawStrategy, InterviewProfile profile) {
-        PromptCreationInfo creationInfo = new PromptCreationInfo(
+        PromptConfiguration creationInfo = new PromptConfiguration(
                 rawStrategy, profile.department(), profile.field(),
                 profile.skills().toString(), profile.experience().toString()
         );

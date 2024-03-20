@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.interview.setting;
 
-import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
+import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.fomatter.FormatConstGetter;
 import com.mock.interview.interviewquestion.infra.interview.fomatter.StringFormatter;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
@@ -20,12 +20,12 @@ public class PromptCreator {
 
     /**
      * @param aiSpec  getUserRole()은 "user", getInterviewerRole()은 "assistant" 일 때... (다른 필드들도 변환해줌)
-     * @param creationInfo 프롬프트로 변환할 정보들
+     * @param promptConfiguration 프롬프트로 변환할 정보들
      * @return user는 지원자. assistant는 면접관입니다. user의 기술은 Java, MySQL, Spring입니다.
      */
-    public AiPrompt create(AISpecification aiSpec, PromptCreationInfo creationInfo) {
-        Map<String, Object> parameters = this.getFormatParameter(aiSpec, creationInfo);
-        return new AiPrompt(StringFormatter.format(creationInfo.promptTemplate(), parameters));
+    public AiPrompt create(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
+        Map<String, Object> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
+        return new AiPrompt(StringFormatter.format(promptConfiguration.promptTemplate(), parameters));
     }
 
     /**
@@ -43,7 +43,7 @@ public class PromptCreator {
      *     {"experience":"저는 ~프로젝트를 진행하며 ... ~문제를 해결. ~기술 사용 ..."},
      * }
      */
-    private Map<String, Object> getFormatParameter(AISpecification aiSpec, PromptCreationInfo creationInfo) {
+    private Map<String, Object> getFormatParameter(AISpecification aiSpec, PromptConfiguration creationInfo) {
         Map<String, Object> map = new HashMap<>();
         map.put(formatConstGetter.getSystemRole(), aiSpec.getSystemRole());
         map.put(formatConstGetter.getUserRole(), aiSpec.getUserRole());

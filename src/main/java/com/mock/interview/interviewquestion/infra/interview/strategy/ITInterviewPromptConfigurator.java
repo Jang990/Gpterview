@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.infra.interview.strategy;
 
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
-import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
+import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
@@ -25,7 +25,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     private final String[] SUPPORTED_DEPARTMENT = {"IT", "개발"};
 
     @Override
-    public PromptCreationInfo configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
+    public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
         return switch (progress.stage()) {
             case TECHNICAL -> createTechPromptCreationInfo(
                     interviewConcept.getTechnical(),
@@ -44,11 +44,11 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
 
     @Override
     public AiPrompt changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
-        PromptCreationInfo promptCreationInfo = createChangeTopicPromptCreationInfo(interviewInfo);
-        return promptCreator.create(aiSpec, promptCreationInfo);
+        PromptConfiguration promptConfiguration = createChangeTopicPromptCreationInfo(interviewInfo);
+        return promptCreator.create(aiSpec, promptConfiguration);
     }
 
-    private PromptCreationInfo createPromptCreationInfo(InterviewInfo interviewInfo) {
+    private PromptConfiguration createPromptCreationInfo(InterviewInfo interviewInfo) {
         InterviewProfile profile = interviewInfo.profile();
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
 
@@ -68,7 +68,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
         };
     }
 
-    private PromptCreationInfo createChangeTopicPromptCreationInfo(InterviewInfo interviewInfo) {
+    private PromptConfiguration createChangeTopicPromptCreationInfo(InterviewInfo interviewInfo) {
         InterviewProfile profile = interviewInfo.profile();
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
 
@@ -101,25 +101,25 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
         return false;
     }
 
-    private PromptCreationInfo createPersonalPromptCreationInfo(String personalPromptTemplate, InterviewProfile profile, InterviewProgress currentProgress) {
-        return new PromptCreationInfo(
+    private PromptConfiguration createPersonalPromptCreationInfo(String personalPromptTemplate, InterviewProfile profile, InterviewProgress currentProgress) {
+        return new PromptConfiguration(
                 personalPromptTemplate,
                 profile.department(), profile.field(),
                 null, null
         );
     }
 
-    private PromptCreationInfo createExperiencePromptCreationInfo(String experiencePromptTemplate, InterviewProfile profile, double progress) {
+    private PromptConfiguration createExperiencePromptCreationInfo(String experiencePromptTemplate, InterviewProfile profile, double progress) {
         String selectedExperience = selectSkillBasedOnProgress(progress, profile.skills());
-        return new PromptCreationInfo(
+        return new PromptConfiguration(
                 experiencePromptTemplate, profile.department(), profile.field(),
                 null, selectedExperience
         );
     }
 
-    private PromptCreationInfo createTechPromptCreationInfo(String techPromptTemplate, InterviewProfile profile, double progress) {
+    private PromptConfiguration createTechPromptCreationInfo(String techPromptTemplate, InterviewProfile profile, double progress) {
         String selectedSkills = selectSkillBasedOnProgress(progress, profile.skills());
-        return new PromptCreationInfo(
+        return new PromptConfiguration(
                 techPromptTemplate, profile.department(), profile.field(),
                 selectedSkills, null
         );

@@ -3,7 +3,7 @@ package com.mock.interview.interviewquestion.infra.interview;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import com.mock.interview.interviewquestion.infra.interview.dto.MessageHistory;
-import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
+import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AIRequester;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
@@ -39,8 +39,8 @@ public class CustomQuestionCreator {
     private AiPrompt createPrompt(InterviewInfo interviewInfo) {
         InterviewPromptConfigurator interviewPromptConfigurator = selectInterviewerStrategy(interviewInfo);
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        PromptCreationInfo promptCreationInfo = interviewPromptConfigurator.configStrategy(requester, interviewInfo.profile(), progress); // 면접 전략 세팅.
-        return promptCreator.create(requester, promptCreationInfo);
+        PromptConfiguration promptConfiguration = interviewPromptConfigurator.configStrategy(requester, interviewInfo.profile(), progress); // 면접 전략 세팅.
+        return promptCreator.create(requester, promptConfiguration);
     }
 
     /**

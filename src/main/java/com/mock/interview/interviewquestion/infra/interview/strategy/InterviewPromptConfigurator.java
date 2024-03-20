@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.infra.interview.strategy;
 
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
-import com.mock.interview.interviewquestion.infra.interview.dto.PromptCreationInfo;
+import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
@@ -23,7 +23,7 @@ public interface InterviewPromptConfigurator {
      * @param progress 면접 진행 정도
      * @return
      */
-    PromptCreationInfo configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress);
+    PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress);
 
     /**
      * 인터뷰 전략에 맞춰 현재 사용자의 주제를 변경하는 프롬프트 생성
