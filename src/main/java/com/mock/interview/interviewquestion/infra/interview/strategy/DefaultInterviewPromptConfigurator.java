@@ -9,6 +9,7 @@ import com.mock.interview.interviewquestion.infra.interview.strategy.stage.Inter
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
 import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
+import com.mock.interview.interviewquestion.infra.interview.strategy.template.DefaultInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 
 //@Order(1)
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class DefaultInterviewPromptConfigurator implements InterviewPromptConfigurator {
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
-    private final DefaultInterviewConcept interviewConcept;
+    private final DefaultInterviewTemplateGetter templateGetter;
 
     // TODO: 수정 많이 필요.
     //      -> IT 먼저 끝내고 바꿀 것.
@@ -34,7 +35,7 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
     public AiPrompt changeTopic(AISpecification aiSpec, InterviewInfo interviewInfo) {
         InterviewProgress currentProgress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         String rawStrategy = getRawInterviewStrategy(currentProgress.stage());
-        rawStrategy += interviewConcept.getChangingTopicCommand();
+        rawStrategy += templateGetter.getChangingTopicCommand();
         InterviewProfile profile = interviewInfo.profile();
 
         return createSetting(aiSpec, rawStrategy, profile);
@@ -55,9 +56,9 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
 
     private String getRawInterviewStrategy(InterviewStage stage) {
         return switch (stage) {
-            case TECHNICAL -> interviewConcept.getTechnical();
-            case EXPERIENCE -> interviewConcept.getExperience();
-            case PERSONAL -> interviewConcept.getPersonal();
+            case TECHNICAL -> templateGetter.getTechnical();
+            case EXPERIENCE -> templateGetter.getExperience();
+            case PERSONAL -> templateGetter.getPersonal();
         };
     }
 }

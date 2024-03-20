@@ -8,6 +8,7 @@ import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
+import com.mock.interview.interviewquestion.infra.interview.strategy.template.ITInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class ITInterviewPromptConfigurator implements InterviewPromptConfigurator {
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
-    private final ITInterviewConcept interviewConcept;
+    private final ITInterviewTemplateGetter templateGetter;
 
     private final List<String> basicKnowledge = List.of("운영체제", "네트워크", "데이터베이스", "자료구조", "알고리즘");
     private final String[] SUPPORTED_DEPARTMENT = {"IT", "개발"};
@@ -28,15 +29,15 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
         return switch (progress.stage()) {
             case TECHNICAL -> createTechPromptCreationInfo(
-                    interviewConcept.getTechnical(),
+                    templateGetter.getTechnical(),
                     profile, progress.progress()
             );
             case EXPERIENCE -> createExperiencePromptCreationInfo(
-                    interviewConcept.getExperience(),
+                    templateGetter.getExperience(),
                     profile, progress.progress()
             );
             case PERSONAL -> createPersonalPromptCreationInfo(
-                    interviewConcept.getPersonal(),
+                    templateGetter.getPersonal(),
                     profile, progress
             );
         };
@@ -54,15 +55,15 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
 
         return switch (currentProgress.stage()) {
             case TECHNICAL -> createTechPromptCreationInfo(
-                    interviewConcept.getTechnical(),
+                    templateGetter.getTechnical(),
                     profile, currentProgress.progress()
             );
             case EXPERIENCE -> createExperiencePromptCreationInfo(
-                    interviewConcept.getExperience(),
+                    templateGetter.getExperience(),
                     profile, currentProgress.progress()
             );
             case PERSONAL -> createPersonalPromptCreationInfo(
-                    interviewConcept.getPersonal(),
+                    templateGetter.getPersonal(),
                     profile, currentProgress
             );
         };
@@ -74,15 +75,15 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
 
         return switch (currentProgress.stage()) {
             case TECHNICAL -> createTechPromptCreationInfo(
-                    interviewConcept.getTechnical() + interviewConcept.getChangingTopicCommand(),
+                    templateGetter.getTechnical() + templateGetter.getChangingTopicCommand(),
                     profile, currentProgress.progress()
             );
             case EXPERIENCE -> createExperiencePromptCreationInfo(
-                    interviewConcept.getExperience() + interviewConcept.getChangingTopicCommand(),
+                    templateGetter.getExperience() + templateGetter.getChangingTopicCommand(),
                     profile, currentProgress.progress()
             );
             case PERSONAL -> createPersonalPromptCreationInfo(
-                    interviewConcept.getPersonal() + interviewConcept.getChangingTopicCommand(),
+                    templateGetter.getPersonal() + templateGetter.getChangingTopicCommand(),
                     profile, currentProgress
             );
         };
