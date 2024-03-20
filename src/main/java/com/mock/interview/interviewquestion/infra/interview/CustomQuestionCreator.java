@@ -9,7 +9,7 @@ import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
 import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
-import com.mock.interview.interviewquestion.infra.interview.strategy.InterviewerStrategy;
+import com.mock.interview.interviewquestion.infra.interview.strategy.InterviewPromptConfigurator;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CustomQuestionCreator {
-    private final List<InterviewerStrategy> interviewerStrategyList;
+    private final List<InterviewPromptConfigurator> interviewPromptConfiguratorList;
     private final AIRequester requester;
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
@@ -37,9 +37,9 @@ public class CustomQuestionCreator {
     }
 
     private AiPrompt createPrompt(InterviewInfo interviewInfo) {
-        InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
+        InterviewPromptConfigurator interviewPromptConfigurator = selectInterviewerStrategy(interviewInfo);
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        PromptCreationInfo promptCreationInfo = interviewerStrategy.configStrategy(requester, interviewInfo.profile(), progress); // 면접 전략 세팅.
+        PromptCreationInfo promptCreationInfo = interviewPromptConfigurator.configStrategy(requester, interviewInfo.profile(), progress); // 면접 전략 세팅.
         return promptCreator.create(requester, promptCreationInfo);
     }
 
@@ -51,8 +51,8 @@ public class CustomQuestionCreator {
      * 면접관 : AOP를 모르신다니 아쉽습니다. AOP를 활용한 사례를 들어서 설명해보세요.
      */
     public Message changeTopic(InterviewInfo interviewInfo, MessageHistory history) {
-        InterviewerStrategy interviewerStrategy = selectInterviewerStrategy(interviewInfo);
-        AiPrompt setting = interviewerStrategy.changeTopic(requester, interviewInfo);
+        InterviewPromptConfigurator interviewPromptConfigurator = selectInterviewerStrategy(interviewInfo);
+        AiPrompt setting = interviewPromptConfigurator.changeTopic(requester, interviewInfo);
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
@@ -61,11 +61,11 @@ public class CustomQuestionCreator {
         return requester.sendRequest(request);
     }
 
-    private InterviewerStrategy selectInterviewerStrategy(InterviewInfo interviewInfo) {
-        for (int i = interviewerStrategyList.size() - 1; i >= 0; i--) {
-            InterviewerStrategy interviewerStrategy = interviewerStrategyList.get(i);
-            if(interviewerStrategy.isSupportedDepartment(interviewInfo))
-                return interviewerStrategy;
+    private InterviewPromptConfigurator selectInterviewerStrategy(InterviewInfo interviewInfo) {
+        for (int i = interviewPromptConfiguratorList.size() - 1; i >= 0; i--) {
+            InterviewPromptConfigurator interviewPromptConfigurator = interviewPromptConfiguratorList.get(i);
+            if(interviewPromptConfigurator.isSupportedDepartment(interviewInfo))
+                return interviewPromptConfigurator;
         }
 
         // TODO: 커스텀 예외로 바꿀 것.

@@ -14,7 +14,7 @@ import com.mock.interview.interviewquestion.infra.interview.strategy.stage.Inter
  * 진행도에 따른 분야별 인터뷰 흐름 핸들링
  * ex) IT의 경우 기술 면접 시 CS 지식도 질문.
  */
-public interface InterviewerStrategy {
+public interface InterviewPromptConfigurator {
     /**
      * 인터뷰 전략에 맞는 프롬프트 생성 정보 반환
      *

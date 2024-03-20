@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ITInterviewerStrategy implements InterviewerStrategy {
+public class ITInterviewPromptConfigurator implements InterviewPromptConfigurator {
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
     private final ITInterviewConcept interviewConcept;

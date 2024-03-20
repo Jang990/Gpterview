@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 //@Order(1)
 //@Component
 @RequiredArgsConstructor
-public class DefaultInterviewerStrategy implements InterviewerStrategy {
+public class DefaultInterviewPromptConfigurator implements InterviewPromptConfigurator {
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
     private final DefaultInterviewConcept interviewConcept;
