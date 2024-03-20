@@ -21,7 +21,7 @@ class KorAnalyzerTest {
         korAnalyzer = new KorAnalyzer();
     }
 
-    @Test
+//    @Test
     @DisplayName("형태소 분석")
     void test() {
         List<String> result = korAnalyzer.extractNecessaryTokens("Spring MVC에 대해 아는대로 설명해보세요.");

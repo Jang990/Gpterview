@@ -1,6 +1,8 @@
 package com.mock.interview.interviewquestion.infra.recommend;
 
+import com.mock.interview.interviewquestion.infra.recommend.calculator.CosineSimilarityCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.calculator.SimpleRecommendScoreCalculator;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.TFIDFCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
@@ -19,9 +21,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class QuestionRecommenderTest {
-
-    @Mock
-    SimpleRecommendScoreCalculator scoreCalculator;
+    @Mock SimpleRecommendScoreCalculator simpleScoreCalculator;
+    @Mock TFIDFCalculator tfidfCalculator;
+    @Mock CosineSimilarityCalculator cosineSimilarityCalculator;
     @InjectMocks
     QuestionRecommender recommender;
 
