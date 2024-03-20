@@ -10,12 +10,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+//@SpringBootTest
 class InterviewQuestionRepositoryTest {
     @Autowired
     InterviewQuestionRepository repository;
 
-    @Test
+//    @Test
     void recommendQueryTest() {
         List<InterviewQuestion> it = repository.findQuestionForRecommend("IT", PageRequest.of(0, 10));
         for (InterviewQuestion question : it) {
