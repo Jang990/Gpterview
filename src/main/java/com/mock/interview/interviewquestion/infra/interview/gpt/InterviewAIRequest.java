@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.interview.gpt;
 
-import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
+import com.mock.interview.interviewquestion.infra.interview.prompt.AiPrompt;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import lombok.Getter;
 import lombok.ToString;

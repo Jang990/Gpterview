@@ -2,9 +2,9 @@ package com.mock.interview.conversation.infrastructure.interview.strategy.stage;
 
 import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewConfig;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewStage;
+import com.mock.interview.interviewquestion.infra.interview.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.stage.InterviewProgressTimeBasedTracker;
+import com.mock.interview.interviewquestion.infra.interview.stage.InterviewStage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

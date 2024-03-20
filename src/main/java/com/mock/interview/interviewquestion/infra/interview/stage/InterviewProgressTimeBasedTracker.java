@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.interview.strategy.stage;
+package com.mock.interview.interviewquestion.infra.interview.stage;
 
 import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewConfig;

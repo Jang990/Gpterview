@@ -1,11 +1,11 @@
-package com.mock.interview.interviewquestion.infra.interview.strategy;
+package com.mock.interview.interviewquestion.infra.interview.prompt.configurator;
 
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.interview.strategy.template.ITInterviewTemplateGetter;
+import com.mock.interview.interviewquestion.infra.interview.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.prompt.configurator.template.ITInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

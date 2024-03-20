@@ -1,8 +1,8 @@
-package com.mock.interview.interviewquestion.infra.interview.setting;
+package com.mock.interview.interviewquestion.infra.interview.prompt;
 
 import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
-import com.mock.interview.interviewquestion.infra.interview.fomatter.FormatConstGetter;
-import com.mock.interview.interviewquestion.infra.interview.fomatter.StringFormatter;
+import com.mock.interview.interviewquestion.infra.interview.prompt.fomatter.FormatConstGetter;
+import com.mock.interview.interviewquestion.infra.interview.prompt.fomatter.StringFormatter;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

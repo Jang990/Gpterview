@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.interview.setting;
+package com.mock.interview.interviewquestion.infra.interview.prompt;
 
 import lombok.Getter;
 import lombok.ToString;

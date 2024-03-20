@@ -1,6 +1,5 @@
 package com.mock.interview.global;
 
-import com.mock.interview.interviewquestion.infra.interview.strategy.exception.AlreadyFinishedInterviewException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -27,12 +26,6 @@ public class ApiExceptionHandler {
         Set<String> uniqueErrorMessages = getUniqueErrorMessages(e, locale);
         StringBuilder errorStringBuilder = createMessageString(uniqueErrorMessages);
         return new ResponseEntity<>(new ErrorResponse(errorStringBuilder.toString()), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ErrorResponse> bindingExceptionHandler(AlreadyFinishedInterviewException exception, Locale locale) {
-        String errorMessage = messageSource.getMessage(exception.getCode(), null, locale);
-        return new ResponseEntity<>(new ErrorResponse(errorMessage), exception.getStatus());
     }
 
     private static StringBuilder createMessageString(Set<String> uniqueErrorMessages) {

@@ -1,11 +1,10 @@
-package com.mock.interview.interviewquestion.infra.interview.strategy;
+package com.mock.interview.interviewquestion.infra.interview.prompt.configurator;
 
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.stage.InterviewProgress;
 
 /**
  * 인터뷰 정보에 따라 각 분야(ex IT, 회계, 영업)별 관련 프롬프트 정보 생성기

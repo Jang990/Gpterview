@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.interview.strategy.template;
+package com.mock.interview.interviewquestion.infra.interview.prompt.configurator.template;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

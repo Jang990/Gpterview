@@ -3,7 +3,7 @@ package com.mock.interview.conversation.infrastructure.interview.gpt;
 import com.mock.interview.interviewquestion.infra.interview.dto.Message;
 import com.mock.interview.interviewquestion.infra.interview.gpt.ChatGPTRequester;
 import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
+import com.mock.interview.interviewquestion.infra.interview.prompt.AiPrompt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

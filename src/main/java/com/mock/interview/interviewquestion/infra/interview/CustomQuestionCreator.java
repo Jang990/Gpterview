@@ -7,12 +7,12 @@ import com.mock.interview.interviewquestion.infra.interview.dto.PromptConfigurat
 import com.mock.interview.interviewquestion.infra.interview.gpt.AIRequester;
 import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.interview.gpt.InterviewAIRequest;
-import com.mock.interview.interviewquestion.infra.interview.setting.AiPrompt;
-import com.mock.interview.interviewquestion.infra.interview.setting.PromptCreator;
-import com.mock.interview.interviewquestion.infra.interview.strategy.InterviewPromptConfigurator;
+import com.mock.interview.interviewquestion.infra.interview.prompt.AiPrompt;
+import com.mock.interview.interviewquestion.infra.interview.prompt.PromptCreator;
+import com.mock.interview.interviewquestion.infra.interview.prompt.configurator.InterviewPromptConfigurator;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.interview.strategy.stage.InterviewProgressTimeBasedTracker;
+import com.mock.interview.interviewquestion.infra.interview.stage.InterviewProgress;
+import com.mock.interview.interviewquestion.infra.interview.stage.InterviewProgressTimeBasedTracker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
