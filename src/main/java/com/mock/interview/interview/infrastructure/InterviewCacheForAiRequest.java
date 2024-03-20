@@ -1,9 +1,9 @@
 package com.mock.interview.interview.infrastructure;
 
 import com.mock.interview.candidate.domain.model.CandidateConfig;
-import com.mock.interview.interviewquestion.infra.interview.dto.InterviewConfig;
-import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
-import com.mock.interview.interviewquestion.infra.interview.dto.InterviewProfile;
+import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;
+import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;

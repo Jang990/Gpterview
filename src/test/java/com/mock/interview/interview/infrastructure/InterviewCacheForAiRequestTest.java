@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infrastructure;
 
-import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.creator.InterviewEntityCreator;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;

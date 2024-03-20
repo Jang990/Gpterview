@@ -4,7 +4,7 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
 import com.mock.interview.interviewquestion.domain.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
-import com.mock.interview.interviewquestion.infra.interview.stage.InterviewStage;
+import com.mock.interview.interviewquestion.infra.ai.stage.InterviewStage;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;

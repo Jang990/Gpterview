@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infrastructure.lock.proceeding;
 
-import com.mock.interview.interviewquestion.infra.interview.gpt.AISpecification;
+import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

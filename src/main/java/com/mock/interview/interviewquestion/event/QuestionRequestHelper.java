@@ -1,10 +1,10 @@
 package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
-import com.mock.interview.interviewquestion.infra.interview.CustomQuestionCreator;
-import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
-import com.mock.interview.interviewquestion.infra.interview.dto.Message;
-import com.mock.interview.interviewquestion.infra.interview.dto.MessageHistory;
+import com.mock.interview.interviewquestion.infra.ai.CustomQuestionCreator;
+import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.ai.dto.Message;
+import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 
 public class QuestionRequestHelper {

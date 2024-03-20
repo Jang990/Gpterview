@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infrastructure;
 
-import com.mock.interview.interviewquestion.infra.interview.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
