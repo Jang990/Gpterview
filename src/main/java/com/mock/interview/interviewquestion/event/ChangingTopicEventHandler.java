@@ -28,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.util.Collections;
+
 @Service
 @RequiredArgsConstructor
 public class ChangingTopicEventHandler {
@@ -70,7 +72,7 @@ public class ChangingTopicEventHandler {
 
     private InterviewQuestion createQuestion(Message message, long interviewId) {
         PublishedQuestion publishedQuestion = new PublishedQuestion(
-                "GPT", message.getContent(), new InterviewProgress(InterviewStage.TECHNICAL, 0.3)); // TODO: 여기서 변환하지 말고 AI 서비스에서 가져올 것.
+                "GPT", message.getContent(), new InterviewProgress(InterviewStage.TECHNICAL, 0.3), Collections.EMPTY_LIST); // TODO: 여기서 변환하지 말고 AI 서비스에서 가져올 것.
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         return InterviewQuestion.createInInterview(questionRepository, interview.getUsers(), interview.getAppliedJob(), publishedQuestion);
