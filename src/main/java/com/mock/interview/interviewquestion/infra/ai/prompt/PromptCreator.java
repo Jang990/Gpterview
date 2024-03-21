@@ -1,6 +1,5 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt;
 
-import com.mock.interview.interviewquestion.infra.ai.dto.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.prompt.fomatter.FormatConstGetter;
 import com.mock.interview.interviewquestion.infra.ai.prompt.fomatter.StringFormatter;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;

@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.dto;
+package com.mock.interview.interviewquestion.infra.ai.prompt;
 
 /**
  *
