@@ -27,12 +27,12 @@ public class PromptCreator {
      */
     public AiPrompt create(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
         Map<String, Object> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
-        return new AiPrompt(StringFormatter.format(promptConfiguration.promptTemplate(), parameters));
+        return new AiPrompt(StringFormatter.format(promptConfiguration.getPromptTemplate(), parameters));
     }
 
     public AiPrompt changeTopic(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
         Map<String, Object> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
-        String changeTopicPromptTemplate = promptConfiguration.promptTemplate().concat(changingTopicCommand);
+        String changeTopicPromptTemplate = promptConfiguration.getPromptTemplate().concat(changingTopicCommand);
         return new AiPrompt(StringFormatter.format(changeTopicPromptTemplate, parameters));
     }
 
@@ -58,10 +58,10 @@ public class PromptCreator {
         map.put(formatConstGetter.getSystemRole(), aiSpec.getSystemRole());
         map.put(formatConstGetter.getUserRole(), aiSpec.getUserRole());
         map.put(formatConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
-        map.put(formatConstGetter.getField(), creationInfo.field());
-        map.put(formatConstGetter.getDepartment(), creationInfo.department());
-        map.put(formatConstGetter.getSkills(), creationInfo.skills());
-        map.put(formatConstGetter.getExperience(), creationInfo.experience());
+        map.put(formatConstGetter.getField(), creationInfo.getField());
+        map.put(formatConstGetter.getDepartment(), creationInfo.getDepartment());
+        map.put(formatConstGetter.getSkills(), creationInfo.getSkills());
+        map.put(formatConstGetter.getExperience(), creationInfo.getExperience());
         return map;
 //        return Map.of(
 //                formatConstGetter.getSystemRole(), aiSpec.getSystemRole(),
