@@ -19,7 +19,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
-import com.mock.interview.interviewquestion.infra.PublishedQuestionInfo;
+import com.mock.interview.interviewquestion.infra.PublishedQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -69,7 +69,7 @@ public class ChangingTopicEventHandler {
     }
 
     private InterviewQuestion createQuestion(Message message, long interviewId) {
-        PublishedQuestionInfo publishedQuestion = new PublishedQuestionInfo(
+        PublishedQuestion publishedQuestion = new PublishedQuestion(
                 "GPT", message.getContent(), new InterviewProgress(InterviewStage.TECHNICAL, 0.3)); // TODO: 여기서 변환하지 말고 AI 서비스에서 가져올 것.
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
