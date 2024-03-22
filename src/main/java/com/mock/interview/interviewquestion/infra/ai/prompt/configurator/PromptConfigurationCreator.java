@@ -14,7 +14,7 @@ public class PromptConfigurationCreator {
         templateValidator.verify(promptTemplate, profile);
         return new PromptConfiguration(
                 promptTemplate, profile.department(), profile.field(),
-                profile.skills().toString(), profile.experience().toString()
+                profile.skills(), profile.experience()
         );
     }
 }

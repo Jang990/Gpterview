@@ -17,7 +17,7 @@ class StringFormatterTest {
         String target = "tem";
         String replaceStr = "user";
         String s = "Hello World! $_"+target+"_";
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put(target, replaceStr);
 
         // Hello World! user
@@ -29,7 +29,7 @@ class StringFormatterTest {
     @DisplayName("잘못된 파라미터")
     void testMal() {
         String s = "Hello World! $_aaa_";
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("$_aaa_", "user");
 
         // Hello World! null
@@ -41,7 +41,7 @@ class StringFormatterTest {
     @DisplayName("파라미터 매칭 실패")
     void testMissMatch() {
         String s = "Hello World! $_aaa_";
-        Map<String, Object> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("abc", "user");
 
         // Hello World! null

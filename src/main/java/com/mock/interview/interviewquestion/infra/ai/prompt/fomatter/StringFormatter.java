@@ -16,7 +16,7 @@ public class StringFormatter {
      * @param parameters {"abc":"Hello", "kkk":"World!"}
      * @return "Hello World! null"
      */
-    public static String format(String template, Map<String, Object> parameters) {
+    public static String format(String template, Map<String, String> parameters) {
         StringBuilder newTemplate = new StringBuilder(template);
         List<Object> valueList = new ArrayList<>();
 

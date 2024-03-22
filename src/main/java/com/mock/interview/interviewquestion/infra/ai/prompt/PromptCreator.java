@@ -24,12 +24,12 @@ public class PromptCreator {
      * @return user는 지원자. assistant는 면접관입니다. user의 기술은 Java, MySQL, Spring입니다.
      */
     public AiPrompt create(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
-        Map<String, Object> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
+        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
         return new AiPrompt(StringFormatter.format(promptConfiguration.getPromptTemplate(), parameters));
     }
 
     public AiPrompt changeTopic(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
-        Map<String, Object> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
+        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
         String changeTopicPromptTemplate = promptConfiguration.getPromptTemplate().concat(templateConstGetter.getChangingTopicCommand());
         return new AiPrompt(StringFormatter.format(changeTopicPromptTemplate, parameters));
     }
@@ -51,15 +51,15 @@ public class PromptCreator {
      *     {"experience":"저는 ~프로젝트를 진행하며 ... ~문제를 해결. ~기술 사용 ..."},
      * }
      */
-    private Map<String, Object> getFormatParameter(AISpecification aiSpec, PromptConfiguration creationInfo) {
-        Map<String, Object> map = new HashMap<>();
+    private Map<String, String> getFormatParameter(AISpecification aiSpec, PromptConfiguration creationInfo) {
+        Map<String, String> map = new HashMap<>();
         map.put(templateConstGetter.getSystemRole(), aiSpec.getSystemRole());
         map.put(templateConstGetter.getUserRole(), aiSpec.getUserRole());
         map.put(templateConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
         map.put(templateConstGetter.getField(), creationInfo.getField());
         map.put(templateConstGetter.getDepartment(), creationInfo.getDepartment());
-        map.put(templateConstGetter.getSkills(), creationInfo.getSkills());
-        map.put(templateConstGetter.getExperience(), creationInfo.getExperience());
+        map.put(templateConstGetter.getSkills(), creationInfo.getSkills().toString());
+        map.put(templateConstGetter.getExperience(), creationInfo.getExperience().toString());
         return map;
 //        return Map.of(
 //                formatConstGetter.getSystemRole(), aiSpec.getSystemRole(),
