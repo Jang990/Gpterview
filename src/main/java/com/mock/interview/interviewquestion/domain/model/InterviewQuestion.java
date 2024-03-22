@@ -7,7 +7,7 @@ import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
-import com.mock.interview.interviewquestion.infra.PublishedQuestion;
+import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
@@ -89,7 +89,7 @@ public class InterviewQuestion extends BaseEntity {
     public static InterviewQuestion createInInterview(
             InterviewQuestionRepository repository,
             Users owner, JobCategory appliedJob,
-            PublishedQuestion questionInfo
+            RecommendedQuestion questionInfo
     ) {
         InterviewQuestion question = createWithCommonField(
                 repository, questionInfo.question(), appliedJob, owner,

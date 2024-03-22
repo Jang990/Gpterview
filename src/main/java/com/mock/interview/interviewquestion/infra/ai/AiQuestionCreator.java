@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai;
 
-import com.mock.interview.interviewquestion.infra.PublishedQuestion;
+import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
 import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
@@ -26,7 +26,7 @@ public class AiQuestionCreator {
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
 
-    public PublishedQuestion service(InterviewInfo interviewInfo, MessageHistory history) {
+    public RecommendedQuestion service(InterviewInfo interviewInfo, MessageHistory history) {
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         PromptConfiguration promptConfig = createPromptConfig(progress, interviewInfo);
         AiPrompt prompt = promptCreator.create(requester, promptConfig);
@@ -37,9 +37,9 @@ public class AiQuestionCreator {
         return createPublishedQuestion(progress, promptConfig, response);
     }
 
-    private PublishedQuestion createPublishedQuestion(InterviewProgress progress, PromptConfiguration promptConfig, Message response) {
+    private RecommendedQuestion createPublishedQuestion(InterviewProgress progress, PromptConfiguration promptConfig, Message response) {
         List<String> topic = getTopic(progress.stage(), promptConfig);
-        return new PublishedQuestion(requester.getSignature(), response.getContent(), progress, topic);
+        return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress, topic);
     }
 
     private List<String> getTopic(InterviewStage stage, PromptConfiguration promptConfig) {
@@ -62,7 +62,7 @@ public class AiQuestionCreator {
      * 사용자 : 저는 AOP를 모릅니다.
      * 면접관 : AOP를 모르신다니 아쉽습니다. AOP를 활용한 사례를 들어서 설명해보세요.
      */
-    public PublishedQuestion changeTopic(InterviewInfo interviewInfo, MessageHistory history) {
+    public RecommendedQuestion changeTopic(InterviewInfo interviewInfo, MessageHistory history) {
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         PromptConfiguration promptConfig = createPromptConfig(progress, interviewInfo);
         AiPrompt prompt = promptCreator.changeTopic(requester, promptConfig);

@@ -2,12 +2,10 @@ package com.mock.interview.interviewquestion.event;
 
 
 import com.mock.interview.interview.domain.ConversationMessageBroker;
-import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
-import com.mock.interview.interview.presentation.dto.message.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
@@ -18,7 +16,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
-import com.mock.interview.interviewquestion.infra.PublishedQuestion;
+import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -53,10 +51,10 @@ public class ChangingTopicEventHandler {
 
         // 요청과정
         long interviewId = conversationPair.getInterview().getId();
-        PublishedQuestion publishedQuestion = AiQuestionHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, interviewId);
+        RecommendedQuestion recommendedQuestion = AiQuestionHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, interviewId);
 
         // Question 저장 과정
-        InterviewQuestion question = createQuestion(publishedQuestion, interviewId);
+        InterviewQuestion question = createQuestion(recommendedQuestion, interviewId);
         questionRepository.save(question);
 
         // pair 수정 과정
@@ -69,9 +67,9 @@ public class ChangingTopicEventHandler {
         );
     }
 
-    private InterviewQuestion createQuestion(PublishedQuestion publishedQuestion, long interviewId) {
+    private InterviewQuestion createQuestion(RecommendedQuestion recommendedQuestion, long interviewId) {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        return InterviewQuestion.createInInterview(questionRepository, interview.getUsers(), interview.getAppliedJob(), publishedQuestion);
+        return InterviewQuestion.createInInterview(questionRepository, interview.getUsers(), interview.getAppliedJob(), recommendedQuestion);
     }
 }
