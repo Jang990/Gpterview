@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class FormatConstGetter {
+public class TemplateConstGetter {
     @Value("${interview.role.system}")
     private String systemRole;
     @Value("${interview.role.user}")

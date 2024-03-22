@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt;
 
-import com.mock.interview.interviewquestion.infra.ai.prompt.fomatter.FormatConstGetter;
+import com.mock.interview.interviewquestion.infra.ai.prompt.fomatter.TemplateConstGetter;
 import com.mock.interview.interviewquestion.infra.ai.prompt.fomatter.StringFormatter;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class PromptCreator {
-    private final FormatConstGetter formatConstGetter;
+    private final TemplateConstGetter templateConstGetter;
     @Value("${interview.template.common.skip}")
     private String changingTopicCommand;
 
@@ -55,13 +55,13 @@ public class PromptCreator {
      */
     private Map<String, Object> getFormatParameter(AISpecification aiSpec, PromptConfiguration creationInfo) {
         Map<String, Object> map = new HashMap<>();
-        map.put(formatConstGetter.getSystemRole(), aiSpec.getSystemRole());
-        map.put(formatConstGetter.getUserRole(), aiSpec.getUserRole());
-        map.put(formatConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
-        map.put(formatConstGetter.getField(), creationInfo.getField());
-        map.put(formatConstGetter.getDepartment(), creationInfo.getDepartment());
-        map.put(formatConstGetter.getSkills(), creationInfo.getSkills());
-        map.put(formatConstGetter.getExperience(), creationInfo.getExperience());
+        map.put(templateConstGetter.getSystemRole(), aiSpec.getSystemRole());
+        map.put(templateConstGetter.getUserRole(), aiSpec.getUserRole());
+        map.put(templateConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
+        map.put(templateConstGetter.getField(), creationInfo.getField());
+        map.put(templateConstGetter.getDepartment(), creationInfo.getDepartment());
+        map.put(templateConstGetter.getSkills(), creationInfo.getSkills());
+        map.put(templateConstGetter.getExperience(), creationInfo.getExperience());
         return map;
 //        return Map.of(
 //                formatConstGetter.getSystemRole(), aiSpec.getSystemRole(),
