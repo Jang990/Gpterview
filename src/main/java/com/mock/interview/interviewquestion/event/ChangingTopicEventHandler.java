@@ -61,7 +61,6 @@ public class ChangingTopicEventHandler {
 
         // Question 저장 과정
         InterviewQuestion question = createQuestion(recommendedQuestion, interviewId);
-        questionRepository.save(question);
 
         // pair 수정 과정
         conversationPair.changeTopic(question);
