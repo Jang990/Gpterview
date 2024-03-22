@@ -23,10 +23,10 @@ public class PromptTemplateValidator {
     }
 
     private boolean hasError(String rawTemplate, InterviewProfile profile) {
-        return hasTemplateValueError(rawTemplate, fieldFormat, profile.field())
-                && hasTemplateValueError(rawTemplate, departmentFormat, profile.department())
-                && hasTemplateValueError(rawTemplate, skillsFormat, profile.skills())
-                && hasTemplateValueError(rawTemplate, experienceFormat, profile.experience());
+        return hasTemplateValueError(rawTemplate, formatGetter.getFieldFormat(), profile.field())
+                || hasTemplateValueError(rawTemplate, formatGetter.getDepartmentFormat(), profile.department())
+                || hasTemplateValueError(rawTemplate, formatGetter.getSkillsFormat(), profile.skills())
+                || hasTemplateValueError(rawTemplate, formatGetter.getExperienceFormat(), profile.experience());
     }
 
     private boolean hasTemplateValueError(String rawTemplate, String format, String value) {
