@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.templa
 
 
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -13,18 +13,9 @@ import java.util.List;
  * StringFormatter를 통해 Prompt를 만들 때 템플릿 필수 정보를 설정하는 인터페이스
  */
 @Component
+@RequiredArgsConstructor
 public class PromptTemplateValidator {
-    @Value("${interview.format.profile.field}")
-    private String fieldFormat;
-
-    @Value("${interview.format.profile.skills}")
-    private String skillsFormat;
-
-    @Value("${interview.format.profile.department}")
-    private String departmentFormat;
-
-    @Value("${interview.format.profile.experience}")
-    private String experienceFormat;
+    private final TemplateFormatGetter formatGetter;
 
     public void verify(String rawTemplate, InterviewProfile profile) {
         if(hasError(rawTemplate, profile))
