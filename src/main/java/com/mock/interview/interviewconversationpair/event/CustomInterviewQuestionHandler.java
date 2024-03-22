@@ -1,9 +1,7 @@
 package com.mock.interview.interviewconversationpair.event;
 
 import com.mock.interview.interview.domain.ConversationMessageBroker;
-import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
-import com.mock.interview.interview.presentation.dto.message.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
