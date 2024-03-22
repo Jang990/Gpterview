@@ -28,19 +28,15 @@ public class CandidateConfigService {
     private final JobCategoryRepository jobCategoryRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
-    public long create(InterviewCandidateForm interviewCandidateForm, long userId, List<TechnicalSubjectsResponse> relationalTech) {
+    public long create(InterviewCandidateForm interviewCandidateForm, long userId, List<Long> relationalTechIds) {
         CandidateProfileForm candidateProfileForm = interviewCandidateForm.getProfile();
         Users user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        List<TechnicalSubjects> techs = technicalSubjectsRepository.findAllById(convertToTechId(relationalTech));
+        List<TechnicalSubjects> techs = technicalSubjectsRepository.findAllById(relationalTechIds);
         JobCategory field = jobCategoryRepository.findFieldWithDepartment(candidateProfileForm.getField())
                 .orElseThrow(JobCategoryNotFoundException::new);
 
         CandidateConfig profile = CandidateConfig.createProfile(interviewCandidateForm, user, field, techs);
         return profileRepository.save(profile).getId();
-    }
-
-    private List<Long> convertToTechId(List<TechnicalSubjectsResponse> relationalTech) {
-        return relationalTech.stream().map(TechnicalSubjectsResponse::getId).toList();
     }
 }

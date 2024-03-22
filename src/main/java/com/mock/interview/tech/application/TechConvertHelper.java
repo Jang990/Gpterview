@@ -10,8 +10,8 @@ public class TechConvertHelper {
         return techList.stream().map(TechConvertHelper::convert).toList();
     }
 
-    public static List<Long> convertToTechId(List<TechnicalSubjectsResponse> techResponseList) {
-        return techResponseList.stream().map(TechnicalSubjectsResponse::getId).toList();
+    public static List<Long> convertToTechId(List<TechnicalSubjects> techList) {
+        return techList.stream().map(TechnicalSubjects::getId).toList();
     }
 
     public static TechnicalSubjectsResponse convert(TechnicalSubjects tech) {

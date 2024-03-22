@@ -34,7 +34,7 @@ public class InterviewQuestionWebPostController {
     }
     @PostMapping("question")
     public String save(@AuthenticationPrincipal(expression = "id") Long loginId, QuestionForm form) {
-        List<TechnicalSubjectsResponse> relationalTech = technicalSubjectsService.saveTechIfNotExist(form.getTech());
+        List<Long> relationalTech = technicalSubjectsService.saveTechIfNotExist(form.getTech());
         long savedId = questionSavingService.save(loginId, form, relationalTech);
         return "redirect:/question";
     }

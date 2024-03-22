@@ -15,7 +15,7 @@ import java.util.List;
 public class TechnicalSubjectsService {
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
-    public List<TechnicalSubjectsResponse> saveTechIfNotExist(List<String> skills) {
+    public List<Long> saveTechIfNotExist(List<String> skills) {
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findTech(skills);
         List<String> savedNames = techList.stream().map(TechnicalSubjects::getName).toList();
         skills.stream()
@@ -25,8 +25,6 @@ public class TechnicalSubjectsService {
                 .map(technicalSubjectsRepository::save)
                 .forEach(techList::add);
 
-        return techList.stream()
-                .map(ts -> new TechnicalSubjectsResponse(ts.getId(), ts.getName()))
-                .toList();
+        return TechConvertHelper.convertToTechId(techList);
     }
 }
