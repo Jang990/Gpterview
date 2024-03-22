@@ -14,7 +14,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.event.CreatedCustomInterviewQuestionEvent;
+import com.mock.interview.interviewquestion.domain.CreatedCustomInterviewQuestionEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
