@@ -32,13 +32,12 @@ public class InterviewConversationRepositoryForView {
                                 interviewConversationPair.id,
                                 Projections.constructor(MessageDto.class,
                                         interviewConversationPair.question.id,
-                                        Expressions.constant(InterviewRole.AI.getName()),
+                                        Expressions.constant(InterviewRole.AI),
                                         interviewConversationPair.question.question
                                 ),
                                 Projections.constructor(MessageDto.class,
                                         interviewConversationPair.answer.id,
-                                        interviewConversationPair.answer.answer.coalesce(interviewConversationPair.answer.answer)
-                                                .as(InterviewRole.USER.getName()),
+                                        Expressions.constant(InterviewRole.USER),
                                         interviewConversationPair.answer.answer
                                 )
                         )
