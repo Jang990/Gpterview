@@ -8,6 +8,7 @@ public interface AISpecification {
     long CONNECT_TIMEOUT_MS = 2_000;
     long READ_TIMEOUT_MS = 8_000;
 
+    String getSignature();
     String getSystemRole();
     String getUserRole();
     String getInterviewerRole();

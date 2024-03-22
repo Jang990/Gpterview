@@ -25,6 +25,7 @@ public class ChatGPTRequester implements AIRequester {
     private final RestTemplate openaiRestTemplate;
     private final OpenAIResponseConvertor convertor;
     private final Encoding stringTokenCounter;
+    private final String SIGNATURE = "GPT";
 
     @Value("${openai.model}")
     private String model;
@@ -85,6 +86,11 @@ public class ChatGPTRequester implements AIRequester {
             case USER -> USER_ROLE;
             case AI -> INTERVIEWER_ROLE;
         };
+    }
+
+    @Override
+    public String getSignature() {
+        return SIGNATURE;
     }
 
     @Override
