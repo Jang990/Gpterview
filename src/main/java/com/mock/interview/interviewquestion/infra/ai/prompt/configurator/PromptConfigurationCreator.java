@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt;
+package com.mock.interview.interviewquestion.infra.ai.prompt.configurator;
 
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator.PromptTemplateValidator;
