@@ -2,6 +2,7 @@ package com.mock.interview.interviewquestion.event;
 
 
 import com.mock.interview.interview.domain.ConversationMessageBroker;
+import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
@@ -56,10 +57,10 @@ public class ChangingTopicEventHandler {
 
         // 요청과정
         long interviewId = conversationPair.getInterview().getId();
-        Message message = QuestionRequestHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, interviewId);
+        PublishedQuestion publishedQuestion = QuestionRequestHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, interviewId);
 
         // Question 저장 과정
-        InterviewQuestion question = createQuestion(message, interviewId);
+        InterviewQuestion question = createQuestion(publishedQuestion, interviewId);
         questionRepository.save(question);
 
         // pair 수정 과정
@@ -67,12 +68,10 @@ public class ChangingTopicEventHandler {
 
         // 메시지 전송 과정 - TODO: 메시지 브로커를 이벤트 처리 AFTER_COMMIT으로 통일할 것.
         conversationMessageBroker.publish(interviewId,
-                new QuestionInInterviewDto(conversationPair.getId(),question.getId(), message.getRole(), message.getContent()));
+                new QuestionInInterviewDto(conversationPair.getId(),question.getId(), InterviewRole.AI, question.getQuestion()));
     }
 
-    private InterviewQuestion createQuestion(Message message, long interviewId) {
-        PublishedQuestion publishedQuestion = new PublishedQuestion(
-                "GPT", message.getContent(), new InterviewProgress(InterviewStage.TECHNICAL, 0.3), Collections.EMPTY_LIST); // TODO: 여기서 변환하지 말고 AI 서비스에서 가져올 것.
+    private InterviewQuestion createQuestion(PublishedQuestion publishedQuestion, long interviewId) {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         return InterviewQuestion.createInInterview(questionRepository, interview.getUsers(), interview.getAppliedJob(), publishedQuestion);

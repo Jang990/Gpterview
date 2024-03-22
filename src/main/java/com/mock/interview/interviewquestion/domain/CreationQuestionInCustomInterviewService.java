@@ -17,10 +17,8 @@ import java.util.Collections;
 public class CreationQuestionInCustomInterviewService {
     public InterviewQuestion save(
             InterviewQuestionRepository repository,
-            Interview interview, Message message
+            Interview interview, PublishedQuestion publishedQuestion
     ) {
-        PublishedQuestion publishedQuestion = new PublishedQuestion(
-                "GPT", message.getContent(), new InterviewProgress(InterviewStage.TECHNICAL, 0.3), Collections.EMPTY_LIST); // TODO: AI 서비스에서 가져올 것.
         InterviewQuestion question = InterviewQuestion.createInInterview(repository, interview.getUsers(), interview.getAppliedJob(), publishedQuestion);
         Events.raise(new CreatedCustomInterviewQuestionEvent(interview.getId(), question.getId()));
         return question;
