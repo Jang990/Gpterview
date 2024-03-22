@@ -6,6 +6,7 @@ import com.mock.interview.interviewquestion.infra.ai.prompt.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
+import com.mock.interview.interviewquestion.infra.ai.prompt.PromptConfigurationCreator;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.DefaultInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,16 +15,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DefaultInterviewPromptConfigurator implements InterviewPromptConfigurator {
     private final DefaultInterviewTemplateGetter templateGetter;
+    private final PromptConfigurationCreator configurationCreator;
 
     // TODO: 수정 많이 필요.
     //      -> IT 먼저 끝내고 바꿀 것.
     @Override
     public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
         String rawStrategy = getRawInterviewStrategy(progress.stage());
-        return new PromptConfiguration(
-                rawStrategy, profile.department(), profile.field(),
-                profile.skills().toString(), profile.experience().toString()
-        );
+        return configurationCreator.create(rawStrategy, profile);
     }
 
     @Override

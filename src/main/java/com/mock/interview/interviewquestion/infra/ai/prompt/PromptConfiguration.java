@@ -17,7 +17,7 @@ public class PromptConfiguration {
      * @param skills         Spring, Java 등등
      * @param experience     ~경험이 있습니다.
      */
-    public PromptConfiguration(String promptTemplate, String department, String field, String skills, String experience) {
+    PromptConfiguration(String promptTemplate, String department, String field, String skills, String experience) {
         this.promptTemplate = promptTemplate;
         this.department = department;
         this.field = field;
