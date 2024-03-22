@@ -32,8 +32,9 @@ public class NewQuestionAddedEventHandler {
         InterviewQuestion question = questionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        messageBroker.publish(event.interviewId(), event.pairId(),
-                new MessageDto(question.getId(), InterviewRole.AI, question.getQuestion())
+        messageBroker.publish(
+                event.interviewId(), event.pairId(),
+                question.getId(), question.getQuestion()
         );
     }
 }

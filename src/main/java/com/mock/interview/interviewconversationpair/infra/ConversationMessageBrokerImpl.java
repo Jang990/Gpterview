@@ -1,5 +1,6 @@
 package com.mock.interview.interviewconversationpair.infra;
 
+import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interview.presentation.dto.message.PublishedQuestionDto;
@@ -19,8 +20,8 @@ public class ConversationMessageBrokerImpl implements ConversationMessageBroker 
     public final String template = WebSocketConfig.BROKER_PREFIX + "/interview/%d";
 
     @Override
-    public void publish(long interviewId, long conversationPairId, MessageDto message) {
-        PublishedQuestionDto publishedQuestion = new PublishedQuestionDto(conversationPairId, message);
+    public void publish(long interviewId, long conversationPairId, long questionId, String question) {
+        PublishedQuestionDto publishedQuestion = new PublishedQuestionDto(conversationPairId, new MessageDto(questionId, InterviewRole.AI, question));
         log.info("{}번 면접 {} 메시지 발행", interviewId, publishedQuestion);
         sendingOperations.convertAndSend(template.formatted(interviewId), publishedQuestion);
     }
