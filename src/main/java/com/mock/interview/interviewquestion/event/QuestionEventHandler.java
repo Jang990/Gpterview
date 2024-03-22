@@ -12,6 +12,9 @@ import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.interviewquestion.domain.CreationQuestionInCustomInterviewService;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
+import com.mock.interview.tech.application.TechSavingHelper;
+import com.mock.interview.tech.domain.model.TechnicalSubjects;
+import com.mock.interview.tech.infrastructure.TechnicalSubjectsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +33,7 @@ public class QuestionEventHandler {
     private final InterviewCacheForAiRequest interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository interviewQuestionRepository;
+    private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final CreationQuestionInCustomInterviewService creationQuestionInCustomInterviewService;
 
     @Async
@@ -56,6 +62,7 @@ public class QuestionEventHandler {
         RecommendedQuestion question = AiQuestionHelper.createQuestion(aiQuestionCreator, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        creationQuestionInCustomInterviewService.save(interviewQuestionRepository, interview, question);
+        List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, question.topic());
+        creationQuestionInCustomInterviewService.save(interviewQuestionRepository, interview, question, techList);
     }
 }

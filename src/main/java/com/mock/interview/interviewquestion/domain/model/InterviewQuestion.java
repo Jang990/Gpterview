@@ -89,12 +89,14 @@ public class InterviewQuestion extends BaseEntity {
     public static InterviewQuestion createInInterview(
             InterviewQuestionRepository repository,
             Users owner, JobCategory appliedJob,
-            RecommendedQuestion questionInfo
+            RecommendedQuestion questionInfo,
+            List<TechnicalSubjects> techList
     ) {
         InterviewQuestion question = createWithCommonField(
                 repository, questionInfo.question(), appliedJob, owner,
                 convert(questionInfo.progress().stage()), questionInfo.createdBy()
         );
+        connectTech(techList, question);
         return question;
     }
 
@@ -103,10 +105,14 @@ public class InterviewQuestion extends BaseEntity {
                 repository, content, category,
                 users, convert(type), users.getUsername()
         );
-        if(techList != null)
-            question.techLink = createTechLinks(question, techList);
+        connectTech(techList, question);
 
         return question;
+    }
+
+    private static void connectTech(List<TechnicalSubjects> techList, InterviewQuestion question) {
+        if(techList != null)
+            question.techLink = createTechLinks(question, techList);
     }
 
     private static List<QuestionTechLink> createTechLinks(InterviewQuestion question, List<TechnicalSubjects> techList) {

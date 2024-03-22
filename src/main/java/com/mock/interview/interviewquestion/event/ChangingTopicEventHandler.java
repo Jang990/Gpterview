@@ -17,6 +17,9 @@ import com.mock.interview.interviewconversationpair.infra.InterviewConversationP
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
+import com.mock.interview.tech.application.TechSavingHelper;
+import com.mock.interview.tech.domain.model.TechnicalSubjects;
+import com.mock.interview.tech.infrastructure.TechnicalSubjectsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +40,7 @@ public class ChangingTopicEventHandler {
     private final ConversationCacheForAiRequest conversationCache;
     private final ConversationMessageBroker conversationMessageBroker;
     private final InterviewQuestionRepository questionRepository;
+    private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     @Async
     @AiResponseProcessingLock
@@ -70,6 +76,7 @@ public class ChangingTopicEventHandler {
     private InterviewQuestion createQuestion(RecommendedQuestion recommendedQuestion, long interviewId) {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        return InterviewQuestion.createInInterview(questionRepository, interview.getUsers(), interview.getAppliedJob(), recommendedQuestion);
+        List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, recommendedQuestion.topic());
+        return InterviewQuestion.createInInterview(questionRepository, interview.getUsers(), interview.getAppliedJob(), recommendedQuestion, techList);
     }
 }
