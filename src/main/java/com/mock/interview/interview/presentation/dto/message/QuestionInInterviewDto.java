@@ -9,9 +9,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class QuestionInInterviewDto {
     private Long conversationPairId;
-    private Long questionId;
-    private InterviewRole role;
-
-    @Size(min = 3, max = 200)
-    private String content;
+    private MessageDto question;
 }

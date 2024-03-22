@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interview.domain.ConversationMessageBroker;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
+import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
@@ -62,8 +63,10 @@ public class ChangingTopicEventHandler {
         conversationPair.changeTopic(question);
 
         // 메시지 전송 과정 - TODO: 메시지 브로커를 이벤트 처리 AFTER_COMMIT으로 통일할 것.
-        conversationMessageBroker.publish(interviewId,
-                new QuestionInInterviewDto(conversationPair.getId(),question.getId(), InterviewRole.AI, question.getQuestion()));
+        conversationMessageBroker.publish(
+                interviewId, conversationPair.getId(),
+                MessageDto.createQuestion(question.getId(), question.getQuestion())
+        );
     }
 
     private InterviewQuestion createQuestion(PublishedQuestion publishedQuestion, long interviewId) {

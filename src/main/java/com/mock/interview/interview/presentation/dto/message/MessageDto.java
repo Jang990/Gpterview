@@ -15,4 +15,12 @@ public class MessageDto {
 
     @Size(min = 3, max = 200)
     private String content;
+
+    public static MessageDto createQuestion(long id, String content) {
+        return new MessageDto(id, InterviewRole.AI, content);
+    }
+
+    public static MessageDto createAnswer(long id, String content) {
+        return new MessageDto(id, InterviewRole.USER, content);
+    }
 }

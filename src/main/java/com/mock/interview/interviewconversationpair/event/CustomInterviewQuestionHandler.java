@@ -2,6 +2,7 @@ package com.mock.interview.interviewconversationpair.event;
 
 import com.mock.interview.interview.domain.ConversationMessageBroker;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
+import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interview.presentation.dto.message.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.model.Interview;
@@ -41,8 +42,10 @@ public class CustomInterviewQuestionHandler {
 
         InterviewConversationPair conversationPair = InterviewConversationPair.startConversation(interview, question);
         interviewConversationPairRepository.save(conversationPair);
-        conversationMessageBroker.publish(interviewId,
-                new QuestionInInterviewDto(conversationPair.getId(), questionId, InterviewRole.AI, question.getQuestion()));
+        conversationMessageBroker.publish(
+                interviewId, conversationPair.getId(),
+                MessageDto.createQuestion(question.getId(), question.getQuestion())
+        );
     }
 
     @EventListener(AnsweredInCustomInterviewEvent.class)

@@ -179,7 +179,7 @@ function createRandomMessage() {
 
 // 서버로 받은 응답 값을 화면에 면접관으로 표시
 function displayResponse(msgObj) {
-    const newConversationItem = createGptMessage(msgObj.content);
+    const newConversationItem = createGptMessage(msgObj.question.content);
     $('#talk-history').append(newConversationItem);
     setCurrentConversationPairId(msgObj.conversationPairId);
     scroll();
