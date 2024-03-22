@@ -1,7 +1,5 @@
 package com.mock.interview.interviewconversationpair.event;
 
-import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
@@ -27,7 +25,6 @@ public class CustomInterviewQuestionHandler {
     private final InterviewRepository interviewRepository;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final InterviewAnswerRepository answerRepository;
-    private final ConversationMessageBroker conversationMessageBroker;
 
     @EventListener(CreatedCustomInterviewQuestionEvent.class)
     public void handle(CreatedCustomInterviewQuestionEvent event) {
@@ -38,12 +35,7 @@ public class CustomInterviewQuestionHandler {
         InterviewQuestion question = interviewQuestionRepository.findById(questionId)
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        InterviewConversationPair conversationPair = InterviewConversationPair.startConversation(interview, question);
-        interviewConversationPairRepository.save(conversationPair);
-        conversationMessageBroker.publish(
-                interviewId, conversationPair.getId(),
-                MessageDto.createQuestion(question.getId(), question.getQuestion())
-        );
+        InterviewConversationPair.startConversation(interviewConversationPairRepository, interview, question);
     }
 
     @EventListener(AnsweredInCustomInterviewEvent.class)

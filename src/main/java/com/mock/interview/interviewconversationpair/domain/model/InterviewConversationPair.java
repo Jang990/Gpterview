@@ -4,9 +4,10 @@ import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
-import com.mock.interview.interviewconversationpair.domain.PairStatusChangedToChangingEvent;
+import com.mock.interview.interviewconversationpair.domain.NewQuestionAddedEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyAnsweredConversationException;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyChangingStateException;
+import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,11 +38,17 @@ public class InterviewConversationPair extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PairStatus status;
 
-    public static InterviewConversationPair startConversation(Interview interview, InterviewQuestion question) {
+    public static InterviewConversationPair startConversation(
+            InterviewConversationPairRepository conversationPairRepository,
+            Interview interview, InterviewQuestion question
+    ) {
         InterviewConversationPair conversationPair = new InterviewConversationPair();
         conversationPair.interview = interview;
         conversationPair.question = question;
         conversationPair.status = PairStatus.WAITING;
+
+        conversationPairRepository.save(conversationPair);
+        Events.raise(new NewQuestionAddedEvent(interview.getId(), conversationPair.id, question.getId()));
         return conversationPair;
     }
 
@@ -64,6 +71,8 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
         this.question = question;
         this.status = PairStatus.WAITING;
+
+        Events.raise(new NewQuestionAddedEvent(interview.getId(), id, question.getId()));
     }
 
     private void verifyCanModifyQuestion() {
