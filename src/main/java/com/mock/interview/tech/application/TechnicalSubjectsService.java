@@ -16,15 +16,7 @@ public class TechnicalSubjectsService {
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     public List<Long> saveTechIfNotExist(List<String> skills) {
-        List<TechnicalSubjects> techList = technicalSubjectsRepository.findTech(skills);
-        List<String> savedNames = techList.stream().map(TechnicalSubjects::getName).toList();
-        skills.stream()
-                .map(String::toUpperCase)
-                .filter(notSavedSkill -> !savedNames.contains(notSavedSkill))
-                .map(TechnicalSubjects::create)
-                .map(technicalSubjectsRepository::save)
-                .forEach(techList::add);
-
+        List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, skills);
         return TechConvertHelper.convertToTechId(techList);
     }
 }
