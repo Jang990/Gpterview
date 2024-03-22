@@ -5,9 +5,6 @@ import com.mock.interview.interview.domain.ConversationMessageBroker;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
-import com.mock.interview.interviewquestion.infra.ai.dto.Message;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
 import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
 import com.mock.interview.interview.presentation.dto.message.QuestionInInterviewDto;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -28,8 +25,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -57,7 +52,7 @@ public class ChangingTopicEventHandler {
 
         // 요청과정
         long interviewId = conversationPair.getInterview().getId();
-        PublishedQuestion publishedQuestion = QuestionRequestHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, interviewId);
+        PublishedQuestion publishedQuestion = AiQuestionHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, interviewId);
 
         // Question 저장 과정
         InterviewQuestion question = createQuestion(publishedQuestion, interviewId);

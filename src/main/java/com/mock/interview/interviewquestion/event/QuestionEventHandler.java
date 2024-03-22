@@ -4,7 +4,6 @@ import com.mock.interview.interviewanswer.domain.UserAnsweredEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.PublishedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
-import com.mock.interview.interviewquestion.infra.ai.dto.Message;
 import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
 import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -54,7 +53,7 @@ public class QuestionEventHandler {
     }
 
     private void createQuestion(long interviewId) {
-        PublishedQuestion question = QuestionRequestHelper.requestQuestion(aiQuestionCreator, interviewCache, conversationCache, interviewId);
+        PublishedQuestion question = AiQuestionHelper.createQuestion(aiQuestionCreator, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         creationQuestionInCustomInterviewService.save(interviewQuestionRepository, interview, question);

@@ -4,12 +4,11 @@ import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAi
 import com.mock.interview.interviewquestion.infra.PublishedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
-import com.mock.interview.interviewquestion.infra.ai.dto.Message;
 import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 
-public class QuestionRequestHelper {
-    public static PublishedQuestion requestQuestion(
+public class AiQuestionHelper {
+    public static PublishedQuestion createQuestion(
             AiQuestionCreator aiQuestionCreator, InterviewCacheForAiRequest interviewCache,
             ConversationCacheForAiRequest conversationCache, long interviewId
     ) {
