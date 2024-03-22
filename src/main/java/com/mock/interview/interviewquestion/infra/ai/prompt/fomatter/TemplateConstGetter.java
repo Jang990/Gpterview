@@ -22,4 +22,7 @@ public class TemplateConstGetter {
     private String skills;
     @Value("${interview.profile.experience}")
     private String experience;
+
+    @Value("${interview.template.common.skip}")
+    private String changingTopicCommand;
 }
