@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.event;
 
 
-import com.mock.interview.interview.domain.ConversationMessageBroker;
+import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;

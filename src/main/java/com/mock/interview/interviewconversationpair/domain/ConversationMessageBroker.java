@@ -1,4 +1,4 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.interviewconversationpair.domain;
 
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 
