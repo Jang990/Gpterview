@@ -7,19 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class FormatConstGetter {
-    @Value("${interview.format.role.system}")
-    private String systemRoleFormat;
-    @Value("${interview.format.role.user}")
-    private String userRoleFormat;
-    @Value("${interview.format.role.interviewer}")
-    private String interviewerRoleFormat;
-    @Value("${interview.format.profile.department}")
-    private String departmentFormat;
-    @Value("${interview.format.profile.field}")
-    private String fieldFormat;
-    @Value("${interview.format.profile.skills}")
-    private String skillsFormat;
-
     @Value("${interview.role.system}")
     private String systemRole;
     @Value("${interview.role.user}")
