@@ -18,7 +18,7 @@ public class QuestionTokenization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id",nullable = false)
     private InterviewQuestion interviewQuestion;
 

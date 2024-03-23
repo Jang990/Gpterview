@@ -9,6 +9,7 @@ import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
+import com.mock.interview.questiontoken.domain.QuestionTokenization;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
@@ -57,17 +58,14 @@ public class InterviewQuestion extends BaseEntity {
 
     @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
-    private List<QuestionTechLink> techLink = new ArrayList<>(); // TODO: AiService 구조 개선 후 값을 넣을 것
+    private List<QuestionTechLink> techLink = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_question_id")
     private InterviewQuestion parentQuestion;
 
-    /*
-    내용, 분야, 필드
-    추천수, 조회수
-    생성한사람(AI-GPT or 사용자이름), Owner(사용자ID)
-     */
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "interviewQuestion")
+    QuestionTokenization questionToken;
 
     private static InterviewQuestion createWithCommonField(
             InterviewQuestionRepository repository, String content, JobCategory category, Users users,

@@ -8,6 +8,7 @@ import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressE
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -15,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter

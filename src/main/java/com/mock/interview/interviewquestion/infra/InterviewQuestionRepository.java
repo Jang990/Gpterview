@@ -21,8 +21,9 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
                 JOIN (
                     SELECT CEIL( RAND() * (SELECT MAX(iq2.id) FROM InterviewQuestion iq2) ) as id
                 ) random
-            LEFT JOIN iq.appliedJob ia
-            LEFT JOIN iq.appliedJob.department iad
+            INNER JOIN FETCH iq.questionToken qt
+            LEFT JOIN FETCH iq.appliedJob ia
+            LEFT JOIN FETCH iq.appliedJob.department iad
             WHERE iq.id >= CAST(random.id as long) AND (ia.name = :department OR iad.name = :department)
             """)
     List<InterviewQuestion> findQuestionForRecommend(@Param("department") String department, Pageable pageable);
