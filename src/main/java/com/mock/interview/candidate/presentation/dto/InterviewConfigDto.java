@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InterviewConfigDto {
-    // TODO: 클래스명을 InterviewConfig로 변경할 것.
     private InterviewType interviewType;
     private int durationMinutes;
 }

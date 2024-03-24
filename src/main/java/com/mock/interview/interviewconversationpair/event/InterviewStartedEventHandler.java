@@ -1,7 +1,7 @@
 package com.mock.interview.interviewconversationpair.event;
 
 import com.mock.interview.interview.domain.InterviewContinuedEvent;
-import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
+import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -20,7 +20,7 @@ public class InterviewStartedEventHandler {
     public void handle(InterviewContinuedEvent event) {
         long interviewId = event.interviewId();
         Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(InterviewNotExpiredException::new);
+                .orElseThrow(InterviewNotFoundException::new);
 
         InterviewConversationPair conversationPair = InterviewConversationPair.create(interview);
         interviewConversationPairRepository.save(conversationPair);
