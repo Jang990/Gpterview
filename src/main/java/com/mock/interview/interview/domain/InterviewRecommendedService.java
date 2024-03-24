@@ -15,6 +15,6 @@ public class InterviewRecommendedService {
         if(relatedQuestionSize < MIN_RELATED_QUESTION_SIZE)
             throw new NotEnoughRelatedQuestionException();
 
-        Events.raise(new QuestionRecommendationRequestedEvent(interview.getId()));
+        Events.raise(new RecommendationRequestedEvent(interview.getId()));
     }
 }

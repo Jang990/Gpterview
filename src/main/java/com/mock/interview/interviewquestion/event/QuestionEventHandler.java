@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.event;
 
-import com.mock.interview.interviewanswer.domain.UserAnsweredEvent;
+import com.mock.interview.interviewanswer.domain.NextQuestionRequestedEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
@@ -10,7 +10,7 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interviewquestion.domain.CreationQuestionInCustomInterviewService;
+import com.mock.interview.interviewquestion.domain.CreationInterviewQuestionService;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.tech.application.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -34,7 +34,7 @@ public class QuestionEventHandler {
     private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
-    private final CreationQuestionInCustomInterviewService creationQuestionInCustomInterviewService;
+    private final CreationInterviewQuestionService creationInterviewQuestionService;
 
     @Async
     @AiResponseProcessingLock
@@ -51,10 +51,10 @@ public class QuestionEventHandler {
     @AiResponseProcessingLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
-            classes = UserAnsweredEvent.class,
+            classes = NextQuestionRequestedEvent.class,
             phase = TransactionPhase.AFTER_COMMIT
     )
-    public void getAiResponse(UserAnsweredEvent event) {
+    public void getAiResponse(NextQuestionRequestedEvent event) {
         createQuestion(event.interviewId());
     }
 
@@ -63,6 +63,6 @@ public class QuestionEventHandler {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, question.topic());
-        creationQuestionInCustomInterviewService.save(interviewQuestionRepository, interview, question, techList);
+        creationInterviewQuestionService.save(interviewQuestionRepository, interview, question, techList);
     }
 }

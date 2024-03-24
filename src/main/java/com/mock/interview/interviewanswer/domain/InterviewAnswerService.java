@@ -9,7 +9,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import org.springframework.stereotype.Service;
 
 @Service
-public class AnswerInCustomInterviewService {
+public class InterviewAnswerService {
     public void saveAnswerInInterview(
             InterviewAnswerRepository interviewAnswerRepository,
             Interview interview, InterviewConversationPair conversationPair,
@@ -17,9 +17,10 @@ public class AnswerInCustomInterviewService {
     ) {
         InterviewAnswer answer = InterviewAnswer.createAnswer(conversationPair.getQuestion(), answerDto.getContent(), interview.getUsers());
         interviewAnswerRepository.save(answer);
-        Events.raise(new AnsweredInCustomInterviewEvent(conversationPair.getId(), answer.getId()));
+        Events.raise(new ConversationAnsweredEvent(conversationPair.getId(), answer.getId()));
 
+        // TODO: interviewConversation으로 이동해서 이벤트 처리.
         if(interview.isActive())
-            Events.raise(new UserAnsweredEvent(interview.getId()));
+            Events.raise(new NextQuestionRequestedEvent(interview.getId()));
     }
 }

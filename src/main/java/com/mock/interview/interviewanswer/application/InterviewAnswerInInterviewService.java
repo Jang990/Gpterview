@@ -5,7 +5,7 @@ import com.mock.interview.interview.application.InterviewVerificationHelper;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interviewanswer.domain.AnswerInCustomInterviewService;
+import com.mock.interview.interviewanswer.domain.InterviewAnswerService;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -21,7 +21,7 @@ public class InterviewAnswerInInterviewService {
     private final InterviewRepository interviewRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
     private final InterviewAnswerRepository interviewAnswerRepository;
-    private final AnswerInCustomInterviewService answerInCustomInterviewService;
+    private final InterviewAnswerService interviewAnswerService;
 
     public void create(long loginId, long interviewId, long pairId, MessageDto answerDto) {
         InterviewVerificationHelper.verify(interviewRepository, interviewId, loginId);
@@ -30,6 +30,6 @@ public class InterviewAnswerInInterviewService {
         InterviewConversationPair conversationPair = conversationPairRepository.findByIdWithInterviewId(pairId, interviewId)
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
-        answerInCustomInterviewService.saveAnswerInInterview(interviewAnswerRepository, interview, conversationPair, answerDto);
+        interviewAnswerService.saveAnswerInInterview(interviewAnswerRepository, interview, conversationPair, answerDto);
     }
 }

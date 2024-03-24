@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CreationQuestionInCustomInterviewService {
+public class CreationInterviewQuestionService {
     public InterviewQuestion save(
             InterviewQuestionRepository repository,
             Interview interview, RecommendedQuestion recommendedQuestion,
@@ -21,7 +21,7 @@ public class CreationQuestionInCustomInterviewService {
                 repository, interview.getUsers(),
                 interview.getAppliedJob(), recommendedQuestion, techList
         );
-        Events.raise(new CreatedCustomInterviewQuestionEvent(interview.getId(), question.getId()));
+        Events.raise(new InterviewQuestionCreatedEvent(interview.getId(), question.getId()));
         return question;
     }
 
