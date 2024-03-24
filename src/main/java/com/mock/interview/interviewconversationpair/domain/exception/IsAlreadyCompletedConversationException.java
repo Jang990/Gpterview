@@ -3,15 +3,15 @@ package com.mock.interview.interviewconversationpair.domain.exception;
 import com.mock.interview.global.exception.CustomClientException;
 import org.springframework.http.HttpStatus;
 
-public class IsAlreadyAnsweredConversationException extends CustomClientException {
+public class IsAlreadyCompletedConversationException extends CustomClientException {
     private static final HttpStatus status = HttpStatus.GONE;
-    private static final String code = "finished.conversation";
+    private static final String code = "completed.conversation";
 
-    public IsAlreadyAnsweredConversationException() {
+    public IsAlreadyCompletedConversationException() {
         super(status, code);
     }
 
-    public IsAlreadyAnsweredConversationException(Throwable cause) {
+    public IsAlreadyCompletedConversationException(Throwable cause) {
         super(cause, status, code);
     }
 }

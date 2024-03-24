@@ -4,10 +4,11 @@ import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
+import com.mock.interview.interviewconversationpair.domain.ConversationCompletedEvent;
 import com.mock.interview.interviewconversationpair.domain.NewQuestionAddedEvent;
-import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyAnsweredConversationException;
+import com.mock.interview.interviewconversationpair.domain.PairStatusChangedToChangingEvent;
+import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyCompletedConversationException;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyChangingStateException;
-import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -28,7 +29,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
     private Interview interview;
 
     @ManyToOne
-    @JoinColumn(name = "question_id", nullable = false)
+    @JoinColumn(name = "question_id")
     private InterviewQuestion question;
 
     @OneToOne
@@ -38,18 +39,20 @@ public class InterviewConversationPair extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PairStatus status;
 
-    public static InterviewConversationPair startConversation(
-            InterviewConversationPairRepository conversationPairRepository,
-            Interview interview, InterviewQuestion question
-    ) {
+    public static InterviewConversationPair startConversation(Interview interview) {
         InterviewConversationPair conversationPair = new InterviewConversationPair();
         conversationPair.interview = interview;
-        conversationPair.question = question;
-        conversationPair.status = PairStatus.WAITING;
-
-        conversationPairRepository.save(conversationPair);
-        Events.raise(new NewQuestionAddedEvent(interview.getId(), conversationPair.id, question.getId()));
+        conversationPair.status = PairStatus.WAITING_QUESTION;
         return conversationPair;
+    }
+
+    public void connectQuestion(InterviewQuestion question) {
+        if(status != PairStatus.WAITING_QUESTION)
+            throw new IllegalStateException();
+
+        this.question = question;
+        status = PairStatus.WAITING_ANSWER;
+        Events.raise(new NewQuestionAddedEvent(interview.getId(), this.getId(), question.getId()));
     }
 
     public void answerQuestion(InterviewAnswer answer) {
@@ -57,27 +60,28 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
         this.answer = answer;
         this.status = PairStatus.COMPLETED;
+        Events.raise(new ConversationCompletedEvent(interview.getId()));
     }
 
     // TODO: 디폴트 접근 제어자로 수정할 것
     public void changeStatusToChangeTopic() {
         verifyCanModifyQuestion();
         status = PairStatus.CHANGING;
+        Events.raise(new PairStatusChangedToChangingEvent(interview.getId(), this.getId()));
     }
 
     public void changeTopic(InterviewQuestion question) {
         if(status != PairStatus.CHANGING)
-            throw new IllegalStateException(); // TODO: 적절한 예외 필요.
+            throw new IllegalStateException();
 
         this.question = question;
-        this.status = PairStatus.WAITING;
-
+        this.status = PairStatus.WAITING_ANSWER;
         Events.raise(new NewQuestionAddedEvent(interview.getId(), id, question.getId()));
     }
 
     private void verifyCanModifyQuestion() {
-        if( status == PairStatus.COMPLETED)
-            throw new IsAlreadyAnsweredConversationException();
+        if(status == PairStatus.COMPLETED)
+            throw new IsAlreadyCompletedConversationException();
         if(status == PairStatus.CHANGING)
             throw new IsAlreadyChangingStateException();
     }

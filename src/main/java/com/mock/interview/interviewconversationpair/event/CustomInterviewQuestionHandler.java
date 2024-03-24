@@ -35,7 +35,9 @@ public class CustomInterviewQuestionHandler {
         InterviewQuestion question = interviewQuestionRepository.findById(questionId)
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        InterviewConversationPair.startConversation(interviewConversationPairRepository, interview, question);
+        InterviewConversationPair conversationPair = InterviewConversationPair.startConversation(interview);
+        interviewConversationPairRepository.save(conversationPair);
+        conversationPair.connectQuestion(question);
     }
 
     @EventListener(ConversationAnsweredEvent.class)
