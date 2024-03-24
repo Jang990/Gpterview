@@ -1,6 +1,5 @@
 package com.mock.interview.interviewquestion.event;
 
-import com.mock.interview.interviewanswer.domain.NextQuestionRequestedEvent;
 import com.mock.interview.interviewconversationpair.domain.ConversationStartedEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
@@ -44,17 +43,6 @@ public class QuestionEventHandler {
             phase = TransactionPhase.AFTER_COMMIT
     )
     public void initInterviewConversation(ConversationStartedEvent event) {
-        createQuestion(event.interviewId());
-    }
-
-    @Async
-    @AiResponseProcessingLock
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @TransactionalEventListener(
-            classes = NextQuestionRequestedEvent.class,
-            phase = TransactionPhase.AFTER_COMMIT
-    )
-    public void getAiResponse(NextQuestionRequestedEvent event) {
         createQuestion(event.interviewId());
     }
 

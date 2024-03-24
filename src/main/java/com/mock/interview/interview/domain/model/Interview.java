@@ -84,4 +84,12 @@ public class Interview extends BaseTimeEntity {
     public boolean isActive() {
         return !isTimeout();
     }
+
+    public boolean continueInterview() {
+        if(isTimeout())
+            return false;
+
+        Events.raise(new InterviewStartedEvent(this.id));
+        return true;
+    }
 }
