@@ -8,7 +8,7 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interviewconversationpair.domain.PairStatusChangedToChangingEvent;
+import com.mock.interview.interviewconversationpair.domain.StatusChangedToChangingEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
@@ -43,10 +43,10 @@ public class ChangingTopicEventHandler {
     @AiResponseProcessingLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
-            classes = PairStatusChangedToChangingEvent.class,
+            classes = StatusChangedToChangingEvent.class,
             phase = TransactionPhase.AFTER_COMMIT
     )
-    public void handleChangingTopicRequest(PairStatusChangedToChangingEvent event) {
+    public void handleChangingTopicRequest(StatusChangedToChangingEvent event) {
         long interviewId = event.interviewId();
         InterviewConversationPair conversationPair = conversationPairRepository.findById(event.pairId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);

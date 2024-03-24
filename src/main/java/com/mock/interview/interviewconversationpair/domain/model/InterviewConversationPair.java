@@ -6,7 +6,7 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.ConversationCompletedEvent;
 import com.mock.interview.interviewconversationpair.domain.NewQuestionAddedEvent;
-import com.mock.interview.interviewconversationpair.domain.PairStatusChangedToChangingEvent;
+import com.mock.interview.interviewconversationpair.domain.StatusChangedToChangingEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyCompletedConversationException;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyChangingStateException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
@@ -67,7 +67,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
     public void changeStatusToChangeTopic() {
         verifyCanModifyQuestion();
         status = PairStatus.CHANGING;
-        Events.raise(new PairStatusChangedToChangingEvent(interview.getId(), this.getId()));
+        Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.getId()));
     }
 
     public void changeTopic(InterviewQuestion question) {
