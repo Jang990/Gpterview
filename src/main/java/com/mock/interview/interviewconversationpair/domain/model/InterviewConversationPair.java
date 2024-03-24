@@ -5,6 +5,7 @@ import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.ConversationCompletedEvent;
+import com.mock.interview.interviewconversationpair.domain.ConversationStartedEvent;
 import com.mock.interview.interviewconversationpair.domain.NewQuestionAddedEvent;
 import com.mock.interview.interviewconversationpair.domain.StatusChangedToChangingEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyCompletedConversationException;
@@ -39,15 +40,21 @@ public class InterviewConversationPair extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PairStatus status;
 
-    public static InterviewConversationPair startConversation(Interview interview) {
+    public static InterviewConversationPair create(Interview interview) {
         InterviewConversationPair conversationPair = new InterviewConversationPair();
         conversationPair.interview = interview;
-        conversationPair.status = PairStatus.WAITING_QUESTION;
+        conversationPair.status = PairStatus.START;
         return conversationPair;
     }
 
+    public void start() {
+        if(status != PairStatus.START)
+            throw new IllegalStateException();
+        Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
+    }
+
     public void connectQuestion(InterviewQuestion question) {
-        if(status != PairStatus.WAITING_QUESTION)
+        if(status != PairStatus.START)
             throw new IllegalStateException();
 
         this.question = question;
