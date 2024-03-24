@@ -5,7 +5,7 @@ import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.ConversationCompletedEvent;
-import com.mock.interview.interviewconversationpair.domain.ConversationStartedEvent;
+import com.mock.interview.interviewconversationpair.domain.AiQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.domain.QuestionConnectedEvent;
 import com.mock.interview.interviewconversationpair.domain.StatusChangedToChangingEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyCompletedConversationException;
@@ -47,15 +47,13 @@ public class InterviewConversationPair extends BaseTimeEntity {
         return conversationPair;
     }
 
-    public void start() {
-        if(status != PairStatus.START)
-            throw new IllegalStateException();
-        Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
+    public void recommendAiQuestion() {
+        verifyCanConnectQuestion();
+        Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void connectQuestion(InterviewQuestion question) {
-        if(status != PairStatus.START)
-            throw new IllegalStateException();
+        verifyCanConnectQuestion();
 
         this.question = question;
         status = PairStatus.WAITING_ANSWER;
@@ -84,6 +82,11 @@ public class InterviewConversationPair extends BaseTimeEntity {
         this.question = question;
         this.status = PairStatus.WAITING_ANSWER;
         Events.raise(new QuestionConnectedEvent(interview.getId(), id, question.getId()));
+    }
+
+    private void verifyCanConnectQuestion() {
+        if(status != PairStatus.START)
+            throw new IllegalStateException();
     }
 
     private void verifyCanModifyQuestion() {

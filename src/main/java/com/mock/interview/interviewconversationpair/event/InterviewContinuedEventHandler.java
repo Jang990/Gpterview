@@ -24,6 +24,6 @@ public class InterviewContinuedEventHandler {
 
         InterviewConversationPair conversationPair = InterviewConversationPair.create(interview);
         interviewConversationPairRepository.save(conversationPair);
-        conversationPair.start();
+        conversationPair.recommendAiQuestion();
     }
 }
