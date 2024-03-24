@@ -1,6 +1,6 @@
 package com.mock.interview.interviewconversationpair.event;
 
-import com.mock.interview.interview.domain.InterviewStartedEvent;
+import com.mock.interview.interview.domain.InterviewContinuedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
@@ -16,8 +16,8 @@ public class InterviewStartedEventHandler {
     private final InterviewConversationPairRepository interviewConversationPairRepository;
     private final InterviewRepository interviewRepository;
 
-    @EventListener(InterviewStartedEvent.class)
-    public void handle(InterviewStartedEvent event) {
+    @EventListener(InterviewContinuedEvent.class)
+    public void handle(InterviewContinuedEvent event) {
         long interviewId = event.interviewId();
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotExpiredException::new);

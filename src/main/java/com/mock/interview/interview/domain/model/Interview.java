@@ -3,12 +3,11 @@ package com.mock.interview.interview.domain.model;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.interview.domain.InterviewStartedEvent;
+import com.mock.interview.interview.domain.InterviewContinuedEvent;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,7 +15,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -65,7 +63,7 @@ public class Interview extends BaseTimeEntity {
         interview.appliedJob = appliedJob;
 
         interview = interviewRepository.save(interview);
-        Events.raise(new InterviewStartedEvent(interview.id));
+        Events.raise(new InterviewContinuedEvent(interview.id));
         return interview;
     }
 
@@ -89,7 +87,7 @@ public class Interview extends BaseTimeEntity {
         if(isTimeout())
             return false;
 
-        Events.raise(new InterviewStartedEvent(this.id));
+        Events.raise(new InterviewContinuedEvent(this.id));
         return true;
     }
 }
