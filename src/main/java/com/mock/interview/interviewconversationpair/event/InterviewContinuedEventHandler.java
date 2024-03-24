@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class InterviewStartedEventHandler {
+public class InterviewContinuedEventHandler {
     private final InterviewConversationPairRepository interviewConversationPairRepository;
     private final InterviewRepository interviewRepository;
 
