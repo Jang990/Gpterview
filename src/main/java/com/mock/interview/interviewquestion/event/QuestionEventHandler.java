@@ -9,7 +9,7 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interviewquestion.domain.CreationInterviewQuestionService;
+import com.mock.interview.interviewquestion.domain.ConversationQuestionService;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.tech.application.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -33,7 +33,7 @@ public class QuestionEventHandler {
     private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
-    private final CreationInterviewQuestionService creationInterviewQuestionService;
+    private final ConversationQuestionService conversationQuestionService;
 
     @Async
     @AiResponseProcessingLock
@@ -42,15 +42,13 @@ public class QuestionEventHandler {
             classes = ConversationStartedEvent.class,
             phase = TransactionPhase.AFTER_COMMIT
     )
-    public void initInterviewConversation(ConversationStartedEvent event) {
-        createQuestion(event.interviewId());
-    }
-
-    private void createQuestion(long interviewId) {
+    public void handle(ConversationStartedEvent event) {
+        long interviewId = event.interviewId();
         RecommendedQuestion question = AiQuestionHelper.createQuestion(aiQuestionCreator, interviewCache, conversationCache, interviewId);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, question.topic());
-        creationInterviewQuestionService.save(interviewQuestionRepository, interview, question, techList);
+
+        conversationQuestionService.save(interviewQuestionRepository, event.pairId(), interview, question, techList);
     }
 }

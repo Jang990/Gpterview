@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
-import com.mock.interview.interviewquestion.domain.CreationInterviewQuestionService;
+import com.mock.interview.interviewquestion.domain.ConversationQuestionService;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -37,7 +37,7 @@ public class ChangingTopicEventHandler {
     private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository questionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
-    private final CreationInterviewQuestionService domainService;
+    private final ConversationQuestionService conversationQuestionService;
 
     @Async
     @AiResponseProcessingLock
@@ -59,6 +59,6 @@ public class ChangingTopicEventHandler {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, recommendedQuestion.topic());
-        domainService.changeTopic(questionRepository, interview, conversationPair, recommendedQuestion, techList);
+        conversationQuestionService.changeTopic(questionRepository, interview, conversationPair, recommendedQuestion, techList);
     }
 }

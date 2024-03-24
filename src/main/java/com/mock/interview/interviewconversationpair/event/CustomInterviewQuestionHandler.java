@@ -12,7 +12,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.domain.InterviewQuestionCreatedEvent;
+import com.mock.interview.interviewquestion.domain.ConversationQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -22,21 +22,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomInterviewQuestionHandler {
     private final InterviewConversationPairRepository interviewConversationPairRepository;
-    private final InterviewRepository interviewRepository;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final InterviewAnswerRepository answerRepository;
 
-    @EventListener(InterviewQuestionCreatedEvent.class)
-    public void handle(InterviewQuestionCreatedEvent event) {
-        long interviewId = event.interviewId();
-        long questionId = event.questionId();
-        Interview interview = interviewRepository.findById(interviewId)
-                .orElseThrow(InterviewNotExpiredException::new);
-        InterviewQuestion question = interviewQuestionRepository.findById(questionId)
+    @EventListener(ConversationQuestionCreatedEvent.class)
+    public void handle(ConversationQuestionCreatedEvent event) {
+        InterviewConversationPair conversationPair = interviewConversationPairRepository.findById(event.conversationId())
+                .orElseThrow(InterviewConversationPairNotFoundException::new);
+        InterviewQuestion question = interviewQuestionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        InterviewConversationPair conversationPair = InterviewConversationPair.create(interview);
-        interviewConversationPairRepository.save(conversationPair);
         conversationPair.connectQuestion(question);
     }
 

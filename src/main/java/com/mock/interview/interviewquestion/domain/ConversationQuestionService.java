@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CreationInterviewQuestionService {
+public class ConversationQuestionService {
     public InterviewQuestion save(
-            InterviewQuestionRepository repository,
-            Interview interview, RecommendedQuestion recommendedQuestion,
-            List<TechnicalSubjects> techList) {
+            InterviewQuestionRepository repository, long conversationPairId, Interview interview,
+            RecommendedQuestion recommendedQuestion, List<TechnicalSubjects> techList
+    ) {
         InterviewQuestion question = InterviewQuestion.createInInterview(
-                repository, interview.getUsers(),
-                interview.getAppliedJob(), recommendedQuestion, techList
+                repository, interview.getUsers(), interview.getAppliedJob(),
+                recommendedQuestion, techList
         );
-        Events.raise(new InterviewQuestionCreatedEvent(interview.getId(), question.getId()));
+        Events.raise(new ConversationQuestionCreatedEvent(conversationPairId, question.getId()));
         return question;
     }
 
