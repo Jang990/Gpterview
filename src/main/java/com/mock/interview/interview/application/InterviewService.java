@@ -1,5 +1,6 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.interview.domain.InterviewCreator;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infrastructure.lock.creation.InterviewUserLock;
@@ -25,6 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InterviewService {
 
+    private final InterviewCreator interviewCreator;
     private final InterviewRepository repository;
     private final CandidateConfigRepository profileRepository;
 
@@ -33,7 +35,10 @@ public class InterviewService {
     public long create(long loginId,long candidateConfigId) {
         CandidateConfig candidateConfig = profileRepository.findInterviewConfig(candidateConfigId, loginId)
                 .orElseThrow(CandidateConfigNotFoundException::new);
-        Interview interview = Interview.startInterview(repository, candidateConfig, candidateConfig.getUsers(), candidateConfig.getAppliedJob());
+        Interview interview = interviewCreator.startInterview(
+                repository, candidateConfig,
+                candidateConfig.getUsers(), candidateConfig.getAppliedJob()
+        );
         return repository.save(interview).getId();
     }
 

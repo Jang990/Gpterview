@@ -46,13 +46,7 @@ public class Interview extends BaseTimeEntity {
     @JoinColumn(name = "applied_job_id")
     private JobCategory appliedJob;
 
-    public static Interview startInterview(
-            InterviewRepository interviewRepository,
-            CandidateConfig config, Users user, JobCategory appliedJob
-    ) {
-        if (interviewRepository.findActiveInterview(user.getId()).isPresent()) // TODO: QueryDSL로 최적화
-            throw new InterviewAlreadyInProgressException();
-
+    public static Interview startInterview(CandidateConfig config, Users user, JobCategory appliedJob) {
         Interview interview = new Interview();
         interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
         LocalDateTime now = LocalDateTime.now();
@@ -61,9 +55,6 @@ public class Interview extends BaseTimeEntity {
         interview.users = user;
         interview.candidateConfig = config;
         interview.appliedJob = appliedJob;
-
-        interview = interviewRepository.save(interview);
-        Events.raise(new InterviewContinuedEvent(interview.id));
         return interview;
     }
 

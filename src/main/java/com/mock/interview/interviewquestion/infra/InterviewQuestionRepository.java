@@ -27,4 +27,13 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             WHERE iq.id >= CAST(random.id as long) AND (ia.name = :department OR iad.name = :department)
             """)
     List<InterviewQuestion> findQuestionForRecommend(@Param("department") String department, Pageable pageable);
+
+    @Query("""
+            SELECT COUNT(*)
+            FROM InterviewQuestion iq
+            LEFT JOIN iq.appliedJob ia
+            LEFT JOIN iq.appliedJob.department iad
+            WHERE ia.name = :department OR iad.name = :department
+            """)
+    Long countDepartmentQuestion(@Param("department") String department);
 }

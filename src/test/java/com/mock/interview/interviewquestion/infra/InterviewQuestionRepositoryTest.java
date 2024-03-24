@@ -8,8 +8,6 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 //@SpringBootTest
 class InterviewQuestionRepositoryTest {
     @Autowired
@@ -21,5 +19,10 @@ class InterviewQuestionRepositoryTest {
         for (InterviewQuestion question : it) {
             System.out.println(question.getQuestion());
         }
+    }
+
+//    @Test
+    void test2() {
+        System.out.println(repository.countDepartmentQuestion("IT"));
     }
 }

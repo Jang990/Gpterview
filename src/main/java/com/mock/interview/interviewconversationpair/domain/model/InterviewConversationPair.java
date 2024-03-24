@@ -4,10 +4,7 @@ import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
-import com.mock.interview.interviewconversationpair.domain.ConversationCompletedEvent;
-import com.mock.interview.interviewconversationpair.domain.AiQuestionRecommendedEvent;
-import com.mock.interview.interviewconversationpair.domain.QuestionConnectedEvent;
-import com.mock.interview.interviewconversationpair.domain.StatusChangedToChangingEvent;
+import com.mock.interview.interviewconversationpair.domain.*;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyCompletedConversationException;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyChangingStateException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
@@ -50,6 +47,13 @@ public class InterviewConversationPair extends BaseTimeEntity {
     public void recommendAiQuestion() {
         verifyCanConnectQuestion();
         Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
+    }
+
+    public void recommendExistingQuestion() {
+        verifyCanConnectQuestion();
+        Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
+        // TODO: 위 이벤트를 제거하고 질문 추천 기능을 비동기 연결할 것.
+//        Events.raise(new ExistingQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void connectQuestion(InterviewQuestion question) {
