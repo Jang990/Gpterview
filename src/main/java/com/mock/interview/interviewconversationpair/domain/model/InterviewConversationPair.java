@@ -6,7 +6,7 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.ConversationCompletedEvent;
 import com.mock.interview.interviewconversationpair.domain.ConversationStartedEvent;
-import com.mock.interview.interviewconversationpair.domain.NewQuestionAddedEvent;
+import com.mock.interview.interviewconversationpair.domain.QuestionConnectedEvent;
 import com.mock.interview.interviewconversationpair.domain.StatusChangedToChangingEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyCompletedConversationException;
 import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyChangingStateException;
@@ -59,7 +59,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
         this.question = question;
         status = PairStatus.WAITING_ANSWER;
-        Events.raise(new NewQuestionAddedEvent(interview.getId(), this.getId(), question.getId()));
+        Events.raise(new QuestionConnectedEvent(interview.getId(), this.getId(), question.getId()));
     }
 
     public void answerQuestion(InterviewAnswer answer) {
@@ -83,7 +83,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
         this.question = question;
         this.status = PairStatus.WAITING_ANSWER;
-        Events.raise(new NewQuestionAddedEvent(interview.getId(), id, question.getId()));
+        Events.raise(new QuestionConnectedEvent(interview.getId(), id, question.getId()));
     }
 
     private void verifyCanModifyQuestion() {
