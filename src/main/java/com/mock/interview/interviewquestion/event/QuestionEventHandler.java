@@ -1,11 +1,11 @@
 package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interviewanswer.domain.NextQuestionRequestedEvent;
+import com.mock.interview.interviewconversationpair.domain.ConversationStartedEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock;
-import com.mock.interview.interview.domain.InterviewStartedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
@@ -40,10 +40,10 @@ public class QuestionEventHandler {
     @AiResponseProcessingLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
-            classes = InterviewStartedEvent.class,
+            classes = ConversationStartedEvent.class,
             phase = TransactionPhase.AFTER_COMMIT
     )
-    public void initInterviewConversation(InterviewStartedEvent event) {
+    public void initInterviewConversation(ConversationStartedEvent event) {
         createQuestion(event.interviewId());
     }
 
