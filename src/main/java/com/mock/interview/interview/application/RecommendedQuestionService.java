@@ -28,24 +28,10 @@ public class RecommendedQuestionService {
     public void recommend(long loginId, long interviewId) {
         Interview interview = interviewRepository.findInterviewSetting(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-        List<InterviewQuestion> questionForRecommend = questionRepository
-                .findQuestionForRecommend(interview.getAppliedJob().getName(), PageRequest.of(0, 100));
+
 
         // TODO: 임시 코드 QuestionRepo에서 Count쿼리를 날릴 것. => cache로 최적화.
         recommendedService.recommended(interview, 100);
 //        List<QuestionMetaData> questionMetaDataList = questionForRecommend.stream().map(question -> convertQuestion(question)).toList();
-    }
-
-    private QuestionMetaData convertQuestion(InterviewQuestion question) {
-        return new QuestionMetaData(
-                question.getId(),
-                (question.getParentQuestion() == null) ? null : question.getParentQuestion().getId(),
-                question.getAppliedJob().getName(), convertTechLink(question),
-                question.getQuestionToken().getResult(), question.getLikes()
-        );
-    }
-
-    private static List<String> convertTechLink(InterviewQuestion q) {
-        return q.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).map(TechnicalSubjects::getName).toList();
     }
 }
