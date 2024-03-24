@@ -84,7 +84,7 @@ public class InterviewQuestion extends BaseEntity {
         return question;
     }
 
-    public static InterviewQuestion createInInterview(
+    public static InterviewQuestion createConversationQuestion(
             InterviewQuestionRepository repository,
             Users owner, JobCategory appliedJob,
             RecommendedQuestion questionInfo,

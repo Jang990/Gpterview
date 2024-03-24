@@ -59,6 +59,6 @@ public class ChangingTopicEventHandler {
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, recommendedQuestion.topic());
-        conversationQuestionService.changeTopic(questionRepository, interview, conversationPair, recommendedQuestion, techList);
+        conversationQuestionService.saveTopicChangedQuestion(questionRepository, interview, conversationPair, recommendedQuestion, techList);
     }
 }

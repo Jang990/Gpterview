@@ -4,6 +4,7 @@ import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.domain.model.TopicChangedQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -17,7 +18,7 @@ public class ConversationQuestionService {
             InterviewQuestionRepository repository, long conversationPairId, Interview interview,
             RecommendedQuestion recommendedQuestion, List<TechnicalSubjects> techList
     ) {
-        InterviewQuestion question = InterviewQuestion.createInInterview(
+        InterviewQuestion question = InterviewQuestion.createConversationQuestion(
                 repository, interview.getUsers(), interview.getAppliedJob(),
                 recommendedQuestion, techList
         );
@@ -25,16 +26,16 @@ public class ConversationQuestionService {
         return question;
     }
 
-    public void changeTopic(
+    public void saveTopicChangedQuestion(
             InterviewQuestionRepository repository,
             Interview interview, InterviewConversationPair conversationPair,
             RecommendedQuestion recommendedQuestion, List<TechnicalSubjects> techList
     ) {
-        InterviewQuestion question = InterviewQuestion.createInInterview(
+        InterviewQuestion question = InterviewQuestion.createConversationQuestion(
                 repository, interview.getUsers(), interview.getAppliedJob(),
                 recommendedQuestion, techList
         );
 
-        conversationPair.changeTopic(question);
+        Events.raise(new TopicChangedQuestionCreatedEvent(conversationPair.getId(), question.getId()));
     }
 }
