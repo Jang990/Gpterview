@@ -4,6 +4,7 @@ import com.mock.interview.interviewquestion.infra.recommend.calculator.SimpleRec
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -23,6 +24,20 @@ public class SimpleRecommendScoreCalculatorTest {
         List<List<String>> questionContents = simpleTestData.stream()
                 .map(QuestionMetaData::getNecessaryWords).toList();
         CurrentQuestion user = new CurrentQuestion(1l, Arrays.asList("Spring", "MVC", "대해", "아는대로", "설명", "해보세요"), "Spring Boot", "백엔드"); // Spring MVC에 대해 아는대로 설명해보세요.
+        System.out.println("TF-IDF\t좋아요\t필드 \t테크 \t꼬리질문");
+        for (QuestionMetaData data : simpleTestData) {
+            calculator.calculateScore(user, data);
+            System.out.println(data.getNecessaryWords());
+        }
+    }
+
+    @Test
+    @DisplayName("NULL Safe 테스트")
+    void test2() {
+        List<QuestionMetaData> simpleTestData = createSimpleTestData();
+        List<List<String>> questionContents = simpleTestData.stream()
+                .map(QuestionMetaData::getNecessaryWords).toList();
+        CurrentQuestion user = new CurrentQuestion(null, null, null, null); // Spring MVC에 대해 아는대로 설명해보세요.
         System.out.println("TF-IDF\t좋아요\t필드 \t테크 \t꼬리질문");
         for (QuestionMetaData data : simpleTestData) {
             calculator.calculateScore(user, data);

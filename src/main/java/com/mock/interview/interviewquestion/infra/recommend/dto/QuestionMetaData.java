@@ -25,6 +25,7 @@ public class QuestionMetaData {
         this.tech = tech;
         this.necessaryWords = necessaryWords;
         this.likes = likes;
+        cosineSimilarity = 0;
     }
 
     public void setCosineSimilarity(double cosineSimilarity) {

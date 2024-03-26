@@ -56,6 +56,8 @@ public class QuestionRecommender {
     /** TF-IDF 계산을 통한 코사인 유사도 설정 */
     private void initQuestionCosineSimilarity(CurrentQuestion currentQuestion, List<QuestionMetaData> departmentMatchedQuestions) {
         List<String> base = currentQuestion.beforeQuestionContent();
+        if(base == null)
+            return;
         List<List<String>> allQuestions = departmentMatchedQuestions.stream()
                 .map(QuestionMetaData::getNecessaryWords).collect(Collectors.toList());
         allQuestions.add(base);

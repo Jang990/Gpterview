@@ -23,9 +23,9 @@ public class SimpleRecommendScoreCalculator {
         double result = 0;
         result += calculateTFDIFScore(TF_IDF_WEIGHT, target.getCosineSimilarity());
         result += calculateLikesScore(LIKE_WEIGHT, target.getLikes());
-        result += calculateFieldMatchedScore(FIELD_WEIGHT, currentQuestion.field(), target.getField());
+        result += calculateFieldMatchedScore(FIELD_WEIGHT, target.getField(), currentQuestion.field());
         result += calculateTechContainScore(TECH_WEIGHT, target.getTech(), currentQuestion.tech());
-        result += calculateChildQuestionScore(CHILD_WEIGHT, currentQuestion.beforeQuestionId(), target.getParentQuestionId());
+        result += calculateChildQuestionScore(CHILD_WEIGHT, target.getParentQuestionId(), currentQuestion.beforeQuestionId());
         print(currentQuestion, target, result);
         return result;
     }
@@ -44,7 +44,7 @@ public class SimpleRecommendScoreCalculator {
 
     private double calculateTFDIFScore(double weight, double targetCosineSimilarity) {
         if(Double.isNaN(targetCosineSimilarity) || Double.isInfinite(targetCosineSimilarity))
-            return 0;
+            return 0.0;
         if(targetCosineSimilarity >= 1)
             return weight;
         return weight * targetCosineSimilarity;
@@ -56,24 +56,27 @@ public class SimpleRecommendScoreCalculator {
         return (double) likes / FULL_LIKES_COUNT * weight;
     }
 
-    private double calculateChildQuestionScore(double weight, long questionId, Long parentQuestionId) {
-        boolean isMatch = parentQuestionId != null && questionId == parentQuestionId;
-        return isMatch ? weight : 0;
+    private double calculateChildQuestionScore(double weight, Long questionId, Long parentQuestionId) {
+        boolean isMatch = questionId != null && questionId.equals(parentQuestionId);
+        return isMatch ? weight : 0.0;
     }
 
     private double calculateTechContainScore(double weight, List<String> questionTech, String tech) {
-        if(!questionTech.contains(tech))
-            return 0;
+        if(questionTech == null || questionTech.isEmpty()
+                || tech == null || !questionTech.contains(tech))
+            return 0.0;
 
         int numberOfRelationalTech = questionTech.size();
         if (numberOfRelationalTech <= MAX_TECH_BOUND) {
             return weight;
         }
 
-        return (double) 1 / numberOfRelationalTech * weight;
+        return 1.0 / numberOfRelationalTech * weight;
     }
 
     private double calculateFieldMatchedScore(double weight, String field, String questionField) {
-        return field.equals(questionField) ? weight : 0;
+        if(field == null || questionField == null)
+            return 0.0;
+        return field.equals(questionField) ? weight : 0.0;
     }
 }
