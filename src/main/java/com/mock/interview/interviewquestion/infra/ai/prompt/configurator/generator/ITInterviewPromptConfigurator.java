@@ -32,6 +32,15 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     }
 
     @Override
+    public String getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
+        return switch (progress.stage()) {
+            case TECHNICAL -> selectSkills(progress.progress(), profile.skills());
+            case EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.experience());
+            case PERSONAL -> null;
+        };
+    }
+
+    @Override
     public boolean isSupportedDepartment(InterviewInfo interviewInfo) {
         if(interviewInfo == null || interviewInfo.profile() == null)
             return false;
@@ -75,6 +84,8 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     }
 
     private String selectStringBasedOnProgress(double progress, List<String> list) {
+        if(list.isEmpty())
+            return null;
         int n = (int) Math.floor(progress * list.size());
         return list.get(n);
     }

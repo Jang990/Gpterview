@@ -179,10 +179,13 @@ function createRandomMessage() {
 
 // 서버로 받은 응답 값을 화면에 면접관으로 표시
 function displayResponse(msgObj) {
-    const newConversationItem = createGptMessage(msgObj.question.content);
-    $('#talk-history').append(newConversationItem);
-    setCurrentConversationPairId(msgObj.conversationPairId);
-    scroll();
+    console.log(msgObj);
+    if(msgObj.question.length == 1) {
+        const newConversationItem = createGptMessage(msgObj.question[0].content);
+        $('#talk-history').append(newConversationItem);
+        setCurrentConversationPairId(msgObj.conversationPairId);
+        scroll();
+    }
 }
 
 // waiting 패널 지우기

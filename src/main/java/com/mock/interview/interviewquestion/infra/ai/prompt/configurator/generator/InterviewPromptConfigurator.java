@@ -6,6 +6,8 @@ import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptC
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
 
+import java.util.List;
+
 /**
  * 인터뷰 정보에 따라 각 분야(ex IT, 회계, 영업)별 관련 프롬프트 정보 생성기
  *
@@ -24,5 +26,25 @@ public interface InterviewPromptConfigurator {
      */
     PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress);
 
+    String getCurrentTopic(InterviewProfile profile, InterviewProgress progress);
+
     boolean isSupportedDepartment(InterviewInfo interviewInfo);
+
+    static InterviewPromptConfigurator selectPromptConfigurator(List<InterviewPromptConfigurator> list, InterviewInfo interviewInfo) {
+        InterviewPromptConfigurator defaultConfigurator = null;
+        for (InterviewPromptConfigurator interviewPromptConfigurator : list) {
+            if (interviewPromptConfigurator instanceof DefaultInterviewPromptConfigurator) {
+                defaultConfigurator = interviewPromptConfigurator;
+                continue;
+            }
+            if(interviewPromptConfigurator.isSupportedDepartment(interviewInfo))
+                return interviewPromptConfigurator;
+        }
+
+        if(defaultConfigurator != null)
+            return defaultConfigurator;
+
+        // TODO: 커스텀 예외로 바꿀 것.
+        throw new RuntimeException();
+    }
 }

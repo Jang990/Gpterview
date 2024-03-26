@@ -1,7 +1,10 @@
 package com.mock.interview.interviewconversationpair.event;
 
+import com.mock.interview.interview.presentation.dto.InterviewRole;
+import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
 import com.mock.interview.interviewconversationpair.domain.QuestionConnectedEvent;
+import com.mock.interview.interviewquestion.domain.QuestionRecommendedEvent;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
@@ -12,6 +15,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +35,20 @@ public class QuestionConnectedEventHandler {
         InterviewQuestion question = questionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        messageBroker.publish(
-                event.interviewId(), event.pairId(),
-                question.getId(), question.getQuestion()
-        );
+        List<MessageDto> list = List.of(ConversationMessageBroker.createMessageDtoToPublish(question));
+        messageBroker.publish(event.interviewId(), event.pairId(),list);
+    }
+
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
+    @TransactionalEventListener(
+            classes = QuestionRecommendedEvent.class,
+            phase = TransactionPhase.AFTER_COMMIT
+    )
+    public void handle(QuestionRecommendedEvent event) {
+        List<MessageDto> list = questionRepository.findAllById(event.questionIds()).stream()
+                .map(ConversationMessageBroker::createMessageDtoToPublish).toList();
+
+        messageBroker.publish(event.interviewId(), event.pairId(), list);
     }
 }

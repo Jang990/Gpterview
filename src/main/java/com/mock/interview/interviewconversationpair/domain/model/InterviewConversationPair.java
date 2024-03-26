@@ -51,9 +51,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
     public void recommendExistingQuestion() {
         verifyCanConnectQuestion();
-        Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
-        // TODO: 위 이벤트를 제거하고 질문 추천 기능을 비동기 연결할 것.
-//        Events.raise(new ExistingQuestionRecommendedEvent(interview.getId(), this.id));
+        Events.raise(new ExistingQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void connectQuestion(InterviewQuestion question) {

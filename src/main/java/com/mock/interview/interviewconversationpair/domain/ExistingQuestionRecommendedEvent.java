@@ -1,4 +1,10 @@
 package com.mock.interview.interviewconversationpair.domain;
 
-public record ExistingQuestionRecommendedEvent(long interviewId, long pairId) {
+import com.mock.interview.interview.infrastructure.lock.proceeding.LockableCustomInterviewEvent;
+
+public record ExistingQuestionRecommendedEvent(long interviewId, long pairId) implements LockableCustomInterviewEvent {
+    @Override
+    public Long getInterviewId() {
+        return interviewId();
+    }
 }

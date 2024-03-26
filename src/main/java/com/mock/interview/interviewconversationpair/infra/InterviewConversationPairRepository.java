@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface InterviewConversationPairRepository extends JpaRepository<InterviewConversationPair, Long> {
@@ -21,6 +22,15 @@ public interface InterviewConversationPairRepository extends JpaRepository<Inter
             WHERE icp.id = :pairId AND icp.interview.id = :interviewId
             """)
     Optional<InterviewConversationPair> findByIdWithInterviewId(@Param("pairId") long pairId, @Param("interviewId") long interviewId);
+
+    @Query(value = """
+            SELECT icp FROM InterviewConversationPair icp
+            JOIN FETCH icp.question
+            JOIN FETCH icp.answer
+            WHERE icp.interview.id = :interviewId AND icp.status = 'COMPLETED'
+            ORDER BY icp.createdAt DESC
+            """)
+    List<InterviewConversationPair> findLastCompletedConversation(@Param("interviewId") long interviewId, Pageable pageable);
 
     @Query("""
             SELECT icp FROM InterviewConversationPair icp

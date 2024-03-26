@@ -26,6 +26,11 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
     }
 
     @Override
+    public String getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
+        return null;
+    }
+
+    @Override
     public boolean isSupportedDepartment(InterviewInfo interviewInfo) {
         return true;
     }

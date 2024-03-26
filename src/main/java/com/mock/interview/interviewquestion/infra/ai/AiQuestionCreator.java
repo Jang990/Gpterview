@@ -51,8 +51,9 @@ public class AiQuestionCreator {
     }
 
     private PromptConfiguration createPromptConfig(InterviewProgress progress, InterviewInfo interviewInfo) {
-        InterviewPromptConfigurator interviewPromptConfigurator = selectInterviewerStrategy(interviewInfo);
-        return interviewPromptConfigurator.configStrategy(requester, interviewInfo.profile(), progress);
+        InterviewPromptConfigurator configurator = InterviewPromptConfigurator
+                .selectPromptConfigurator(interviewPromptConfiguratorList, interviewInfo);
+        return configurator.configStrategy(requester, interviewInfo.profile(), progress);
     }
 
     /**
@@ -71,16 +72,5 @@ public class AiQuestionCreator {
 
         Message response = requester.sendRequest(new InterviewAIRequest(history.getMessages(), prompt));
         return createPublishedQuestion(progress, promptConfig, response);
-    }
-
-    private InterviewPromptConfigurator selectInterviewerStrategy(InterviewInfo interviewInfo) {
-        for (int i = interviewPromptConfiguratorList.size() - 1; i >= 0; i--) {
-            InterviewPromptConfigurator interviewPromptConfigurator = interviewPromptConfiguratorList.get(i);
-            if(interviewPromptConfigurator.isSupportedDepartment(interviewInfo))
-                return interviewPromptConfigurator;
-        }
-
-        // TODO: 커스텀 예외로 바꿀 것.
-        throw new RuntimeException();
     }
 }

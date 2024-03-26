@@ -18,15 +18,16 @@ import java.util.List;
 public class QuestionRecommendedService {
     private final int RECOMMENDED_QUESTION_3 = 3;
 
-    public List<Long> recommend3TechQuestion(
+    public void recommend3TechQuestion(
             QuestionRecommender recommender,
-            long interviewId, CurrentQuestion currentQuestion,
+            long interviewId, long pairId, CurrentQuestion currentQuestion,
             List<InterviewQuestion> questionForRecommend
     ) {
         List<QuestionMetaData> questionMetaDataList = questionForRecommend.stream().map(this::convertQuestion).toList();
 
         try {
-            return recommender.recommendTechQuestion(RECOMMENDED_QUESTION_3, currentQuestion, questionMetaDataList);
+            List<Long> questionIds = recommender.recommendTechQuestion(RECOMMENDED_QUESTION_3, currentQuestion, questionMetaDataList);
+            Events.raise(new QuestionRecommendedEvent(interviewId, pairId, questionIds));
         } catch (NotEnoughQuestion e) {
             log.warn("추천 기능 예외 발생", e);
             Events.raise(new RaisedQuestionErrorEvent(interviewId, e.getMessage()));
