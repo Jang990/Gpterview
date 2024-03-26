@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.progress;
+package com.mock.interview.interviewquestion.infra.ai.progress;
 
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;

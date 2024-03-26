@@ -9,7 +9,7 @@ import com.mock.interview.interviewquestion.domain.QuestionRecommendedService;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
-import com.mock.interview.interviewquestion.infra.progress.CurrentTopicTracker;
+import com.mock.interview.interviewquestion.infra.ai.progress.CurrentTopicTracker;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionRecommender;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import com.mock.interview.questiontoken.domain.KoreaStringAnalyzer;
