@@ -49,7 +49,7 @@ public class AiResponseProcessingLockAspect {
 
     private Long getInterviewId(Object[] args) {
         for (Object arg : args) {
-            if (arg instanceof LockableCustomInterviewEvent event) {
+            if (arg instanceof LockableInterviewEvent event) {
                 return event.getInterviewId();
             }
         }
