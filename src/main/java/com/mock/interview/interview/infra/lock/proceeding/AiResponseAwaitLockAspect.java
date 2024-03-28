@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 
-/** @see AiResponseProcessingLock
+/** @see AiResponseAwaitLock
  * 해당 어노테이션의 AOP 구현체
  */
 @Slf4j
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class AiResponseProcessingLockAspect {
+public class AiResponseAwaitLockAspect {
     private final StringRedisTemplate stringRedisTemplate;
     private final String KEY_FORMAT = "INTERVIEW:%d:AI:RESPONSE";
     private final String LOCK_VALUE = "LOCK";
@@ -28,8 +28,8 @@ public class AiResponseProcessingLockAspect {
             + AISpecification.READ_TIMEOUT_MS
             + EXTRA_PROCESSING_MS;
 
-    @Around("@within(com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock) " +
-            "|| @annotation(com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseProcessingLock)")
+    @Around("@within(com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseAwaitLock) " +
+            "|| @annotation(com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseAwaitLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
         Long interviewId = getInterviewId(pjp.getArgs());
         if (interviewId == null)
