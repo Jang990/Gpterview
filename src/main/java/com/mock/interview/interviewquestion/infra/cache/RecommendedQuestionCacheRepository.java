@@ -19,23 +19,15 @@ public class RecommendedQuestionCacheRepository {
 
     public List<Long> find(long interviewId, long pairId) {
         String key = createKey(interviewId, pairId);
-        WrapperList cache = questionRedisTemplate.opsForList().index(key, 0);
+        WrapperList cache = questionRedisTemplate.opsForValue().get(key);
         if(cache == null)
             return Collections.emptyList();
         return cache.list;
     }
 
-    public void expiredNow(long interviewId, long pairId) {
+    public void save(long interviewId, long pairId, List<Long> questionIds) {
         String key = createKey(interviewId, pairId);
-        questionRedisTemplate.opsForList().leftPop(key);
-    }
-
-    public void save(long interviewId, long pairId, List<List<Long>> questionIdsGroup) {
-        String key = createKey(interviewId, pairId);
-        questionIdsGroup.forEach(
-                questionIds -> questionRedisTemplate.opsForList().rightPush(key, new WrapperList(questionIds))
-        );
-        questionRedisTemplate.expire(key, Duration.ofMinutes(EXPIRED_MINUTE));
+        questionRedisTemplate.opsForValue().set(key, new WrapperList(questionIds), Duration.ofMinutes(EXPIRED_MINUTE));
     }
 
     private String createKey(long interviewId, long pairId) {
