@@ -1,5 +1,7 @@
 package com.mock.interview.interviewquestion.infra.cache;
 
+import com.mock.interview.interviewquestion.domain.RecommendationTarget;
+import com.mock.interview.interviewquestion.domain.Top3Question;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,14 +19,14 @@ class RecommendedQuestionCacheRepositoryTest {
 
 //    @Test
     void test() {
-        List<Long> list1 = List.of(14L, 2L, 31L);
-        repository.save(interviewId, pairId, list1);
+        Top3Question top3Question = new Top3Question(List.of(14L, 2L, 31L));
+        repository.save(new RecommendationTarget(interviewId, pairId), top3Question);
     }
 
 //    @Test
     void test2() {
-        List<Long> list = repository.find(interviewId, pairId);
-        System.out.println(list);
+        Top3Question cache = repository.find(new RecommendationTarget(interviewId, pairId));
+        System.out.println(cache);
     }
 
 }

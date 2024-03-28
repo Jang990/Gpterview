@@ -21,7 +21,7 @@ public class QuestionRecommendedService {
         long interviewId = pair.getInterview().getId();
         long pairId = pair.getId();
         try {
-            List<Long> questionIds = questionRecommender.recommendTop3(new RecommendationTarget(interviewId, pairId));
+            List<Long> questionIds = questionRecommender.recommendTop3(new RecommendationTarget(interviewId, pairId)).questions();
             Events.raise(new QuestionRecommendedEvent(interviewId, pairId, questionIds));
         } catch (Exception e) {
             log.warn("추천 기능 예외 발생", e);
