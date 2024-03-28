@@ -15,4 +15,9 @@ class InterviewConversationPairRepositoryTest {
         System.out.println(repository.findLastCompletedConversation(0L, PageRequest.of(0, 1)));
     }
 
+//    @Test
+    void test2() {
+        System.out.println(repository.findWithInterviewUser(31, 125, 7).isPresent());
+    }
+
 }

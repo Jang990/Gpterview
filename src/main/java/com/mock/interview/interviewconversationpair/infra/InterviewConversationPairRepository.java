@@ -18,6 +18,16 @@ public interface InterviewConversationPairRepository extends JpaRepository<Inter
     Optional<InterviewConversationPair> findConversation(@Param("interviewId") long interviewId, @Param("questionId") long questionId);
 
     @Query("""
+            SELECT icp FROM InterviewConversationPair icp
+            JOIN FETCH icp.interview
+            JOIN FETCH icp.interview.users
+            WHERE icp.id = :pairId AND icp.interview.id = :interviewId AND icp.interview.users.id = :userId
+            """)
+    Optional<InterviewConversationPair> findWithInterviewUser(@Param("pairId") long pairId,
+                                                              @Param("interviewId") long interviewId,
+                                                              @Param("userId") long userId);
+
+    @Query("""
             SELECT icp FROM InterviewConversationPair icp 
             WHERE icp.id = :pairId AND icp.interview.id = :interviewId
             """)
