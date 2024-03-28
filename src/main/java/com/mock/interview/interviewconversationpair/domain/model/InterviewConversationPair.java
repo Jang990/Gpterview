@@ -5,8 +5,6 @@ import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.*;
-import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyCompletedConversationException;
-import com.mock.interview.interviewconversationpair.domain.exception.IsAlreadyChangingStateException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -45,17 +43,19 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     public void recommendAiQuestion() {
-        verifyCanConnectQuestion();
+        verifyStart();
+        status = PairStatus.WAITING_AI;
         Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void recommendExistingQuestion() {
-        verifyCanConnectQuestion();
+        verifyStart();
+        status = PairStatus.RECOMMENDING;
         Events.raise(new ExistingQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void connectQuestion(InterviewQuestion question) {
-        verifyCanConnectQuestion();
+        verifyQuestionConnectionReady();
 
         this.question = question;
         status = PairStatus.WAITING_ANSWER;
@@ -63,18 +63,11 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     public void answerQuestion(InterviewAnswer answer) {
-        verifyCanModifyQuestion();
+        verifyWaitingAnswer();
 
         this.answer = answer;
         this.status = PairStatus.COMPLETED;
         Events.raise(new ConversationCompletedEvent(interview.getId()));
-    }
-
-    // TODO: 디폴트 접근 제어자로 수정할 것
-    public void changeStatusToChangeTopic() {
-        verifyCanModifyQuestion();
-        status = PairStatus.CHANGING;
-        Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.getId()));
     }
 
     public void changeTopic(InterviewQuestion question) {
@@ -86,15 +79,25 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new QuestionConnectedEvent(interview.getId(), id, question.getId()));
     }
 
-    private void verifyCanConnectQuestion() {
+    // TODO: 디폴트 접근 제어자로 수정할 것
+    public void changeStatusToChangeTopic() {
+        verifyWaitingAnswer();
+        status = PairStatus.CHANGING;
+        Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.getId()));
+    }
+
+    private void verifyStart() {
         if(status != PairStatus.START)
             throw new IllegalStateException();
     }
 
-    private void verifyCanModifyQuestion() {
-        if(status == PairStatus.COMPLETED)
-            throw new IsAlreadyCompletedConversationException();
-        if(status == PairStatus.CHANGING)
-            throw new IsAlreadyChangingStateException();
+    private void verifyQuestionConnectionReady() {
+        if(status != PairStatus.RECOMMENDING && status != PairStatus.WAITING_AI)
+            throw new IllegalStateException();
+    }
+
+    private void verifyWaitingAnswer() {
+        if(status != PairStatus.WAITING_ANSWER)
+            throw new IllegalStateException();
     }
 }
