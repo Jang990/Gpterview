@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class QuestionRecommenderTest {
+class QuestionRankingServiceTest {
     @Mock SimpleRecommendScoreCalculator simpleScoreCalculator;
     @Mock TFIDFCalculator tfidfCalculator;
     @Mock CosineSimilarityCalculator cosineSimilarityCalculator;
     @InjectMocks
-    QuestionRecommender recommender;
+    QuestionRankingService rankingService;
 
     @Test
     @DisplayName("사이즈 검증")
@@ -39,7 +39,7 @@ class QuestionRecommenderTest {
         }
 
         List<Long> top3Ids = null;
-        try { top3Ids = recommender.recommendTechQuestion(testSize, testUP, list); }
+        try { top3Ids = rankingService.recommendTechQuestion(testSize, testUP, list); }
         catch (NotEnoughQuestion e) { fail(); }
 
         assertThat(top3Ids.size()).isEqualTo(testSize);

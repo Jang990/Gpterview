@@ -10,6 +10,7 @@ import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.progress.CurrentTopicTracker;
+import com.mock.interview.interviewquestion.infra.recommend.QuestionRankingService;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
@@ -32,7 +33,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     private final InterviewCacheForAiRequest interviewCache;
     private final InterviewQuestionRepository questionRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
-    private final com.mock.interview.interviewquestion.infra.recommend.QuestionRecommender recommender;
+    private final QuestionRankingService recommender;
     private final KoreaStringAnalyzer stringAnalyzer;
     private final CurrentTopicTracker topicTracker;
 

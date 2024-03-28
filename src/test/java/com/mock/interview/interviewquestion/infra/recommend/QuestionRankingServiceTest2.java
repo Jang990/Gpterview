@@ -9,16 +9,16 @@ import java.util.Arrays;
 import java.util.List;
 
 //@SpringBootTest
-class QuestionRecommenderTest2 {
+class QuestionRankingServiceTest2 {
 
     @Autowired
-    QuestionRecommender recommender;
+    QuestionRankingService rankingService;
 
 
 //    @Test
     void test() throws NotEnoughQuestion {
         CurrentQuestion user = new CurrentQuestion(1l, Arrays.asList("Spring", "MVC", "대해", "아는대로", "설명", "해보세요"), "Spring Boot", "백엔드"); // Spring MVC에 대해 아는대로 설명해보세요.
-        List<Long> longs = recommender.recommendTechQuestion(3, user, SimpleRecommendScoreCalculatorTest.createSimpleTestData());
+        List<Long> longs = rankingService.recommendTechQuestion(3, user, SimpleRecommendScoreCalculatorTest.createSimpleTestData());
         System.out.println(longs);
     }
 }

@@ -11,14 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class QuestionRecommender {
+public class QuestionRankingService {
     private final SimpleRecommendScoreCalculator simpleScoreCalculator;
     private final TFIDFCalculator tfidfCalculator;
     private final CosineSimilarityCalculator cosineSimilarityCalculator;
