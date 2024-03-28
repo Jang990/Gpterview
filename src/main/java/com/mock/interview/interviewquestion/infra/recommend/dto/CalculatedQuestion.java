@@ -6,10 +6,12 @@ import lombok.ToString;
 @Getter
 @ToString
 public class CalculatedQuestion implements Comparable<CalculatedQuestion> {
+    private long questionId;
     private QuestionMetaData question;
     private double recommendedScore;
 
     public CalculatedQuestion(QuestionMetaData question, double recommendedScore) {
+        this.questionId = question.getId();
         this.question = question;
         this.recommendedScore = recommendedScore;
     }

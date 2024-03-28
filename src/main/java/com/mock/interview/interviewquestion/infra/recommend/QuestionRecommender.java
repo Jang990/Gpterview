@@ -10,6 +10,8 @@ import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQ
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
@@ -49,8 +51,15 @@ public class QuestionRecommender {
             recommendedQuestions.offer(calculatedQuestion);
         }
 
-        return recommendedQuestions.stream().map(CalculatedQuestion::getQuestion)
-                .map(QuestionMetaData::getId).toList();
+        return convert(recommendedQuestions);
+    }
+
+    private List<Long> convert(PriorityQueue<CalculatedQuestion> questions) {
+        List<Long> list = new ArrayList<>();
+        while (!questions.isEmpty()) {
+            list.add(questions.poll().getQuestionId());
+        }
+        return list;
     }
 
     /** TF-IDF 계산을 통한 코사인 유사도 설정 */
