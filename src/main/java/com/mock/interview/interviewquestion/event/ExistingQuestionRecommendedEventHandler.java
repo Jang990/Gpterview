@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
-import com.mock.interview.interview.infra.lock.proceeding.AiResponseAwaitLock;
+import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
 import com.mock.interview.interviewconversationpair.domain.ExistingQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;

@@ -1,4 +1,4 @@
-package com.mock.interview.interview.infra.lock.proceeding;
+package com.mock.interview.interview.infra.lock.response;
 
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +28,8 @@ public class AiResponseAwaitLockAspect {
             + AISpecification.READ_TIMEOUT_MS
             + EXTRA_PROCESSING_MS;
 
-    @Around("@within(com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseAwaitLock) " +
-            "|| @annotation(com.mock.interview.interview.infrastructure.lock.proceeding.AiResponseAwaitLock)")
+    @Around("@within(com.mock.interview.interview.infrastructure.lock.response.AiResponseAwaitLock) " +
+            "|| @annotation(com.mock.interview.interview.infrastructure.lock.response.AiResponseAwaitLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
         Long interviewId = getInterviewId(pjp.getArgs());
         if (interviewId == null)

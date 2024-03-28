@@ -4,7 +4,7 @@ import com.mock.interview.interviewconversationpair.domain.AiQuestionRecommended
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
-import com.mock.interview.interview.infra.lock.proceeding.AiResponseAwaitLock;
+import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
