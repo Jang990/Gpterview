@@ -3,19 +3,11 @@ package com.mock.interview.interview.application;
 import com.mock.interview.interview.domain.InterviewRecommendedService;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infrastructure.InterviewRepository;
-import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
+import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
-import com.mock.interview.interviewquestion.infra.recommend.QuestionRecommender;
-import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
-import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

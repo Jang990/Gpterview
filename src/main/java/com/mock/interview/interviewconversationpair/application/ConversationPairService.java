@@ -2,7 +2,7 @@ package com.mock.interview.interviewconversationpair.application;
 
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interviewconversationpair.domain.ChangingTopicService;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;

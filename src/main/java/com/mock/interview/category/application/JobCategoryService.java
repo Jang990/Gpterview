@@ -2,7 +2,7 @@ package com.mock.interview.category.application;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
-import com.mock.interview.category.infrastructure.JobCategoryRepository;
+import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.presentation.dto.response.DepartmentCategoryDetailResponse;
 import com.mock.interview.category.presentation.dto.response.JobCategoryResponse;
 import lombok.RequiredArgsConstructor;

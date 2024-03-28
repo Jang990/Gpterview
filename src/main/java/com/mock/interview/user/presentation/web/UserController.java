@@ -1,7 +1,7 @@
 package com.mock.interview.user.presentation.web;
 
 import com.mock.interview.interview.application.InterviewService;
-import com.mock.interview.interview.infrastructure.InterviewRepositoryForView;
+import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.review.presentation.dto.ReviewIndexPageFragment;

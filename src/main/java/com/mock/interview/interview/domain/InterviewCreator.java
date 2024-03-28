@@ -5,7 +5,7 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.user.domain.model.Users;
 import org.springframework.stereotype.Service;
 

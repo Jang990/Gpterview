@@ -1,7 +1,7 @@
 package com.mock.interview.interview.application;
 
-import com.mock.interview.category.infrastructure.JobCategoryRepository;
-import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.category.infra.JobCategoryRepository;
+import com.mock.interview.interview.infra.InterviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

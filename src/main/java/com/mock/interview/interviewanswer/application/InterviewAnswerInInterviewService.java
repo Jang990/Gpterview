@@ -4,7 +4,7 @@ import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interview.application.InterviewVerificationHelper;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interviewanswer.domain.InterviewAnswerService;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;

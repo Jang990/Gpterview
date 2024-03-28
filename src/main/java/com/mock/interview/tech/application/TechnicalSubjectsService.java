@@ -1,8 +1,7 @@
 package com.mock.interview.tech.application;
 
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.tech.infrastructure.TechnicalSubjectsRepository;
-import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
+import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

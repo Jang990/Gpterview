@@ -2,7 +2,7 @@ package com.mock.interview.candidate.application;
 
 import com.mock.interview.candidate.domain.exception.CandidateConfigNotFoundException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
-import com.mock.interview.candidate.infrastructure.CandidateConfigRepository;
+import com.mock.interview.candidate.infra.CandidateConfigRepository;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateOverview;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;

@@ -4,7 +4,7 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.domain.InterviewContinuedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infrastructure.InterviewRepository;
+import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interviewconversationpair.domain.QuestionRecommendRule;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;

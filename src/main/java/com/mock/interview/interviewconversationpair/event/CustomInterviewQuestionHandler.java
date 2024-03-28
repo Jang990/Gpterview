@@ -1,8 +1,5 @@
 package com.mock.interview.interviewconversationpair.event;
 
-import com.mock.interview.interview.domain.exception.InterviewNotExpiredException;
-import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infrastructure.InterviewRepository;
 import com.mock.interview.interviewanswer.domain.ConversationAnsweredEvent;
 import com.mock.interview.interviewanswer.domain.exception.InterviewAnswerNotFoundException;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;

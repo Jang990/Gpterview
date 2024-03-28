@@ -5,7 +5,7 @@ import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
-import com.mock.interview.interview.infrastructure.InterviewCacheForAiRequest;
+import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
 
 public class AiQuestionHelper {
     public static RecommendedQuestion createQuestion(
