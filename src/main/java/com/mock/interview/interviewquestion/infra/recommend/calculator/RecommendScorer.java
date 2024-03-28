@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SimpleRecommendScoreCalculator {
+public class RecommendScorer {
     private final double TF_IDF_WEIGHT = 0.5,
             FIELD_WEIGHT = 0.05,
             TECH_WEIGHT = 0.15,

@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.infra.recommend;
 
 import com.mock.interview.interviewquestion.infra.recommend.calculator.CosineSimilarityCalculator;
-import com.mock.interview.interviewquestion.infra.recommend.calculator.SimpleRecommendScoreCalculator;
+import com.mock.interview.interviewquestion.infra.recommend.calculator.RecommendScorer;
 import com.mock.interview.interviewquestion.infra.recommend.calculator.TFIDFCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CalculatedQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class QuestionRankingService {
-    private final SimpleRecommendScoreCalculator simpleScoreCalculator;
+    private final RecommendScorer recommendScorer;
     private final TFIDFCalculator tfidfCalculator;
     private final CosineSimilarityCalculator cosineSimilarityCalculator;
 
@@ -33,7 +33,7 @@ public class QuestionRankingService {
         initQuestionCosineSimilarity(currentQuestion, departmentMatchedQuestions);
         PriorityQueue<CalculatedQuestion> recommendedQuestions = new PriorityQueue<>();
         for (QuestionMetaData question : departmentMatchedQuestions) {
-            double score = simpleScoreCalculator.calculateScore(currentQuestion, question);
+            double score = recommendScorer.calculateScore(currentQuestion, question);
             CalculatedQuestion calculatedQuestion = new CalculatedQuestion(question, score);
 
             boolean hasSpaceInQueue = recommendedQuestions.isEmpty() || recommendedQuestions.size() < maxRecommendedSize;

@@ -1,6 +1,5 @@
 package com.mock.interview.interviewquestion.infra.recommend.calculator;
 
-import com.mock.interview.interviewquestion.infra.recommend.calculator.SimpleRecommendScoreCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,12 +9,12 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-public class SimpleRecommendScoreCalculatorTest {
-    SimpleRecommendScoreCalculator calculator;
+public class RecommendScorerTest {
+    RecommendScorer recommendScorer;
 
     @BeforeEach
     void beforeEach() {
-        calculator = new SimpleRecommendScoreCalculator();
+        recommendScorer = new RecommendScorer();
     }
 
     @Test
@@ -26,7 +25,7 @@ public class SimpleRecommendScoreCalculatorTest {
         CurrentQuestion user = new CurrentQuestion(1l, Arrays.asList("Spring", "MVC", "대해", "아는대로", "설명", "해보세요"), "Spring Boot", "백엔드"); // Spring MVC에 대해 아는대로 설명해보세요.
         System.out.println("TF-IDF\t좋아요\t필드 \t테크 \t꼬리질문");
         for (QuestionMetaData data : simpleTestData) {
-            calculator.calculateScore(user, data);
+            recommendScorer.calculateScore(user, data);
             System.out.println(data.getNecessaryWords());
         }
     }
@@ -40,7 +39,7 @@ public class SimpleRecommendScoreCalculatorTest {
         CurrentQuestion user = new CurrentQuestion(null, null, null, null); // Spring MVC에 대해 아는대로 설명해보세요.
         System.out.println("TF-IDF\t좋아요\t필드 \t테크 \t꼬리질문");
         for (QuestionMetaData data : simpleTestData) {
-            calculator.calculateScore(user, data);
+            recommendScorer.calculateScore(user, data);
             System.out.println(data.getNecessaryWords());
         }
     }
