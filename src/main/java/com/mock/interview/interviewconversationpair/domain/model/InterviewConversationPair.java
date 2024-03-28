@@ -86,6 +86,10 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.getId()));
     }
 
+    public boolean isRecommendationDeniedState() {
+        return status != PairStatus.RECOMMENDING;
+    }
+
     private void verifyStart() {
         if(status != PairStatus.START)
             throw new IllegalStateException();

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 
-//@SpringBootTest
+@SpringBootTest
 class InterviewConversationPairRepositoryTest {
 
     @Autowired InterviewConversationPairRepository repository;
@@ -18,6 +18,11 @@ class InterviewConversationPairRepositoryTest {
 //    @Test
     void test2() {
         System.out.println(repository.findWithInterviewUser(31, 125, 7).isPresent());
+    }
+
+    @Test
+    void test3() {
+        System.out.println(repository.findByIdWithInterviewId(67, 154).isPresent());
     }
 
 }
