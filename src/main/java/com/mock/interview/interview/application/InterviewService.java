@@ -3,7 +3,7 @@ package com.mock.interview.interview.application;
 import com.mock.interview.interview.domain.InterviewCreator;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.interview.infra.lock.creation.InterviewUserLock;
+import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -30,7 +30,7 @@ public class InterviewService {
     private final InterviewRepository repository;
     private final CandidateConfigRepository profileRepository;
 
-    @InterviewUserLock
+    @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public long create(long loginId,long candidateConfigId) {
         CandidateConfig candidateConfig = profileRepository.findInterviewConfig(candidateConfigId, loginId)
