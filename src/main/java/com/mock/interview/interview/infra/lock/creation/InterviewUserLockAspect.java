@@ -25,8 +25,8 @@ public class InterviewUserLockAspect {
     private final String LOCK_VALUE = "LOCK";
     private final long LOCK_TIMEOUT_MS = 5_000;
 
-    @Around("@within(com.mock.interview.interview.infrastructure.lock.creation.InterviewCreationUserLock) " +
-            "|| @annotation(com.mock.interview.interview.infrastructure.lock.creation.InterviewCreationUserLock)")
+    @Around("@within(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock) " +
+            "|| @annotation(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
         Users authentication = getAuthenticatedUser();
         String key = createKey(authentication);

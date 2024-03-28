@@ -28,8 +28,8 @@ public class AiResponseAwaitLockAspect {
             + AISpecification.READ_TIMEOUT_MS
             + EXTRA_PROCESSING_MS;
 
-    @Around("@within(com.mock.interview.interview.infrastructure.lock.response.AiResponseAwaitLock) " +
-            "|| @annotation(com.mock.interview.interview.infrastructure.lock.response.AiResponseAwaitLock)")
+    @Around("@within(com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock) " +
+            "|| @annotation(com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
         Long interviewId = getInterviewId(pjp.getArgs());
         if (interviewId == null)
