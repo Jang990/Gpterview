@@ -72,7 +72,6 @@ public class InterviewController {
         model.addAttribute("interviewId", interviewId);
 
         Slice<ConversationContentDto> interviewConversations = conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25));
-        System.out.println(interviewConversations.getContent());
         model.addAttribute("messageHistory", interviewConversations);
         if (interviewConversations.hasContent()) {
             List<ConversationContentDto> content = interviewConversations.getContent();
