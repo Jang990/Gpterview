@@ -18,7 +18,6 @@ function initSocket() {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/queue/interview/' + interviewId, function (data) {
             console.log(data);
-            clearInterval(decreaseInterval);
             setTimeout(function () {
                 // speak(data.content); // 응답 메시지를 음성으로 전달
                 removeWaitingPanel();

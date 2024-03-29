@@ -13,6 +13,10 @@ let remainingTime = loadingTime;
 let decreaseInterval;
 
 $(document).ready(function () {
+    if(getConversationPairStatus() == 'RECOMMENDING') {
+
+    }
+
     if($('#talk-history').find('li').length === 0)
         waitAiResponse();
     initSocket();
@@ -76,23 +80,8 @@ function getCurrentTime() {
     return hours + ':' + minutes;
 }
 
+// 하단으로 스크롤 이동
 function scroll() {
     const talkHistoryArticle = $('#talk-card');
     talkHistoryArticle.scrollTop(talkHistoryArticle[0].scrollHeight);
-}
-
-function setCurrentConversationPairId(currentConversationPairId) {
-    $('#currentConversationId').val(currentConversationPairId);
-}
-
-function getConversationPairId() {
-    return $('#currentConversationId').val();
-}
-
-function setCurrentConversationPairStatus(currentConversationPairStatus) {
-    $('#currentConversationId').val(currentConversationPairStatus);
-}
-
-function getConversationPairStatus() {
-    return $('#currentConversationStatus').val();
 }

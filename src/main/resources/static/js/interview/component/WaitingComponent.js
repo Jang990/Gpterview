@@ -17,6 +17,7 @@ function decreaseRemainingTime() {
 
 // waiting 패널 지우기
 function removeWaitingPanel() {
+    clearInterval(decreaseInterval);
     $('#talk-history .temporary').remove();
 }
 
