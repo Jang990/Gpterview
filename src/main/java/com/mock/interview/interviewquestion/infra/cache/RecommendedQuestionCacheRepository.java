@@ -1,16 +1,13 @@
 package com.mock.interview.interviewquestion.infra.cache;
 
-import com.mock.interview.interviewquestion.domain.RecommendationTarget;
-import com.mock.interview.interviewquestion.domain.Top3Question;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor

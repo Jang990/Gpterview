@@ -1,12 +1,11 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
-import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
-import com.mock.interview.interviewquestion.domain.RecommendationTarget;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
-import com.mock.interview.interviewquestion.domain.Top3Question;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;

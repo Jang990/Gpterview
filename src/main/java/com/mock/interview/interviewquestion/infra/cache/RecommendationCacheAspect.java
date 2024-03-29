@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.infra.cache;
 
-import com.mock.interview.interviewquestion.domain.RecommendationTarget;
-import com.mock.interview.interviewquestion.domain.Top3Question;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

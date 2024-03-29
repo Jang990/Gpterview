@@ -1,14 +1,10 @@
 package com.mock.interview.interviewquestion.infra.cache;
 
-import com.mock.interview.interviewquestion.domain.RecommendationTarget;
-import com.mock.interview.interviewquestion.domain.Top3Question;
-import org.junit.jupiter.api.Test;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
+import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@SpringBootTest
 class RecommendedQuestionCacheRepositoryTest {

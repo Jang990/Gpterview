@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.domain;
+package com.mock.interview.interviewquestion.presentation.dto.recommendation;
 
 import java.util.List;
 
