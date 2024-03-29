@@ -67,6 +67,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     @Override
     public Top3Question retryRecommendation(RecommendationTarget target) {
         // 현재 저장된 캐시를 만료하고 새롭게 저장 - AOP 처리
+        System.out.println("헬로!");
         return recommendTop3(target);
     }
 

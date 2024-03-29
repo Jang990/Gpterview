@@ -21,17 +21,31 @@ public class RecommendationCacheAspect {
     private final RecommendedQuestionCacheRepository cacheRepository;
 
     @Around("execution(* com.mock.interview.interviewquestion.infra.QuestionRecommenderImpl.recommendTop3(..))")
-    public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
+    public Object cache(ProceedingJoinPoint pjp) throws Throwable {
         RecommendationTarget target = getParameter(pjp.getArgs());
         if (target == null)
             throw new IllegalArgumentException();
 
-        Top3Question cache = cacheRepository.find(target);
-        if (hasCache(cache)) {
-            return cache;
+        Top3Question cachedQuestionIds = cacheRepository.find(target);
+        if (hasCache(cachedQuestionIds)) {
+            return cachedQuestionIds;
         }
 
         Object result = pjp.proceed();
+        return cache(result, target);
+    }
+
+    @Around("execution(* com.mock.interview.interviewquestion.infra.QuestionRecommenderImpl.retryRecommendation(..))")
+    public Object expiredAndCaching(ProceedingJoinPoint pjp) throws Throwable {
+        RecommendationTarget target = getParameter(pjp.getArgs());
+        if (target == null)
+            throw new IllegalArgumentException();
+
+        Object result = pjp.proceed();
+        return cache(result, target);
+    }
+
+    private Object cache(Object result, RecommendationTarget target) {
         if (result instanceof Top3Question top3Question) {
             cacheRepository.save(target, top3Question);
             return result;
