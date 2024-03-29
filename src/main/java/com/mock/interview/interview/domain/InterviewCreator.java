@@ -20,8 +20,6 @@ public class InterviewCreator {
 
         Interview interview = Interview.startInterview(config, user, appliedJob);
         interview = interviewRepository.save(interview);
-
-        Events.raise(new InterviewContinuedEvent(interview.getId()));
         return interview;
     }
 }

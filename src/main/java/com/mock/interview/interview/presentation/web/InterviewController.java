@@ -5,6 +5,7 @@ import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.candidate.application.CandidateConfigService;
+import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
@@ -39,22 +40,27 @@ public class InterviewController {
     public String startInterviewRequest(
             @Valid CandidateProfileForm profile,
             InterviewConfigDto interviewDetails,
-            @AuthenticationPrincipal(expression = "id") Long loginId
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            Model model
     ) {
         InterviewCandidateForm interviewCandidateForm = new InterviewCandidateForm(profile, interviewDetails);
         List<Long> relationalTech = technicalSubjectsService.saveTechIfNotExist(profile.getSkills());
         long candidateConfigId = candidateConfigService.create(interviewCandidateForm, loginId, relationalTech);
-        long interviewId = interviewService.create(loginId, candidateConfigId);
-        return "redirect:/interview/" + interviewId;
+
+        InterviewStartingDto interviewStartingDto = interviewService.create(loginId, candidateConfigId);
+        model.addAttribute("interviewStartingDto", interviewStartingDto);
+        return "redirect:/interview/" + interviewStartingDto.getInterviewId();
     }
 
     @PostMapping("/interview/candidate/{candidateId}")
     public String startInterviewWithConfigRequest(
             @PathVariable(name = "candidateId") long candidateId,
-            @AuthenticationPrincipal(expression = "id") Long loginId
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            Model model
     ) {
-        long interviewId = interviewService.create(loginId, candidateId);
-        return "redirect:/interview/" + interviewId;
+        InterviewStartingDto interviewStartingDto = interviewService.create(loginId, candidateId);
+        model.addAttribute("interviewStartingDto", interviewStartingDto);
+        return "redirect:/interview/" + interviewStartingDto.getInterviewId();
     }
 
     @GetMapping("/interview/{interviewId}")
