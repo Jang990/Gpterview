@@ -9,6 +9,7 @@ import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
 import com.mock.interview.interviewconversationpair.domain.QuestionRecommendRule;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -53,7 +54,7 @@ public class InterviewService {
     }
 
     private static InterviewStartingDto convert(Interview interview, InterviewConversationPair conversationPair) {
-        return new InterviewStartingDto(interview.getId(), conversationPair.getId(), PairStatusForView.convert(conversationPair.getStatus()));
+        return new InterviewStartingDto(interview.getId(), new InterviewConversationPairDto(conversationPair.getId(), conversationPair.getStatus()));
     }
 
     private InterviewConversationPair startConversation(CandidateConfig candidateConfig, Interview interview) {

@@ -1,17 +1,17 @@
 package com.mock.interview.interviewconversationpair.presentation.dto;
 
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
+import com.mock.interview.interviewconversationpair.domain.model.PairStatus;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class InterviewConversationPairDto {
-    private Long pairId;
-    private MessageDto question;
-    private MessageDto answer;
+    private Long id;
+    private PairStatusForView status;
 
-    public InterviewConversationPairDto(Long pairId, MessageDto question, MessageDto answer) {
-        this.pairId = pairId;
-        this.question = question;
-        this.answer = answer;
+    public InterviewConversationPairDto(Long id, PairStatus status) {
+        this.id = id;
+        this.status = PairStatusForView.convert(status);
     }
 }

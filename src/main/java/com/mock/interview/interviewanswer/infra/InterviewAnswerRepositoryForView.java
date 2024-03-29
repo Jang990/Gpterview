@@ -1,8 +1,6 @@
 package com.mock.interview.interviewanswer.infra;
 
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
-import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.mock.interview.user.domain.model.QUsers;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

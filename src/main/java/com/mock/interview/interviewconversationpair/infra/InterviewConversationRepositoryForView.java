@@ -3,6 +3,7 @@ package com.mock.interview.interviewconversationpair.infra;
 
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
+import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
@@ -26,10 +27,13 @@ import static com.mock.interview.interviewquestion.domain.model.QInterviewQuesti
 public class InterviewConversationRepositoryForView {
     private final JPAQueryFactory query;
 
-    public Slice<InterviewConversationPairDto> findInterviewConversations(long interviewId, long userId, Pageable pageable) {
-        List<InterviewConversationPairDto> result = query.select(
-                        Projections.constructor(InterviewConversationPairDto.class,
-                                interviewConversationPair.id,
+    public Slice<ConversationContentDto> findInterviewConversations(long interviewId, long userId, Pageable pageable) {
+        List<ConversationContentDto> result = query.select(
+                        Projections.constructor(ConversationContentDto.class,
+                                Projections.constructor(InterviewConversationPairDto.class,
+                                        interviewConversationPair.id,
+                                        interviewConversationPair.status
+                                ),
                                 Projections.constructor(MessageDto.class,
                                         interviewConversationPair.question.id,
                                         Expressions.constant(InterviewRole.AI),
@@ -44,7 +48,7 @@ public class InterviewConversationRepositoryForView {
                 )
                 .from(interviewConversationPair)
                 .innerJoin(interviewConversationPair.interview, interview).on(interview.users.id.eq(userId))
-                .innerJoin(interviewConversationPair.question, interviewQuestion)
+                .leftJoin(interviewConversationPair.question, interviewQuestion)
                 .leftJoin(interviewConversationPair.answer, interviewAnswer)
                 .where(interviewConversationPair.interview.id.eq(interviewId))
                 .offset(pageable.getOffset())

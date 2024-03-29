@@ -3,14 +3,15 @@ package com.mock.interview.interviewconversationpair.presentation.dto;
 import com.mock.interview.interviewconversationpair.domain.model.PairStatus;
 
 public enum PairStatusForView {
-    RECOMMENDING, WAITING_AI, COMPLETED;
+    START, RECOMMENDING, WAITING_AI, WAITING_ANSWER, COMPLETED;
 
     public static PairStatusForView convert(PairStatus status) {
         return switch (status) {
+            case START -> START;
             case RECOMMENDING -> RECOMMENDING;
-            case WAITING_AI -> WAITING_AI;
+            case WAITING_AI, CHANGING -> WAITING_AI;
+            case WAITING_ANSWER -> WAITING_ANSWER;
             case COMPLETED -> COMPLETED;
-            default -> throw new IllegalArgumentException();
         };
     }
 }

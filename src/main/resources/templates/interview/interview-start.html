@@ -30,9 +30,10 @@
                 </div>
             </div>
 
-            <input th:if="${lastConversationPairId != null and lastConversationPairId != 0}" type="hidden" id="currentConversationId" th:value="${lastConversationPairId}">
-            <input th:unless="${lastConversationPairId != null and lastConversationPairId != 0}" type="hidden" id="currentConversationId" value="-1">
-
+            <th:block th:object="${lastConversationPair}">
+                <input type="hidden" id="currentConversationId" th:value="*{id}">
+                <input type="hidden" id="currentConversationState" th:value="*{status}">
+            </th:block>
 
         </div>
     </div>

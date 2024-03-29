@@ -7,9 +7,8 @@ import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
-import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
+import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
-import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +47,7 @@ public class InterviewController {
         long candidateConfigId = candidateConfigService.create(interviewCandidateForm, loginId, relationalTech);
 
         InterviewStartingDto interviewStartingDto = interviewService.create(loginId, candidateConfigId);
-        model.addAttribute("interviewStartingDto", interviewStartingDto);
+        model.addAttribute("lastConversationPair", interviewStartingDto.getPair());
         return "redirect:/interview/" + interviewStartingDto.getInterviewId();
     }
 
@@ -59,7 +58,7 @@ public class InterviewController {
             Model model
     ) {
         InterviewStartingDto interviewStartingDto = interviewService.create(loginId, candidateId);
-        model.addAttribute("interviewStartingDto", interviewStartingDto);
+        model.addAttribute("lastConversationPair", interviewStartingDto.getPair());
         return "redirect:/interview/" + interviewStartingDto.getInterviewId();
     }
 
@@ -72,11 +71,12 @@ public class InterviewController {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("interviewId", interviewId);
 
-        Slice<InterviewConversationPairDto> interviewConversations = conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25));
+        Slice<ConversationContentDto> interviewConversations = conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25));
+        System.out.println(interviewConversations.getContent());
         model.addAttribute("messageHistory", interviewConversations);
         if (interviewConversations.hasContent()) {
-            List<InterviewConversationPairDto> content = interviewConversations.getContent();
-            model.addAttribute("lastConversationPairId", content.get(content.size() - 1).getPairId());
+            List<ConversationContentDto> content = interviewConversations.getContent();
+            model.addAttribute("lastConversationPair", content.get(content.size() - 1).getPair());
         }
         return "interview/interview-start";
     }
