@@ -25,35 +25,7 @@
 <!--                            <textarea class="form-control" id="result" rows="3" placeholder="질문을 확인하고 대답해주세요!"></textarea>-->
 <!--                        </div>-->
                         <!-- 사용자 응답창 -->
-                        <div class="flex-fill">
-                            <ul class="list-unstyled mb-0" id="talk">
-                                <!-- INTERVIEWER, USER 등등 하드코딩 수정하기 -->
-                                <!--                    <img th:src="@{/image/applicant.png}" alt="avatar"-->
-                                <!--                         class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">-->
-                                <li class="">
-                                    <div class="p-3">
-                                        <div class="form-outline w-100">
-                                            <div class="toast align-items-center bg-danger" id="chattingErrorToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-                                                <div class="d-flex">
-                                                    <div class="toast-body">
-                                                        <span class="text-white" id="errorMessageField">잘못 입력한 필드</span>
-                                                    </div>
-                                                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                                                </div>
-                                            </div>
-                                            <textarea class="form-control" id="result" rows="3" placeholder="질문을 듣고 답변해주세요! Ctrl+Enter로 메시지 전송 가능합니다."></textarea>
-                                        </div>
-
-                                        <div class="py-1 border-0">
-                                            <div class="float-end mt-2 mb-3 pt-1 pl-3">
-                                                <button type="button" class="btn btn-success btn-sm" id="speckBtn" onclick="startRecognition()">말하기</button>
-                                                <button type="submit" class="btn btn-primary btn-sm sendBtn" onclick="sendMessage()">응답완료</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                        <div th:replace="~{fragments/interview/interview-controller :: fragment-interview-controller}">Interview Controller 공간</div>
                     </div>
                 </div>
             </div>
