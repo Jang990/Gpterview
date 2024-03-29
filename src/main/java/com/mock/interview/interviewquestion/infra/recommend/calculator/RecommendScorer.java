@@ -26,11 +26,11 @@ public class RecommendScorer {
         result += calculateFieldMatchedScore(FIELD_WEIGHT, target.getField(), currentQuestion.field());
         result += calculateTechContainScore(TECH_WEIGHT, target.getTech(), currentQuestion.tech());
         result += calculateChildQuestionScore(CHILD_WEIGHT, target.getParentQuestionId(), currentQuestion.beforeQuestionId());
-        print(currentQuestion, target, result);
+//        print(currentQuestion, target, result);
         return result;
     }
 
-    private void print(CurrentQuestion currentQuestion, QuestionMetaData question, double result) {
+    /*private void print(CurrentQuestion currentQuestion, QuestionMetaData question, double result) {
         System.out.print(question.getId() + " : ");
         System.out.print(String.format("%.4f\t", calculateTFDIFScore(TF_IDF_WEIGHT, question.getCosineSimilarity())));
         System.out.print(String.format("%.4f\t", calculateLikesScore(LIKE_WEIGHT, question.getLikes())));
@@ -40,7 +40,7 @@ public class RecommendScorer {
         System.out.print(String.format("%.7f\t", result));
         System.out.print(question.getNecessaryWords());
         System.out.println();
-    }
+    }*/
 
     private double calculateTFDIFScore(double weight, double targetCosineSimilarity) {
         if(Double.isNaN(targetCosineSimilarity) || Double.isInfinite(targetCosineSimilarity))
