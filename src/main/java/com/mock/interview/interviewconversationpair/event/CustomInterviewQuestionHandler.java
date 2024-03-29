@@ -30,7 +30,7 @@ public class CustomInterviewQuestionHandler {
         InterviewQuestion question = interviewQuestionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        conversationPair.connectQuestion(question);
+        conversationPair.connectAiQuestion(question);
     }
 
     @EventListener(TopicChangedQuestionCreatedEvent.class)

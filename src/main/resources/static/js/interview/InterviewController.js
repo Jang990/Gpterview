@@ -1,5 +1,5 @@
-function createConversationPairUriPrefix(conversationId) {
-    return "/api/interview/" + getInterviewId() + "/conversation/pair/" + conversationId;
+function createConversationPairUriPrefix() {
+    return "/api/interview/" + getInterviewId() + "/conversation/pair/" + getConversationPairId();
 }
 
 const loadingTime = 1500;
@@ -36,7 +36,7 @@ function removeLastChatting() {
 // 서버로 요청보내기.
 function sendRequest(requestURL, message) {
     console.log(message);
-    waitAiResponse();
+    console.log(requestURL);
 
     $.ajax({
         type: 'POST',
@@ -84,4 +84,9 @@ function getCurrentTime() {
 function scroll() {
     const talkHistoryArticle = $('#talk-card');
     talkHistoryArticle.scrollTop(talkHistoryArticle[0].scrollHeight);
+}
+
+function selectRecommended(questionId) {
+    const apiUri = createConversationPairUriPrefix() +"/question/connection/" + questionId
+    sendRequest(apiUri, null);
 }

@@ -25,4 +25,16 @@ public class ConversationPairController {
         conversationPairService.changeQuestionTopic(loginId, interviewId, pairId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/interview/{interviewId}/conversation/pair/{pairId}/question/connection/{questionId}")
+    public ResponseEntity<Void> connectQuestion(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable(name = "interviewId") long interviewId,
+            @PathVariable(name = "pairId") long pairId,
+            @PathVariable(name = "questionId") long questionId
+    ) {
+
+        conversationPairService.connectQuestion(loginId, interviewId, pairId, questionId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

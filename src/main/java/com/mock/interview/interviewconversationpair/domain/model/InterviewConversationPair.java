@@ -54,12 +54,21 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new ExistingQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
-    public void connectQuestion(InterviewQuestion question) {
-        verifyQuestionConnectionReady();
+    public void connectAiQuestion(InterviewQuestion question) {
+        if(status != PairStatus.WAITING_AI)
+            throw new IllegalStateException();
 
         this.question = question;
         status = PairStatus.WAITING_ANSWER;
         Events.raise(new QuestionConnectedEvent(interview.getId(), this.getId(), question.getId()));
+    }
+
+    public void connectQuestion(InterviewQuestion question) {
+        if(status != PairStatus.RECOMMENDING)
+            throw new IllegalStateException();
+
+        this.question = question;
+        status = PairStatus.WAITING_ANSWER;
     }
 
     public void answerQuestion(InterviewAnswer answer) {
@@ -92,11 +101,6 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
     private void verifyStart() {
         if(status != PairStatus.START)
-            throw new IllegalStateException();
-    }
-
-    private void verifyQuestionConnectionReady() {
-        if(status != PairStatus.RECOMMENDING && status != PairStatus.WAITING_AI)
             throw new IllegalStateException();
     }
 

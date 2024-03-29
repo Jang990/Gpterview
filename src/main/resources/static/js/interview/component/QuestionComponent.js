@@ -13,7 +13,9 @@ function displayResponse(msgObj) {
 function retryResponse() {
     removeLastChatting();
     const conversationPairId = getConversationPairId();
-    sendRequest(createConversationPairUriPrefix(conversationPairId)+"/changing-topic", null);
+
+    waitAiResponse();
+    sendRequest(createConversationPairUriPrefix()+"/changing-topic", null);
 }
 
 function createGptMessage(msg) {

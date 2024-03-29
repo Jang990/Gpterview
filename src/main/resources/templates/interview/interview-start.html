@@ -20,7 +20,8 @@
                             <p class="mb-0 fw-bold">면접 진행 로그</p>
                         </div>
 
-                        <div th:replace="~{fragments/interview/interview-history :: fragment-interview-history(messageHistory=${messageHistory})}">Interview Histroy 공간</div>
+                        <div th:replace="~{fragments/interview/interview-history :: fragment-interview-history(
+                            messageHistory=${messageHistory}, recommendationQuestions=${recommendationQuestions})}">Interview Histroy 공간</div>
 <!--                        <div class="form-outline">-->
 <!--                            <textarea class="form-control" id="result" rows="3" placeholder="질문을 확인하고 대답해주세요!"></textarea>-->
 <!--                        </div>-->

@@ -18,7 +18,9 @@ function sendMessage() {
 
     const message = createMessage("USER", nowMsg); // TODO: USER를 타임리프로 변경
     const conversationPairId = getConversationPairId();
-    sendRequest(createConversationPairUriPrefix(conversationPairId)+"/answer", message);
+
+    waitAiResponse();
+    sendRequest(createConversationPairUriPrefix()+"/answer", message);
 }
 
 // 서버에서 받는 Message 형식을 맞출 것.

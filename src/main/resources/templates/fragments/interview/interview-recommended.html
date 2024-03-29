@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fragment-interview-recommended(questionList)" class="col-8 recommended-questions">
+    <div class="d-flex flex-column" style="min-width:0px;">
+        <!-- TODO: 텍스트를 좀 더 예쁘게... -->
+        <div class="d-flex justify-content-center">
+            <p>질문을 선택해주세요.</p>
+        </div>
+        <th:block th:each="question : ${questionList}">
+            <button class="btn btn-light btn-block mb-2 w-100 text-truncate" th:onclick="|selectRecommended('${question.id}')|">
+                <p class="small mb-0" th:text="${question.content}">추천 질문 내용</p>
+            </button>
+        </th:block>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-primary me-2 btn-sm">다른 추천</button>
+            <button class="btn btn-secondary btn-sm">AI 요청</button>
+        </div>
+    </div>
+</div>

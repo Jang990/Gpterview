@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface InterviewQuestionRepository extends JpaRepository<InterviewQuestion, Long> {
@@ -36,4 +37,11 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             WHERE ia.name = :department OR iad.name = :department
             """)
     Long countDepartmentQuestion(@Param("department") String department);
+
+    @Query("""
+            SELECT iq
+            FROM InterviewQuestion iq
+            WHERE iq.id = :questionId
+            """)
+    Optional<InterviewQuestion> findOpenQuestion(@Param("questionId") long questionId);
 }

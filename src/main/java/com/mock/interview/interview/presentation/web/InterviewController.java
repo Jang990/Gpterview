@@ -8,6 +8,9 @@ import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
+import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
+import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
+import com.mock.interview.interviewquestion.application.QuestionRecommendationService;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ public class InterviewController {
     private final InterviewService interviewService;
     private final TechnicalSubjectsService technicalSubjectsService;
     private final InterviewConversationRepositoryForView conversationRepositoryForView;
+    private final QuestionRecommendationService questionRecommendationService;
 
 
     @PostMapping("/interview")
@@ -73,9 +77,16 @@ public class InterviewController {
 
         Slice<ConversationContentDto> interviewConversations = conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25));
         model.addAttribute("messageHistory", interviewConversations);
-        if (interviewConversations.hasContent()) {
-            List<ConversationContentDto> content = interviewConversations.getContent();
-            model.addAttribute("lastConversationPair", content.get(content.size() - 1).getPair());
+        if (!interviewConversations.hasContent()) {
+            return "interview/interview-start";
+        }
+
+        List<ConversationContentDto> content = interviewConversations.getContent();
+        InterviewConversationPairDto lastConversationPair = content.get(content.size() - 1).getPair();
+        model.addAttribute("lastConversationPair", lastConversationPair);
+        if (lastConversationPair.getStatus() == PairStatusForView.RECOMMENDING) {
+            model.addAttribute("recommendationQuestions",
+                    questionRecommendationService.findRecommendation(interviewId, lastConversationPair.getId()));
         }
         return "interview/interview-start";
     }
