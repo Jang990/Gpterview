@@ -1,12 +1,8 @@
 // 서버로 받은 응답 값을 화면에 면접관으로 표시
-function displayResponse(msgObj) {
-    console.log(msgObj);
-    if(msgObj.question.length == 1) {
-        const newConversationItem = createGptMessage(msgObj.question[0].content);
-        $('#talk-history').append(newConversationItem);
-        setCurrentConversationPairId(msgObj.conversationPairId);
-        scroll();
-    }
+function displayResponse(pairId, content) {
+    setCurrentConversationPairId(pairId);
+    const newConversationItem = createGptMessage(content);
+    $('#talk-history').append(newConversationItem);
 }
 
 // 주제 변경하기 요청

@@ -13,13 +13,9 @@ let remainingTime = loadingTime;
 let decreaseInterval;
 
 $(document).ready(function () {
-    if(getConversationPairStatus() == 'RECOMMENDING') {
-
-    }
-
+    initSocket();
     if($('#talk-history').find('li').length === 0)
         waitAiResponse();
-    initSocket();
     scroll();
 });
 
@@ -84,9 +80,4 @@ function getCurrentTime() {
 function scroll() {
     const talkHistoryArticle = $('#talk-card');
     talkHistoryArticle.scrollTop(talkHistoryArticle[0].scrollHeight);
-}
-
-function selectRecommended(questionId) {
-    const apiUri = createConversationPairUriPrefix() +"/question/connection/" + questionId
-    sendRequest(apiUri, null);
 }

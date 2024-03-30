@@ -1,3 +1,10 @@
+function displayAnswer(msg) {
+    $('#result').val(''); // 사용자 응답창 지워주기
+    const newConversationItem = createUserMessage(msg);
+    $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
+    scroll();
+}
+
 function createUserMessage(msg) {
     return `
            <li class="mb-3 d-flex justify-content-end">

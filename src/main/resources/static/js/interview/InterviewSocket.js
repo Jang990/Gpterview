@@ -18,13 +18,24 @@ function initSocket() {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/queue/interview/' + interviewId, function (data) {
             console.log(data);
+            const response = JSON.parse(data.body);
+            const pairId = response.conversationPairId;
+            const questions = response.question;
+
             setTimeout(function () {
                 // speak(data.content); // 응답 메시지를 음성으로 전달
                 removeWaitingPanel();
-                displayResponse(JSON.parse(data.body));
+
+                if(questions.length == 1) {
+                    displayResponse(pairId, questions[0].content);
+                    enableSendBtn();
+                }
+                else if(questions.length > 1) {
+                    displayRecommendation(pairId, questions);
+                }
+
                 scroll();
                 remainingTime = loadingTime;
-                enableSendBtn();
             }, remainingTime);
         });
     });

@@ -9,17 +9,10 @@ function sendMessage() {
         return;
     }
 
-    $('#result').val(''); // 사용자 응답창 지워주기
     removeRetryingBtn(); // 다른 질문을 요청할 수 없도록 버튼 제거
-
-    const newConversationItem = createUserMessage(nowMsg);
-    $('#talk-history').append(newConversationItem); // 화면에 UserMessage 추가해주기
-    scroll();
-
-    const message = createMessage("USER", nowMsg); // TODO: USER를 타임리프로 변경
-    const conversationPairId = getConversationPairId();
-
+    displayAnswer(nowMsg);
     waitAiResponse();
+    const message = createMessage("USER", nowMsg);
     sendRequest(createConversationPairUriPrefix()+"/answer", message);
 }
 
