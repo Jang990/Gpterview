@@ -1,5 +1,8 @@
 package com.mock.interview.global;
 
+import com.mock.interview.global.exception.CustomClientException;
+import com.mock.interview.global.exception.CustomException;
+import com.mock.interview.global.exception.CustomServerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -26,6 +29,22 @@ public class ApiExceptionHandler {
         Set<String> uniqueErrorMessages = getUniqueErrorMessages(e, locale);
         StringBuilder errorStringBuilder = createMessageString(uniqueErrorMessages);
         return new ResponseEntity<>(new ErrorResponse(errorStringBuilder.toString()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleClientException(CustomException e, Locale locale) {
+        printLog(e);
+        String errorMessage = messageSource.getMessage(e.getCode(), null, locale);
+        return new ResponseEntity<>(new ErrorResponse(errorMessage), e.getStatus());
+    }
+
+    private void printLog(CustomException e) {
+        if(e instanceof CustomServerException)
+            log.warn("서버 오류 발생", e);
+        else if(e instanceof CustomClientException)
+            log.info("요청 오류 발생", e);
+        else
+            log.info("오류 발생", e);
     }
 
     private static StringBuilder createMessageString(Set<String> uniqueErrorMessages) {
