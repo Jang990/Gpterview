@@ -6,11 +6,10 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
-import com.mock.interview.interviewconversationpair.domain.QuestionRecommendRule;
+import com.mock.interview.interviewconversationpair.domain.ConversationStarter;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -38,7 +37,7 @@ public class InterviewService {
     private final InterviewRepository repository;
     private final InterviewConversationPairRepository pairRepository;
     private final CandidateConfigRepository profileRepository;
-    private final QuestionRecommendRule questionRecommendRule;
+    private final ConversationStarter conversationStarter;
     private final InterviewQuestionRepository interviewQuestionRepository;
 
     @InterviewCreationUserLock
@@ -59,7 +58,7 @@ public class InterviewService {
 
     private InterviewConversationPair startConversation(CandidateConfig candidateConfig, Interview interview) {
         long questionCount = findDepartmentQuestionCount(candidateConfig.getAppliedJob());
-        return questionRecommendRule.start(pairRepository, interview, questionCount);
+        return conversationStarter.start(pairRepository, interview, questionCount);
     }
 
     private long findDepartmentQuestionCount(JobCategory field) {

@@ -6,7 +6,7 @@ import com.mock.interview.interviewconversationpair.infra.InterviewConversationP
 import org.springframework.stereotype.Service;
 
 @Service
-public class QuestionRecommendRule {
+public class ConversationStarter {
     private final int MIN_RECOMMENDED_SIZE = 50;
     public InterviewConversationPair start(
             InterviewConversationPairRepository repository,
