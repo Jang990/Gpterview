@@ -5,7 +5,7 @@ import com.mock.interview.interviewquestion.infra.recommend.calculator.Recommend
 import com.mock.interview.interviewquestion.infra.recommend.calculator.TFIDFCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CalculatedQuestion;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
-import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
+import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,17 +23,17 @@ public class QuestionRankingService {
     private final CosineSimilarityCalculator cosineSimilarityCalculator;
 
     public List<Long> recommendTechQuestion(
-            int maxRecommendedSize, CurrentQuestion currentQuestion,
+            int maxRecommendedSize, CurrentConversation currentConversation,
             List<QuestionMetaData> departmentMatchedQuestions
     ) throws NotEnoughQuestion {
         boolean hasEnoughQuestion = maxRecommendedSize < departmentMatchedQuestions.size();
         if(!hasEnoughQuestion)
             throw new NotEnoughQuestion();
 
-        initQuestionCosineSimilarity(currentQuestion, departmentMatchedQuestions);
+        initQuestionCosineSimilarity(currentConversation, departmentMatchedQuestions);
         PriorityQueue<CalculatedQuestion> recommendedQuestions = new PriorityQueue<>();
         for (QuestionMetaData question : departmentMatchedQuestions) {
-            double score = recommendScorer.calculateScore(currentQuestion, question);
+            double score = recommendScorer.calculateScore(currentConversation, question);
             CalculatedQuestion calculatedQuestion = new CalculatedQuestion(question, score);
 
             boolean hasSpaceInQueue = recommendedQuestions.isEmpty() || recommendedQuestions.size() < maxRecommendedSize;
@@ -62,8 +62,8 @@ public class QuestionRankingService {
     }
 
     /** TF-IDF 계산을 통한 코사인 유사도 설정 */
-    private void initQuestionCosineSimilarity(CurrentQuestion currentQuestion, List<QuestionMetaData> departmentMatchedQuestions) {
-        List<String> base = currentQuestion.beforeQuestionContent();
+    private void initQuestionCosineSimilarity(CurrentConversation currentConversation, List<QuestionMetaData> departmentMatchedQuestions) {
+        List<String> base = currentConversation.beforeQuestionContent();
         if(base == null)
             return;
         List<List<String>> allQuestions = departmentMatchedQuestions.stream()

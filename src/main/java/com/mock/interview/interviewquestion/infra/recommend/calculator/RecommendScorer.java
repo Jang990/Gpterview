@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.infra.recommend.calculator;
 
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
-import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
+import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +19,13 @@ public class RecommendScorer {
     private final int FULL_LIKES_COUNT = 20;
     private final int MAX_TECH_BOUND = 5;
 
-    public double calculateScore(CurrentQuestion currentQuestion, QuestionMetaData target) {
+    public double calculateScore(CurrentConversation currentConversation, QuestionMetaData target) {
         double result = 0;
         result += calculateTFDIFScore(TF_IDF_WEIGHT, target.getCosineSimilarity());
         result += calculateLikesScore(LIKE_WEIGHT, target.getLikes());
-        result += calculateFieldMatchedScore(FIELD_WEIGHT, target.getField(), currentQuestion.field());
-        result += calculateTechContainScore(TECH_WEIGHT, target.getTech(), currentQuestion.tech());
-        result += calculateChildQuestionScore(CHILD_WEIGHT, target.getParentQuestionId(), currentQuestion.beforeQuestionId());
+        result += calculateFieldMatchedScore(FIELD_WEIGHT, target.getField(), currentConversation.field());
+        result += calculateTechContainScore(TECH_WEIGHT, target.getTech(), currentConversation.tech());
+        result += calculateChildQuestionScore(CHILD_WEIGHT, target.getParentQuestionId(), currentConversation.beforeQuestionId());
 //        print(currentQuestion, target, result);
         return result;
     }

@@ -4,7 +4,7 @@ import com.mock.interview.interviewquestion.infra.recommend.calculator.CosineSim
 import com.mock.interview.interviewquestion.infra.recommend.calculator.RecommendScorer;
 import com.mock.interview.interviewquestion.infra.recommend.calculator.TFIDFCalculator;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
-import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
+import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class QuestionRankingServiceTest {
     @DisplayName("사이즈 검증")
     void test() {
         int testSize = 3;
-        CurrentQuestion testUP = mock(CurrentQuestion.class);
+        CurrentConversation testUP = mock(CurrentConversation.class);
         List<QuestionMetaData> list = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
             QuestionMetaData metaData = mock(QuestionMetaData.class);

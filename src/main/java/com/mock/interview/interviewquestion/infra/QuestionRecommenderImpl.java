@@ -11,7 +11,7 @@ import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.progress.CurrentTopicTracker;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionRankingService;
-import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
+import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
 import com.mock.interview.questiontoken.domain.KoreaStringAnalyzer;
@@ -55,7 +55,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
 
         try {
             List<Long> result = recommender
-                    .recommendTechQuestion(TOP_3, createCurrentQuestion(interview, targetConversation), questionForRecommend);
+                    .recommendTechQuestion(TOP_3, createCurrentConversation(interview, targetConversation), questionForRecommend);
             return new Top3Question(result);
         } catch (NotEnoughQuestion e) {
             log.warn("추천 기능 예외 발생", e);
@@ -70,12 +70,12 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
         return recommendTop3(target);
     }
 
-    private CurrentQuestion createCurrentQuestion(InterviewInfo interview, InterviewConversationPair lastConversation) {
+    private CurrentConversation createCurrentConversation(InterviewInfo interview, InterviewConversationPair lastConversation) {
         if (lastConversation == null || lastConversation.getQuestion() == null) {
-            return new CurrentQuestion(null,null, topicTracker.trace(interview), interview.profile().field());
+            return new CurrentConversation(null,null, topicTracker.trace(interview), interview.profile().field());
         }
 
-        return new CurrentQuestion(
+        return new CurrentConversation(
                 lastConversation.getAnswer().getId(),
                 stringAnalyzer.extractNecessaryTokens(lastConversation.getAnswer().getAnswer()),
                 topicTracker.trace(interview), interview.profile().field()

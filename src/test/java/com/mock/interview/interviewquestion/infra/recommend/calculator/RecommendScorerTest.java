@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.infra.recommend.calculator;
 
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
-import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentQuestion;
+import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ public class RecommendScorerTest {
         List<QuestionMetaData> simpleTestData = createSimpleTestData();
         List<List<String>> questionContents = simpleTestData.stream()
                 .map(QuestionMetaData::getNecessaryWords).toList();
-        CurrentQuestion user = new CurrentQuestion(1l, Arrays.asList("Spring", "MVC", "대해", "아는대로", "설명", "해보세요"), "Spring Boot", "백엔드"); // Spring MVC에 대해 아는대로 설명해보세요.
+        CurrentConversation user = new CurrentConversation(1l, Arrays.asList("Spring", "MVC", "대해", "아는대로", "설명", "해보세요"), "Spring Boot", "백엔드"); // Spring MVC에 대해 아는대로 설명해보세요.
         System.out.println("TF-IDF\t좋아요\t필드 \t테크 \t꼬리질문");
         for (QuestionMetaData data : simpleTestData) {
             recommendScorer.calculateScore(user, data);
@@ -36,7 +36,7 @@ public class RecommendScorerTest {
         List<QuestionMetaData> simpleTestData = createSimpleTestData();
         List<List<String>> questionContents = simpleTestData.stream()
                 .map(QuestionMetaData::getNecessaryWords).toList();
-        CurrentQuestion user = new CurrentQuestion(null, null, null, null); // Spring MVC에 대해 아는대로 설명해보세요.
+        CurrentConversation user = new CurrentConversation(null, null, null, null); // Spring MVC에 대해 아는대로 설명해보세요.
         System.out.println("TF-IDF\t좋아요\t필드 \t테크 \t꼬리질문");
         for (QuestionMetaData data : simpleTestData) {
             recommendScorer.calculateScore(user, data);
