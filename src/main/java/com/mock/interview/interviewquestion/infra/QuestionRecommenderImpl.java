@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.infra;
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewquestion.infra.ai.progress.TraceResult;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
@@ -42,7 +43,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     private final KoreaStringAnalyzer stringAnalyzer;
     private final CurrentTopicTracker topicTracker;
 
-    private final int RECOMMENDED_QUESTION_COUNT = 100;
+    private final int RECOMMENDED_QUESTION_COUNT = 30;
     private final int TOP_3 = 3;
 
     @Override
@@ -53,9 +54,11 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
                 .findRandomQuestion(interview.profile().department(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
                 .stream().map(this::convertQuestion).toList();
 
+        TraceResult traceResult = topicTracker.trace(interview);
+
         try {
             List<Long> result = recommender
-                    .recommendTechQuestion(TOP_3, createCurrentConversation(interview, targetConversation), questionForRecommend);
+                    .recommendTechQuestion(TOP_3, createCurrentConversation(interview, targetConversation, traceResult.topic()), questionForRecommend);
             return new Top3Question(result);
         } catch (NotEnoughQuestion e) {
             log.warn("추천 기능 예외 발생", e);
@@ -66,19 +69,18 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     @Override
     public Top3Question retryRecommendation(RecommendationTarget target) {
         // 현재 저장된 캐시를 만료하고 새롭게 저장 - AOP 처리
-        System.out.println("헬로!");
         return recommendTop3(target);
     }
 
-    private CurrentConversation createCurrentConversation(InterviewInfo interview, InterviewConversationPair lastConversation) {
+    private CurrentConversation createCurrentConversation(InterviewInfo interview, InterviewConversationPair lastConversation, String topic) {
         if (lastConversation == null || lastConversation.getQuestion() == null) {
-            return new CurrentConversation(null,null, topicTracker.trace(interview), interview.profile().field());
+            return new CurrentConversation(null,null, topic, interview.profile().field());
         }
 
         return new CurrentConversation(
                 lastConversation.getAnswer().getId(),
                 stringAnalyzer.extractNecessaryTokens(lastConversation.getAnswer().getAnswer()),
-                topicTracker.trace(interview), interview.profile().field()
+                topic, interview.profile().field()
         );
     }
 

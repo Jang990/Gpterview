@@ -16,12 +16,12 @@ public class CurrentTopicTracker {
     private final List<InterviewPromptConfigurator> interviewPromptConfiguratorList;
     private final InterviewProgressTimeBasedTracker progressTracker;
 
-    public String trace(InterviewInfo interviewInfo) {
+    public TraceResult trace(InterviewInfo interviewInfo) {
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         InterviewPromptConfigurator configurator = InterviewPromptConfigurator
                 .selectPromptConfigurator(interviewPromptConfiguratorList, interviewInfo);
 
-        return configurator.getCurrentTopic(interviewInfo.profile(), progress);
+        return new TraceResult(progress, configurator.getCurrentTopic(interviewInfo.profile(), progress));
     }
 
 }
