@@ -1,6 +1,6 @@
 package com.mock.interview.interviewconversationpair.presentation.api;
 
-import com.mock.interview.interviewconversationpair.application.ConversationPairService;
+import com.mock.interview.interviewconversationpair.application.PairStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,28 +10,27 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/interview/{interviewId}/conversation/pair/{pairId}")
 @RequiredArgsConstructor
-public class ConversationPairController {
-    private final ConversationPairService conversationPairService;
+public class ConversationPairStatusController {
 
-    @PostMapping("/recommendation/another")
-    public ResponseEntity<Void> recommendAnotherQuestion(
+    private final PairStatusService pairStatusService;
+
+    @PostMapping("/status/changing")
+    public ResponseEntity<Void> changingTopic(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
             @PathVariable(name = "pairId") long pairId
     ) {
-        conversationPairService.recommendAnotherQuestion(loginId, interviewId, pairId);
+        pairStatusService.changeQuestionTopic(loginId, interviewId, pairId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/question/connection/{questionId}")
-    public ResponseEntity<Void> connectQuestion(
+    @PatchMapping("/status/ai")
+    public ResponseEntity<Void> requestAi(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
-            @PathVariable(name = "pairId") long pairId,
-            @PathVariable(name = "questionId") long questionId
+            @PathVariable(name = "pairId") long pairId
     ) {
-
-        conversationPairService.connectQuestion(loginId, interviewId, pairId, questionId);
+        pairStatusService.changeRequestingAi(loginId, interviewId, pairId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
