@@ -2,11 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <div class="card-body" id="talk-card" style="overflow-y: scroll; min-height: 350px; max-height: 350px;" th:fragment="fragment-interview-history(messageHistory, recommendationQuestions)">
     <article id="talk-history">
-      <li th:unless="${recommendationQuestions == null or #lists.isEmpty(recommendationQuestions)}"
-          class="d-flex mb-3 justify-content-start recommended-questions">
-        <div th:replace="~{fragments/interview/interview-recommended :: fragment-interview-recommended(
-          questionList=${recommendationQuestions})}">테스트</div>
-      </li>
       <th:block th:unless="${#lists.isEmpty(messageHistory)}">
         <th:block th:each="message, messageStat : ${messageHistory.content}" class="d-flex mb-3">
           <li th:object="${message.question}" th:if="${not #strings.isEmpty(message.question.content)}"
@@ -42,6 +37,11 @@
           </li>
         </th:block>
       </th:block>
+      <li th:unless="${recommendationQuestions == null or #lists.isEmpty(recommendationQuestions)}"
+          class="d-flex mb-3 justify-content-start recommended-questions">
+        <div th:replace="~{fragments/interview/interview-recommended :: fragment-interview-recommended(
+          questionList=${recommendationQuestions})}">테스트</div>
+      </li>
     </article>
   </div>
 </html>
