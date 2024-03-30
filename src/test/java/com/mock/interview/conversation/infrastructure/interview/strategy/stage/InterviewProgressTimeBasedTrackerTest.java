@@ -4,7 +4,7 @@ import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgressTimeBasedTracker;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,7 +40,7 @@ class InterviewProgressTimeBasedTrackerTest {
     }
 
     private void test(InterviewType testType, long interviewDurationMinute) {
-        InterviewStage[] stageOrder = tracker.getStageOrder(testType);
+        InterviewPhase[] stageOrder = tracker.getPhaseOrder(testType);
         long eachStageMinute = interviewDurationMinute / stageOrder.length;
         for (int elapsedMinute = 0; elapsedMinute <= interviewDurationMinute; elapsedMinute++) {
             LocalDateTime start = LocalDateTime.now().minusMinutes(elapsedMinute);
@@ -51,9 +51,9 @@ class InterviewProgressTimeBasedTrackerTest {
             assertThat((double) stageElapsedMinute / eachStageMinute).isEqualTo(progress.progress());
             int stageIdx = (int) (elapsedMinute / eachStageMinute);
             if(stageIdx < stageOrder.length)
-                assertThat(stageOrder[stageIdx]).isEqualTo(progress.stage());
+                assertThat(stageOrder[stageIdx]).isEqualTo(progress.phase());
             else
-                assertThat(stageOrder[stageOrder.length - 1]).isEqualTo(progress.stage());
+                assertThat(stageOrder[stageOrder.length - 1]).isEqualTo(progress.phase());
         }
     }
 

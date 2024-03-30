@@ -24,7 +24,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
 
     @Override
     public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
-        return switch (progress.stage()) {
+        return switch (progress.phase()) {
             case TECHNICAL -> createTechPromptConfig(profile, progress.progress());
             case EXPERIENCE -> createExperiencePromptConfig(profile, progress.progress());
             case PERSONAL -> createPersonalPromptConfig(profile, progress.progress());
@@ -33,7 +33,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
 
     @Override
     public String getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
-        return switch (progress.stage()) {
+        return switch (progress.phase()) {
             case TECHNICAL -> selectSkills(progress.progress(), profile.skills());
             case EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.experience());
             case PERSONAL -> null;

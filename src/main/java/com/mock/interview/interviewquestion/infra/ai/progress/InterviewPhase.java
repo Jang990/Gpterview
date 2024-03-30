@@ -1,5 +1,5 @@
 package com.mock.interview.interviewquestion.infra.ai.progress;
 
-public enum InterviewStage {
+public enum InterviewPhase {
     TECHNICAL, EXPERIENCE, PERSONAL
 }

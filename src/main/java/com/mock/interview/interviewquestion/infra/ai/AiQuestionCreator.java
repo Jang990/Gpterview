@@ -4,7 +4,7 @@ import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
 import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AIRequester;
 import com.mock.interview.interviewquestion.infra.ai.gpt.InterviewAIRequest;
@@ -38,12 +38,12 @@ public class AiQuestionCreator {
     }
 
     private RecommendedQuestion createPublishedQuestion(InterviewProgress progress, PromptConfiguration promptConfig, Message response) {
-        List<String> topic = getTopic(progress.stage(), promptConfig);
+        List<String> topic = getTopic(progress.phase(), promptConfig);
         return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress, topic);
     }
 
-    private List<String> getTopic(InterviewStage stage, PromptConfiguration promptConfig) {
-        return switch (stage) {
+    private List<String> getTopic(InterviewPhase phase, PromptConfiguration promptConfig) {
+        return switch (phase) {
             case TECHNICAL -> promptConfig.getSkills();
             case EXPERIENCE -> promptConfig.getExperience();
             case PERSONAL -> List.of();

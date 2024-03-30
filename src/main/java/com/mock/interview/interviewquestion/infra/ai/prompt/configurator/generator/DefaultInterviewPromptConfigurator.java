@@ -5,7 +5,7 @@ import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigurationCreator;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.DefaultInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
     //      -> IT 먼저 끝내고 바꿀 것.
     @Override
     public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
-        String rawStrategy = getRawInterviewStrategy(progress.stage());
+        String rawStrategy = getRawInterviewStrategy(progress.phase());
         return configurationCreator.create(rawStrategy, profile);
     }
 
@@ -35,8 +35,8 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
         return true;
     }
 
-    private String getRawInterviewStrategy(InterviewStage stage) {
-        return switch (stage) {
+    private String getRawInterviewStrategy(InterviewPhase phase) {
+        return switch (phase) {
             case TECHNICAL -> templateGetter.getTechnical();
             case EXPERIENCE -> templateGetter.getExperience();
             case PERSONAL -> templateGetter.getPersonal();

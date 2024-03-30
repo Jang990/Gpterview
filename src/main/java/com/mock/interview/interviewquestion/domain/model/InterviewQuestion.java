@@ -4,7 +4,7 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
 import com.mock.interview.interviewquestion.domain.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewStage;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
@@ -92,7 +92,7 @@ public class InterviewQuestion extends BaseEntity {
     ) {
         InterviewQuestion question = createWithCommonField(
                 repository, questionInfo.question(), appliedJob, owner,
-                convert(questionInfo.progress().stage()), questionInfo.createdBy()
+                convert(questionInfo.progress().phase()), questionInfo.createdBy()
         );
         connectTech(techList, question);
         return question;
@@ -117,8 +117,8 @@ public class InterviewQuestion extends BaseEntity {
         return techList.stream().map((tech) -> QuestionTechLink.createLink(question, tech)).toList();
     }
 
-    private static QuestionType convert(InterviewStage stage) {
-        return switch (stage) {
+    private static QuestionType convert(InterviewPhase phase) {
+        return switch (phase) {
             case TECHNICAL -> QuestionType.TECHNICAL;
             case EXPERIENCE -> QuestionType.EXPERIENCE;
             case PERSONAL -> QuestionType.PERSONALITY;

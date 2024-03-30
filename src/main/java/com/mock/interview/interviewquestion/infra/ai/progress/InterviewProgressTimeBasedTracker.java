@@ -13,28 +13,28 @@ import java.time.temporal.ChronoUnit;
 @Getter
 public class InterviewProgressTimeBasedTracker {
 
-    public final InterviewStage[] COMPOSITE_STAGE_ORDER = {InterviewStage.TECHNICAL, InterviewStage.EXPERIENCE, InterviewStage.PERSONAL};
-    private final InterviewStage[] TECH_EX_STAGE_ORDER = {InterviewStage.TECHNICAL, InterviewStage.EXPERIENCE};
-    private final InterviewStage[] TECH_STAGE_ORDER = new InterviewStage[]{InterviewStage.TECHNICAL};
-    private final InterviewStage[] EXPERIENCE_STAGE_ORDER = new InterviewStage[]{InterviewStage.EXPERIENCE};
-    private final InterviewStage[] PERSONAL_STAGE_ORDER = new InterviewStage[]{InterviewStage.PERSONAL};
+    public final InterviewPhase[] COMPOSITE_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE, InterviewPhase.PERSONAL};
+    private final InterviewPhase[] TECH_EX_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE};
+    private final InterviewPhase[] TECH_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.TECHNICAL};
+    private final InterviewPhase[] EXPERIENCE_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.EXPERIENCE};
+    private final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
 
-    public InterviewStage[] getStageOrder(InterviewType type) {
-        return getStages(type).clone();
+    public InterviewPhase[] getPhaseOrder(InterviewType type) {
+        return getPhase(type).clone();
     }
 
     public InterviewProgress getCurrentInterviewProgress(InterviewConfig config) {
         InterviewType interviewType = config.interviewType();
         LocalDateTime now = LocalDateTime.now();
 
-        InterviewStage interviewStage = computeStage(now, interviewType, config);
-        double progress = computeStageProgress(now, interviewType, config);
+        InterviewPhase interviewPhase = computePhase(now, interviewType, config);
+        double progress = computePhaseProgress(now, interviewType, config);
 
-        return new InterviewProgress(interviewStage, progress);
+        return new InterviewProgress(interviewPhase, progress);
     }
 
     /** 해당 면접 타입에 몇 개의 스테이지가 있는지 */
-    private int getNumberOfStage(InterviewType interviewType) {
+    private int getNumberOfPhase(InterviewType interviewType) {
         return switch (interviewType) {
             case TECHNICAL, PERSONALITY, EXPERIENCE -> 1;
             case TECHNICAL_EXPERIENCE -> 2;
@@ -42,48 +42,48 @@ public class InterviewProgressTimeBasedTracker {
         };
     }
 
-    /** Stage 진행도 백분률 계산 */
-    private double computeStageProgress(LocalDateTime now, InterviewType type, InterviewConfig config) {
-        long eachStageSecond = getEachStageSecond(type, config);
+    /** Phase 진행도 백분률 계산 */
+    private double computePhaseProgress(LocalDateTime now, InterviewType type, InterviewConfig config) {
+        long eachPhaseSecond = getEachPhaseSecond(type, config);
         long elapsedSecond = getSecondDifference(config.startTime(), now);
-        long aa = elapsedSecond % eachStageSecond;
-        return (double) aa / eachStageSecond;
+        long aa = elapsedSecond % eachPhaseSecond;
+        return (double) aa / eachPhaseSecond;
     }
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
-    private InterviewStage computeStage(LocalDateTime now, InterviewType type, InterviewConfig config) {
-        InterviewStage[] stageOrders = getStages(type);
-        if(stageOrders.length == 1)
-            return stageOrders[0];
+    private InterviewPhase computePhase(LocalDateTime now, InterviewType type, InterviewConfig config) {
+        InterviewPhase[] phaseOrders = getPhase(type);
+        if(phaseOrders.length == 1)
+            return phaseOrders[0];
 
-        long eachStageSecond = getEachStageSecond(type, config);
+        long eachPhaseSecond = getEachPhaseSecond(type, config);
         long elapsedSecond = getSecondDifference(config.startTime(), now);
-        int stageIdx = (int) (elapsedSecond / eachStageSecond);
+        int phaseIdx = (int) (elapsedSecond / eachPhaseSecond);
 
-        if(stageIdx < stageOrders.length)
-            return stageOrders[ stageIdx];
-        return lastStage(stageOrders);
+        if(phaseIdx < phaseOrders.length)
+            return phaseOrders[ phaseIdx];
+        return lastPhase(phaseOrders);
     }
 
     /** 각각의 스테이지에 부여된 시간을 계산 */
-    private long getEachStageSecond(InterviewType type, InterviewConfig config) {
-        int numberOfStage = getNumberOfStage(type);
+    private long getEachPhaseSecond(InterviewType type, InterviewConfig config) {
+        int numberOfPhase = getNumberOfPhase(type);
         long interviewDurationSecond = getSecondDifference(config.startTime(), config.expiredTime());
-        return interviewDurationSecond / numberOfStage;
+        return interviewDurationSecond / numberOfPhase;
     }
 
-    private InterviewStage[] getStages(InterviewType type) {
+    private InterviewPhase[] getPhase(InterviewType type) {
         return switch (type) {
-            case TECHNICAL -> TECH_STAGE_ORDER;
-            case PERSONALITY -> PERSONAL_STAGE_ORDER;
-            case EXPERIENCE -> EXPERIENCE_STAGE_ORDER;
-            case TECHNICAL_EXPERIENCE -> TECH_EX_STAGE_ORDER;
-            case COMPOSITE -> COMPOSITE_STAGE_ORDER;
+            case TECHNICAL -> TECH_PHASE_ORDER;
+            case PERSONALITY -> PERSONAL_PHASE_ORDER;
+            case EXPERIENCE -> EXPERIENCE_PHASE_ORDER;
+            case TECHNICAL_EXPERIENCE -> TECH_EX_PHASE_ORDER;
+            case COMPOSITE -> COMPOSITE_PHASE_ORDER;
         };
     }
 
-    private InterviewStage lastStage(InterviewStage[] stageOrders) {
-        return stageOrders[stageOrders.length - 1];
+    private InterviewPhase lastPhase(InterviewPhase[] phaseOrders) {
+        return phaseOrders[phaseOrders.length - 1];
     }
 
     private long getSecondDifference(LocalDateTime base, LocalDateTime target) {
