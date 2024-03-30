@@ -57,11 +57,17 @@ function selectQuestion(questionId, content) {
 
 // 다른 추천 부탁
 function retryRecommendation() {
-    const pairId = getConversationPairId();
+    const apiUri = createConversationPairUriPrefix() + "/recommendation/another";
+    removeRecommendationComponent();
+    waitAiResponse();
+    sendRequest(apiUri, null);
 }
 
 // AI 응답으로 변경
 function requestAi() {
-    const pairId = getConversationPairId();
+    const apiUri = createConversationPairUriPrefix() + "/status/ai";
+    removeRecommendationComponent();
+    waitAiResponse();
+    sendPatchRequest(apiUri, null);
 }
 

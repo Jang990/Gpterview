@@ -25,9 +25,30 @@ public class QuestionRecommendedService {
             List<Long> questionIds = questionRecommender.recommendTop3(new RecommendationTarget(interviewId, pairId)).questions();
             Events.raise(new QuestionRecommendedEvent(interviewId, pairId, questionIds));
         } catch (Exception e) {
-            log.warn("추천 기능 예외 발생", e);
-            Events.raise(new RaisedQuestionErrorEvent(interviewId, e.getMessage()));
-            throw new IllegalArgumentException();
+            handleException(e, interviewId);
         }
+    }
+
+    public void recommendAnotherQuestion(
+            QuestionRecommender questionRecommender,
+            InterviewConversationPair pair
+    ) {
+        if(pair.isRecommendationDeniedState())
+            throw new IllegalStateException();
+
+        long interviewId = pair.getInterview().getId();
+        long pairId = pair.getId();
+        try {
+            List<Long> questionIds = questionRecommender.retryRecommendation(new RecommendationTarget(interviewId, pairId)).questions();
+            Events.raise(new QuestionRecommendedEvent(interviewId, pairId, questionIds));
+        } catch (Exception e) {
+            handleException(e, interviewId);
+        }
+    }
+
+    private void handleException(Exception e, long interviewId) {
+        log.warn("추천 기능 예외 발생", e);
+        Events.raise(new RaisedQuestionErrorEvent(interviewId, e.getMessage()));
+        throw new IllegalArgumentException();
     }
 }

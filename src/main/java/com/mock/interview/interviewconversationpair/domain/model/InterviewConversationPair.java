@@ -43,16 +43,27 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     public void recommendAiQuestion() {
-        verifyStart();
+        if(status != PairStatus.START && status != PairStatus.RECOMMENDING)
+            throw new IllegalStateException();
         status = PairStatus.WAITING_AI;
         Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void recommendExistingQuestion() {
-        verifyStart();
+        if(status != PairStatus.START)
+            throw new IllegalStateException();
+
         status = PairStatus.RECOMMENDING;
         Events.raise(new ExistingQuestionRecommendedEvent(interview.getId(), this.id));
     }
+
+    public void recommendAnotherQuestions() {
+        if(status != PairStatus.RECOMMENDING)
+            throw new IllegalStateException();
+
+        Events.raise(new AnotherQuestionRecommendedEvent(interview.getId(), this.id));
+    }
+
 
     public void connectAiQuestion(InterviewQuestion question) {
         if(status != PairStatus.WAITING_AI)
@@ -97,11 +108,6 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
     public boolean isRecommendationDeniedState() {
         return status != PairStatus.RECOMMENDING;
-    }
-
-    private void verifyStart() {
-        if(status != PairStatus.START)
-            throw new IllegalStateException();
     }
 
     private void verifyWaitingAnswer() {

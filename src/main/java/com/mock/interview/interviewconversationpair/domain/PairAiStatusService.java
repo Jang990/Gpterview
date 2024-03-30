@@ -1,17 +1,25 @@
 package com.mock.interview.interviewconversationpair.domain;
 
-import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ChangingTopicService {
+public class PairAiStatusService {
     public void changeTopic(Interview interview, InterviewConversationPair conversationPair) {
-        if (interview.isTimeout())
-            throw new IsAlreadyTimeoutInterviewException();
+        verifyActiveInterview(interview);
 
         conversationPair.changeStatusToChangeTopic();
+    }
+
+    public void changeRecommendationToAi(Interview interview, InterviewConversationPair conversationPair) {
+        verifyActiveInterview(interview);
+        conversationPair.recommendAiQuestion();
+    }
+
+    private static void verifyActiveInterview(Interview interview) {
+        if (interview.isTimeout())
+            throw new IsAlreadyTimeoutInterviewException();
     }
 }

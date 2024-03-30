@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
+import com.mock.interview.interviewconversationpair.domain.AnotherQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.domain.ExistingQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -34,5 +35,18 @@ public class ExistingQuestionRecommendedEventHandler {
         InterviewConversationPair pair = interviewConversationPairRepository.findByIdWithInterviewId(event.pairId(), event.interviewId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
         questionRecommendedService.recommendQuestion(questionRecommender, pair);
+    }
+
+    @Async
+    @AiResponseAwaitLock
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener(
+            classes = AnotherQuestionRecommendedEvent.class,
+            phase = TransactionPhase.AFTER_COMMIT
+    )
+    public void handle(AnotherQuestionRecommendedEvent event) {
+        InterviewConversationPair pair = interviewConversationPairRepository.findByIdWithInterviewId(event.pairId(), event.interviewId())
+                .orElseThrow(InterviewConversationPairNotFoundException::new);
+        questionRecommendedService.recommendAnotherQuestion(questionRecommender, pair);
     }
 }

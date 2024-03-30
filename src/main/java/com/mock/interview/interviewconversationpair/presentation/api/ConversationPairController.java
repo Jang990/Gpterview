@@ -1,32 +1,51 @@
 package com.mock.interview.interviewconversationpair.presentation.api;
 
 import com.mock.interview.interviewconversationpair.application.ConversationPairService;
+import com.mock.interview.interviewconversationpair.application.PairStatusService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/interview/{interviewId}/conversation/pair/{pairId}")
 @RequiredArgsConstructor
 public class ConversationPairController {
     private final ConversationPairService conversationPairService;
+    private final PairStatusService pairStatusService;
 
-    @PostMapping("/interview/{interviewId}/conversation/pair/{pairId}/changing-topic")
+    @PostMapping("/status/changing")
     public ResponseEntity<Void> changingTopic(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
             @PathVariable(name = "pairId") long pairId
     ) {
-        conversationPairService.changeQuestionTopic(loginId, interviewId, pairId);
+        pairStatusService.changeQuestionTopic(loginId, interviewId, pairId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/interview/{interviewId}/conversation/pair/{pairId}/question/connection/{questionId}")
+    @PatchMapping("/status/ai")
+    public ResponseEntity<Void> requestAi(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable(name = "interviewId") long interviewId,
+            @PathVariable(name = "pairId") long pairId
+    ) {
+        pairStatusService.changeRequestingAi(loginId, interviewId, pairId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/recommendation/another")
+    public ResponseEntity<Void> recommendAnotherQuestion(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable(name = "interviewId") long interviewId,
+            @PathVariable(name = "pairId") long pairId
+    ) {
+        conversationPairService.recommendAnotherQuestion(loginId, interviewId, pairId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/question/connection/{questionId}")
     public ResponseEntity<Void> connectQuestion(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,

@@ -31,11 +31,20 @@ function removeLastChatting() {
 
 // 서버로 요청보내기.
 function sendRequest(requestURL, message) {
+    sendMethodRequest(requestURL, 'POST', message);
+}
+
+function sendPatchRequest(requestURL, message) {
+    sendMethodRequest(requestURL, 'PATCH', message);
+}
+
+// 서버로 요청보내기.
+function sendMethodRequest(requestURL, method, message) {
     console.log(message);
     console.log(requestURL);
 
     $.ajax({
-        type: 'POST',
+        type: method,
         url: requestURL,
         contentType: 'application/json',
         data: JSON.stringify(message),

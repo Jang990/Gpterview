@@ -11,7 +11,7 @@ function retryResponse() {
     const conversationPairId = getConversationPairId();
 
     waitAiResponse();
-    sendRequest(createConversationPairUriPrefix()+"/changing-topic", null);
+    sendRequest(createConversationPairUriPrefix()+"/status/changing", null);
 }
 
 function createGptMessage(msg) {
