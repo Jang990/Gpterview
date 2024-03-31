@@ -28,7 +28,7 @@ public class CandidateController {
 //            @PathVariable(required = false, value = "candidateProfileId") Optional<Long> candidateProfileId
     ) {
         model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("categoryList", categoryService.findAllDepartment());
+        model.addAttribute("categoryList", categoryService.findAllCategory());
         model.addAttribute("interviewDetails", new InterviewConfigDto());
         model.addAttribute("candidateConfig", new CandidateProfileForm());
         return "interview/interview-candidate-form";
@@ -50,7 +50,7 @@ public class CandidateController {
     ) {
         InterviewCandidateForm interviewConfig = candidateConfigReadOnlyService.findCandidate(candidateId, loginId);
         model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("categoryList", categoryService.findAllDepartment());
+        model.addAttribute("categoryList", categoryService.findAllCategory());
         model.addAttribute("interviewDetails", interviewConfig.getInterviewDetails());
         model.addAttribute("candidateConfig", interviewConfig.getProfile());
         return "interview/interview-candidate-form";

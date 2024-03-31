@@ -17,7 +17,7 @@ import java.util.List;
 public class JobCategoryService {
     private final JobCategoryRepository categoryRepository;
 
-    public List<CategoryResponse> findAllDepartment() {
+    public List<CategoryResponse> findAllCategory() {
         List<JobCategory> allDepartment = categoryRepository.findAll();
         return convert(allDepartment);
     }

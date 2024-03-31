@@ -4,10 +4,7 @@ import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.interviewquestion.application.QuestionSavingService;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
-import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -27,7 +24,7 @@ public class InterviewQuestionWebPostController {
 
     @GetMapping("question/form")
     public String questionSavePage(Model model) {
-        model.addAttribute("categoryList", categoryService.findAllDepartment());
+        model.addAttribute("categoryList", categoryService.findAllCategory());
         model.addAttribute("question", new QuestionForm());
         model.addAttribute("headerActiveTap", "interview-question");
         return "/question/question-form";
