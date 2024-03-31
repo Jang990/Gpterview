@@ -1,6 +1,8 @@
 package com.mock.interview.interviewquestion.domain;
 
+import com.mock.interview.category.application.JobConnectionHelper;
 import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -42,13 +44,14 @@ public class AiQuestionCreationService {
             RecommendedQuestion recommendedQuestion, List<TechnicalSubjects> techList
     ) {
         Users users = interview.getUsers();
-        JobCategory appliedJob = interview.getAppliedJob();
         String content = recommendedQuestion.question();
         QuestionType type = QuestionConvertor.convert(recommendedQuestion.progress().phase());
+
         InterviewQuestion question = InterviewQuestion.create(
-                repository, content, appliedJob, users,
+                repository, content, users,
                 type, recommendedQuestion.createdBy()
         );
+        question.linkJob(interview.getCategory(), interview.getPosition());
         question.linkTech(techList);
         return question;
     }

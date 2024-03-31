@@ -23,8 +23,8 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
                     SELECT CEIL( RAND() * (SELECT MAX(iq2.id) FROM InterviewQuestion iq2) ) as id
                 ) random
             INNER JOIN FETCH iq.questionToken qt
-            LEFT JOIN FETCH iq.appliedJob ia
-            LEFT JOIN FETCH iq.appliedJob.parent iad
+            LEFT JOIN FETCH iq.category ia
+            LEFT JOIN FETCH iq.category.parent iad
             WHERE iq.id >= CAST(random.id as long) AND (ia.name = :category OR iad.name = :category)
             """)
     List<InterviewQuestion> findRandomQuestion(@Param("category") String category, Pageable pageable);
@@ -32,9 +32,8 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
     @Query("""
             SELECT COUNT(*)
             FROM InterviewQuestion iq
-            LEFT JOIN iq.appliedJob ia
-            LEFT JOIN iq.appliedJob.parent iad
-            WHERE ia.name = :category OR iad.name = :category
+            LEFT JOIN iq.category ia
+            WHERE ia.name = :category
             """)
     Long countCategoryQuestion(@Param("category") String category);
 

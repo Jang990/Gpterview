@@ -1,8 +1,10 @@
 package com.mock.interview.interviewquestion.application;
 
+import com.mock.interview.category.application.JobConnectionHelper;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.infra.JobCategoryRepository;
+import com.mock.interview.category.infra.JobPositionRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
@@ -23,17 +25,17 @@ import java.util.List;
 public class QuestionSavingService {
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final JobCategoryRepository jobCategoryRepository;
+    private final JobPositionRepository jobPositionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final UserRepository userRepository;
     public long save(long loginId, QuestionForm form, List<Long> techIdList) {
         Users users = userRepository.findById(loginId).orElseThrow(UserNotFoundException::new);
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(techIdList);
-        JobCategory detailCategory = findMoreDetailCategory(form.getCategory(), form.getField());
-
         InterviewQuestion question = InterviewQuestion.create(
-                interviewQuestionRepository, form.getContent(), detailCategory, users,
+                interviewQuestionRepository, form.getContent(), users,
                 QuestionConvertor.convert(form.getType()), users.getUsername()
         );
+        JobConnectionHelper.connect(jobCategoryRepository, jobPositionRepository, question, form.getCategory(), form.getField());
         question.linkTech(techList);
         return question.getId();
     }

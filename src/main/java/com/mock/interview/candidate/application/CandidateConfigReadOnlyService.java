@@ -36,7 +36,7 @@ public class CandidateConfigReadOnlyService {
         return candidateList.stream()
                 .map(
                         candidate -> new InterviewCandidateOverview(
-                                candidate.getId(), candidate.getAppliedJob().getName(),
+                                candidate.getId(), candidate.getPosition().getName(),
                                 candidate.getType(), candidate.getDurationMinutes(),
                                 convert(candidate.getTechLink()),
                                 candidate.getCreatedAt()
@@ -52,7 +52,7 @@ public class CandidateConfigReadOnlyService {
 
     private InterviewCandidateForm convert(CandidateConfig candidateConfig) {
         return new InterviewCandidateForm(
-                new CandidateProfileForm(candidateConfig.getAppliedJob().getId(),
+                new CandidateProfileForm(candidateConfig.getPosition().getId(),
                         convertStringList(candidateConfig.getTechLink()),
                         candidateConfig.getExperienceContent().isEmpty() ? null : candidateConfig.getExperienceContent()),
                 new InterviewConfigDto(candidateConfig.getType(), candidateConfig.getDurationMinutes())

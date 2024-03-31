@@ -11,7 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class InterviewCandidateOverview {
     private long candidateId;
-    private String appliedJob;
+    private String position;
     private InterviewType type;
     private int durationMinutes;
     private List<TechnicalSubjectsResponse> skills;

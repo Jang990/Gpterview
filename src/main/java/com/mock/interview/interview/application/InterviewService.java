@@ -1,5 +1,6 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.interview.domain.InterviewCreator;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
@@ -47,7 +48,7 @@ public class InterviewService {
                 .orElseThrow(CandidateConfigNotFoundException::new);
 
         Users users = candidateConfig.getUsers();
-        Interview interview = interviewCreator.startInterview(repository, candidateConfig, users, candidateConfig.getAppliedJob());
+        Interview interview = interviewCreator.startInterview(repository, candidateConfig, users, candidateConfig.getPosition());
         InterviewConversationPair conversationPair = startConversation(candidateConfig, interview);
         return convert(interview, conversationPair);
     }
@@ -57,13 +58,8 @@ public class InterviewService {
     }
 
     private InterviewConversationPair startConversation(CandidateConfig candidateConfig, Interview interview) {
-        long questionCount = findCategoryQuestionCount(candidateConfig.getAppliedJob());
+        long questionCount = interviewQuestionRepository.countCategoryQuestion(candidateConfig.getCategory().getName());
         return conversationStarter.start(pairRepository, interview, questionCount);
-    }
-
-    private long findCategoryQuestionCount(JobCategory field) {
-        JobCategory category = field.getParent();
-        return interviewQuestionRepository.countCategoryQuestion(category.getName());
     }
 
     @Transactional(readOnly = true)
@@ -83,14 +79,14 @@ public class InterviewService {
     public InterviewInfo findInterviewForAIRequest(long loginId, long interviewId) {
         Interview interview = repository.findInterviewSetting(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-        return convert(interview, interview.getCandidateConfig().getCategory(), interview.getCandidateConfig().getAppliedJob());
+        return convert(interview, interview.getCandidateConfig().getCategory(), interview.getCandidateConfig().getPosition());
     }
 
-    private static InterviewInfo convert(Interview interview, JobCategory category, JobCategory field) {
+    private static InterviewInfo convert(Interview interview, JobCategory category, JobPosition position) {
         CandidateConfig profile = interview.getCandidateConfig();
         return new InterviewInfo(
                 new InterviewProfile(
-                        category.getName(), field.getName(),
+                        category.getName(), position.getName(),
                         profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
                         profile.getExperienceContent()
                 ),

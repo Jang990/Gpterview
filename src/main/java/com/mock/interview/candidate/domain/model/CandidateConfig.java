@@ -40,13 +40,12 @@ public class CandidateConfig extends BaseTimeEntity {
     private List<Experience> experience = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applied_job_id") // TODO: 제거할 것
-//    @JoinColumn(name = "job_category_id")
-    private JobCategory appliedJob;
+    @JoinColumn(name = "job_category_id")
+    private JobCategory category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_position_id")
-    private JobPosition jobPosition;
+    private JobPosition position;
 
     @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
@@ -72,7 +71,7 @@ public class CandidateConfig extends BaseTimeEntity {
 
     private static void setCategory(CandidateConfig candidateConfig, JobCategory field) {
         verifyJobCategory(field);
-        candidateConfig.appliedJob = field;
+        candidateConfig.category = field;
     }
 
     private static void setCandidateProfile(
@@ -114,10 +113,6 @@ public class CandidateConfig extends BaseTimeEntity {
         return experience.stream()
                 .sorted(Comparator.comparing(Experience::getId))
                 .map(Experience::getExperience).toList();
-    }
-
-    public JobCategory getCategory() {
-        return getAppliedJob().getParent();
     }
 
     public List<TechnicalSubjects> getTechSubjects() {

@@ -1,10 +1,6 @@
 package com.mock.interview.category.application;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 //@SpringBootTest
 class JobPositionServiceTest {
@@ -14,7 +10,7 @@ class JobPositionServiceTest {
 //    @Test
     void test() {
         System.out.println(service.findChildPositions(1));
-        System.out.println(service.findcategoryAndField(12));
+        System.out.println(service.findCategoryAndField(12));
     }
 
 }

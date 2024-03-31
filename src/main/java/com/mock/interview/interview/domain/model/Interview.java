@@ -1,6 +1,7 @@
 package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.event.InterviewContinuedEvent;
@@ -41,18 +42,23 @@ public class Interview extends BaseTimeEntity {
     private CandidateConfig candidateConfig;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applied_job_id")
-    private JobCategory appliedJob;
+    @JoinColumn(name = "job_category_id")
+    private JobCategory category;
 
-    public static Interview startInterview(CandidateConfig config, Users user, JobCategory appliedJob) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_position_id")
+    private JobPosition position;
+
+    public static Interview startInterview(CandidateConfig config, Users user, JobPosition position) {
         Interview interview = new Interview();
-        interview.title = new InterviewTitle(config.getCategory().getName(), config.getAppliedJob().getName());
+        interview.title = new InterviewTitle(config.getCategory().getName(), config.getPosition().getName());
         LocalDateTime now = LocalDateTime.now();
         interview.expiredTime = now.plusMinutes(config.getDurationMinutes());
         interview.isDeleted = false;
         interview.users = user;
         interview.candidateConfig = config;
-        interview.appliedJob = appliedJob;
+        interview.category = position.getCategory();
+        interview.position = position;
         return interview;
     }
 

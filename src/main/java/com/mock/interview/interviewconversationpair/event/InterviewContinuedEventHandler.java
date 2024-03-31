@@ -24,7 +24,7 @@ public class InterviewContinuedEventHandler {
     public void handle(InterviewContinuedEvent event) {
         Interview interview = interviewRepository.findById(event.interviewId())
                 .orElseThrow(InterviewNotFoundException::new);
-        JobCategory category = interview.getAppliedJob().getParent();
+        JobCategory category = interview.getCategory();
 
         long questionCount = interviewQuestionRepository.countCategoryQuestion(category.getName());
         conversationStarter.start(interviewConversationPairRepository, interview, questionCount);

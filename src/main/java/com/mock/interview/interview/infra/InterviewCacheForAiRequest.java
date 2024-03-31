@@ -45,7 +45,7 @@ public class InterviewCacheForAiRequest {
         CandidateConfig config = interview.getCandidateConfig();
         InterviewProfile profile = new InterviewProfile(
                 config.getCategory().getName(),
-                config.getAppliedJob().getName(),
+                config.getPosition().getName(),
                 config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
                 config.getExperienceContent()
         );

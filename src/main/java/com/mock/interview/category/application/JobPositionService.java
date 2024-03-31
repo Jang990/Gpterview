@@ -25,10 +25,24 @@ public class JobPositionService {
         return convertPosition(allPosition);
     }
 
-    public CategoryDetailResponse findcategoryAndField(long fieldId) {
-        JobPosition category = positionRepository.findWithCategory(fieldId)
+    public CategoryResponse findCategoryAndField(long fieldId) {
+        JobPosition position = positionRepository.findWithCategory(fieldId)
                 .orElseThrow(JobCategoryNotFoundException::new);
-        return convertPosition(category);
+        return convert(position.getCategory());
+    }
+
+    public CategoryResponse findPosition(long positionId) {
+        JobPosition position = positionRepository.findById(positionId)
+                .orElseThrow(JobCategoryNotFoundException::new);
+        return convert(position);
+    }
+
+    private CategoryResponse convert(JobCategory category) {
+        return new CategoryResponse(category.getId(), category.getName());
+    }
+
+    private CategoryResponse convert(JobPosition position) {
+        return new CategoryResponse(position.getId(), position.getName());
     }
 
     private CategoryDetailResponse convertPosition(JobPosition field) {
@@ -39,8 +53,8 @@ public class JobPositionService {
         );
     }
 
-    private static List<CategoryResponse> convertPosition(List<JobPosition> allcategory) {
-        return allcategory.stream()
+    private static List<CategoryResponse> convertPosition(List<JobPosition> allCategories) {
+        return allCategories.stream()
                 .map((category) -> new CategoryResponse(category.getId(), category.getName()))
                 .toList();
     }

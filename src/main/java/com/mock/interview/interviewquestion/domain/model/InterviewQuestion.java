@@ -2,6 +2,7 @@ package com.mock.interview.interviewquestion.domain.model;
 
 import com.mock.interview.candidate.domain.model.Experience;
 import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;
 import com.mock.interview.interviewquestion.domain.event.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
@@ -39,8 +40,12 @@ public class InterviewQuestion extends BaseEntity {
     private Users owner;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applied_job_id")
-    private JobCategory appliedJob;
+    @JoinColumn(name = "job_category_id")
+    private JobCategory category;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_position_id")
+    private JobPosition position;
 
     @Column(nullable = false)
     private String question;
@@ -66,12 +71,11 @@ public class InterviewQuestion extends BaseEntity {
     private Experience experience;
 
     public static InterviewQuestion create(
-            InterviewQuestionRepository repository, String content, JobCategory category, Users users,
+            InterviewQuestionRepository repository, String content, Users users,
             QuestionType questionType, String createdBy
     ) {
         InterviewQuestion question = new InterviewQuestion();
         question.question = content;
-        question.appliedJob = category;
         question.owner = users;
         question.questionType = questionType;
         question.createdBy = createdBy;
@@ -80,6 +84,20 @@ public class InterviewQuestion extends BaseEntity {
         repository.save(question);
         Events.raise(new QuestionCreatedEvent(question.getId()));
         return question;
+    }
+
+    public void linkCategory(JobCategory category) {
+        if(category == null)
+            throw new IllegalArgumentException();
+        this.category = category;
+    }
+
+    public void linkJob(JobCategory category, JobPosition position) {
+        linkCategory(category);
+        if(position == null)
+            throw new IllegalArgumentException();
+
+        this.position = position;
     }
 
     public void linkTech(List<TechnicalSubjects> techList) {

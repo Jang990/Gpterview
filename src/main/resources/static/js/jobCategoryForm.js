@@ -12,7 +12,7 @@ $(function(){
       customField = $('#customField');
 
       categoryOptionForm.change(function() {
-        loadedPosition(this);
+        loadPosition(this);
       });
 
       if($('#loadedPosition').val() !== "" && typeof $('#loadedPosition').val() !== "undefined") {
@@ -23,7 +23,23 @@ $(function(){
 // loadedPosition 함수 정의
 function loadProfileField() {
     const loadedPositionValue = $('#loadedPosition').val();
-    $.get(`/api/job/category/field/${loadedPositionValue}`, function(data) {
+
+    $.get(`/api/job/category/${loadedPositionValue}`, function(data) {
+            $('#category option:selected').prop('selected', false);
+            $('#category').prepend($('<option>', {
+                value: data.category.id,
+                text: data.category.name
+            })).prop('selected', true);
+
+            $('#field option:selected').prop('selected', false);
+            $('#field').prepend($('<option>', {
+                value: data.field.id,
+                text: data.field.name
+            })).prop('selected', true);
+
+        });
+
+    $.get(`/api/job/category/${loadedPositionValue}`, function(data) {
         $('#category option:selected').prop('selected', false);
         $('#category').prepend($('<option>', {
             value: data.category.id,
@@ -74,10 +90,10 @@ function createOption(value) {
 }
 
 // 밑은 loading 관련 부분
-function loadedPosition(categoryElement) {
+function loadPosition(categoryElement) {
     $.ajax({
         type: 'GET',
-        url: `/api/job/category/category/${categoryElement.value}/field`,
+        url: `/api/category/${categoryElement.value}/position`,
         contentType: 'application/json',
 //        data: JSON.stringify(interviewInfo),
         success: function(data) {

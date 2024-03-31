@@ -1,7 +1,9 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.category.domain.model.QJobCategory;
+import com.mock.interview.category.domain.model.QJobPosition;
 import com.mock.interview.category.presentation.dto.JobCategoryView;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.mock.interview.category.domain.model.QJobCategory.*;
+import static com.mock.interview.category.domain.model.QJobPosition.*;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.*;
 
 @Repository
@@ -34,8 +37,8 @@ public class InterviewQuestionRepositoryForView {
         QJobCategory field = new QJobCategory("field");
         QJobCategory category = new QJobCategory("category");
         InterviewQuestion question = query.selectFrom(interviewQuestion)
-                .leftJoin(interviewQuestion.appliedJob, field)
-                .leftJoin(interviewQuestion.appliedJob.parent, category)
+                .leftJoin(interviewQuestion.category, field)
+                .leftJoin(interviewQuestion.category.parent, category)
                 .where(interviewQuestion.id.eq(questionIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
                 .fetchOne();
 
@@ -61,11 +64,9 @@ public class InterviewQuestionRepositoryForView {
     public Page<QuestionOverview> findOverviewList(
             Long parentQuestionIdCond, String jobCategoryCond, String createdBy, Pageable pageable
     ) {
-        QJobCategory field = new QJobCategory("field");
-        QJobCategory category = new QJobCategory("category");
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
-                .leftJoin(interviewQuestion.appliedJob, field)
-                .leftJoin(interviewQuestion.appliedJob.parent, category)
+                .leftJoin(interviewQuestion.category, jobCategory)
+                .leftJoin(interviewQuestion.position, jobPosition)
                 .where(searchChildQuestion(parentQuestionIdCond), jobCategoryEq(jobCategoryCond), createdByEq(createdBy))
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -75,7 +76,7 @@ public class InterviewQuestionRepositoryForView {
         List<QuestionOverview> content = convert(questions);
         JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
                 .from(interviewQuestion)
-                .leftJoin(interviewQuestion.appliedJob, jobCategory)
+                .leftJoin(interviewQuestion.category, jobCategory)
                 .where(jobCategoryEq(jobCategoryCond), createdByEq(createdBy));
 
         // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
@@ -88,17 +89,17 @@ public class InterviewQuestionRepositoryForView {
 
     private static QuestionOverview convert(InterviewQuestion question) {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
-                convert(question.getAppliedJob()),
+                convert(question.getCategory(), question.getPosition()),
                 question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
                 question.getQuestion(), question.getCreatedAt(), question.getLikes()
         );
     }
 
-    private static JobCategoryView convert(JobCategory category) {
-        if(category.isCategory())
-            return new JobCategoryView(category.getName(), null);
-
-        return new JobCategoryView(category.getParent().getName(), category.getName());
+    private static JobCategoryView convert(JobCategory category, JobPosition position) {
+        return new JobCategoryView(
+                category == null ? null : category.getName(),
+                position == null ? null : position.getName()
+        );
     }
 
     private BooleanExpression searchChildQuestion(Long parentQuestionIdCond) {
@@ -107,8 +108,8 @@ public class InterviewQuestionRepositoryForView {
     }
 
     private BooleanExpression jobCategoryEq(String jobCategoryCond) {
-        return jobCategoryCond == null ? null : interviewQuestion.appliedJob.name.eq(jobCategoryCond)
-                .or(interviewQuestion.appliedJob.parent.name.eq(jobCategoryCond));
+        return jobCategoryCond == null ? null : interviewQuestion.category.name.eq(jobCategoryCond)
+                .or(interviewQuestion.category.parent.name.eq(jobCategoryCond));
     }
 
     private BooleanExpression createdByEq(String createdBy) {

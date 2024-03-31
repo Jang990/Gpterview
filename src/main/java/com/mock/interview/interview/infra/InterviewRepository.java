@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv " +
             "join fetch iv.candidateConfig " +
-            "join fetch iv.candidateConfig.appliedJob " +
-            "join fetch iv.candidateConfig.appliedJob.parent " +
+            "join fetch iv.candidateConfig.category " +
+            "join fetch iv.candidateConfig.category.parent " +
             "left join fetch iv.candidateConfig.techLink " +
             "left join fetch iv.candidateConfig.techLink.technicalSubjects " +
             "Where iv.id = :interviewId And iv.users.id = :userId")
@@ -23,8 +23,8 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     /**이벤트 핸들러에서만 사용할 것*/
     @Query("Select iv From Interview iv " +
             "join fetch iv.candidateConfig " +
-            "join fetch iv.candidateConfig.appliedJob " +
-            "join fetch iv.candidateConfig.appliedJob.parent " +
+            "join fetch iv.candidateConfig.category " +
+            "join fetch iv.candidateConfig.category.parent " +
             "left join fetch iv.candidateConfig.techLink " +
             "left join fetch iv.candidateConfig.techLink.technicalSubjects " +
             "Where iv.id = :interviewId")

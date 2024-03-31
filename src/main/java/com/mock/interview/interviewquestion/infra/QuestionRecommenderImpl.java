@@ -88,7 +88,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
         return new QuestionMetaData(
                 question.getId(),
                 (question.getParentQuestion() == null) ? null : question.getParentQuestion().getId(),
-                question.getAppliedJob().getName(), convertTechLink(question),
+                question.getPosition().getName(), convertTechLink(question),
                 question.getQuestionToken().getResult(), question.getLikes()
         );
     }
