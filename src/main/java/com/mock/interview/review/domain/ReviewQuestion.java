@@ -16,7 +16,7 @@ public class ReviewQuestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "interview_question_id")
     private InterviewQuestion interviewQuestion;
 

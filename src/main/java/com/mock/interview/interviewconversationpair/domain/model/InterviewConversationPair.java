@@ -28,7 +28,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
     @JoinColumn(name = "question_id")
     private InterviewQuestion question;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_id")
     private InterviewAnswer answer;
 
