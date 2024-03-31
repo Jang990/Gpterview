@@ -14,7 +14,7 @@ class JobPositionServiceTest {
 //    @Test
     void test() {
         System.out.println(service.findChildPositions(1));
-        System.out.println(service.findDepartmentAndField(12));
+        System.out.println(service.findcategoryAndField(12));
     }
 
 }

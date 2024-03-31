@@ -40,8 +40,13 @@ public class CandidateConfig extends BaseTimeEntity {
     private List<Experience> experience = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_category_id")
+    @JoinColumn(name = "applied_job_id") // TODO: 제거할 것
+//    @JoinColumn(name = "job_category_id")
     private JobCategory appliedJob;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_position_id")
+    private JobPosition jobPosition;
 
     @Cascade(CascadeType.ALL)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
@@ -101,7 +106,7 @@ public class CandidateConfig extends BaseTimeEntity {
     }
 
     private static void verifyJobCategory(JobCategory field) {
-        if (field == null || field.iscategory())
+        if (field == null || field.isCategory())
             throw new IllegalArgumentException("직무는 항상 있어야 함");
     }
 
@@ -112,7 +117,7 @@ public class CandidateConfig extends BaseTimeEntity {
     }
 
     public JobCategory getCategory() {
-        return getAppliedJob().getCategory();
+        return getAppliedJob().getParent();
     }
 
     public List<TechnicalSubjects> getTechSubjects() {

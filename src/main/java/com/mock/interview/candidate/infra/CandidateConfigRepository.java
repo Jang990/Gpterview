@@ -17,17 +17,19 @@ public interface CandidateConfigRepository extends JpaRepository<CandidateConfig
     @Query("Select cc From CandidateConfig cc Where cc.id = :profileId and cc.users.id = :userId")
     Optional<CandidateConfig> findByIdAndUserId(@Param("profileId") long profileId, @Param("userId") long userId);
 
-    @Query("Select cc From CandidateConfig cc " +
-            "join fetch cc.appliedJob " +
-            "join fetch cc.appliedJob.category " +
-            "left join fetch cc.techLink " +
-            "left join fetch cc.techLink.technicalSubjects " +
-            "Where cc.users.id = :userId")
+    @Query("""
+            SELECT cc FROM CandidateConfig cc
+            JOIN FETCH cc.appliedJob
+            JOIN FETCH cc.appliedJob.parent
+            LEFT JOIN FETCH cc.techLink
+            LEFT JOIN FETCH cc.techLink.technicalSubjects
+            WHERE cc.users.id = :userId
+            """)
     List<CandidateConfig> findInterviewConfigByUserId(@Param("userId") long userId);
 
     @Query("Select cc From CandidateConfig cc " +
             "join fetch cc.appliedJob " +
-            "join fetch cc.appliedJob.category " +
+            "join fetch cc.appliedJob.parent " +
             "left join fetch cc.techLink " +
             "left join fetch cc.techLink.technicalSubjects " +
             "Where cc.id = :candidateId and cc.users.id = :userId")

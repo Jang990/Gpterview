@@ -35,7 +35,7 @@ public class InterviewQuestionRepositoryForView {
         QJobCategory category = new QJobCategory("category");
         InterviewQuestion question = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.appliedJob, field)
-                .leftJoin(interviewQuestion.appliedJob.category, category)
+                .leftJoin(interviewQuestion.appliedJob.parent, category)
                 .where(interviewQuestion.id.eq(questionIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
                 .fetchOne();
 
@@ -65,7 +65,7 @@ public class InterviewQuestionRepositoryForView {
         QJobCategory category = new QJobCategory("category");
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.appliedJob, field)
-                .leftJoin(interviewQuestion.appliedJob.category, category)
+                .leftJoin(interviewQuestion.appliedJob.parent, category)
                 .where(searchChildQuestion(parentQuestionIdCond), jobCategoryEq(jobCategoryCond), createdByEq(createdBy))
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -95,10 +95,10 @@ public class InterviewQuestionRepositoryForView {
     }
 
     private static JobCategoryView convert(JobCategory category) {
-        if(category.iscategory())
+        if(category.isCategory())
             return new JobCategoryView(category.getName(), null);
 
-        return new JobCategoryView(category.getCategory().getName(), category.getName());
+        return new JobCategoryView(category.getParent().getName(), category.getName());
     }
 
     private BooleanExpression searchChildQuestion(Long parentQuestionIdCond) {
@@ -108,7 +108,7 @@ public class InterviewQuestionRepositoryForView {
 
     private BooleanExpression jobCategoryEq(String jobCategoryCond) {
         return jobCategoryCond == null ? null : interviewQuestion.appliedJob.name.eq(jobCategoryCond)
-                .or(interviewQuestion.appliedJob.category.name.eq(jobCategoryCond));
+                .or(interviewQuestion.appliedJob.parent.name.eq(jobCategoryCond));
     }
 
     private BooleanExpression createdByEq(String createdBy) {

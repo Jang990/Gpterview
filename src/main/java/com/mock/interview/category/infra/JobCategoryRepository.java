@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface JobCategoryRepository extends JpaRepository<JobCategory, Long> {
 
     // TODO: 제거할 것
-    @Query("Select jc From JobCategory jc join jc.category Where jc.id = :positionId")
+    @Query("Select jc From JobCategory jc join jc.parent Where jc.id = :positionId")
     Optional<JobCategory> findFieldWithCategory(@Param("positionId") long positionId);
 
     Optional<JobCategory> findByName(String name);

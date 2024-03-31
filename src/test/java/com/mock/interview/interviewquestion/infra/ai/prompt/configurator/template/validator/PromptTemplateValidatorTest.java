@@ -31,7 +31,7 @@ class PromptTemplateValidatorTest {
 
     @BeforeEach
     void beforeEach() {
-        when(getter.getDepartmentFormat()).thenReturn(departmentFormat);
+        when(getter.getCategoryFormat()).thenReturn(departmentFormat);
         when(getter.getFieldFormat()).thenReturn(fieldFormat);
         when(getter.getSkillsFormat()).thenReturn(skillsFormat);
         when(getter.getExperienceFormat()).thenReturn(experienceFormat);

@@ -24,7 +24,7 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
                 ) random
             INNER JOIN FETCH iq.questionToken qt
             LEFT JOIN FETCH iq.appliedJob ia
-            LEFT JOIN FETCH iq.appliedJob.category iad
+            LEFT JOIN FETCH iq.appliedJob.parent iad
             WHERE iq.id >= CAST(random.id as long) AND (ia.name = :category OR iad.name = :category)
             """)
     List<InterviewQuestion> findRandomQuestion(@Param("category") String category, Pageable pageable);
@@ -33,10 +33,10 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             SELECT COUNT(*)
             FROM InterviewQuestion iq
             LEFT JOIN iq.appliedJob ia
-            LEFT JOIN iq.appliedJob.category iad
+            LEFT JOIN iq.appliedJob.parent iad
             WHERE ia.name = :category OR iad.name = :category
             """)
-    Long countcategoryQuestion(@Param("category") String category);
+    Long countCategoryQuestion(@Param("category") String category);
 
     @Query("""
             SELECT iq

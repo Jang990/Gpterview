@@ -21,6 +21,6 @@ class InterviewQuestionRepositoryTest {
 
 //    @Test
     void test2() {
-        System.out.println(repository.countDepartmentQuestion("IT"));
+        System.out.println(repository.countCategoryQuestion("IT"));
     }
 }

@@ -28,7 +28,7 @@ class AiPromptCreatorTest {
         when(getter.getUserRole()).thenReturn("user");
         when(getter.getInterviewerRole()).thenReturn("interviewer");
         when(getter.getField()).thenReturn("field");
-        when(getter.getDepartment()).thenReturn("department");
+        when(getter.getCategory()).thenReturn("department");
         when(getter.getSkills()).thenReturn("skills");
         when(getter.getExperience()).thenReturn("experience");
     }
@@ -44,7 +44,7 @@ class AiPromptCreatorTest {
         assertThat(result).contains(spec.getInterviewerRole());
         assertThat(result).contains(spec.getSystemRole());
         assertThat(result).contains(spec.getUserRole());
-        assertThat(result).contains(info.getDepartment());
+        assertThat(result).contains(info.getCategory());
         assertThat(result).contains(info.getField());
         assertThat(result).contains(info.getSkills());
         assertThat(result).contains(info.getExperience());
@@ -61,7 +61,7 @@ class AiPromptCreatorTest {
         assertThat(result).contains(spec.getInterviewerRole());
         assertThat(result).contains(spec.getSystemRole());
         assertThat(result).contains(spec.getUserRole());
-        assertThat(result).contains(info.getDepartment());
+        assertThat(result).contains(info.getCategory());
         assertThat(result).contains(info.getField());
         assertThat(result).contains(info.getSkills());
         assertThat(result).contains("null");
@@ -70,7 +70,7 @@ class AiPromptCreatorTest {
     private PromptConfiguration createMockPromptConfig(String promptTemplate) {
         PromptConfiguration mock = mock(PromptConfiguration.class);
         when(mock.getPromptTemplate()).thenReturn(promptTemplate);
-        when(mock.getDepartment()).thenReturn("IT");
+        when(mock.getCategory()).thenReturn("IT");
         when(mock.getField()).thenReturn("백엔드");
         when(mock.getSkills()).thenReturn(List.of("Java"));
         when(mock.getExperience()).thenReturn(List.of("나는 ... 경험했다."));

@@ -62,8 +62,8 @@ public class InterviewService {
     }
 
     private long findCategoryQuestionCount(JobCategory field) {
-        JobCategory category = field.getCategory();
-        return interviewQuestionRepository.countcategoryQuestion(category.getName());
+        JobCategory category = field.getParent();
+        return interviewQuestionRepository.countCategoryQuestion(category.getName());
     }
 
     @Transactional(readOnly = true)

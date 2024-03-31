@@ -24,7 +24,7 @@ public class InterviewEntityCreator {
         CandidateConfig config = mock(CandidateConfig.class);
         JobCategory field = createField();
         when(config.getAppliedJob()).thenReturn(field);
-        when(config.getDepartment()).thenReturn(field.getDepartment());
+        when(config.getCategory()).thenReturn(field.getParent());
         when(config.getTechSubjects()).thenReturn(List.of(TechnicalSubjects.create("test 기술")));
         when(config.getExperienceContent()).thenReturn(List.of("test 경험"));
         when(config.getType()).thenReturn(InterviewType.COMPOSITE);
@@ -32,7 +32,7 @@ public class InterviewEntityCreator {
     }
 
     private static JobCategory createField() {
-        JobCategory department = JobCategory.createDepartmentCategory("test 분야");
+        JobCategory department = JobCategory.createCategory("test 분야");
         return JobCategory.createFieldCategory("test 직무", department);
     }
 }

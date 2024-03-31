@@ -26,7 +26,7 @@ public class JobCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(CascadeType.PERSIST)
     @JoinColumn(name = "job_parent_id")
-    private JobCategory category;
+    private JobCategory parent;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     @Cascade(CascadeType.ALL)
@@ -46,17 +46,17 @@ public class JobCategory {
     /**
      * 필드 생성 - 백엔드, 프론트엔드, 안드로이드 등등
      * @param name 백엔드, 프론트엔드, 안드로이드
-     * @param relatedcategoryCategory IT, 기획, 인사
+     * @param parent IT, 기획, 인사
      * @return
      */
-    public static JobCategory createFieldCategory(String name, JobCategory relatedcategoryCategory) {
-        if (relatedcategoryCategory == null || relatedcategoryCategory.isField()) {
+    public static JobCategory createFieldCategory(String name, JobCategory parent) {
+        if (parent == null || parent.isField()) {
             throw new MissingRequiredCategoryException();
         }
 
         JobCategory category = new JobCategory();
         insertName(category, name);
-        category.category = relatedcategoryCategory;
+        category.parent = parent;
         return category;
     }
 
@@ -65,11 +65,11 @@ public class JobCategory {
         category.name = name.toUpperCase();
     }
 
-    public boolean iscategory() {
-        return category == null;
+    public boolean isCategory() {
+        return parent == null;
     }
 
     public boolean isField() {
-        return category != null;
+        return parent != null;
     }
 }

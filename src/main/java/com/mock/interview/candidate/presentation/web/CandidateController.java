@@ -38,6 +38,7 @@ public class CandidateController {
     public String loadProfileForInterviewPage(Model model, @AuthenticationPrincipal(expression = "id") Long loginId) {
         model.addAttribute("headerActiveTap", "interview");
         List<InterviewCandidateOverview> overviewList = candidateConfigReadOnlyService.findOverviews(loginId);
+        System.out.println(overviewList);
         model.addAttribute("candidateOverviewList", overviewList);
         return "/candidate/overview-list";
     }
