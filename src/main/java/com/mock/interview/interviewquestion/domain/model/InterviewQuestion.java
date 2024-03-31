@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.domain.model;
 
+import com.mock.interview.candidate.domain.model.Experience;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
 import com.mock.interview.interviewquestion.domain.event.QuestionCreatedEvent;
@@ -61,7 +62,11 @@ public class InterviewQuestion extends BaseEntity {
     private InterviewQuestion parentQuestion;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "interviewQuestion")
-    QuestionTokenization questionToken;
+    private QuestionTokenization questionToken;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "related_experience_id")
+    private Experience experience;
 
     private static InterviewQuestion createWithCommonField(
             InterviewQuestionRepository repository, String content, JobCategory category, Users users,
