@@ -9,7 +9,7 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infra.InterviewRepository;
-import com.mock.interview.interviewquestion.domain.ConversationQuestionService;
+import com.mock.interview.interviewquestion.domain.AiQuestionCreationService;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.tech.application.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -33,7 +33,7 @@ public class QuestionEventHandler {
     private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
-    private final ConversationQuestionService conversationQuestionService;
+    private final AiQuestionCreationService aiQuestionCreationService;
 
     @Async
     @AiResponseAwaitLock
@@ -49,6 +49,6 @@ public class QuestionEventHandler {
                 .orElseThrow(InterviewNotFoundException::new);
         List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, question.topic());
 
-        conversationQuestionService.save(interviewQuestionRepository, event.pairId(), interview, question, techList);
+        aiQuestionCreationService.save(interviewQuestionRepository, event.pairId(), interview, question, techList);
     }
 }

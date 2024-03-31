@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ConversationQuestionService {
+public class AiQuestionCreationService {
     public InterviewQuestion save(
             InterviewQuestionRepository repository, long conversationPairId, Interview interview,
             RecommendedQuestion recommendedQuestion, List<TechnicalSubjects> techList
