@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.domain.model;
 import com.mock.interview.candidate.domain.model.Experience;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
+import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.event.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
@@ -93,7 +94,7 @@ public class InterviewQuestion extends BaseEntity {
     ) {
         InterviewQuestion question = createWithCommonField(
                 repository, questionInfo.question(), appliedJob, owner,
-                convert(questionInfo.progress().phase()), questionInfo.createdBy()
+                QuestionConvertor.convert(questionInfo.progress().phase()), questionInfo.createdBy()
         );
         connectTech(techList, question);
         return question;
@@ -102,7 +103,7 @@ public class InterviewQuestion extends BaseEntity {
     public static InterviewQuestion create(InterviewQuestionRepository repository, String content, QuestionTypeForView type, JobCategory category, List<TechnicalSubjects> techList, Users users) {
         InterviewQuestion question = createWithCommonField(
                 repository, content, category,
-                users, convert(type), users.getUsername()
+                users, QuestionConvertor.convert(type), users.getUsername()
         );
         connectTech(techList, question);
 
@@ -116,22 +117,6 @@ public class InterviewQuestion extends BaseEntity {
 
     private static List<QuestionTechLink> createTechLinks(InterviewQuestion question, List<TechnicalSubjects> techList) {
         return techList.stream().map((tech) -> QuestionTechLink.createLink(question, tech)).toList();
-    }
-
-    private static QuestionType convert(InterviewPhase phase) {
-        return switch (phase) {
-            case TECHNICAL -> QuestionType.TECHNICAL;
-            case EXPERIENCE -> QuestionType.EXPERIENCE;
-            case PERSONAL -> QuestionType.PERSONALITY;
-        };
-    }
-
-    private static QuestionType convert(QuestionTypeForView type) {
-        return switch (type) {
-            case TECHNICAL -> QuestionType.TECHNICAL;
-            case EXPERIENCE -> QuestionType.EXPERIENCE;
-            case PERSONALITY -> QuestionType.PERSONALITY;
-        };
     }
 
     public void like() {
