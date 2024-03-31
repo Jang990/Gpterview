@@ -83,12 +83,11 @@ public class InterviewQuestion extends BaseEntity {
     }
 
     public void linkTech(List<TechnicalSubjects> techList) {
-        if(techList != null)
-            this.techLink = createTechLinks(techList);
-    }
+        if(techList == null || techList.isEmpty())
+            return;
 
-    private List<QuestionTechLink> createTechLinks(List<TechnicalSubjects> techList) {
-        return techList.stream().map((tech) -> QuestionTechLink.createLink(this, tech)).toList();
+        this.techLink = techList.stream()
+                .map((tech) -> QuestionTechLink.createLink(this, tech)).toList();
     }
 
     public void like() {
