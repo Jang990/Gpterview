@@ -11,14 +11,10 @@ import java.util.Optional;
 
 @Repository
 public interface JobCategoryRepository extends JpaRepository<JobCategory, Long> {
-    @Query("Select jc From JobCategory jc Where jc.department is null")
-    List<JobCategory> findAllDepartment();
 
-    @Query("Select jc From JobCategory jc Where jc.department.id = :departmentId")
-    List<JobCategory> findDepartmentField(@Param("departmentId") long departmentId);
-
-    @Query("Select jc From JobCategory jc join fetch jc.department Where jc.id = :fieldId")
-    Optional<JobCategory> findFieldWithDepartment(@Param("fieldId") long fieldId);
+    // TODO: 제거할 것
+    @Query("Select jc From JobCategory jc join jc.department Where jc.id = :positionId")
+    Optional<JobCategory> findFieldWithDepartment(@Param("positionId") long positionId);
 
     Optional<JobCategory> findByName(String name);
 }

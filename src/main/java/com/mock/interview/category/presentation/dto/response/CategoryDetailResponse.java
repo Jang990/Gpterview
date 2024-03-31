@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class JobCategoryResponse {
-    private long id;
-    private String name;
+public class CategoryDetailResponse {
+    private CategoryResponse department;
+    private CategoryResponse field;
 }
