@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
-import com.mock.interview.interviewquestion.domain.QuestionCreatedEvent;
+import com.mock.interview.interviewquestion.domain.event.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
 import com.mock.interview.global.auditing.BaseEntity;

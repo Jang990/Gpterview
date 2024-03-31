@@ -1,6 +1,6 @@
 package com.mock.interview.questiontoken.event;
 
-import com.mock.interview.interviewquestion.domain.QuestionCreatedEvent;
+import com.mock.interview.interviewquestion.domain.event.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;

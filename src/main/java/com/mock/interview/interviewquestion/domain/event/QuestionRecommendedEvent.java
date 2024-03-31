@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.domain;
+package com.mock.interview.interviewquestion.domain.event;
 
 import java.util.List;
 

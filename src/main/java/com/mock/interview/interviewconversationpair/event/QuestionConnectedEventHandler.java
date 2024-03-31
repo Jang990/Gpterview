@@ -1,10 +1,9 @@
 package com.mock.interview.interviewconversationpair.event;
 
-import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
-import com.mock.interview.interviewconversationpair.domain.QuestionConnectedEvent;
-import com.mock.interview.interviewquestion.domain.QuestionRecommendedEvent;
+import com.mock.interview.interviewconversationpair.domain.event.QuestionConnectedEvent;
+import com.mock.interview.interviewquestion.domain.event.QuestionRecommendedEvent;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;

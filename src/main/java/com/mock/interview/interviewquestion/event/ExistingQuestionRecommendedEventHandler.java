@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.event;
 
-import com.mock.interview.interviewconversationpair.domain.AnotherQuestionRecommendedEvent;
-import com.mock.interview.interviewconversationpair.domain.ExistingQuestionRecommendedEvent;
+import com.mock.interview.interviewconversationpair.domain.event.AnotherQuestionRecommendedEvent;
+import com.mock.interview.interviewconversationpair.domain.event.ExistingQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;

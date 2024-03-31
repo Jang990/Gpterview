@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.domain;
 import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
+import com.mock.interview.interviewquestion.domain.event.ConversationQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.TopicChangedQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;

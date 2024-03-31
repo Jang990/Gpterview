@@ -2,6 +2,8 @@ package com.mock.interview.interviewquestion.domain;
 
 import com.mock.interview.global.Events;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
+import com.mock.interview.interviewquestion.domain.event.QuestionRecommendedEvent;
+import com.mock.interview.interviewquestion.domain.event.RaisedQuestionErrorEvent;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

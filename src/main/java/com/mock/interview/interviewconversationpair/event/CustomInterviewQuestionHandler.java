@@ -1,6 +1,6 @@
 package com.mock.interview.interviewconversationpair.event;
 
-import com.mock.interview.interviewanswer.domain.ConversationAnsweredEvent;
+import com.mock.interview.interviewanswer.domain.event.ConversationAnsweredEvent;
 import com.mock.interview.interviewanswer.domain.exception.InterviewAnswerNotFoundException;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
@@ -9,7 +9,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.domain.ConversationQuestionCreatedEvent;
+import com.mock.interview.interviewquestion.domain.event.ConversationQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.domain.model.TopicChangedQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.mock.interview.interviewconversationpair.event;
 
 import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.interview.domain.InterviewContinuedEvent;
+import com.mock.interview.interview.domain.event.InterviewContinuedEvent;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;

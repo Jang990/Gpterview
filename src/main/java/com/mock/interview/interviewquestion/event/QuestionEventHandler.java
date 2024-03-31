@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.event;
 
-import com.mock.interview.interviewconversationpair.domain.AiQuestionRecommendedEvent;
+import com.mock.interview.interviewconversationpair.domain.event.AiQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;

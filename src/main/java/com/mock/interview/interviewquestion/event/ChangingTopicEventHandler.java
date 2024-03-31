@@ -8,7 +8,7 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infra.InterviewRepository;
-import com.mock.interview.interviewconversationpair.domain.StatusChangedToChangingEvent;
+import com.mock.interview.interviewconversationpair.domain.event.StatusChangedToChangingEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;

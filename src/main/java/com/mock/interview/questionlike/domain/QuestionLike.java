@@ -3,6 +3,8 @@ package com.mock.interview.questionlike.domain;
 import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.questionlike.domain.event.QuestionLikeCanceledEvent;
+import com.mock.interview.questionlike.domain.event.QuestionLikedEvent;
 import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

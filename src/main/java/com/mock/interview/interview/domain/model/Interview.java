@@ -3,7 +3,7 @@ package com.mock.interview.interview.domain.model;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
-import com.mock.interview.interview.domain.InterviewContinuedEvent;
+import com.mock.interview.interview.domain.event.InterviewContinuedEvent;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.user.domain.model.Users;
