@@ -1,11 +1,11 @@
 package com.mock.interview.candidate.application;
 
 import com.mock.interview.candidate.domain.model.CandidateConfig;
-import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
+import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.category.infra.JobPositionRepository;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
-import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.user.domain.model.Users;
@@ -24,7 +24,7 @@ import java.util.List;
 public class CandidateConfigService {
     private final UserRepository userRepository;
     private final CandidateConfigRepository profileRepository;
-    private final JobCategoryRepository jobCategoryRepository;
+    private final JobPositionRepository jobPositionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     public long create(InterviewCandidateForm interviewCandidateForm, long userId, List<Long> relationalTechIds) {
@@ -32,10 +32,15 @@ public class CandidateConfigService {
         Users user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         List<TechnicalSubjects> techs = technicalSubjectsRepository.findAllById(relationalTechIds);
-        JobCategory field = jobCategoryRepository.findFieldWithCategory(candidateProfileForm.getPosition())
+        JobPosition position = jobPositionRepository.findById(candidateProfileForm.getPosition())
                 .orElseThrow(JobCategoryNotFoundException::new);
 
-        CandidateConfig profile = CandidateConfig.createProfile(interviewCandidateForm, user, field, techs);
-        return profileRepository.save(profile).getId();
+        // TODO: position.getCategory(), position쪽에서 유효성 검사 필요.
+        CandidateConfig candidateConfig = CandidateConfig.createProfile(
+                interviewCandidateForm.getInterviewDetails(), user, position.getCategory(), position);
+        candidateConfig.setExperience(interviewCandidateForm.getProfile().getExperiences());
+        candidateConfig.linkTech(techs);
+
+        return profileRepository.save(candidateConfig).getId();
     }
 }

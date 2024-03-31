@@ -56,57 +56,44 @@ public class CandidateConfig extends BaseTimeEntity {
     private Users users;
 
     public static CandidateConfig createProfile(
-            InterviewCandidateForm interviewCandidateForm,
-            Users users, JobCategory field, List<TechnicalSubjects> techList) {
-        CandidateProfileForm profileDto = interviewCandidateForm.getProfile();
-        InterviewConfigDto interviewDetails = interviewCandidateForm.getInterviewDetails();
-
+            InterviewConfigDto interviewConfigDto, Users users,
+            JobCategory category, JobPosition position
+    ) {
         CandidateConfig candidateConfig = new CandidateConfig();
         candidateConfig.users = users;
-        configInterviewSetting(candidateConfig, interviewDetails);
-        setCandidateProfile(candidateConfig, profileDto, techList, field);
+        candidateConfig.type = interviewConfigDto.getInterviewType();
+        candidateConfig.durationMinutes = interviewConfigDto.getDurationMinutes();
+        linkJob(candidateConfig, category, position);
 
         return candidateConfig;
     }
 
-    private static void setCategory(CandidateConfig candidateConfig, JobCategory field) {
-        verifyJobCategory(field);
-        candidateConfig.category = field;
+    public void linkTech(List<TechnicalSubjects> techList) {
+        if(techList == null)
+            throw new IllegalArgumentException();
+
+        this.techLink = techList.stream()
+                .map((tech) -> ProfileTechLink.createLink(this, tech)).toList();
     }
 
-    private static void setCandidateProfile(
-            CandidateConfig candidateConfig, CandidateProfileForm profileDto,
-            List<TechnicalSubjects> techList, JobCategory field
-    ) {
-        for (String experience : profileDto.getExperiences()) {
-            candidateConfig.createExperience(experience);
+    public void setExperience(List<String> experiences) {
+        for (String experience : experiences) {
+            Experience createdExperience = Experience.create(this, experience);
+            this.experience.add(createdExperience);
         }
-
-        if(techList != null)
-            candidateConfig.techLink = createTechLinks(candidateConfig, techList);
-
-        setCategory(candidateConfig, field);
     }
 
-    public Experience createExperience(String experience) {
-        // TODO: 만약 isDeleted 필드가 생긴다면 체크해줘야함.
-        Experience createdExperience = Experience.create(this, experience);
-        this.experience.add(createdExperience);
-        return createdExperience;
+    public static void linkJob(CandidateConfig config,JobCategory category, JobPosition position) {
+        verifyJob(category, position);
+        config.category = category;
+        config.position = position;
     }
 
-    private static void configInterviewSetting(CandidateConfig candidateConfig, InterviewConfigDto interviewConfigDto) {
-        candidateConfig.type = interviewConfigDto.getInterviewType();
-        candidateConfig.durationMinutes = interviewConfigDto.getDurationMinutes();
-    }
-
-    private static List<ProfileTechLink> createTechLinks(CandidateConfig candidateConfig, List<TechnicalSubjects> techList) {
-        return techList.stream().map((tech) -> ProfileTechLink.createLink(candidateConfig, tech)).toList();
-    }
-
-    private static void verifyJobCategory(JobCategory field) {
-        if (field == null || field.isCategory())
+    private static void verifyJob(JobCategory category, JobPosition position) {
+        if (category == null || position == null)
             throw new IllegalArgumentException("직무는 항상 있어야 함");
+        if(position == null || position.getCategory().getId().equals(category.getId()))
+            throw new IllegalArgumentException("position이 category과 관계 없음");
     }
 
     public List<String> getExperienceContent() {
