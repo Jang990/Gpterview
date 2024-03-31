@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import java.util.List;
+
+/** IT, 기획, 인사, 디자인 등등 넓은 범위의 카테고리 */
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,8 +28,12 @@ public class JobCategory {
     @JoinColumn(name = "job_parent_id")
     private JobCategory department;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    @Cascade(CascadeType.ALL)
+    private List<JobPosition> relatedPosition;
+
     /**
-     * 분야 - ex) IT, 기획, 인사 등등
+     * 분야 - ex)
      * @param name IT, 기획, 인사
      * @return
      */
@@ -53,9 +60,7 @@ public class JobCategory {
         return category;
     }
 
-    /**
-     * Name은 항상 대문자로 저장
-     */
+    /** Name은 항상 대문자로 저장 */
     private static void insertName(JobCategory category, String name) {
         category.name = name.toUpperCase();
     }
