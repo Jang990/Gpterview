@@ -28,7 +28,7 @@ public class QuestionSavingService {
     public long save(long loginId, QuestionForm form, List<Long> techIdList) {
         Users users = userRepository.findById(loginId).orElseThrow(UserNotFoundException::new);
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(techIdList);
-        JobCategory detailCategory = findMoreDetailCategory(form.getDepartment(), form.getField());
+        JobCategory detailCategory = findMoreDetailCategory(form.getCategory(), form.getField());
 
         InterviewQuestion question = InterviewQuestion.create(
                 interviewQuestionRepository, form.getContent(), detailCategory, users,
@@ -38,9 +38,9 @@ public class QuestionSavingService {
         return question.getId();
     }
 
-    private JobCategory findMoreDetailCategory(Long department, Long field) {
+    private JobCategory findMoreDetailCategory(Long category, Long field) {
         if(field == null)
-            return jobCategoryRepository.findById(department)
+            return jobCategoryRepository.findById(category)
                 .orElseThrow(JobCategoryNotFoundException::new);
 
         return jobCategoryRepository.findById(field)

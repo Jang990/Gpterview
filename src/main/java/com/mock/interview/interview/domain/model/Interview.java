@@ -46,7 +46,7 @@ public class Interview extends BaseTimeEntity {
 
     public static Interview startInterview(CandidateConfig config, Users user, JobCategory appliedJob) {
         Interview interview = new Interview();
-        interview.title = new InterviewTitle(config.getDepartment().getName(), config.getAppliedJob().getName());
+        interview.title = new InterviewTitle(config.getCategory().getName(), config.getAppliedJob().getName());
         LocalDateTime now = LocalDateTime.now();
         interview.expiredTime = now.plusMinutes(config.getDurationMinutes());
         interview.isDeleted = false;

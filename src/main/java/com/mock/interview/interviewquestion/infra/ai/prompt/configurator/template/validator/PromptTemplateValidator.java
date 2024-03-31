@@ -24,7 +24,7 @@ public class PromptTemplateValidator {
 
     private boolean hasError(String rawTemplate, InterviewProfile profile) {
         return hasTemplateValueError(rawTemplate, formatGetter.getFieldFormat(), profile.field())
-                || hasTemplateValueError(rawTemplate, formatGetter.getDepartmentFormat(), profile.department())
+                || hasTemplateValueError(rawTemplate, formatGetter.getCategoryFormat(), profile.category())
                 || hasTemplateValueError(rawTemplate, formatGetter.getSkillsFormat(), profile.skills())
                 || hasTemplateValueError(rawTemplate, formatGetter.getExperienceFormat(), profile.experience());
     }

@@ -10,7 +10,7 @@
                 <span th:text="${question.createdBy}">작성자</span>
             </h6>
             <p class="text-muted small mb-0">
-                <a href="#" class="text-body"> <span th:text="${question.category.department}">분야</span></a>
+                <a href="#" class="text-body"> <span th:text="${question.category.category}">분야</span></a>
                 <th:block th:if="${not #strings.isEmpty(question.category.field)}">
                     &nbsp;-&nbsp;<a href="#" class="text-body"><span th:text="${question.category.field}">영역</span></a>
                 </th:block>

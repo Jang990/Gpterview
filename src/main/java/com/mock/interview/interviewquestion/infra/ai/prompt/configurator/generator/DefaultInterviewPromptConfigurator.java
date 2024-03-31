@@ -31,7 +31,7 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
     }
 
     @Override
-    public boolean isSupportedDepartment(InterviewInfo interviewInfo) {
+    public boolean isSupportedcategory(InterviewInfo interviewInfo) {
         return true;
     }
 

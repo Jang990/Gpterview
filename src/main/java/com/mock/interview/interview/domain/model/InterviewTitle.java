@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class InterviewTitle {
     private String title;
 
-    InterviewTitle(String department, String appliedJob) {
-        this.title = String.format("%s-%s 면접", department, appliedJob);
+    InterviewTitle(String category, String appliedJob) {
+        this.title = String.format("%s-%s 면접", category, appliedJob);
     }
 }

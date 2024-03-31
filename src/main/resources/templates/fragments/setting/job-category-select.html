@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="fragment-job-category-select(loadField,departmentList)">
+  <div th:fragment="fragment-job-category-select(loadedPosition,categoryList)">
     <script th:src="@{/js/jobCategoryForm.js}" href="../js/jobCategoryForm.js"></script>
-    <input th:if="${loadField != null}" type="hidden" id="loadField" th:value="${loadField}">
+    <input th:if="${loadedPosition != null}" type="hidden" id="loadedPosition" th:value="${loadedPosition}">
     <div class="mb-3 row">
       <div class="d-flex justify-content-start">
         <label class="col-form-label me-3">지원분야</label>
         <div class="me-3">
-          <select name="department" id="department" class="form-select" aria-label="Select Department" required>
-            <option th:each="department : ${departmentList}"
-                    th:value="${department.id}" th:text="${department.name}">IT (프로그래밍)</option>
+          <select name="category" id="category" class="form-select" aria-label="Select category" required>
+            <option th:each="category : ${categoryList}"
+                    th:value="${category.id}" th:text="${category.name}">IT (프로그래밍)</option>
             <option disabled>다른 분야 추가 예정</option>
           </select>
         </div>
         <div class="me-3">
-          <button type="button" class="btn btn-dark" onclick="showDepartmentToast()">분야 추가</button>
+          <button type="button" class="btn btn-dark" onclick="showCategoryToast()">분야 추가</button>
         </div>
       </div>
     </div>
 
     <!--마음에 안듦. 다른 위치로 옮겨야함-->
     <div class="row ms-5 mb-3">
-      <div class="col-3 toast align-items-center mb-3" id="departmentOptionToast" role="polite" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
+      <div class="col-3 toast align-items-center mb-3" id="categoryOptionToast" role="polite" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
         <div class="d-flex" style="min-width:0px">
           <div class="toast-body">
             <div class="row align-items-center">
               <div class="col-9">
-                <input type="text" class="form-control" id="customDepartment" placeholder="추가할 분야"/>
+                <input type="text" class="form-control" id="customcategory" placeholder="추가할 분야"/>
               </div>
               <div class="col-3">
-                <button type="button" class="btn btn-sm btn-primary" onclick="addDepartment()">추가</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="addcategory()">추가</button>
               </div>
             </div>
           </div>

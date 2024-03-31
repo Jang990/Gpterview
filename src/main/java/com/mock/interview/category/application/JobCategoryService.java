@@ -18,13 +18,13 @@ public class JobCategoryService {
     private final JobCategoryRepository categoryRepository;
 
     public List<CategoryResponse> findAllCategory() {
-        List<JobCategory> allDepartment = categoryRepository.findAll();
-        return convert(allDepartment);
+        List<JobCategory> allCategory = categoryRepository.findAll();
+        return convert(allCategory);
     }
 
-    private static List<CategoryResponse> convert(List<JobCategory> allDepartment) {
-        return allDepartment.stream()
-                .map((department) -> new CategoryResponse(department.getId(), department.getName()))
+    private static List<CategoryResponse> convert(List<JobCategory> allCategories) {
+        return allCategories.stream()
+                .map((category) -> new CategoryResponse(category.getId(), category.getName()))
                 .toList();
     }
 }

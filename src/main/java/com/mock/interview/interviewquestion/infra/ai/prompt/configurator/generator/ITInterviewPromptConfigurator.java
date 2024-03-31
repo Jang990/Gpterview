@@ -20,7 +20,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     private final PromptConfigurationCreator configurationCreator;
 
     private final List<String> basicKnowledge = List.of("운영체제", "네트워크", "데이터베이스", "자료구조", "알고리즘");
-    private final String[] SUPPORTED_DEPARTMENT = {"IT", "개발"};
+    private final String[] SUPPORTED_category = {"IT", "개발"};
 
     @Override
     public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
@@ -41,12 +41,12 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     }
 
     @Override
-    public boolean isSupportedDepartment(InterviewInfo interviewInfo) {
+    public boolean isSupportedcategory(InterviewInfo interviewInfo) {
         if(interviewInfo == null || interviewInfo.profile() == null)
             return false;
 
-        for (String supportedDepartment : SUPPORTED_DEPARTMENT) {
-            if(supportedDepartment.equalsIgnoreCase(interviewInfo.profile().department()))
+        for (String supportedcategory : SUPPORTED_category) {
+            if(supportedcategory.equalsIgnoreCase(interviewInfo.profile().category()))
                 return true;
         }
 
@@ -56,7 +56,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     private PromptConfiguration createPersonalPromptConfig(InterviewProfile profile, double progress) {
         return configurationCreator.create(
                 templateGetter.getPersonal(),
-                new InterviewProfile(profile.department(), profile.field(), profile.skills(), profile.experience())
+                new InterviewProfile(profile.category(), profile.field(), profile.skills(), profile.experience())
         );
     }
 
@@ -64,7 +64,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
         String selectedExperience = selectStringBasedOnProgress(progress, profile.experience());
         return configurationCreator.create(
                 templateGetter.getExperience(),
-                new InterviewProfile(profile.department(), profile.field(), profile.skills(), List.of(selectedExperience))
+                new InterviewProfile(profile.category(), profile.field(), profile.skills(), List.of(selectedExperience))
         );
     }
 
@@ -72,7 +72,7 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
         String selectedSkills = selectSkills(progress, profile.skills());
         return configurationCreator.create(
                 templateGetter.getTechnical(),
-                new InterviewProfile(profile.department(), profile.field(), List.of(selectedSkills), profile.experience())
+                new InterviewProfile(profile.category(), profile.field(), List.of(selectedSkills), profile.experience())
         );
     }
 

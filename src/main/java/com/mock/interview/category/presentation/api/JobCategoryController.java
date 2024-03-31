@@ -17,7 +17,7 @@ public class JobCategoryController {
     private final JobCategoryService service;
 
     @GetMapping("/api/category")
-    public ResponseEntity<List<CategoryResponse>> getDepartments() {
+    public ResponseEntity<List<CategoryResponse>> getCategories() {
         return ResponseEntity.ok(service.findAllCategory());
     }
 }

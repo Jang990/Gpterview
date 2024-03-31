@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class JobCategoryView {
-    private String department; // IT
+    private String category; // IT
     private String field; // 백엔드
 }

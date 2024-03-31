@@ -1,5 +1,6 @@
 package com.mock.interview.candidate.domain.model;
 
+import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
@@ -39,7 +40,7 @@ public class CandidateConfig extends BaseTimeEntity {
     private List<Experience> experience = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "applied_job_id")
+    @JoinColumn(name = "job_category_id")
     private JobCategory appliedJob;
 
     @Cascade(CascadeType.ALL)
@@ -100,7 +101,7 @@ public class CandidateConfig extends BaseTimeEntity {
     }
 
     private static void verifyJobCategory(JobCategory field) {
-        if (field == null || field.isDepartment())
+        if (field == null || field.iscategory())
             throw new IllegalArgumentException("직무는 항상 있어야 함");
     }
 
@@ -110,8 +111,8 @@ public class CandidateConfig extends BaseTimeEntity {
                 .map(Experience::getExperience).toList();
     }
 
-    public JobCategory getDepartment() {
-        return getAppliedJob().getDepartment();
+    public JobCategory getCategory() {
+        return getAppliedJob().getCategory();
     }
 
     public List<TechnicalSubjects> getTechSubjects() {

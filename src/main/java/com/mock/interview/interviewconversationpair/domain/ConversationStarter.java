@@ -10,17 +10,17 @@ public class ConversationStarter {
     private final int MIN_RECOMMENDED_SIZE = 50;
     public InterviewConversationPair start(
             InterviewConversationPairRepository repository,
-            Interview interview, long relationDepartmentQuestionSize
+            Interview interview, long relationcategoryQuestionSize
     ) {
         InterviewConversationPair conversationPair = InterviewConversationPair.create(interview);
         repository.save(conversationPair);
-        selectConversationType(relationDepartmentQuestionSize, conversationPair);
+        selectConversationType(relationcategoryQuestionSize, conversationPair);
 
         return conversationPair;
     }
 
-    private void selectConversationType(long relationDepartmentQuestionSize, InterviewConversationPair conversationPair) {
-        if(relationDepartmentQuestionSize < MIN_RECOMMENDED_SIZE)
+    private void selectConversationType(long relationcategoryQuestionSize, InterviewConversationPair conversationPair) {
+        if(relationcategoryQuestionSize < MIN_RECOMMENDED_SIZE)
             conversationPair.recommendAiQuestion();
         else
             conversationPair.recommendExistingQuestion();

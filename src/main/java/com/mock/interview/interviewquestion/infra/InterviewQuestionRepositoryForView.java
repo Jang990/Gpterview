@@ -32,10 +32,10 @@ public class InterviewQuestionRepositoryForView {
 
     public QuestionOverview findQuestion(Long loginIdCond, Long questionIdCond) {
         QJobCategory field = new QJobCategory("field");
-        QJobCategory department = new QJobCategory("department");
+        QJobCategory category = new QJobCategory("category");
         InterviewQuestion question = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.appliedJob, field)
-                .leftJoin(interviewQuestion.appliedJob.department, department)
+                .leftJoin(interviewQuestion.appliedJob.category, category)
                 .where(interviewQuestion.id.eq(questionIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
                 .fetchOne();
 
@@ -62,10 +62,10 @@ public class InterviewQuestionRepositoryForView {
             Long parentQuestionIdCond, String jobCategoryCond, String createdBy, Pageable pageable
     ) {
         QJobCategory field = new QJobCategory("field");
-        QJobCategory department = new QJobCategory("department");
+        QJobCategory category = new QJobCategory("category");
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.appliedJob, field)
-                .leftJoin(interviewQuestion.appliedJob.department, department)
+                .leftJoin(interviewQuestion.appliedJob.category, category)
                 .where(searchChildQuestion(parentQuestionIdCond), jobCategoryEq(jobCategoryCond), createdByEq(createdBy))
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -95,10 +95,10 @@ public class InterviewQuestionRepositoryForView {
     }
 
     private static JobCategoryView convert(JobCategory category) {
-        if(category.isDepartment())
+        if(category.iscategory())
             return new JobCategoryView(category.getName(), null);
 
-        return new JobCategoryView(category.getDepartment().getName(), category.getName());
+        return new JobCategoryView(category.getCategory().getName(), category.getName());
     }
 
     private BooleanExpression searchChildQuestion(Long parentQuestionIdCond) {
@@ -108,7 +108,7 @@ public class InterviewQuestionRepositoryForView {
 
     private BooleanExpression jobCategoryEq(String jobCategoryCond) {
         return jobCategoryCond == null ? null : interviewQuestion.appliedJob.name.eq(jobCategoryCond)
-                .or(interviewQuestion.appliedJob.department.name.eq(jobCategoryCond));
+                .or(interviewQuestion.appliedJob.category.name.eq(jobCategoryCond));
     }
 
     private BooleanExpression createdByEq(String createdBy) {

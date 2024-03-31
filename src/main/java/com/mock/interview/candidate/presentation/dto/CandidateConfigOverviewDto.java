@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CandidateConfigOverviewDto {
     private long id;
     private String title;
-    private String department;  // "개발", "영업", "세무"
+    private String category;  // "개발", "영업", "세무"
     private String field; // BE, FE, 디자인
     private LocalDateTime createdAt;
 }

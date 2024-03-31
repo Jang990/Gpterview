@@ -57,13 +57,13 @@ public class InterviewService {
     }
 
     private InterviewConversationPair startConversation(CandidateConfig candidateConfig, Interview interview) {
-        long questionCount = findDepartmentQuestionCount(candidateConfig.getAppliedJob());
+        long questionCount = findCategoryQuestionCount(candidateConfig.getAppliedJob());
         return conversationStarter.start(pairRepository, interview, questionCount);
     }
 
-    private long findDepartmentQuestionCount(JobCategory field) {
-        JobCategory department = field.getDepartment();
-        return interviewQuestionRepository.countDepartmentQuestion(department.getName());
+    private long findCategoryQuestionCount(JobCategory field) {
+        JobCategory category = field.getCategory();
+        return interviewQuestionRepository.countcategoryQuestion(category.getName());
     }
 
     @Transactional(readOnly = true)
@@ -83,14 +83,14 @@ public class InterviewService {
     public InterviewInfo findInterviewForAIRequest(long loginId, long interviewId) {
         Interview interview = repository.findInterviewSetting(interviewId, loginId)
                 .orElseThrow(InterviewNotFoundException::new);
-        return convert(interview, interview.getCandidateConfig().getDepartment(), interview.getCandidateConfig().getAppliedJob());
+        return convert(interview, interview.getCandidateConfig().getCategory(), interview.getCandidateConfig().getAppliedJob());
     }
 
-    private static InterviewInfo convert(Interview interview, JobCategory department, JobCategory field) {
+    private static InterviewInfo convert(Interview interview, JobCategory category, JobCategory field) {
         CandidateConfig profile = interview.getCandidateConfig();
         return new InterviewInfo(
                 new InterviewProfile(
-                        department.getName(), field.getName(),
+                        category.getName(), field.getName(),
                         profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
                         profile.getExperienceContent()
                 ),

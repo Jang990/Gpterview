@@ -14,8 +14,8 @@ public class TemplateConstGetter {
     @Value("${interview.role.interviewer}")
     private String interviewerRole;
 
-    @Value("${interview.profile.department}")
-    private String department;
+    @Value("${interview.profile.category}")
+    private String category;
     @Value("${interview.profile.field}")
     private String field;
     @Value("${interview.profile.skills}")

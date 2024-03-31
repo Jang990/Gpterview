@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionForm {
-    private Long department;
+    private Long category;
     private Long field;
     private List<String> tech;
     private QuestionTypeForView type;

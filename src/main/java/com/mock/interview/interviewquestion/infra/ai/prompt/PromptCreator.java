@@ -45,7 +45,7 @@ public class PromptCreator {
      *     {"system":"system"},
      *     {"user":"user"},
      *     {"interviewer":"assistant"},
-     *     {"department":"IT"},
+     *     {"category":"IT"},
      *     {"field":"백엔드"},
      *     {"skills":"Java, MySQL, Spring"},
      *     {"experience":"저는 ~프로젝트를 진행하며 ... ~문제를 해결. ~기술 사용 ..."},
@@ -57,7 +57,7 @@ public class PromptCreator {
         map.put(templateConstGetter.getUserRole(), aiSpec.getUserRole());
         map.put(templateConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
         map.put(templateConstGetter.getField(), creationInfo.getField());
-        map.put(templateConstGetter.getDepartment(), creationInfo.getDepartment());
+        map.put(templateConstGetter.getCategory(), creationInfo.getCategory());
         map.put(templateConstGetter.getSkills(), creationInfo.getSkills().toString());
         map.put(templateConstGetter.getExperience(), creationInfo.getExperience().toString());
         return map;
@@ -66,7 +66,7 @@ public class PromptCreator {
 //                formatConstGetter.getUserRole(), aiSpec.getUserRole(),
 //                formatConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole(),
 //                formatConstGetter.getField(), creationInfo.getField(),
-//                formatConstGetter.getDepartment(), creationInfo.getDepartment(),
+//                formatConstGetter.getcategory(), creationInfo.getcategory(),
 //                formatConstGetter.getSkillsFormat(), creationInfo.getSkills(),
 //                formatConstGetter.getExperience(), creationInfo.getExperience()
 //        );

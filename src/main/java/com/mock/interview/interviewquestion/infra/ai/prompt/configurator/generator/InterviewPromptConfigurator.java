@@ -28,7 +28,7 @@ public interface InterviewPromptConfigurator {
 
     String getCurrentTopic(InterviewProfile profile, InterviewProgress progress);
 
-    boolean isSupportedDepartment(InterviewInfo interviewInfo);
+    boolean isSupportedcategory(InterviewInfo interviewInfo);
 
     static InterviewPromptConfigurator selectPromptConfigurator(List<InterviewPromptConfigurator> list, InterviewInfo interviewInfo) {
         InterviewPromptConfigurator defaultConfigurator = null;
@@ -37,7 +37,7 @@ public interface InterviewPromptConfigurator {
                 defaultConfigurator = interviewPromptConfigurator;
                 continue;
             }
-            if(interviewPromptConfigurator.isSupportedDepartment(interviewInfo))
+            if(interviewPromptConfigurator.isSupportedcategory(interviewInfo))
                 return interviewPromptConfigurator;
         }
 

@@ -51,7 +51,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
         InterviewInfo interview = interviewCache.findAiInterviewSetting(target.interviewId());
         InterviewConversationPair targetConversation = getLastConversation(target.interviewId());
         List<QuestionMetaData> questionForRecommend = questionRepository
-                .findRandomQuestion(interview.profile().department(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
+                .findRandomQuestion(interview.profile().category(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
                 .stream().map(this::convertQuestion).toList();
 
         TraceResult traceResult = topicTracker.trace(interview);

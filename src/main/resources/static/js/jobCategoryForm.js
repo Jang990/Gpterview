@@ -1,33 +1,33 @@
-let departmentOptionToast, departmentOptionForm, customDepartment;
+let categoryOptionToast, categoryOptionForm, customcategory;
 let fieldOptionForm, fieldOptionToast, customField;
 
 $(function(){
       // 화면 로딩 시
-      departmentOptionForm = $('#department');
-      departmentOptionToast = new bootstrap.Toast(document.getElementById('departmentOptionToast'));
-      customDepartment = $('#customDepartment');
+      categoryOptionForm = $('#category');
+      categoryOptionToast = new bootstrap.Toast(document.getElementById('categoryOptionToast'));
+      customcategory = $('#customcategory');
 
       fieldOptionForm = $('#field');
       fieldOptionToast = new bootstrap.Toast(document.getElementById('fieldOptionToast'));
       customField = $('#customField');
 
-      departmentOptionForm.change(function() {
-        loadField(this);
+      categoryOptionForm.change(function() {
+        loadedPosition(this);
       });
 
-      if($('#loadField').val() !== "" && typeof $('#loadField').val() !== "undefined") {
+      if($('#loadedPosition').val() !== "" && typeof $('#loadedPosition').val() !== "undefined") {
         loadProfileField();
       }
 });
 
-// loadField 함수 정의
+// loadedPosition 함수 정의
 function loadProfileField() {
-    const loadFieldValue = $('#loadField').val();
-    $.get(`/api/job/category/field/${loadFieldValue}`, function(data) {
-        $('#department option:selected').prop('selected', false);
-        $('#department').prepend($('<option>', {
-            value: data.department.id,
-            text: data.department.name
+    const loadedPositionValue = $('#loadedPosition').val();
+    $.get(`/api/job/category/field/${loadedPositionValue}`, function(data) {
+        $('#category option:selected').prop('selected', false);
+        $('#category').prepend($('<option>', {
+            value: data.category.id,
+            text: data.category.name
         })).prop('selected', true);
 
         $('#field option:selected').prop('selected', false);
@@ -40,21 +40,21 @@ function loadProfileField() {
 }
 
 
-function showDepartmentToast() {
+function showcategoryToast() {
     //오류
-    console.log(departmentOptionToast);
-    departmentOptionToast.show();
+    console.log(categoryOptionToast);
+    categoryOptionToast.show();
 }
 
-function addDepartment() {
-    const optionElement = createOption(customDepartment.val());
-    departmentOptionForm.children().last().before(optionElement);
-    customDepartment.val('');
+function addcategory() {
+    const optionElement = createOption(customcategory.val());
+    categoryOptionForm.children().last().before(optionElement);
+    customcategory.val('');
 
     fieldOptionForm.empty();
     fieldOptionForm.append(optionElement);
 
-    departmentOptionToast.hide();
+    categoryOptionToast.hide();
 }
 
 function showFieldToast() {
@@ -74,10 +74,10 @@ function createOption(value) {
 }
 
 // 밑은 loading 관련 부분
-function loadField(departmentElement) {
+function loadedPosition(categoryElement) {
     $.ajax({
         type: 'GET',
-        url: `/api/job/category/department/${departmentElement.value}/field`,
+        url: `/api/job/category/category/${categoryElement.value}/field`,
         contentType: 'application/json',
 //        data: JSON.stringify(interviewInfo),
         success: function(data) {

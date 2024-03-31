@@ -24,15 +24,15 @@ public class QuestionRankingService {
 
     public List<Long> recommendTechQuestion(
             int maxRecommendedSize, CurrentConversation currentConversation,
-            List<QuestionMetaData> departmentMatchedQuestions
+            List<QuestionMetaData> categoryMatchedQuestions
     ) throws NotEnoughQuestion {
-        boolean hasEnoughQuestion = maxRecommendedSize < departmentMatchedQuestions.size();
+        boolean hasEnoughQuestion = maxRecommendedSize < categoryMatchedQuestions.size();
         if(!hasEnoughQuestion)
             throw new NotEnoughQuestion();
 
-        initQuestionCosineSimilarity(currentConversation, departmentMatchedQuestions);
+        initQuestionCosineSimilarity(currentConversation, categoryMatchedQuestions);
         PriorityQueue<CalculatedQuestion> recommendedQuestions = new PriorityQueue<>();
-        for (QuestionMetaData question : departmentMatchedQuestions) {
+        for (QuestionMetaData question : categoryMatchedQuestions) {
             double score = recommendScorer.calculateScore(currentConversation, question);
             CalculatedQuestion calculatedQuestion = new CalculatedQuestion(question, score);
 
@@ -62,11 +62,11 @@ public class QuestionRankingService {
     }
 
     /** TF-IDF 계산을 통한 코사인 유사도 설정 */
-    private void initQuestionCosineSimilarity(CurrentConversation currentConversation, List<QuestionMetaData> departmentMatchedQuestions) {
+    private void initQuestionCosineSimilarity(CurrentConversation currentConversation, List<QuestionMetaData> categoryMatchedQuestions) {
         List<String> base = currentConversation.beforeQuestionContent();
         if(base == null)
             return;
-        List<List<String>> allQuestions = departmentMatchedQuestions.stream()
+        List<List<String>> allQuestions = categoryMatchedQuestions.stream()
                 .map(QuestionMetaData::getNecessaryWords).collect(Collectors.toList());
         allQuestions.add(base);
 
@@ -75,7 +75,7 @@ public class QuestionRankingService {
         for (int i = 0; i < allQuestions.size() - ADDED_BASE_QUESTION_SIZE; i++) { // 전체 문서 순회
             double[] targetVector = tfidfCalculator.tfIdfVector(base, allQuestions.get(i), allQuestions);
             double cosineSimilarity = cosineSimilarityCalculator.calculate(baseVector, targetVector);
-            departmentMatchedQuestions.get(i).setCosineSimilarity(cosineSimilarity);
+            categoryMatchedQuestions.get(i).setCosineSimilarity(cosineSimilarity);
         }
     }
 

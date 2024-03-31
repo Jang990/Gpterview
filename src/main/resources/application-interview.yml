@@ -4,7 +4,7 @@ interview:
     user: user
     interviewer: interviewer
   profile: # fommater에서 변환할 수 있는 profile 키
-    department: department
+    category: category
     field: field
     skills: skills
     experience: experience
@@ -16,7 +16,7 @@ interview:
       user: ${interview.format.prefix}${interview.role.user}${interview.format.suffix}
       interviewer: ${interview.format.prefix}${interview.role.interviewer}${interview.format.suffix}
     profile:
-      department: ${interview.format.prefix}${interview.profile.department}${interview.format.suffix}
+      category: ${interview.format.prefix}${interview.profile.category}${interview.format.suffix}
       field: ${interview.format.prefix}${interview.profile.field}${interview.format.suffix}
       skills: ${interview.format.prefix}${interview.profile.skills}${interview.format.suffix}
       experience: ${interview.format.prefix}${interview.profile.experience}${interview.format.suffix}
@@ -24,7 +24,7 @@ interview:
   template:
     common:
       rule: |
-        너는 ${interview.format.profile.department} 분야 ${interview.format.profile.field} 포지션의 면접관.
+        너는 ${interview.format.profile.category} 분야 ${interview.format.profile.field} 포지션의 면접관.
         메시지가 길다고 마음대로 면접을 마무리하지마. 이미 대화한 주제를 질문하지마.
         항상 마지막 문장은 질문으로 끝내. 지원자의 응답에 대한 평가는 간단히.
         항상 3문장 이하로 응답. 질문 설명은 자세히. 항상 단 하나의 질문만.

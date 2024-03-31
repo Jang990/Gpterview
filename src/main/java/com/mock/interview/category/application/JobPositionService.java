@@ -25,23 +25,23 @@ public class JobPositionService {
         return convertPosition(allPosition);
     }
 
-    public CategoryDetailResponse findDepartmentAndField(long fieldId) {
+    public CategoryDetailResponse findcategoryAndField(long fieldId) {
         JobPosition category = positionRepository.findWithCategory(fieldId)
                 .orElseThrow(JobCategoryNotFoundException::new);
         return convertPosition(category);
     }
 
     private CategoryDetailResponse convertPosition(JobPosition field) {
-        JobCategory department = field.getCategory();
+        JobCategory category = field.getCategory();
         return new CategoryDetailResponse(
-                new CategoryResponse(department.getId(), department.getName()),
+                new CategoryResponse(category.getId(), category.getName()),
                 new CategoryResponse(field.getId(), field.getName())
         );
     }
 
-    private static List<CategoryResponse> convertPosition(List<JobPosition> allDepartment) {
-        return allDepartment.stream()
-                .map((department) -> new CategoryResponse(department.getId(), department.getName()))
+    private static List<CategoryResponse> convertPosition(List<JobPosition> allcategory) {
+        return allcategory.stream()
+                .map((category) -> new CategoryResponse(category.getId(), category.getName()))
                 .toList();
     }
 }

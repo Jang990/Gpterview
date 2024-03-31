@@ -32,7 +32,7 @@ public class CandidateConfigService {
         Users user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         List<TechnicalSubjects> techs = technicalSubjectsRepository.findAllById(relationalTechIds);
-        JobCategory field = jobCategoryRepository.findFieldWithDepartment(candidateProfileForm.getField())
+        JobCategory field = jobCategoryRepository.findFieldWithCategory(candidateProfileForm.getField())
                 .orElseThrow(JobCategoryNotFoundException::new);
 
         CandidateConfig profile = CandidateConfig.createProfile(interviewCandidateForm, user, field, techs);

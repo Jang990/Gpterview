@@ -1,6 +1,6 @@
 package com.mock.interview.category.domain.model;
 
-import com.mock.interview.category.domain.exception.MissingRequiredDepartmentCategoryException;
+import com.mock.interview.category.domain.exception.MissingRequiredCategoryException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class JobCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     @Cascade(CascadeType.PERSIST)
     @JoinColumn(name = "job_parent_id")
-    private JobCategory department;
+    private JobCategory category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     @Cascade(CascadeType.ALL)
@@ -37,7 +37,7 @@ public class JobCategory {
      * @param name IT, 기획, 인사
      * @return
      */
-    public static JobCategory createDepartmentCategory(String name) {
+    public static JobCategory createCategory(String name) {
         JobCategory category = new JobCategory();
         insertName(category, name);
         return category;
@@ -46,17 +46,17 @@ public class JobCategory {
     /**
      * 필드 생성 - 백엔드, 프론트엔드, 안드로이드 등등
      * @param name 백엔드, 프론트엔드, 안드로이드
-     * @param relatedDepartmentCategory IT, 기획, 인사
+     * @param relatedcategoryCategory IT, 기획, 인사
      * @return
      */
-    public static JobCategory createFieldCategory(String name, JobCategory relatedDepartmentCategory) {
-        if (relatedDepartmentCategory == null || relatedDepartmentCategory.isField()) {
-            throw new MissingRequiredDepartmentCategoryException();
+    public static JobCategory createFieldCategory(String name, JobCategory relatedcategoryCategory) {
+        if (relatedcategoryCategory == null || relatedcategoryCategory.isField()) {
+            throw new MissingRequiredCategoryException();
         }
 
         JobCategory category = new JobCategory();
         insertName(category, name);
-        category.department = relatedDepartmentCategory;
+        category.category = relatedcategoryCategory;
         return category;
     }
 
@@ -65,11 +65,11 @@ public class JobCategory {
         category.name = name.toUpperCase();
     }
 
-    public boolean isDepartment() {
-        return department == null;
+    public boolean iscategory() {
+        return category == null;
     }
 
     public boolean isField() {
-        return department != null;
+        return category != null;
     }
 }

@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CategoryDetailResponse {
-    private CategoryResponse department;
+    private CategoryResponse category;
     private CategoryResponse field;
 }

@@ -13,7 +13,7 @@ public class PromptConfigurationCreator {
     public PromptConfiguration create(String promptTemplate, InterviewProfile profile) {
         templateValidator.verify(promptTemplate, profile);
         return new PromptConfiguration(
-                promptTemplate, profile.department(), profile.field(),
+                promptTemplate, profile.category(), profile.field(),
                 profile.skills(), profile.experience()
         );
     }

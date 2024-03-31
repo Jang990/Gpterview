@@ -22,8 +22,8 @@ public class JobPositionController {
     private final JobPositionService service;
 
     @GetMapping("/position/{positionId}")
-    public ResponseEntity<CategoryDetailResponse> getDepartmentAndField(@PathVariable(name = "positionId") long positionId) {
-        return ResponseEntity.ok(service.findDepartmentAndField(positionId));
+    public ResponseEntity<CategoryDetailResponse> getcategoryAndField(@PathVariable(name = "positionId") long positionId) {
+        return ResponseEntity.ok(service.findcategoryAndField(positionId));
     }
 
     @GetMapping("/{categoryId}/position")

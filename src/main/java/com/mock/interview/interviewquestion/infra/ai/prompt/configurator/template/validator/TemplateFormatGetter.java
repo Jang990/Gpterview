@@ -13,8 +13,8 @@ public class TemplateFormatGetter {
     @Value("${interview.format.profile.skills}")
     private String skillsFormat;
 
-    @Value("${interview.format.profile.department}")
-    private String departmentFormat;
+    @Value("${interview.format.profile.category}")
+    private String categoryFormat;
 
     @Value("${interview.format.profile.experience}")
     private String experienceFormat;

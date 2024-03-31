@@ -19,7 +19,7 @@ public interface CandidateConfigRepository extends JpaRepository<CandidateConfig
 
     @Query("Select cc From CandidateConfig cc " +
             "join fetch cc.appliedJob " +
-            "join fetch cc.appliedJob.department " +
+            "join fetch cc.appliedJob.category " +
             "left join fetch cc.techLink " +
             "left join fetch cc.techLink.technicalSubjects " +
             "Where cc.users.id = :userId")
@@ -27,7 +27,7 @@ public interface CandidateConfigRepository extends JpaRepository<CandidateConfig
 
     @Query("Select cc From CandidateConfig cc " +
             "join fetch cc.appliedJob " +
-            "join fetch cc.appliedJob.department " +
+            "join fetch cc.appliedJob.category " +
             "left join fetch cc.techLink " +
             "left join fetch cc.techLink.technicalSubjects " +
             "Where cc.id = :candidateId and cc.users.id = :userId")
