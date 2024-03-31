@@ -3,14 +3,10 @@ package com.mock.interview.interviewquestion.domain.model;
 import com.mock.interview.candidate.domain.model.Experience;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.global.Events;
-import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.event.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
 import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
-import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
 import com.mock.interview.questiontoken.domain.QuestionTokenization;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
@@ -69,7 +65,7 @@ public class InterviewQuestion extends BaseEntity {
     @JoinColumn(name = "related_experience_id")
     private Experience experience;
 
-    private static InterviewQuestion createWithCommonField(
+    public static InterviewQuestion create(
             InterviewQuestionRepository repository, String content, JobCategory category, Users users,
             QuestionType questionType, String createdBy
     ) {
@@ -86,37 +82,13 @@ public class InterviewQuestion extends BaseEntity {
         return question;
     }
 
-    public static InterviewQuestion createConversationQuestion(
-            InterviewQuestionRepository repository,
-            Users owner, JobCategory appliedJob,
-            RecommendedQuestion questionInfo,
-            List<TechnicalSubjects> techList
-    ) {
-        InterviewQuestion question = createWithCommonField(
-                repository, questionInfo.question(), appliedJob, owner,
-                QuestionConvertor.convert(questionInfo.progress().phase()), questionInfo.createdBy()
-        );
-        connectTech(techList, question);
-        return question;
-    }
-
-    public static InterviewQuestion create(InterviewQuestionRepository repository, String content, QuestionTypeForView type, JobCategory category, List<TechnicalSubjects> techList, Users users) {
-        InterviewQuestion question = createWithCommonField(
-                repository, content, category,
-                users, QuestionConvertor.convert(type), users.getUsername()
-        );
-        connectTech(techList, question);
-
-        return question;
-    }
-
-    private static void connectTech(List<TechnicalSubjects> techList, InterviewQuestion question) {
+    public void linkTech(List<TechnicalSubjects> techList) {
         if(techList != null)
-            question.techLink = createTechLinks(question, techList);
+            this.techLink = createTechLinks(techList);
     }
 
-    private static List<QuestionTechLink> createTechLinks(InterviewQuestion question, List<TechnicalSubjects> techList) {
-        return techList.stream().map((tech) -> QuestionTechLink.createLink(question, tech)).toList();
+    private List<QuestionTechLink> createTechLinks(List<TechnicalSubjects> techList) {
+        return techList.stream().map((tech) -> QuestionTechLink.createLink(this, tech)).toList();
     }
 
     public void like() {

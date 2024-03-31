@@ -31,9 +31,10 @@ public class QuestionSavingService {
         JobCategory detailCategory = findMoreDetailCategory(form.getDepartment(), form.getField());
 
         InterviewQuestion question = InterviewQuestion.create(
-                interviewQuestionRepository, form.getContent(),
-                form.getType(), detailCategory, techList, users
+                interviewQuestionRepository, form.getContent(), detailCategory, users,
+                QuestionConvertor.convert(form.getType()), users.getUsername()
         );
+        question.linkTech(techList);
         return question.getId();
     }
 
