@@ -9,10 +9,10 @@ import org.springframework.http.HttpStatus;
  */
 public class MissingRequiredCategoryException extends CustomClientException {
     public MissingRequiredCategoryException() {
-        super(HttpStatus.BAD_REQUEST, "required.jobcategory.field");
+        super(HttpStatus.BAD_REQUEST, "required.category.field");
     }
 
     public MissingRequiredCategoryException(Throwable cause) {
-        super(cause, HttpStatus.BAD_REQUEST, "required.jobcategory.field");
+        super(cause, HttpStatus.BAD_REQUEST, "required.category.field");
     }
 }

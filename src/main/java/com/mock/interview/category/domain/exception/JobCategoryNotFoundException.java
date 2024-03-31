@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public class JobCategoryNotFoundException extends CustomClientException {
     public JobCategoryNotFoundException() {
-        super(HttpStatus.NOT_FOUND, "not.found.jobcategory");
+        super(HttpStatus.NOT_FOUND, "not.found.category");
     }
 
     public JobCategoryNotFoundException(Throwable cause) {
-        super(cause, HttpStatus.NOT_FOUND, "not.found.jobcategory");
+        super(cause, HttpStatus.NOT_FOUND, "not.found.category");
     }
 }
