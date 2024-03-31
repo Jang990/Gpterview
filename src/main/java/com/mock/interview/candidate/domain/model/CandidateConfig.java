@@ -30,7 +30,7 @@ public class CandidateConfig extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private InterviewType type; // TODO: DB에 넣어야
+    private InterviewType type;
     @Column(nullable = false)
     private int durationMinutes;
 

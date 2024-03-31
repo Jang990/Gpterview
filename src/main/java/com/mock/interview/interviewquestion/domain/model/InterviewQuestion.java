@@ -22,10 +22,6 @@ import org.hibernate.annotations.CascadeType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 면접이라는 기능에 초점을 맞추지 말고, 면접 질문 게시판에 초점을 맞추는게 맞는 것 같다.
- * 면접은 다른 사용자들이 만들어 놓은 면접 질문을 추천하거나, AI를 통해 실시간으로 만들어 주는 기능일 뿐이다.
- */
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
