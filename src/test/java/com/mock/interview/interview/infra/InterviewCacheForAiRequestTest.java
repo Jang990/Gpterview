@@ -52,7 +52,7 @@ class InterviewCacheForAiRequestTest {
     @DisplayName("캐시 미스 - 진행중인 인터뷰 저장")
     void test2() {
         LocalDateTime activeTime = LocalDateTime.now().plusHours(1);
-        Interview mockInterview = InterviewEntityCreator.create(activeTime);
+        Interview mockInterview = InterviewEntityCreator.createCategory(activeTime);
 
         when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.empty());
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
@@ -70,7 +70,7 @@ class InterviewCacheForAiRequestTest {
     @DisplayName("캐시 미스 - 만료된 인터뷰")
     void test3() {
         LocalDateTime expiredTime = LocalDateTime.now().minusHours(1);
-        Interview mockInterview = InterviewEntityCreator.create(expiredTime);
+        Interview mockInterview = InterviewEntityCreator.createCategory(expiredTime);
 
         when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.empty());
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
@@ -88,7 +88,7 @@ class InterviewCacheForAiRequestTest {
         assertThat(result.config().expiredTime()).isEqualTo(mockInterview.getExpiredTime());
         assertThat(result.config().interviewType()).isEqualTo(mockInterview.getCandidateConfig().getType());
         assertThat(result.profile().category()).isEqualTo(mockInterview.getCandidateConfig().getCategory().getName());
-        assertThat(result.profile().field()).isEqualTo(mockInterview.getCandidateConfig().getAppliedJob().getName());
+        assertThat(result.profile().field()).isEqualTo(mockInterview.getCandidateConfig().getCategory().getName());
 
         Assertions.assertIterableEquals(
                 result.profile().experience(),
