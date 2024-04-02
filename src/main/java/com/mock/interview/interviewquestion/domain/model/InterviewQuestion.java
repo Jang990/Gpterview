@@ -94,7 +94,7 @@ public class InterviewQuestion extends BaseEntity {
 
     public void linkJob(JobCategory category, JobPosition position) {
         linkCategory(category);
-        if(position == null || position.getCategory().getId().equals(category.getId()))
+        if(position == null || !position.getCategory().getId().equals(category.getId()))
             throw new IllegalArgumentException("사용자에게 받은 category와 position간에 관계가 없습니다.");
 
         this.position = position;
