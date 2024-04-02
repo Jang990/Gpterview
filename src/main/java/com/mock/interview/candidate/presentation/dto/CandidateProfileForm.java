@@ -15,8 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CandidateProfileForm {
-    // TODO: categoryId 추가할 것
-    private Long position; // BE, FE, 디자인
+    private Long categoryId; // IT
+    private Long positionId; // BE, FE, 디자인
     private List<String> skills; // Java, Spring, Mysql, Jenkins ...
     private List<@NotBlank String> experiences;
 //    private int yearsOfExperience;   // 경력 연차

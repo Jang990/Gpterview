@@ -1,87 +1,48 @@
-let categoryOptionToast, categoryOptionForm, customcategory;
-let fieldOptionForm, fieldOptionToast, customField;
+let categoryOptionToast, categoryOptionForm, customCategory;
+let positionOptionForm, positionOptionToast, customPosition;
 
 $(function(){
       // 화면 로딩 시
-      categoryOptionForm = $('#category');
+      categoryOptionForm = $('#categoryId');
       categoryOptionToast = new bootstrap.Toast(document.getElementById('categoryOptionToast'));
-      customcategory = $('#customcategory');
+      customCategory = $('#customCategory');
 
-      fieldOptionForm = $('#field');
-      fieldOptionToast = new bootstrap.Toast(document.getElementById('fieldOptionToast'));
-      customField = $('#customField');
+      positionOptionForm = $('#positionId');
+      positionOptionToast = new bootstrap.Toast(document.getElementById('positionOptionToast'));
+      customPosition = $('#customPosition');
 
       categoryOptionForm.change(function() {
-        loadPosition(this);
+        loadPosition(this.value);
       });
-
-      if($('#loadedPosition').val() !== "" && typeof $('#loadedPosition').val() !== "undefined") {
-        loadProfileField();
-      }
 });
 
-// loadedPosition 함수 정의
-function loadProfileField() {
-    const loadedPositionValue = $('#loadedPosition').val();
 
-    $.get(`/api/job/category/${loadedPositionValue}`, function(data) {
-            $('#category option:selected').prop('selected', false);
-            $('#category').prepend($('<option>', {
-                value: data.category.id,
-                text: data.category.name
-            })).prop('selected', true);
-
-            $('#field option:selected').prop('selected', false);
-            $('#field').prepend($('<option>', {
-                value: data.field.id,
-                text: data.field.name
-            })).prop('selected', true);
-
-        });
-
-    $.get(`/api/job/category/${loadedPositionValue}`, function(data) {
-        $('#category option:selected').prop('selected', false);
-        $('#category').prepend($('<option>', {
-            value: data.category.id,
-            text: data.category.name
-        })).prop('selected', true);
-
-        $('#field option:selected').prop('selected', false);
-        $('#field').prepend($('<option>', {
-            value: data.field.id,
-            text: data.field.name
-        })).prop('selected', true);
-
-    });
-}
-
-
-function showcategoryToast() {
+function showCategoryToast() {
     //오류
     console.log(categoryOptionToast);
     categoryOptionToast.show();
 }
 
-function addcategory() {
-    const optionElement = createOption(customcategory.val());
+function addCategory() {
+    const optionElement = createOption(customCategory.val());
     categoryOptionForm.children().last().before(optionElement);
-    customcategory.val('');
+    customCategory.val('');
 
-    fieldOptionForm.empty();
-    fieldOptionForm.append(optionElement);
+    positionOptionForm.empty();
+    positionOptionForm.append(optionElement);
 
     categoryOptionToast.hide();
 }
 
-function showFieldToast() {
-    fieldOptionToast.show();
+function showPositionToast() {
+    positionOptionToast.show();
 }
 
-function addField() {
-    const optionElement = createOption(customField.val());
-    fieldOptionForm.append(optionElement);
-    customField.val('');
-    fieldOptionToast.hide();
+function addPosition() {
+    const optionElement = createOption(customPosition.val());
+    positionOptionForm.append(optionElement);
+    customPosition.val('');
+    positionOptionToast.hide();
 }
 
 function createOption(value) {
@@ -90,14 +51,13 @@ function createOption(value) {
 }
 
 // 밑은 loading 관련 부분
-function loadPosition(categoryElement) {
+function loadPosition(categoryId) {
     $.ajax({
         type: 'GET',
-        url: `/api/category/${categoryElement.value}/position`,
+        url: `/api/category/${categoryId}/position`,
         contentType: 'application/json',
-//        data: JSON.stringify(interviewInfo),
         success: function(data) {
-            changeFieldOptions(data);
+            changePositionOptions(data);
         },
         error: function(error) {
             console.log(error);
@@ -105,10 +65,10 @@ function loadPosition(categoryElement) {
     });
 }
 
-function changeFieldOptions(fields) {
-    fieldOptionForm.empty();
-    $.each(fields, function(index, value) {
-        fieldOptionForm.append($('<option>', {
+function changePositionOptions(positions) {
+    positionOptionForm.empty();
+    $.each(positions, function(index, value) {
+        positionOptionForm.append($('<option>', {
             value: value.id,
             text: value.name
         }));

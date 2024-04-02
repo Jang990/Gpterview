@@ -35,7 +35,7 @@ public class QuestionSavingService {
                 interviewQuestionRepository, form.getContent(), users,
                 QuestionConvertor.convert(form.getType()), users.getUsername()
         );
-        JobConnectionHelper.connect(jobCategoryRepository, jobPositionRepository, question, form.getCategory(), form.getField());
+        JobConnectionHelper.connect(jobCategoryRepository, jobPositionRepository, question, form.getCategoryId(), form.getPositionId());
         question.linkTech(techList);
         return question.getId();
     }

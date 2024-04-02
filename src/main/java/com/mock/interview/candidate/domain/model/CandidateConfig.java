@@ -92,7 +92,7 @@ public class CandidateConfig extends BaseTimeEntity {
     private static void verifyJob(JobCategory category, JobPosition position) {
         if (category == null)
             throw new IllegalArgumentException("직무는 항상 있어야 함");
-        if(position == null || position.getCategory().getId().equals(category.getId()))
+        if(position == null || !position.getCategory().getId().equals(category.getId()))
             throw new IllegalArgumentException("position이 category과 관계 없음");
     }
 

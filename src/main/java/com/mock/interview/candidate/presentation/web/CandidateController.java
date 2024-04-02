@@ -6,6 +6,7 @@ import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateOverview;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
+import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CandidateController {
     private final JobCategoryService categoryService;
+    private final JobPositionService positionService;
     private final CandidateConfigReadOnlyService candidateConfigReadOnlyService;
 
     @GetMapping(value = {"/interview/candidate/form","/interview/candidate/form/"})
@@ -49,10 +51,12 @@ public class CandidateController {
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
         InterviewCandidateForm interviewConfig = candidateConfigReadOnlyService.findCandidate(candidateId, loginId);
+        CandidateProfileForm profile = interviewConfig.getProfile();
         model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("categoryList", categoryService.findAllCategory());
         model.addAttribute("interviewDetails", interviewConfig.getInterviewDetails());
-        model.addAttribute("candidateConfig", interviewConfig.getProfile());
+        model.addAttribute("candidateConfig", profile);
+        model.addAttribute("categoryList", categoryService.findAllCategory());
+        model.addAttribute("positionList", positionService.findChildPositions(profile.getCategoryId()));
         return "interview/interview-candidate-form";
     }
 }

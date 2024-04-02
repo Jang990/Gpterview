@@ -1,6 +1,5 @@
 package com.mock.interview.category.infra;
 
-import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +16,7 @@ public interface JobPositionRepository extends JpaRepository<JobPosition, Long> 
 
     @Query("Select jp From JobPosition jp join fetch jp.category Where jp.id = :positionId")
     Optional<JobPosition> findWithCategory(@Param("positionId") long positionId);
+
+    @Query("Select jp From JobPosition jp join fetch jp.category where jp.id = :positionId and jp.category.id = :categoryId")
+    Optional<JobPosition> findWithCategory(@Param("categoryId") long categoryId, @Param("positionId") long positionId);
 }

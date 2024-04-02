@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="fragment-job-category-select(loadedPosition,categoryList)">
+  <div th:fragment="fragment-job-category-select(selectedCategoryId,selectedPositionId,categoryList,positionList)">
     <script th:src="@{/js/jobCategoryForm.js}" href="../js/jobCategoryForm.js"></script>
-    <input th:if="${loadedPosition != null}" type="hidden" id="loadedPosition" th:value="${loadedPosition}">
     <div class="mb-3 row">
       <div class="d-flex justify-content-start">
         <label class="col-form-label me-3">지원분야</label>
         <div class="me-3">
-          <select name="category" id="category" class="form-select" aria-label="Select category" required>
+          <select name="categoryId" id="categoryId" class="form-select" aria-label="Select category">
+            <option th:if="${selectedCategoryId != null}" disabled>분야 선택</option>
             <option th:each="category : ${categoryList}"
-                    th:value="${category.id}" th:text="${category.name}">IT (프로그래밍)</option>
+                    th:value="${category.id}" th:text="${category.name}"
+                    th:selected="${category.id == selectedCategoryId}">IT (프로그래밍)</option>
             <option disabled>다른 분야 추가 예정</option>
           </select>
         </div>
@@ -26,10 +27,10 @@
           <div class="toast-body">
             <div class="row align-items-center">
               <div class="col-9">
-                <input type="text" class="form-control" id="customcategory" placeholder="추가할 분야"/>
+                <input type="text" class="form-control" id="customCategory" placeholder="추가할 분야"/>
               </div>
               <div class="col-3">
-                <button type="button" class="btn btn-sm btn-primary" onclick="addcategory()">추가</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="addCategory()">추가</button>
               </div>
             </div>
           </div>
@@ -40,28 +41,31 @@
 
     <div class="mb-3 row">
       <div class="d-flex justify-content-start">
-        <label for="field" class="col-form-label me-3">지원직군</label>
+        <label for="positionId" class="col-form-label me-3">지원직군</label>
         <div class="me-3">
-          <select name="field" id="field" class="form-select" aria-label="Select Field" required>
-            <option disabled>분야를 선택해주세요.</option>
+          <select name="positionId" id="positionId" class="form-select" aria-label="Select position" required>
+            <option disabled>직군을 선택해주세요.</option>
+            <option th:each="position : ${positionList}"
+                    th:value="${position.id}" th:text="${position.name}"
+                    th:selected="${position.id == selectedPositionId}">백엔드, 모바일</option>
           </select>
         </div>
         <div class="me-3">
-          <button type="button" class="btn btn-dark" onclick="showFieldToast()">직군 추가</button>
+          <button type="button" class="btn btn-dark" onclick="showPositionToast()">직군 추가</button>
         </div>
       </div>
     </div>
 
     <div class="row ms-5 mb-3">
-      <div class="col-3 toast align-items-center mb-3" id="fieldOptionToast" role="polite" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
+      <div class="col-3 toast align-items-center mb-3" id="positionOptionToast" role="polite" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
         <div class="d-flex" style="min-width:0px">
           <div class="toast-body">
             <div class="row align-items-center">
               <div class="col-9">
-                <input type="text" class="form-control" id="customField" placeholder="추가할 직군"/>
+                <input type="text" class="form-control" id="customPosition" placeholder="추가할 직군"/>
               </div>
               <div class="col-3">
-                <button type="button" class="btn btn-sm btn-primary" onclick="addField()">추가</button>
+                <button type="button" class="btn btn-sm btn-primary" onclick="addPosition()">추가</button>
               </div>
             </div>
           </div>
