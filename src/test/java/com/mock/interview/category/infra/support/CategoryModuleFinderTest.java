@@ -1,5 +1,6 @@
 package com.mock.interview.category.infra.support;
 
+import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.tech.infra.view.CategoryRelatedTechFinder;
 import com.mock.interview.tech.infra.view.DefaultCategoryRelatedTechFinder;
 import com.mock.interview.tech.infra.view.ITCategoryRelatedTechFinder;
@@ -8,8 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryModuleFinderTest {
     private List<CategoryRelatedTechFinder> testFinders = List.of(new ITCategoryRelatedTechFinder(), new DefaultCategoryRelatedTechFinder());

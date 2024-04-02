@@ -3,7 +3,7 @@ package com.mock.interview.tech.application;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.infra.JobCategoryRepository;
-import com.mock.interview.category.infra.support.CategoryModuleFinder;
+import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.tech.infra.view.CategoryRelatedTechFinder;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;

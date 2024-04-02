@@ -1,9 +1,12 @@
-package com.mock.interview.category.infra.support;
+package com.mock.interview.category.infra;
+
+import com.mock.interview.category.infra.support.CategorySupportChecker;
+import com.mock.interview.category.infra.support.DefaultCategorySupportChecker;
 
 import java.util.List;
 
 public abstract class CategoryModuleFinder {
-    /** CategorySupportChecker를 직접 쓰지 말고 하위 인터페이스를 사용할 것 */
+    /** List<CategorySupportChecker>로 직접 말고 하위 인터페이스를 사용할 것 */
     public static <T extends CategorySupportChecker> T findModule(List<T> modules, String categoryName) {
         T defaultModule = null;
         for (T module : modules) {

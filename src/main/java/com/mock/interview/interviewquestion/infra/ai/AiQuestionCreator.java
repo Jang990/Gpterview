@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai;
 
-import com.mock.interview.category.infra.support.CategoryModuleFinder;
+import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
