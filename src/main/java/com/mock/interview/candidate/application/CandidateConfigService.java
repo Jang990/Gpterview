@@ -35,7 +35,6 @@ public class CandidateConfigService {
         JobPosition position = jobPositionRepository.findById(candidateProfileForm.getPosition())
                 .orElseThrow(JobCategoryNotFoundException::new);
 
-        // TODO: position.getCategory(), position쪽에서 유효성 검사 필요.
         CandidateConfig candidateConfig = CandidateConfig.createProfile(
                 interviewCandidateForm.getInterviewDetails(), user, position.getCategory(), position);
         candidateConfig.setExperience(interviewCandidateForm.getProfile().getExperiences());

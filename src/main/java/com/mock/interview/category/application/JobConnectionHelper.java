@@ -1,5 +1,6 @@
 package com.mock.interview.category.application;
 
+import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
@@ -25,9 +26,6 @@ public class JobConnectionHelper {
         JobPosition position = positionRepository.findById(positionId)
                 .orElseThrow(JobCategoryNotFoundException::new);
         JobCategory category = position.getCategory();
-        if(category.getId().equals(categoryId))
-            throw new IllegalArgumentException("사용자에게 받은 category와 position간에 관계가 없습니다.");
-
         question.linkJob(category, position);
     }
 }
