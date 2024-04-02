@@ -8,6 +8,8 @@ public abstract class CategoryModuleFinder {
         T defaultModule = null;
         for (T module : modules) {
             if (module instanceof DefaultCategorySupportChecker) {
+                if(defaultModule != null)
+                    throw new IllegalArgumentException("중복 디폴트 카테고리 문제");
                 defaultModule = module;
                 continue;
             }

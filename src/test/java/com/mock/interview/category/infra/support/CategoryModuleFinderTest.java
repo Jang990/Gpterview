@@ -41,4 +41,12 @@ class CategoryModuleFinderTest {
                 () -> CategoryModuleFinder.findModule(wrongList, WEIRD_CATEGORY_NAME));
     }
 
+    @Test
+    @DisplayName("디폴트 모듈 중복")
+    void test4() {
+        List<CategoryRelatedTechFinder> duplicateDefaultList = List.of(new DefaultCategoryRelatedTechFinder(), new DefaultCategoryRelatedTechFinder());
+        org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class,
+                () -> CategoryModuleFinder.findModule(duplicateDefaultList, WEIRD_CATEGORY_NAME));
+    }
+
 }
