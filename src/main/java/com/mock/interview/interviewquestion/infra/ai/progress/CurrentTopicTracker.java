@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai.progress;
 
+import com.mock.interview.category.infra.support.CategoryModuleFinder;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgressTimeBasedTracker;
@@ -18,8 +19,8 @@ public class CurrentTopicTracker {
 
     public TraceResult trace(InterviewInfo interviewInfo) {
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        InterviewPromptConfigurator configurator = InterviewPromptConfigurator
-                .selectPromptConfigurator(interviewPromptConfiguratorList, interviewInfo);
+        InterviewPromptConfigurator configurator = CategoryModuleFinder
+                .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category());
 
         return new TraceResult(progress, configurator.getCurrentTopic(interviewInfo.profile(), progress));
     }

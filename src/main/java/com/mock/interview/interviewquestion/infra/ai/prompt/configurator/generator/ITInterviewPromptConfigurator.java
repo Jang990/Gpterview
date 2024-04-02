@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
 
+import com.mock.interview.category.infra.support.ITCategorySupportChecker;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
@@ -15,12 +16,9 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ITInterviewPromptConfigurator implements InterviewPromptConfigurator {
+public class ITInterviewPromptConfigurator extends ITCategorySupportChecker implements InterviewPromptConfigurator {
     private final ITInterviewTemplateGetter templateGetter;
     private final PromptConfigurationCreator configurationCreator;
-
-    private final List<String> basicKnowledge = List.of("운영체제", "네트워크", "데이터베이스", "자료구조", "알고리즘");
-    private final String[] SUPPORTED_category = {"IT", "개발"};
 
     @Override
     public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
@@ -34,23 +32,9 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     @Override
     public String getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
         return switch (progress.phase()) {
-            case TECHNICAL -> selectSkills(progress.progress(), profile.skills());
-            case EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.experience());
+            case TECHNICAL, EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.skills());
             case PERSONAL -> null;
         };
-    }
-
-    @Override
-    public boolean isSupportedcategory(InterviewInfo interviewInfo) {
-        if(interviewInfo == null || interviewInfo.profile() == null)
-            return false;
-
-        for (String supportedcategory : SUPPORTED_category) {
-            if(supportedcategory.equalsIgnoreCase(interviewInfo.profile().category()))
-                return true;
-        }
-
-        return false;
     }
 
     private PromptConfiguration createPersonalPromptConfig(InterviewProfile profile, double progress) {
@@ -69,18 +53,11 @@ public class ITInterviewPromptConfigurator implements InterviewPromptConfigurato
     }
 
     private PromptConfiguration createTechPromptConfig(InterviewProfile profile, double progress) {
-        String selectedSkills = selectSkills(progress, profile.skills());
+        String selectedSkills = selectStringBasedOnProgress(progress, profile.skills());
         return configurationCreator.create(
                 templateGetter.getTechnical(),
                 new InterviewProfile(profile.category(), profile.field(), List.of(selectedSkills), profile.experience())
         );
-    }
-
-    private String selectSkills(double progress, List<String> candidateSkills) {
-        List<String> questionTopicList = new ArrayList<>();
-        questionTopicList.addAll(basicKnowledge);
-        questionTopicList.addAll(candidateSkills);
-        return selectStringBasedOnProgress(progress, questionTopicList);
     }
 
     private String selectStringBasedOnProgress(double progress, List<String> list) {

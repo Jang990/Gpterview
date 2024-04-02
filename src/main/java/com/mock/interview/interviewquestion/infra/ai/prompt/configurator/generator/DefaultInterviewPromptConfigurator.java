@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
 
+import com.mock.interview.category.infra.support.DefaultCategorySupportChecker;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 //@Order(1)
 //@Component
 @RequiredArgsConstructor
-public class DefaultInterviewPromptConfigurator implements InterviewPromptConfigurator {
+public class DefaultInterviewPromptConfigurator extends DefaultCategorySupportChecker implements InterviewPromptConfigurator {
     private final DefaultInterviewTemplateGetter templateGetter;
     private final PromptConfigurationCreator configurationCreator;
 
@@ -28,11 +29,6 @@ public class DefaultInterviewPromptConfigurator implements InterviewPromptConfig
     @Override
     public String getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
         return null;
-    }
-
-    @Override
-    public boolean isSupportedcategory(InterviewInfo interviewInfo) {
-        return true;
     }
 
     private String getRawInterviewStrategy(InterviewPhase phase) {
