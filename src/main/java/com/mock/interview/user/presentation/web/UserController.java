@@ -2,31 +2,21 @@ package com.mock.interview.user.presentation.web;
 
 import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
-import com.mock.interview.category.presentation.CategoryValidator;
 import com.mock.interview.category.presentation.CategoryViewer;
-import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
-import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.review.presentation.dto.ReviewIndexPageFragment;
-import com.mock.interview.user.application.UserService;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.presentation.dto.AccountDto;
 import com.mock.interview.user.presentation.dto.AccountForm;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +24,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-
-    private final UserService userService;
     private final InterviewService interviewService;
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
@@ -84,16 +72,5 @@ public class UserController {
     private InterviewResponse getActiveInterview(long loginId) {
         return interviewService.findActiveInterview(loginId)
                 .orElseGet(InterviewResponse::new);
-    }
-
-    @PostMapping("auth/sign-up")
-    public String signUp(
-            @Valid @ModelAttribute("account") AccountForm form,
-            BindingResult bindingResult
-    ) throws BindException {
-        CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
-
-        userService.create(form);
-        return "redirect:/auth/login";
     }
 }
