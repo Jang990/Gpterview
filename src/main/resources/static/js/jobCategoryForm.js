@@ -34,10 +34,15 @@ function showPositionToast() {
 }
 
 function addPosition() {
-    const optionElement = createOption(customPosition.val());
-    positionOptionForm.append(optionElement);
-    customPosition.val('');
-    positionOptionToast.hide();
+    const selectedCategoryId = getSelectedCategoryId();
+    console.log(selectedCategoryId);
+    const positionName = customPosition.val();
+
+    requestPosition(selectedCategoryId, positionName);
+}
+
+function getSelectedCategoryId() {
+    return categoryOptionForm.find('option:selected').val();
 }
 
 function createOption(response) {
@@ -84,6 +89,31 @@ function requestCategory(categoryName) {
 
             positionOptionForm.empty();
             categoryOptionToast.hide();
+
+            loadPosition(data);
+        },
+        error: function(error) {
+            console.log(error);
         }
     });
 }
+
+//Position 생성
+function requestPosition(categoryId, positionName) {
+    $.ajax({
+        type: 'POST',
+        url: `/api/category/${categoryId}/position`,
+        data: JSON.stringify({"name": positionName}),
+        contentType: 'application/json',
+        success: function(data) {
+            const optionElement = createOption({"id": data, "name": positionName});
+            positionOptionForm.append(optionElement);
+            customPosition.val('');
+            positionOptionToast.hide();
+        },
+        error: function(error) {
+            console.log(error);
+        }
+    });
+}
+

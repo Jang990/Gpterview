@@ -3,7 +3,9 @@ package com.mock.interview.category.application;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.infra.JobPositionRepository;
+import com.mock.interview.category.presentation.dto.request.NewCategoryRequest;
 import com.mock.interview.category.presentation.dto.response.CategoryDetailResponse;
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,15 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class JobPositionService {
+    private final JobCategoryRepository categoryRepository;
     private final JobPositionRepository positionRepository;
+
+    @Transactional
+    public Long save(long categoryId, NewCategoryRequest request) {
+        JobCategory category = categoryRepository.findById(categoryId)
+                .orElseThrow(JobCategoryNotFoundException::new);
+        return positionRepository.save(JobPosition.create(request.getName(), category)).getId();
+    }
 
     public List<CategoryResponse> findChildPositions(long categoryId) {
         List<JobPosition> allPosition = positionRepository.findChildPositions(categoryId);

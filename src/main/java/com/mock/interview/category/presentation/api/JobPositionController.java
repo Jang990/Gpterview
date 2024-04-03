@@ -1,14 +1,12 @@
 package com.mock.interview.category.presentation.api;
 
 import com.mock.interview.category.application.JobPositionService;
+import com.mock.interview.category.presentation.dto.request.NewCategoryRequest;
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +31,13 @@ public class JobPositionController {
     @GetMapping("/position/{positionId}")
     public ResponseEntity<CategoryResponse> getPosition(@PathVariable(name = "positionId") long positionId) {
         return ResponseEntity.ok(service.findPosition(positionId));
+    }
+
+    @PostMapping("/category/{categoryId}/position")
+    public ResponseEntity<Long> save(
+            @PathVariable(name = "categoryId") long categoryId,
+            @RequestBody NewCategoryRequest request
+    ) {
+        return ResponseEntity.ok(service.save(categoryId, request));
     }
 }
