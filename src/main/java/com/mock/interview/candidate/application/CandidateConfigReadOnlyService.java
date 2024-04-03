@@ -10,7 +10,7 @@ import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.candidate.domain.model.ProfileTechLink;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
-import com.mock.interview.tech.domain.model.TechnicalSubjects;
+import com.mock.interview.tech.presentation.dto.TechViewDto;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,16 +58,16 @@ public class CandidateConfigReadOnlyService {
         return new InterviewCandidateForm(
                 new CandidateProfileForm(
                         category.getId(), position.getId(),
-                        convertStringList(candidateConfig.getTechLink()),
+                        convertList(candidateConfig.getTechLink()),
                         candidateConfig.getExperienceContent().isEmpty() ? null : candidateConfig.getExperienceContent()),
                 new InterviewConfigDto(candidateConfig.getType(), candidateConfig.getDurationMinutes())
         );
     }
 
-    private List<String> convertStringList(List<ProfileTechLink> links) {
+    private List<TechViewDto> convertList(List<ProfileTechLink> links) {
         // TODO: 나중에 Convert로 통합 필요
         return links.stream()
                 .map(ProfileTechLink::getTechnicalSubjects)
-                .map(TechnicalSubjects::getName).toList();
+                .map(tech -> new TechViewDto(tech.getId(), tech.getName())).toList();
     }
 }

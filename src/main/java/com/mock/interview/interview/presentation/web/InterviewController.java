@@ -12,6 +12,7 @@ import com.mock.interview.interviewconversationpair.presentation.dto.InterviewCo
 import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
 import com.mock.interview.interviewquestion.application.QuestionRecommendationService;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
+import com.mock.interview.tech.presentation.dto.TechViewDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,8 +48,10 @@ public class InterviewController {
             Model model
     ) {
         InterviewCandidateForm interviewCandidateForm = new InterviewCandidateForm(profile, interviewDetails);
-        List<Long> relationalTech = technicalSubjectsService.saveTechIfNotExist(profile.getSkills());
-        long candidateConfigId = candidateConfigService.create(interviewCandidateForm, loginId, relationalTech);
+        List<Long> relatedTechIds = profile.getTech().stream()
+                .map(TechViewDto::getId).toList();
+        long candidateConfigId = candidateConfigService
+                .create(interviewCandidateForm, loginId, relatedTechIds);
 
         InterviewStartingDto interviewStartingDto = interviewService.create(loginId, candidateConfigId);
         model.addAttribute("lastConversationPair", interviewStartingDto.getPair());

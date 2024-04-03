@@ -57,17 +57,9 @@
                     <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(selectedCategoryId=*{categoryId}, selectedPositionId=*{positionId},categoryList=${categoryList},positionList=${positionList})}">
                         분야, 직무 카테고리 선택 구역
                     </div>
-
-                    <div class="mb-3"th:replace="~{fragments/setting/tech :: fragment-tech(tech=*{skills})}">관련기술 영역</div>
-                    <div class="mb-5 col">
-                        <div for="skills" class="form-floating">
-<!--                            <th:block th:text="*{skills}"></th:block>-->
-                            <textarea class="form-control" placeholder="여기에 적어주세요." name="skills" id="skills" required><th:block th:each="skill, skillStat : *{skills}"><th:block th:text="${skill}"></th:block><th:block th:unless="${skillStat.last}">,</th:block></th:block></textarea>
-                            <label>보유 기술 정보 - 띄어쓰기로 구분</label>
-                        </div>
-                        <div class="mt-2">
-                            <a class="link-dark" href="#">기술 정보 예시보기</a>
-                        </div>
+                    <div class="my-3 row">
+                        <div class="mb-3"th:replace="~{fragments/setting/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
+                        <script th:src="@{/js/CategoryRelatedTech.js}" href="../js/CategoryRelatedTech.js"></script>
                     </div>
 
                     <!-- 프로젝트 경험을 동적으로 추가할 수 있어야 함.  -->

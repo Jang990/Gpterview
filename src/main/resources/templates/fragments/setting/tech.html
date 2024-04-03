@@ -5,10 +5,10 @@
         var tagify;
         $(document).ready(function() {
             var inputElem = document.querySelector('input[name=tech]');
-            var tagify = new Tagify(inputElem);
+            tagify = new Tagify(inputElem);
             tagify.addTags([[${tech}]]);
         });
     </script>
-    <input name="tech" id="tech" placeholder="보유 기술을 추가해주세요.">
+    <input name="tech" id="tech" placeholder="기술 추가 입력 후 'Enter'">
 </div>
 </html>
