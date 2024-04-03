@@ -29,7 +29,7 @@
                                         <h4> 질문 추가하기 </h4>
                                     </div>
                                     <form action="/question" method="post">
-                                        <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(selectedCategoryId=${question.categoryId},selectedPositionId=${question.positionId},categoryList=${categoryList},positionList=${positionList})}">분야, 직무 카테고리 선택 구역</div>
+                                        <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=${question.categoryId},selectedPositionId=${question.positionId},categoryList=${categoryList},positionList=${positionList})}">분야, 직무 카테고리 선택 구역</div>
                                         <div class="mb-3 row">
                                             <div class="d-flex justify-content-start">
                                                 <label class="me-3 col-form-label">질문타입</label>
@@ -45,7 +45,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="mb-3"th:replace="~{fragments/setting/tech :: fragment-tech(tech=${question.tech})}">관련기술 영역</div>
+                                        <div class="mb-3"th:replace="~{fragments/form/tech :: fragment-tech(tech=${question.tech})}">관련기술 영역</div>
                                         <div class="mb-3"th:text="${question.content}"></div>
                                         <div class="mb-3">
                                             <textarea class="form-control" placeholder="질문 내용을 적어주세요." id="content" name="content" style="height: 100px"></textarea>
