@@ -1,4 +1,3 @@
-let beforeRelatedTechIds = [];
 $(function(){
     categoryOptionForm.change(function() {
       loadRelatedTech(this.value);
@@ -6,12 +5,12 @@ $(function(){
 });
 
 function loadRelatedTech(categoryId) {
+    tagify.removeAllTags();
     $.get(`/api/job/category/${categoryId}/tech`, function(relatedTech) {
+        let tags = [];
         $.each(relatedTech, function(index, tech) {
-            tagify.addTags({"value": tech.id, "name": tech.name});
-            tagify.removeTag(beforeRelatedTechIds);
-            beforeRelatedTechIds.push(tech.id);
+            tags.push({"value": tech.name, "id": tech.id});
         });
+        tagify.addTags(tags);
     });
-    console.log(beforeRelatedTechIds);
 }
