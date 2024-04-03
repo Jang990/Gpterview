@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <th:block th:fragment="fragment-candidate-experience(experiences)">
+  <th:block th:fragment="fragment-experience(experiences)">
     <script th:src="@{/js/experienceForm.js}" src="../js/experienceForm.js"></script>
     <div id="experienceForm">
       <div th:if="${#lists.isEmpty(experiences)}">
