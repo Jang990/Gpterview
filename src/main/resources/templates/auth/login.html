@@ -8,8 +8,35 @@
     <div class="d-flex justify-content-center my-5 min-vh-100">
       <div>
         <h2 class="mb-4">로그인</h2>
-        <form th:replace="~{fragments/auth/login-form :: fragment-login-form}">로그인 컴포넌트</form>
-      </div>
+
+        <form action="/login" method="POST" style="width: 400px" th:object="${account}">
+          <div th:replace="~{fragments/form/account :: fragment-account}">로그인 계정 정보 컴포넌트</div>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary btn-block mb-4 col-lg-12">로그인</button>
+
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <!--<div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+                <label class="form-check-label" for="form2Example31"> 기억하기 </label>
+              </div>-->
+              <a class="link-dark" href="/auth/sign-up">회원가입</a>
+            </div>
+
+            <div class="col">
+              <!-- Simple link -->
+              <a class="link-dark" href="#!">비밀번호 찾기</a>
+            </div>
+          </div>
+        </form>
+
+        <hr>
+
+        <!-- Register buttons -->
+        <div th:replace="~{fragments/auth/oauth-selector :: fragment-oauth-selector}">oauth 컴포넌트</div>
+
     </div>
   </section>
 </body>

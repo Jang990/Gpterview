@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="fragment-sign-up-form" style="width: 400px" method="post" action="/auth/sign-up" th:object="${account}">
+  <div th:fragment="fragment-account" style="width: 400px" th:object="${account}">
     <div class="form-floating mb-4">
       <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="ID"/>
       <label class="form-label" for="username">ID</label>
@@ -12,7 +12,5 @@
       <label class="form-label" for="password">Password</label>
       <p th:errors="*{password}" class="field-error">Incorrect data</p>
     </div>
-
-    <input type="submit" class="btn btn-primary btn-block mb-4 col-lg-12" value="회원가입">
   </div>
 </html>

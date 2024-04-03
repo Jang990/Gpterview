@@ -13,7 +13,8 @@
         <div th:replace="~{fragments/setting/job-category-select :: fragment-job-category-select(selectedCategoryId=${null}, selectedPositionId=${null},categoryList=${categoryList},positionList=${positionList})}">
           카테고리 선택
         </div>
-        <div th:replace="~{fragments/auth/sign-up-form :: fragment-sign-up-form}">로그인 컴포넌트</div>
+        <div th:replace="~{fragments/form/account :: fragment-account}">로그인 계정 정보 컴포넌트</div>
+        <input type="submit" class="btn btn-primary btn-block mb-4 col-lg-12" value="회원가입">
       </form>
     </div>
   </div>
