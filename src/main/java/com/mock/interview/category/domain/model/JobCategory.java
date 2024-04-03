@@ -23,13 +23,7 @@ public class JobCategory {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade(CascadeType.PERSIST)
-    @JoinColumn(name = "job_parent_id")
-    private JobCategory parent;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    @Cascade(CascadeType.ALL)
     private List<JobPosition> relatedPosition;
 
     /**
@@ -43,33 +37,8 @@ public class JobCategory {
         return category;
     }
 
-    /**
-     * 필드 생성 - 백엔드, 프론트엔드, 안드로이드 등등
-     * @param name 백엔드, 프론트엔드, 안드로이드
-     * @param parent IT, 기획, 인사
-     * @return
-     */
-    public static JobCategory createFieldCategory(String name, JobCategory parent) {
-        if (parent == null || parent.isField()) {
-            throw new MissingRequiredCategoryException();
-        }
-
-        JobCategory category = new JobCategory();
-        insertName(category, name);
-        category.parent = parent;
-        return category;
-    }
-
     /** Name은 항상 대문자로 저장 */
     private static void insertName(JobCategory category, String name) {
         category.name = name.toUpperCase();
-    }
-
-    public boolean isCategory() {
-        return parent == null;
-    }
-
-    public boolean isField() {
-        return parent != null;
     }
 }

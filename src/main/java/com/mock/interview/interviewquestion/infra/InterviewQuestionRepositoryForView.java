@@ -2,8 +2,6 @@ package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
-import com.mock.interview.category.domain.model.QJobCategory;
-import com.mock.interview.category.domain.model.QJobPosition;
 import com.mock.interview.category.presentation.dto.JobCategoryView;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
@@ -34,11 +32,9 @@ public class InterviewQuestionRepositoryForView {
     private final int TOP_3 = 3;
 
     public QuestionOverview findQuestion(Long loginIdCond, Long questionIdCond) {
-        QJobCategory field = new QJobCategory("field");
-        QJobCategory category = new QJobCategory("category");
         InterviewQuestion question = query.selectFrom(interviewQuestion)
-                .leftJoin(interviewQuestion.category, field)
-                .leftJoin(interviewQuestion.category.parent, category)
+                .leftJoin(interviewQuestion.category, jobCategory)
+                .leftJoin(interviewQuestion.position, jobPosition)
                 .where(interviewQuestion.id.eq(questionIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
                 .fetchOne();
 
@@ -108,8 +104,7 @@ public class InterviewQuestionRepositoryForView {
     }
 
     private BooleanExpression jobCategoryEq(String jobCategoryCond) {
-        return jobCategoryCond == null ? null : interviewQuestion.category.name.eq(jobCategoryCond)
-                .or(interviewQuestion.category.parent.name.eq(jobCategoryCond));
+        return jobCategoryCond == null ? null : interviewQuestion.category.name.eq(jobCategoryCond);
     }
 
     private BooleanExpression createdByEq(String createdBy) {
