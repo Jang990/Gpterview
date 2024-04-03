@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div for="tech" class="form-floating" th:fragment="fragment-tech(tech)">
+<div th:fragment="fragment-tech(tech)" class="form-floating">
     <script th:inline="javascript">
         var tagify;
         $(document).ready(function() {
@@ -9,6 +9,9 @@
             tagify.addTags([[${tech}]]);
         });
     </script>
-    <input name="tech" id="tech" placeholder="기술 추가 입력 후 'Enter'">
+    <div>
+        <label class="col-form-label me-2">관련기술</label>
+        <input name="tech" id="tech" placeholder="기술 입력 후 'Enter'">
+    </div>
 </div>
 </html>
