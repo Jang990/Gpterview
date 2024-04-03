@@ -33,7 +33,7 @@ public class QuestionSavingService {
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(techIdList);
         InterviewQuestion question = InterviewQuestion.create(
                 interviewQuestionRepository, form.getContent(), users,
-                QuestionConvertor.convert(form.getType()), users.getUsername()
+                QuestionConvertor.convert(form.getQuestionType()), users.getUsername()
         );
         JobConnectionHelper.connect(jobCategoryRepository, jobPositionRepository, question, form.getCategoryId(), form.getPositionId());
         question.linkTech(techList);

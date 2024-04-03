@@ -34,9 +34,9 @@
                                             <div class="d-flex justify-content-start">
                                                 <label class="me-3 col-form-label">질문타입</label>
                                                 <div class="me-3">
-                                                    <select id="questionType" name="type" class="form-select" aria-label="Select Type">
+                                                    <select id="questionType" name="questionType" class="form-select" aria-label="Select Type">
                                                         <option th:each="questionType, questionTypeStat : ${T(com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView).values()}"
-                                                                th:value="${questionType}" th:selected="(questionTypeStat.count == 1 and ${questionType} == null) or ${questionType} == ${question.type}"
+                                                                th:value="${questionType}" th:selected="(questionTypeStat.count == 1 and ${questionType} == null) or ${questionType} == ${question.questionType}"
                                                                 th:text="${questionType.name}">
                                                             질문 타입
                                                         </option>

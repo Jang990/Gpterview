@@ -16,7 +16,7 @@ public class QuestionForm {
     @Setter(AccessLevel.NONE)
     private JobCategorySelectedIds categories = new JobCategorySelectedIds();
     private List<String> tech;
-    private QuestionTypeForView type;
+    private QuestionTypeForView questionType;
     private String content;
 
     public void setTech(String tech) {
