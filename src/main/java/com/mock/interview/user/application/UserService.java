@@ -3,6 +3,7 @@ package com.mock.interview.user.application;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
 import com.mock.interview.user.presentation.dto.AccountDto;
+import com.mock.interview.user.presentation.dto.AccountForm;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,8 +16,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public void create(AccountDto accountDto) {
-        Users users = Users.createUser(accountDto.getUsername(), passwordEncoder.encode(accountDto.getPassword()));
+    public void create(AccountForm accountForm) {
+        Users users = Users.createUser(accountForm.getUsername(), passwordEncoder.encode(accountForm.getPassword()));
         userRepository.save(users);
     }
 }

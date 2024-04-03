@@ -26,9 +26,9 @@ public class AuthenticationProviderForLoginTest implements AuthenticationProvide
         String password = (String) authentication.getCredentials();
 
         // 테스트용.
-        if (username.equals("test") && password.equals("test")) {
-            return new UsernamePasswordAuthenticationToken(Users.createUser(username, password), null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
-        }
+//        if (username.equals("test") && password.equals("test")) {
+//            return new UsernamePasswordAuthenticationToken(Users.createUser(username, password), null, List.of(new SimpleGrantedAuthority("ROLE_USER")));
+//        }
 
         UsersContext usersContext = (UsersContext) userDetailsService.loadUserByUsername(authentication.getName());
         if(!passwordEncoder.matches(password, usersContext.getPassword()))

@@ -1,8 +1,7 @@
 package com.mock.interview.interviewquestion.presentation.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
+import lombok.*;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -13,8 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionForm {
-    private Long categoryId; // IT
-    private Long positionId; // BE, FE, 디자인
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private JobCategorySelectedIds categories = new JobCategorySelectedIds();
     private List<String> tech;
     private QuestionTypeForView type;
     private String content;
@@ -27,4 +27,10 @@ public class QuestionForm {
                     .map(String::trim).map(String::toUpperCase)
                     .filter(StringUtils::hasText).toList();
     }
+
+    public Long getCategoryId() {return categories.getCategoryId();}
+    public Long getPositionId() {return categories.getPositionId();}
+
+    public void setCategoryId(Long categoryId) {categories.setCategoryId(categoryId);}
+    public void setPositionId(Long positionId) {this.categories.setPositionId(positionId);}
 }

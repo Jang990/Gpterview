@@ -4,6 +4,7 @@ import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.category.infra.JobPositionRepository;
+import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;

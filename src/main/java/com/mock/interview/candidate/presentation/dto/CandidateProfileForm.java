@@ -1,13 +1,10 @@
 package com.mock.interview.candidate.presentation.dto;
 
+import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,8 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CandidateProfileForm {
-    private Long categoryId; // IT
-    private Long positionId; // BE, FE, 디자인
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private JobCategorySelectedIds categories = new JobCategorySelectedIds();
     private List<TechViewDto> tech;
     private List<@NotBlank String> experiences;
 //    private int yearsOfExperience;   // 경력 연차
@@ -28,4 +26,9 @@ public class CandidateProfileForm {
         System.out.println(techString);
         this.tech = TechViewDto.convert(techString);
     }
+
+    public Long getCategoryId() {return categories.getCategoryId();}
+    public Long getPositionId() {return categories.getPositionId();}
+    public void setCategoryId(Long categoryId) {categories.setCategoryId(categoryId);}
+    public void setPositionId(Long positionId) {this.categories.setPositionId(positionId);}
 }

@@ -6,12 +6,11 @@
       <div class="d-flex justify-content-start">
         <label class="col-form-label me-3">분야</label>
         <div class="me-3">
-          <select name="categoryId" id="categoryId" class="form-select" aria-label="Select category">
-            <option th:if="${selectedCategoryId != null}" disabled>분야 선택</option>
+          <select id="categoryId" name="categoryId" class="form-select" aria-label="Select category">
+            <option th:if="${categoryId != null}" disabled>분야 선택</option>
             <option th:each="category : ${categoryList}"
                     th:value="${category.id}" th:text="${category.name}"
                     th:selected="${category.id == selectedCategoryId}">IT (프로그래밍)</option>
-            <option disabled>추가 예정</option>
           </select>
         </div>
         <div class="me-3">
@@ -41,9 +40,9 @@
 
     <div class="mb-3 row">
       <div class="d-flex justify-content-start">
-        <label for="positionId" class="col-form-label me-3">직군</label>
+        <label class="col-form-label me-3">직군</label>
         <div class="me-3">
-          <select name="positionId" id="positionId" class="form-select" aria-label="Select position" required>
+          <select id="positionId" name="positionId" class="form-select" aria-label="Select position">
             <option disabled>직군을 선택해주세요.</option>
             <option th:each="position : ${positionList}"
                     th:value="${position.id}" th:text="${position.name}"

@@ -3,6 +3,7 @@ package com.mock.interview.user.presentation.web;
 import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
+import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
@@ -12,6 +13,7 @@ import com.mock.interview.review.presentation.dto.ReviewIndexPageFragment;
 import com.mock.interview.user.application.UserService;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.presentation.dto.AccountDto;
+import com.mock.interview.user.presentation.dto.AccountForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -45,7 +47,7 @@ public class UserController {
 
     @GetMapping("auth/sign-up")
     public String signUpPage(Model model) {
-        model.addAttribute("account", new AccountDto());
+        model.addAttribute("account", new AccountForm());
         CategoryViewer.setCategoriesView(model, categoryService, positionService);
         return "/auth/sign-up";
     }
@@ -89,11 +91,11 @@ public class UserController {
     }
 
     @PostMapping("auth/sign-up")
-    public String signUp(@Valid @ModelAttribute("account") AccountDto accountDto, BindingResult bindingResult) {
+    public String signUp(@Valid @ModelAttribute("account") AccountForm accountForm, BindingResult bindingResult) {
         if(bindingResult.hasErrors())
             return "auth/sign-up";
 
-        userService.create(accountDto);
+        userService.create(accountForm);
         return "redirect:/auth/login";
     }
 }
