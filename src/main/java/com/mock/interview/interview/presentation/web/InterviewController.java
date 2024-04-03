@@ -3,6 +3,8 @@ package com.mock.interview.interview.presentation.web;
 import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
+import com.mock.interview.category.presentation.CategoryValidator;
+import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.candidate.application.CandidateConfigService;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
@@ -21,6 +23,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,8 +49,9 @@ public class InterviewController {
             @Valid CandidateProfileForm profile,
             InterviewConfigDto interviewDetails,
             @AuthenticationPrincipal(expression = "id") Long loginId,
-            Model model
-    ) {
+            Model model, BindingResult bindingResult
+    ) throws BindException {
+        CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(profile.getCategoryId(), profile.getPositionId()));
         InterviewCandidateForm interviewCandidateForm = new InterviewCandidateForm(profile, interviewDetails);
         List<Long> relatedTechIds = profile.getTech().stream()
                 .map(TechViewDto::getId).toList();

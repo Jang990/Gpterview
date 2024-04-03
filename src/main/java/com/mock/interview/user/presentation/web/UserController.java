@@ -2,6 +2,7 @@ package com.mock.interview.user.presentation.web;
 
 import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
+import com.mock.interview.category.presentation.CategoryValidator;
 import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -85,11 +87,13 @@ public class UserController {
     }
 
     @PostMapping("auth/sign-up")
-    public String signUp(@Valid @ModelAttribute("account") AccountForm accountForm, BindingResult bindingResult) {
-        if(bindingResult.hasErrors())
-            return "auth/sign-up";
+    public String signUp(
+            @Valid @ModelAttribute("account") AccountForm form,
+            BindingResult bindingResult
+    ) throws BindException {
+        CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
 
-        userService.create(accountForm);
+        userService.create(form);
         return "redirect:/auth/login";
     }
 }
