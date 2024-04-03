@@ -1,5 +1,9 @@
 package com.mock.interview.user.presentation.web;
 
+import com.mock.interview.category.application.JobCategoryService;
+import com.mock.interview.category.application.JobPositionService;
+import com.mock.interview.category.presentation.CategoryViewer;
+import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
@@ -29,6 +33,8 @@ public class UserController {
 
     private final UserService userService;
     private final InterviewService interviewService;
+    private final JobCategoryService categoryService;
+    private final JobPositionService positionService;
     private final InterviewRepositoryForView interviewRepositoryForView;
 
     @GetMapping("auth/login")
@@ -40,6 +46,7 @@ public class UserController {
     @GetMapping("auth/sign-up")
     public String signUpPage(Model model) {
         model.addAttribute("account", new AccountDto());
+        CategoryViewer.setCategoriesView(model, categoryService, positionService);
         return "/auth/sign-up";
     }
 

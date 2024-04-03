@@ -7,6 +7,7 @@ import com.mock.interview.candidate.presentation.dto.InterviewCandidateOverview;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewCandidateForm;
 import com.mock.interview.category.application.JobPositionService;
+import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,7 @@ public class CandidateController {
 //            @PathVariable(required = false, value = "candidateProfileId") Optional<Long> candidateProfileId
     ) {
         model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("categoryList", categoryService.findAllCategory());
+        CategoryViewer.setCategoriesView(model, categoryService, positionService);
         model.addAttribute("interviewDetails", new InterviewConfigDto());
         model.addAttribute("candidateConfig", new CandidateProfileForm());
         return "interview/interview-candidate-form";
@@ -55,8 +56,7 @@ public class CandidateController {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("interviewDetails", interviewConfig.getInterviewDetails());
         model.addAttribute("candidateConfig", profile);
-        model.addAttribute("categoryList", categoryService.findAllCategory());
-        model.addAttribute("positionList", positionService.findChildPositions(profile.getCategoryId()));
+        CategoryViewer.setCategoriesView(model, categoryService, positionService, profile.getCategoryId());
         return "interview/interview-candidate-form";
     }
 }

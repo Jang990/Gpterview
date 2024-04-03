@@ -1,6 +1,8 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
 import com.mock.interview.category.application.JobCategoryService;
+import com.mock.interview.category.application.JobPositionService;
+import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.interviewquestion.application.QuestionSavingService;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
@@ -21,10 +23,11 @@ public class InterviewQuestionWebPostController {
     private final QuestionSavingService questionSavingService;
     private final TechnicalSubjectsService technicalSubjectsService;
     private final JobCategoryService categoryService;
+    private final JobPositionService positionService;
 
     @GetMapping("question/form")
     public String questionSavePage(Model model) {
-        model.addAttribute("categoryList", categoryService.findAllCategory());
+        CategoryViewer.setCategoriesView(model, categoryService, positionService);
         model.addAttribute("question", new QuestionForm());
         model.addAttribute("headerActiveTap", "interview-question");
         return "/question/question-form";
