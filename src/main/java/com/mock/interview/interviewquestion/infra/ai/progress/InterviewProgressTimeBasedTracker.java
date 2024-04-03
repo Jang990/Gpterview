@@ -27,7 +27,7 @@ public class InterviewProgressTimeBasedTracker {
         InterviewType interviewType = config.interviewType();
         LocalDateTime now = LocalDateTime.now();
 
-        InterviewPhase interviewPhase = computePhase(now, interviewType, config);
+        InterviewPhase interviewPhase = getCurrentPhase(now, interviewType, config);
         double progress = computePhaseProgress(now, interviewType, config);
 
         return new InterviewProgress(interviewPhase, progress);
@@ -51,9 +51,9 @@ public class InterviewProgressTimeBasedTracker {
     }
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
-    private InterviewPhase computePhase(LocalDateTime now, InterviewType type, InterviewConfig config) {
+    private InterviewPhase getCurrentPhase(LocalDateTime now, InterviewType type, InterviewConfig config) {
         InterviewPhase[] phaseOrders = getPhase(type);
-        if(phaseOrders.length == 1)
+        if(isSinglePhase(phaseOrders))
             return phaseOrders[0];
 
         long eachPhaseSecond = getEachPhaseSecond(type, config);
@@ -65,10 +65,17 @@ public class InterviewProgressTimeBasedTracker {
         return lastPhase(phaseOrders);
     }
 
-    /** 각각의 스테이지에 부여된 시간을 계산 */
+    private static boolean isSinglePhase(InterviewPhase[] phaseOrders) {
+        return phaseOrders.length == 1;
+    }
+
+    /** 면접_총_시간 / 면접_페이즈_수 */
     private long getEachPhaseSecond(InterviewType type, InterviewConfig config) {
-        int numberOfPhase = getNumberOfPhase(type);
         long interviewDurationSecond = getSecondDifference(config.startTime(), config.expiredTime());
+        if(interviewDurationSecond <= 0)
+            throw new IllegalArgumentException("면접 시간이 0보다 작음"); // 비즈니스 로직상은 불가능 - DB 직접 변경 시 발생 가능
+
+        int numberOfPhase = getNumberOfPhase(type);
         return interviewDurationSecond / numberOfPhase;
     }
 
@@ -86,15 +93,11 @@ public class InterviewProgressTimeBasedTracker {
         return phaseOrders[phaseOrders.length - 1];
     }
 
+    /** base - target (Minute 단위) */
     private long getSecondDifference(LocalDateTime base, LocalDateTime target) {
         long diffSecond = ChronoUnit.SECONDS.between(base, target);
-        validMinusSecond(diffSecond);
+        if(diffSecond < 0)
+            throw new IllegalArgumentException("base < target");
         return diffSecond;
-    }
-
-    private void validMinusSecond(long second) {
-        // 비즈니스 로직상 해당 예외가 발생할 수 없음 - DB를 직접 수정할 때 발생할 수 있음.
-        if(second <= 0)
-            throw new IllegalArgumentException("base가 더 크거나 같다");
     }
 }
