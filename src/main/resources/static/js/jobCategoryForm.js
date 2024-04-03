@@ -1,5 +1,6 @@
 let categoryOptionToast, categoryOptionForm, customCategory;
 let positionOptionForm, positionOptionToast, customPosition;
+const CREATE_CATEGORY_API = '/api/category';
 
 $(function(){
       // 화면 로딩 시
@@ -24,14 +25,8 @@ function showCategoryToast() {
 }
 
 function addCategory() {
-    const optionElement = createOption(customCategory.val());
-    categoryOptionForm.children().last().before(optionElement);
-    customCategory.val('');
-
-    positionOptionForm.empty();
-    positionOptionForm.append(optionElement);
-
-    categoryOptionToast.hide();
+    const categoryName = customCategory.val();
+    const response = requestCategory(categoryName);
 }
 
 function showPositionToast() {
@@ -45,9 +40,9 @@ function addPosition() {
     positionOptionToast.hide();
 }
 
-function createOption(value) {
+function createOption(response) {
     // value와 text를 분리할 것.
-    return `<option value="${value}" selected>${value}</option>`;
+    return `<option value="${response.id}" selected>${response.name}</option>`;
 }
 
 // 밑은 loading 관련 부분
@@ -75,3 +70,20 @@ function changePositionOptions(positions) {
     });
 }
 
+// 카테고리 생성
+function requestCategory(categoryName) {
+    $.ajax({
+        type: 'POST',
+        url: CREATE_CATEGORY_API,
+        data: JSON.stringify({"name": categoryName}),
+        contentType: 'application/json',
+        success: function(data) {
+            const optionElement = createOption({"id": data, "name": categoryName});
+            categoryOptionForm.children().last().before(optionElement);
+            customCategory.val('');
+
+            positionOptionForm.empty();
+            categoryOptionToast.hide();
+        }
+    });
+}
