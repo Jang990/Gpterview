@@ -34,7 +34,7 @@ public class CandidateController {
         CategoryViewer.setCategoriesView(model, categoryService, positionService);
         model.addAttribute("interviewDetails", new InterviewConfigDto());
         model.addAttribute("candidateConfig", new CandidateProfileForm());
-        return "interview/interview-candidate-form";
+        return "candidate/form";
     }
 
     @GetMapping("interview/candidate")
@@ -57,6 +57,6 @@ public class CandidateController {
         model.addAttribute("interviewDetails", interviewConfig.getInterviewDetails());
         model.addAttribute("candidateConfig", profile);
         CategoryViewer.setCategoriesView(model, categoryService, positionService, profile.getCategoryId());
-        return "interview/interview-candidate-form";
+        return "candidate/form";
     }
 }

@@ -27,7 +27,7 @@ public class InterviewQuestionWebController {
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, pageable);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("questionPage", overviewPage);
-        return "/question/question-list";
+        return "/question/list";
     }
 
     @GetMapping("question/{questionId}")
@@ -45,6 +45,6 @@ public class InterviewQuestionWebController {
         model.addAttribute("question", question);
         model.addAttribute("answerTop3", answerTop3);
         model.addAttribute("childQuestion", childQuestionTop3);
-        return "/question/question-detail";
+        return "/question/detail";
     }
 }

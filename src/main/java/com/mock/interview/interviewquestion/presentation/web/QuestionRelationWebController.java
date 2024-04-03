@@ -25,7 +25,7 @@ public class QuestionRelationWebController {
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(questionId, null, null, pageable);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("questionPage", overviewPage);
-        return "/question/question-list";
+        return "/question/list";
     }
 
     @GetMapping("question/form/parent")
@@ -34,6 +34,6 @@ public class QuestionRelationWebController {
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, pageable);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("questionPage", overviewPage);
-        return "/question/question-list";
+        return "/question/list";
     }
 }

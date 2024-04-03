@@ -81,7 +81,7 @@ public class InterviewController {
         Slice<ConversationContentDto> interviewConversations = conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25));
         model.addAttribute("messageHistory", interviewConversations);
         if (!interviewConversations.hasContent()) {
-            return "interview/interview-start";
+            return "interview/start";
         }
 
         List<ConversationContentDto> content = interviewConversations.getContent();
@@ -91,6 +91,6 @@ public class InterviewController {
             model.addAttribute("recommendationQuestions",
                     questionRecommendationService.findRecommendation(interviewId, lastConversationPair.getId()));
         }
-        return "interview/interview-start";
+        return "interview/start";
     }
 }

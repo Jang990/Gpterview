@@ -30,7 +30,7 @@ public class InterviewQuestionWebPostController {
         CategoryViewer.setCategoriesView(model, categoryService, positionService);
         model.addAttribute("question", new QuestionForm());
         model.addAttribute("headerActiveTap", "interview-question");
-        return "/question/question-form";
+        return "/question/form";
     }
     @PostMapping("question")
     public String save(@AuthenticationPrincipal(expression = "id") Long loginId, QuestionForm form) {
