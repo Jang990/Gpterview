@@ -87,13 +87,14 @@ public class InterviewProgressTimeBasedTracker {
     }
 
     private long getSecondDifference(LocalDateTime base, LocalDateTime target) {
-        long result = ChronoUnit.SECONDS.between(base, target); // base가 더 작아야 +
-        validMinusSecond(result);
-        return result;
+        long diffSecond = ChronoUnit.SECONDS.between(base, target);
+        validMinusSecond(diffSecond);
+        return diffSecond;
     }
 
     private void validMinusSecond(long second) {
-        if(second < 0)
-            throw new IllegalArgumentException();
+        // 비즈니스 로직상 해당 예외가 발생할 수 없음 - DB를 직접 수정할 때 발생할 수 있음.
+        if(second <= 0)
+            throw new IllegalArgumentException("base가 더 크거나 같다");
     }
 }
