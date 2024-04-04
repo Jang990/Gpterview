@@ -8,6 +8,7 @@ import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.interviewquestion.application.QuestionSavingService;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
+import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InterviewQuestionWebPostController {
     private final QuestionSavingService questionSavingService;
-    private final TechnicalSubjectsService technicalSubjectsService;
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
 
@@ -42,8 +42,8 @@ public class InterviewQuestionWebPostController {
             QuestionForm form, BindingResult bindingResult
     ) throws BindException {
         CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
-        List<Long> relationalTech = technicalSubjectsService.saveTechIfNotExist(form.getTech());
-        long savedId = questionSavingService.save(loginId, form, relationalTech);
-        return "redirect:/question";
+        List<Long> relatedTechIds = form.getTech().stream()
+                .map(TechViewDto::getId).toList();
+        return "redirect:/question/" + questionSavingService.save(loginId, form, relatedTechIds);
     }
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class TechViewDto {
     }
 
     public static List<TechViewDto> convert(String techString) {
+        if(techString == null || techString.isBlank())
+            return new ArrayList<>();
+
         try {
             return Arrays.asList(GlobalConst.om.readValue(techString.getBytes(), TechViewDto[].class));
         } catch (IOException e) {

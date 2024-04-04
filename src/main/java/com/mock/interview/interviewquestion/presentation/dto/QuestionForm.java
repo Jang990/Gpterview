@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.presentation.dto;
 
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
+import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.*;
 import org.springframework.util.StringUtils;
 
@@ -15,17 +16,12 @@ public class QuestionForm {
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     private JobCategorySelectedIds categories = new JobCategorySelectedIds();
-    private List<String> tech;
+    private List<TechViewDto> tech;
     private QuestionTypeForView questionType;
     private String content;
 
-    public void setTech(String tech) {
-        if(tech == null || tech.isBlank())
-            this.tech = new ArrayList<>();
-        else
-            this.tech = Arrays.stream(tech.split(","))
-                    .map(String::trim).map(String::toUpperCase)
-                    .filter(StringUtils::hasText).toList();
+    public void setTech(String techString) {
+        this.tech = TechViewDto.convert(techString);
     }
 
     public Long getCategoryId() {return categories.getCategoryId();}
