@@ -1,30 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <header class="p-3 text-bg-dark">
+  <header class="navbar-container border-bottom">
     <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none px-2">
-          Gpterview
-        </a>
+      <div class="d-flex flex-wrap align-items-center justify-content-between">
+        <div>
+          <ul class="nav align-items-center mb-md-0">
+            <li class="nav-link">
+              <a href="/" class="nav-link font-weight-bold text-decoration-none px-2">Gpterview</a>
+              <div class="underline"></div>
+            </li>
+            <li class="nav-link" th:classappend="${headerActiveTap == 'interview'} ? active-link : text-muted">
+              <a href="/interview/candidate/form" class="nav-link px-2 text-decoration-none">모의면접</a>
+              <div class="underline"></div>
+            </li>
+            <li class="nav-link" th:classappend="${headerActiveTap == 'history'} ? active-link : text-muted">
+              <a href="/history" class="nav-link px-2 text-decoration-none">면접기록</a>
+              <div class="underline"></div>
+            </li>
+            <li class="nav-link" th:classappend="${headerActiveTap == 'interview-question'} ? active-link : text-muted">
+              <a href="/question" class="nav-link px-2 text-decoration-none">질문목록</a>
+              <div class="underline"></div>
+            </li>
+          </ul>
+        </div>
 
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/interview/candidate/form" class="nav-link px-2" th:classappend="${headerActiveTap == 'interview'} ? text-secondary : text-white">면접시작</a></li>
-          <li><a href="/history" class="nav-link px-2" th:classappend="${headerActiveTap == 'history'} ? text-secondary : text-white">면접기록</a></li>
-          <li><a href="/tech" class="nav-link px-2" th:classappend="${headerActiveTap == 'tech'} ? text-secondary : text-white">기술준비</a></li>
-          <li><a href="/question" class="nav-link px-2" th:classappend="${headerActiveTap == 'interview-question'} ? text-secondary : text-white">질문목록</a></li>
-        </ul>
-
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-        </form>
-
-        <div class="text-end">
-          <a sec:authorize="isAnonymous()" class="btn btn-outline-light me-2" href="#">검색</a>
-          <a sec:authorize="isAnonymous()" class="btn btn-primary" href="/auth/login">로그인</a>
-          <a sec:authorize="isAnonymous()" class="btn btn-warning" href="/auth/sign-up">회원가입</a>
-          <a sec:authorize="isAuthenticated()" class="btn btn-outline-light me-2" th:href="@{/auth/{username}(username=${#authentication.principal.username})}">내 정보</a>
-          <a sec:authorize="isAuthenticated()" class="btn btn-warning" href="/logout">로그아웃</a>
+        <div>
+          <!-- https://mdbootstrap.com/docs/standard/extended/navbar-with-icons/# -->
+          <ul class="text-end">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="#">
+                <i class="fas fa-user mx-1"></i> 프로필
+              </a>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/auth/login">로그인</a></span>
+                <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/auth/sign-up">회원가입</a></span>
+                <span sec:authorize="isAuthenticated()"><a class="dropdown-item" th:href="@{/auth/{username}(username=${#authentication.principal.username})}">내 정보</a></span>
+                <span sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/logout">로그아웃</a></span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

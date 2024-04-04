@@ -7,12 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class TempController {
-    @GetMapping("tech")
-    public String loginPage(Model model) {
-        model.addAttribute("headerActiveTap", "tech");
-        return "/temp/tech";
-    }
-
     @GetMapping("history")
     public String signUpPage(Model model) {
         model.addAttribute("headerActiveTap", "history");
