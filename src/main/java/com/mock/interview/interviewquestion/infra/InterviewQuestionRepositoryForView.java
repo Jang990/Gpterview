@@ -58,12 +58,14 @@ public class InterviewQuestionRepositoryForView {
     }
 
     public Page<QuestionOverview> findOverviewList(
-            Long parentQuestionIdCond, String jobCategoryCond, String createdBy, Pageable pageable
-    ) {
+            Long parentQuestionIdCond, String categoryNameCond, String positionNameCond, String createdBy, Pageable pageable) {
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory)
                 .leftJoin(interviewQuestion.position, jobPosition)
-                .where(searchChildQuestion(parentQuestionIdCond), jobCategoryEq(jobCategoryCond), createdByEq(createdBy))
+                .where(
+                        searchChildQuestion(parentQuestionIdCond), jobCategoryEq(categoryNameCond),
+                        jobPositionEq(positionNameCond), createdByEq(createdBy)
+                )
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -73,7 +75,7 @@ public class InterviewQuestionRepositoryForView {
         JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
                 .from(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory)
-                .where(jobCategoryEq(jobCategoryCond), createdByEq(createdBy));
+                .where(jobCategoryEq(categoryNameCond), createdByEq(createdBy));
 
         // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
@@ -105,6 +107,10 @@ public class InterviewQuestionRepositoryForView {
 
     private BooleanExpression jobCategoryEq(String jobCategoryCond) {
         return jobCategoryCond == null ? null : interviewQuestion.category.name.eq(jobCategoryCond);
+    }
+
+    private BooleanExpression jobPositionEq(String jobPositionCond) {
+        return jobPositionCond == null ? null : interviewQuestion.position.name.eq(jobPositionCond);
     }
 
     private BooleanExpression createdByEq(String createdBy) {

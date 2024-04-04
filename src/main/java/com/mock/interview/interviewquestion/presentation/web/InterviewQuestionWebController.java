@@ -24,11 +24,34 @@ public class InterviewQuestionWebController {
 
     @GetMapping("question")
     public String questionListPage(Model model, @PageableDefault Pageable pageable) {
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, null, pageable);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("questionPage", overviewPage);
         return "/question/list";
     }
+
+    @GetMapping("question/category/{categoryName}")
+    public String categoryQuestionListPage(
+            @PathVariable(name = "categoryName") String categoryName,
+            Model model, @PageableDefault Pageable pageable
+    ) {
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, categoryName, null, null, pageable);
+        model.addAttribute("headerActiveTap", "interview-question");
+        model.addAttribute("questionPage", overviewPage);
+        return "/question/list";
+    }
+
+    @GetMapping("question/position/{positionName}")
+    public String positionQuestionListPage(
+            @PathVariable(name = "positionName") String positionName,
+            Model model, @PageableDefault Pageable pageable
+    ) {
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, positionName, null, pageable);
+        model.addAttribute("headerActiveTap", "interview-question");
+        model.addAttribute("questionPage", overviewPage);
+        return "/question/list";
+    }
+
 
     @GetMapping("question/{questionId}")
     public String questionDetailPage(

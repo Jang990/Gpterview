@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class JobCategoryView {
     private String category; // IT
-    private String field; // 백엔드
+    private String position; // 백엔드
 }

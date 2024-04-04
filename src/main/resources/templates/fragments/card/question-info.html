@@ -9,12 +9,13 @@
             <h6 class="fw-bold text-primary mb-1">
                 <span th:text="${question.createdBy}">작성자</span>
             </h6>
-            <p class="text-muted small mb-0">
-                <a href="#" class="text-body"> <span th:text="${question.category.category}">분야</span></a>
-                <th:block th:if="${not #strings.isEmpty(question.category.field)}">
-                    &nbsp;-&nbsp;<a href="#" class="text-body"><span th:text="${question.category.field}">영역</span></a>
+            <p class="text-muted small mb-0" th:object="${question.category}">
+                <th:block th:if="*{not #strings.isEmpty(category)}">
+                    <a th:href="@{/question/category/{categoryName}(categoryName=*{category})}" class="text-body"> <span th:text="*{category}">분야</span></a>
+                    <th:block th:if="*{not #strings.isEmpty(position)}">
+                        &nbsp;-&nbsp;<a th:href="@{/question/position/{positionName}(positionName=*{position})}" class="text-body"><span th:text="*{position}">영역</span></a>
+                    </th:block>
                 </th:block>
-
             </p>
         </div>
         <div class="ms-3">

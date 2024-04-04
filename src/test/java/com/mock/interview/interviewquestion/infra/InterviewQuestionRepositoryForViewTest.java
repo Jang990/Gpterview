@@ -26,7 +26,7 @@ class InterviewQuestionRepositoryForViewTest {
 //    @Test
     void test2() {
         Page<QuestionOverview> result = repositoryForView.findOverviewList(
-                null, "IT", null, PageRequest.of(0, 30));
+                null, "IT", null, null, PageRequest.of(0, 30));
         System.out.println(result.getTotalElements()); // 전체 요소 수 90
         System.out.println(result.getTotalPages()); // 전체 페이지 수 3 (2까지 가능)
         System.out.println(result.getNumber()); // 현재 페이지 넘버 0

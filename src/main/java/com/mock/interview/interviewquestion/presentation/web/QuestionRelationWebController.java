@@ -22,7 +22,7 @@ public class QuestionRelationWebController {
             @PathVariable(name = "questionId") long questionId,
             @PageableDefault Pageable pageable
     ) {
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(questionId, null, null, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(questionId, null, null, null, pageable);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("questionPage", overviewPage);
         return "/question/list";
@@ -31,7 +31,7 @@ public class QuestionRelationWebController {
     @GetMapping("question/form/parent")
     public String selectChildQuestionPage(Model model, @PageableDefault Pageable pageable) {
         // 임시 코드
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, null, pageable);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("questionPage", overviewPage);
         return "/question/list";
