@@ -8,19 +8,23 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 <img src="https://img.shields.io/badge/Gradle-02303A?style=plastic-square&logo=Gradle&logoColor=white"/> <img src="https://img.shields.io/badge/Session-000000?style=plastic-square&logo=Session&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=plastic-square&logo=MySQL&logoColor=white"> <img src="https://img.shields.io/badge/Redis-DC382D?style=plastic-square&logo=redis&logoColor=white">
 
 ## 👀 Demo
-![demo-1](https://github.com/Jang990/Gpterview/assets/88225377/6b19caac-8d1f-4407-a431-a8e8c7f88326)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/51cdd10b-8066-4880-96bf-0cc93febcaf6)
+
 
 <br>
 
-![demo-2](https://github.com/Jang990/Gpterview/assets/88225377/30abfc27-e364-41b8-b674-b6661289ac29)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/02901810-0598-4e5a-b7f1-c93964c0fb7c)
+
 
 <br>
 
-![demo-3](https://github.com/Jang990/Gpterview/assets/88225377/7fb66442-bf84-4141-9d25-8581a19011df)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/c14e79cb-6a21-478e-832f-e560cccbd42f)
+
 
 <br>
 
-![image](https://github.com/Jang990/Gpterview/assets/88225377/7e800bf8-8ff1-4a67-8ef8-b23a60a617dc)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/ae8b015c-73b0-4b4e-9f10-c1084b7a79b3)
+
 
 <br>
 
