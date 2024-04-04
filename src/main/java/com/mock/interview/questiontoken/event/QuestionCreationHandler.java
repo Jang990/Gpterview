@@ -30,7 +30,6 @@ public class QuestionCreationHandler {
             classes = QuestionCreatedEvent.class,
             phase = TransactionPhase.AFTER_COMMIT
     )
-    @EventListener(QuestionCreatedEvent.class)
     public void handle(QuestionCreatedEvent event) {
         InterviewQuestion question = questionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);

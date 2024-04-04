@@ -23,7 +23,6 @@ public class CandidateProfileForm {
 //    private String jobDescription; // 채용공고 정보
 
     public void setTech(String techString) {
-        System.out.println(techString);
         this.tech = TechViewDto.convert(techString);
     }
 
