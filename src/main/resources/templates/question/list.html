@@ -15,11 +15,7 @@
                     <div class="inner-main">
                         <!-- Inner main header -->
                         <div class="inner-main-header">
-                            <a th:href="@{/question/form}" class="btn btn-primary">질문 추가</a>
                             <div th:replace="~{fragments/form/question-search :: fragment-question-search}">질문 검색 폼</div>
-                            <p>
-                                <span>검색된 결과 수 : </span><span th:text="${questionPage.totalElements}"></span>
-                            </p>
                         </div>
                         <!-- /Inner main header -->
 
@@ -32,6 +28,13 @@
                                     <div class="card-body">
                                         <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=true)}">질문 정보</div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="my-3 d-flex justify-content-end align-items-center">
+                                    <div class="me-2"><span>검색된 결과 수 : </span><span class="mx-1" th:text="${questionPage.totalElements}"></span></div>
+                                    <div><a th:href="@{/question/form}" class="btn btn-sm btn-primary">질문 추가</a></div>
                                 </div>
                             </div>
 
