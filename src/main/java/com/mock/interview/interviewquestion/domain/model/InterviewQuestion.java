@@ -104,8 +104,14 @@ public class InterviewQuestion extends BaseEntity {
         if(techList == null || techList.isEmpty())
             return;
 
-        this.techLink = techList.stream()
-                .map((tech) -> QuestionTechLink.createLink(this, tech)).toList();
+        techList.forEach(this::linkTech);
+    }
+
+    public void linkTech(TechnicalSubjects tech) {
+        if(tech == null)
+            return;
+
+        techLink.add(QuestionTechLink.createLink(this, tech));
     }
 
     public void like() {
