@@ -1,5 +1,6 @@
 package com.mock.interview.interview.presentation.web;
 
+import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
@@ -67,5 +68,15 @@ public class InterviewController {
                     questionRecommendationService.findRecommendation(interviewId, lastConversationPair.getId()));
         }
         return "interview/start";
+    }
+
+    @GetMapping("/interview/form")
+    public String interviewFormPage(
+            Model model, @AuthenticationPrincipal(expression = "id") Long loginId
+    ) {
+        model.addAttribute("headerActiveTap", "interview");
+        model.addAttribute("candidateConfig", new CandidateProfileForm());
+        model.addAttribute("interviewDetails", new InterviewConfigDto());
+        return "candidate/form";
     }
 }

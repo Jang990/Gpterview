@@ -1,5 +1,6 @@
 package com.mock.interview.interview.domain.model;
 
+import com.mock.interview.user.domain.model.Experience;
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
@@ -61,6 +62,10 @@ public class Interview extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview")
     private List<InterviewTechLink> techLink = new ArrayList<>();
 
+    @Cascade(CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview")
+    private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
+
     public static Interview startInterview(
             InterviewConfigDto interviewConfig,
             Users user, JobCategory category, JobPosition position
@@ -86,6 +91,20 @@ public class Interview extends BaseTimeEntity {
             throw new IllegalArgumentException();
 
         techLink.add(InterviewTechLink.createLink(this, tech));
+    }
+
+    public void linkExperience(List<Experience> experienceList) {
+        if(experienceList == null || experienceList.isEmpty())
+            throw new IllegalArgumentException();
+
+        experienceList.forEach(this::linkExperience);
+    }
+
+    public void linkExperience(Experience experience) {
+        if(experience == null)
+            throw new IllegalArgumentException();
+
+        experienceLink.add(InterviewExperienceLink.createLink(this, experience));
     }
 
     private static void initExpiredTime(Interview interview, int durationMinutes) {

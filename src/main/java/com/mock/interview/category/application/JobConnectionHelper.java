@@ -1,6 +1,5 @@
 package com.mock.interview.category.application;
 
-import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;

@@ -16,7 +16,6 @@ public class InterviewEntityCreator {
     public static Interview createCategory(LocalDateTime expireTime) {
         Interview mock = mock(Interview.class);
         CandidateConfig mockConfig = createConfig();
-        when(mock.getCandidateConfig()).thenReturn(mockConfig);
         when(mock.getExpiredTime()).thenReturn(expireTime);
         return mock;
     }
@@ -28,7 +27,6 @@ public class InterviewEntityCreator {
         when(config.getCategory()).thenReturn(category);
         when(config.getPosition()).thenReturn(position);
         when(config.getTechSubjects()).thenReturn(List.of(TechnicalSubjects.create("test 기술")));
-        when(config.getExperienceContent()).thenReturn(List.of("test 경험"));
         when(config.getType()).thenReturn(InterviewType.COMPOSITE);
         return config;
     }

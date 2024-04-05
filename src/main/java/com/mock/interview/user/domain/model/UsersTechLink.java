@@ -17,7 +17,7 @@ public class UsersTechLink {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "interview_id")
+    @JoinColumn(name = "user_id")
     private Users users;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -2,7 +2,6 @@ package com.mock.interview.user.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
-import com.mock.interview.interview.domain.model.InterviewTechLink;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -39,12 +38,20 @@ public class Users {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
     private List<UsersTechLink> techLink = new ArrayList<>();
 
+    @Cascade(CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    private List<Experience> experiences = new ArrayList<>();
+
 
     public static Users createUser(String username, String password) {
         Users user = new Users();
         user.username = username;
         user.password = password;
         return user;
+    }
+
+    public void addExperience(Experience experience) {
+        this.experiences.add(experience);
     }
 
     public void linkTech(List<TechnicalSubjects> techList) {

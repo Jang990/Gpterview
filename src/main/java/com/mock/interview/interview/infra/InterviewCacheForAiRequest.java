@@ -1,6 +1,5 @@
 package com.mock.interview.interview.infra;
 
-import com.mock.interview.candidate.domain.model.CandidateConfig;
 import com.mock.interview.interview.domain.model.InterviewTechLink;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -47,7 +47,7 @@ public class InterviewCacheForAiRequest {
                 interview.getCategory().getName(),
                 interview.getPosition().getName(),
                 interview.getTechLink().stream().map(InterviewTechLink::getTechnicalSubjects).map(TechnicalSubjects::getName).toList(),
-                null // TODO: Interview에 경험 연결하기.
+                new ArrayList<>() // TODO: Interview에 경험 연결하기.
         );
         InterviewConfig interviewConfig = new InterviewConfig(interview.getType(), interview.getCreatedAt(), interview.getExpiredTime());
         return new InterviewInfo(profile, interviewConfig);

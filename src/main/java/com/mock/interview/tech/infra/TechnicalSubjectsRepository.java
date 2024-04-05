@@ -10,9 +10,4 @@ import java.util.List;
 public interface TechnicalSubjectsRepository extends JpaRepository<TechnicalSubjects, Long> {
     @Query("Select ts From TechnicalSubjects ts Where ts.name in :keywords")
     List<TechnicalSubjects> findTech(@Param("keywords") List<String> keywords);
-
-    @Query("Select ts From TechnicalSubjects ts " +
-            "Join ProfileTechLink pt On pt.technicalSubjects.id = ts.id " +
-            "Where pt.technicalSubjects.id = :profileId")
-    List<TechnicalSubjects> findProfileTech(@Param("profileId") long profileId);
 }

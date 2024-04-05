@@ -19,22 +19,12 @@
             -->
             <form action="/interview" method="POST">
                 <!--
-            기존에 저장한 인터뷰 설정이 있는지 확인합니다.
-            로그인을 한 사용자라면, 기존 세팅을 불러올 수 있습니다.
-            -->
+                기존에 저장한 인터뷰 설정이 있는지 확인합니다.
+                로그인을 한 사용자라면, 기존 세팅을 불러올 수 있습니다.
+                -->
                 <div>
-                    <div sec:authorize="isAnonymous()">
+                    <div>
                         <input type="submit" class="btn btn-success" value="면접 시작">
-                        <lable>로그인을 하면 기존 설정을 불러올 수 있어요!</lable>
-                        <a href="/interview/setting" class="btn btn-primary">Login</a>
-                    </div>
-
-                    <div sec:authorize="isAuthenticated()">
-                        <input type="submit" class="btn btn-success" value="면접 시작">
-                        <!-- TODO: 저장하기 눌렀을 때 프로필 타이틀 설정 Toast -->
-                        <!-- <input type="submit" sec:authorize="isAuthenticated()" class="btn btn-success" value="저장하기"> -->
-                        <!-- TODO: 가장 최근 정보 불러오기. -->
-                        <a class="btn btn-secondary" href="/interview/candidate">인터뷰 설정 불러오기</a>
                     </div>
                 </div>
 
@@ -52,33 +42,6 @@
 
                 <hr>
 
-                <h3 class="my-3">지원자 정보 설정</h3>
-                <th:block th:object="${candidateConfig}">
-                    <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=*{categoryId}, selectedPositionId=*{positionId},categoryList=${categoryList},positionList=${positionList})}">
-                        분야, 직무 카테고리 선택 구역
-                    </div>
-                    <div class="my-3 row">
-                        <div class="mb-3"th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
-                        <script th:src="@{/js/CategoryRelatedTech.js}" href="../js/CategoryRelatedTech.js"></script>
-                    </div>
-
-                    <!-- 프로젝트 경험을 동적으로 추가할 수 있어야 함.  -->
-
-                    <!-- Object와 매핑시키지 않음! : 회사 공고 지원자격 및 우대사항  -->
-                    <div class="mb-5 col">
-                        <div for="company" class="form-floating">
-                            <textarea class="form-control" placeholder="여기에 적어주세요." id="company" style="height: 100px"></textarea>
-                            <label>지원 회사 정보 (200자 이하) - 생략가능</label>
-                        </div>
-                        <div class="mt-2">
-                            <a class="link-dark mx-1" href="#">회사 예시보기</a>
-                        </div>
-                    </div>
-
-                    <th:block th:replace="~{fragments/form/experience :: fragment-experience(experiences=${experiences})}"></th:block>
-                </th:block>
-
-                <hr>
 
             </form>
         </div>

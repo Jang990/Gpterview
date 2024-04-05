@@ -20,6 +20,7 @@ public class AccountForm {
     private JobCategorySelectedIds categories = new JobCategorySelectedIds();
 
     private List<TechViewDto> tech;
+    private List<String> experiences;
 
     public String getPassword() {return account.getPassword();}
     public String getUsername() {return account.getUsername();}

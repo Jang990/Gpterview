@@ -17,6 +17,20 @@
           <div class="mb-3"th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
         </div>
         <div th:replace="~{fragments/form/account :: fragment-account}">로그인 계정 정보 컴포넌트</div>
+
+
+        <!--<div class="mb-5 col">
+          <div for="company" class="form-floating">
+            <textarea class="form-control" placeholder="여기에 적어주세요." id="company" style="height: 100px"></textarea>
+            <label>지원 회사 정보 (200자 이하) - 생략가능</label>
+          </div>
+          <div class="mt-2">
+            <a class="link-dark mx-1" href="#">회사 예시보기</a>
+          </div>
+        </div>-->
+
+        <th:block th:replace="~{fragments/form/experience :: fragment-experience(experiences=*{experiences})}"></th:block>
+
         <input type="submit" class="btn btn-primary btn-block mb-4 col-lg-12" value="회원가입">
       </form>
     </div>

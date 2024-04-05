@@ -2,8 +2,8 @@ package com.mock.interview.interview.application;
 
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.category.infra.CategoryModuleFinder;
-import com.mock.interview.interview.domain.InterviewCreator;
-import com.mock.interview.interview.domain.InterviewTechLinker;
+import com.mock.interview.interview.domain.InterviewStarter;
+import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
@@ -21,7 +21,6 @@ import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.tech.infra.view.CategoryRelatedTechFinder;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
-import com.mock.interview.user.domain.model.UsersTechLink;
 import com.mock.interview.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,8 +34,6 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class InterviewService {
-
-    private final InterviewCreator interviewCreator;
     private final InterviewRepository repository;
     private final InterviewConversationPairRepository pairRepository;
     private final ConversationStarter conversationStarter;
@@ -44,28 +41,28 @@ public class InterviewService {
     private final UserRepository userRepository;
     private final List<CategoryRelatedTechFinder> categoryRelatedTechFinders;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
-    private final InterviewTechLinker interviewTechLinker;
+    private final InterviewStarter interviewStarter;
+
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public InterviewStartingDto createCustomInterview(long loginId, InterviewConfigDto interviewConfig) {
+        if (repository.findActiveInterview(loginId).isPresent()) // TODO: QueryDSL로 최적화
+            throw new InterviewAlreadyInProgressException();
+
         Users users = userRepository.findForInterviewSetting(loginId)
                 .orElseThrow(UserNotFoundException::new);
-        List<TechnicalSubjects> userTech = users.getTechLink().stream().map(UsersTechLink::getTechnicalSubjects).toList();
-        List<TechnicalSubjects> relatedInterviewTech = getRelatedInterviewTech(users.getCategory());
 
-        Interview interview = interviewCreator
-                .startInterview(repository, interviewConfig, users, users.getCategory(), users.getPosition());
-        if(!userTech.isEmpty())
-            interviewTechLinker.linkUniqueTech(interview, userTech);
-        if(!relatedInterviewTech.isEmpty())
-            interviewTechLinker.linkUniqueTech(interview, relatedInterviewTech);
+        Interview interview = interviewStarter.start(users, interviewConfig);
+        List<TechnicalSubjects> relatedInterviewTech = getRelatedCategoryTech(users.getCategory());
+        interview.linkTech(relatedInterviewTech);
+        repository.save(interview);
 
         InterviewConversationPair conversationPair = startConversation(interview, users.getCategory());
         return convert(interview, conversationPair);
     }
 
-    private List<TechnicalSubjects> getRelatedInterviewTech(JobCategory category) {
+    private List<TechnicalSubjects> getRelatedCategoryTech(JobCategory category) {
         List<String> relatedTechName = CategoryModuleFinder.findModule(categoryRelatedTechFinders, category.getName()).getRelatedTechName();
         return TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, relatedTechName);
     }
