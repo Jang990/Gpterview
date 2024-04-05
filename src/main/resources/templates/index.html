@@ -11,13 +11,13 @@
               <h2 class="text-center display-5 fw-normal">면접 질문 검색</h2>
           </div>
           <div th:replace="~{fragments/form/search/question-search :: fragment-question-search(base='/question',searchCond=${questionSearchCond})}">질문 검색 폼</div>
+          <br>
           <div class="container my-5">
               <!--    <h1>Welcome to My Website</h1>-->
               <!--    <p>This is the home page.</p>-->
-              <th:block sec:authorize="isAuthenticated()">
-                <div th:replace="~{fragments/rowtable/row-table :: fragment-row-table(interviewOverviewList=${interviewOverviewList}, reviewOverviewList=${reviewOverviewList})}" class="mr-5">RowTable 공간</div>
-              </th:block>
+              <div th:replace="~{fragments/rowtable/row-table :: fragment-row-table(interviewOverviewList=${interviewOverviewList},reviewOverviewList=${reviewOverviewList})}" class="mr-5">RowTable 공간</div>
           </div>
+          <br>
       </div>
   </section>
 </body>

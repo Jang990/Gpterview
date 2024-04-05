@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="container col-lg-5" th:fragment="fragment-interview-overview-list(dataList)">
+<div class="container col-6" th:fragment="fragment-interview-overview-list(dataList)">
     <link th:href="@{/css/overview-list.css}" href="../css/overview-list.css" rel="stylesheet">
     <div class="row">
-        <div class="col-12 mb-3 mb-lg-5">
+        <div class="col-12">
             <div class="position-relative card table-nowrap table-card">
                 <div class="card-header align-items-center">
                     <h5 class="mb-0">면접 기록</h5>
@@ -11,30 +11,29 @@
                 </div>
                 <div class="table-responsive">
                     <table class="table mb-0 table-hover">
-                        <thead class="small text-uppercase bg-body text-muted">
-                        <tr>
-                            <th>면접 제목</th>
-                            <th>진행 시간</th>
-                            <th>생성일</th>
-                        </tr>
-                        </thead>
                         <tbody>
-                            <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/interview/{interviewId}'( interviewId=${data.id} )}" style="cursor: pointer;">
-                                <td class="small" th:text="${data.title}">제목 정보</td>
-                                <td class="small" th:text="|${data.durationMinutes}분|">30분</td>
-                                <td class="small" th:text="${#temporals.format(data.createdAt, 'MM-dd HH:mm')}">생성일</td>
-                            </tr>
-
-                            <th:block th:if="${dataList.size() < 3}">
-                                <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
-                                    <td class="small text-center" colspan="3">empty</td>
+                            <th:block sec:authorize="isAnonymous()">
+                                <tr class="align-middle" th:onclick="location.href='/login'">
+                                    <td class="small text-center" colspan="2" >로그인 필요</td>
                                 </tr>
+                            </th:block>
+                            <th:block sec:authorize="isAuthenticated()">
+                                <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/interview/{interviewId}'( interviewId=${data.id} )}" style="cursor: pointer;">
+                                    <td class="small" th:text="${data.title}">제목 정보</td>
+                                    <td class="small" th:text="${#temporals.format(data.createdAt, 'MM-dd HH:mm')}">생성일</td>
+                                </tr>
+
+                                <th:block th:if="${dataList.size() < 3}">
+                                    <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
+                                        <td class="small text-center" colspan="2">empty</td>
+                                    </tr>
+                                </th:block>
                             </th:block>
                         </tbody>
                     </table>
                 </div>
                 <div class="card-footer text-end">
-                    <a href="#!" class="btn btn-gray">목록으로</a>
+                    <a href="#!" class="btn btn-sm btn-gray">목록으로</a>
                 </div>
             </div>
         </div>
