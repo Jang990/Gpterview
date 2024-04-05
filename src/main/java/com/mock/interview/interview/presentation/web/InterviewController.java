@@ -77,6 +77,6 @@ public class InterviewController {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("candidateConfig", new CandidateProfileForm());
         model.addAttribute("interviewDetails", new InterviewConfigDto());
-        return "candidate/form";
+        return "interview/form";
     }
 }
