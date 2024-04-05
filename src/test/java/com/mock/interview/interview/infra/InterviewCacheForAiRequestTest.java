@@ -88,7 +88,7 @@ class InterviewCacheForAiRequestTest {
         assertThat(result.config().expiredTime()).isEqualTo(mockInterview.getExpiredTime());
         assertThat(result.config().interviewType()).isEqualTo(mockInterview.getCandidateConfig().getType());
         assertThat(result.profile().category()).isEqualTo(mockInterview.getCandidateConfig().getCategory().getName());
-        assertThat(result.profile().field()).isEqualTo(mockInterview.getCandidateConfig().getCategory().getName());
+        assertThat(result.profile().field()).isEqualTo(mockInterview.getCandidateConfig().getPosition().getName());
 
         Assertions.assertIterableEquals(
                 result.profile().experience(),

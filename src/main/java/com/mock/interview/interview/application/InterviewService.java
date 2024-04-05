@@ -1,5 +1,6 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.interview.domain.InterviewCreator;
 import com.mock.interview.interview.domain.model.Interview;
@@ -19,9 +20,10 @@ import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
 import com.mock.interview.candidate.domain.model.CandidateConfig;
-import com.mock.interview.candidate.domain.exception.CandidateConfigNotFoundException;
 import com.mock.interview.candidate.infra.CandidateConfigRepository;
+import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
+import com.mock.interview.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -37,19 +39,18 @@ public class InterviewService {
     private final InterviewCreator interviewCreator;
     private final InterviewRepository repository;
     private final InterviewConversationPairRepository pairRepository;
-    private final CandidateConfigRepository profileRepository;
     private final ConversationStarter conversationStarter;
     private final InterviewQuestionRepository interviewQuestionRepository;
+    private final UserRepository userRepository;
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public InterviewStartingDto create(long loginId, long candidateConfigId) {
-        CandidateConfig candidateConfig = profileRepository.findInterviewConfig(candidateConfigId, loginId)
-                .orElseThrow(CandidateConfigNotFoundException::new);
-
-        Users users = candidateConfig.getUsers();
-        Interview interview = interviewCreator.startInterview(repository, candidateConfig, users, candidateConfig.getPosition());
-        InterviewConversationPair conversationPair = startConversation(candidateConfig, interview);
+    public InterviewStartingDto create(long loginId, InterviewConfigDto interviewConfig) {
+        Users users = userRepository.findForInterviewSetting(loginId)
+                .orElseThrow(UserNotFoundException::new);
+        Interview interview = interviewCreator
+                .startInterview(repository, interviewConfig, users, users.getCategory(), users.getPosition());
+        InterviewConversationPair conversationPair = startConversation(interview, users.getCategory());
         return convert(interview, conversationPair);
     }
 
@@ -57,8 +58,8 @@ public class InterviewService {
         return new InterviewStartingDto(interview.getId(), new InterviewConversationPairDto(conversationPair.getId(), conversationPair.getStatus()));
     }
 
-    private InterviewConversationPair startConversation(CandidateConfig candidateConfig, Interview interview) {
-        long questionCount = interviewQuestionRepository.countCategoryQuestion(candidateConfig.getCategory().getName());
+    private InterviewConversationPair startConversation(Interview interview, JobCategory category) {
+        long questionCount = interviewQuestionRepository.countCategoryQuestion(category.getName());
         return conversationStarter.start(pairRepository, interview, questionCount);
     }
 

@@ -1,5 +1,7 @@
 package com.mock.interview.interview.domain.model;
 
+import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.candidate.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;
@@ -40,6 +42,11 @@ public class Interview extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "candidate_profile_id")
     private CandidateConfig candidateConfig;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private InterviewType type;
+    @Column(nullable = false)
+    private int durationMinutes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_category_id")
@@ -49,17 +56,28 @@ public class Interview extends BaseTimeEntity {
     @JoinColumn(name = "job_position_id")
     private JobPosition position;
 
-    public static Interview startInterview(CandidateConfig config, Users user, JobPosition position) {
+    public static Interview startInterview(
+            InterviewConfigDto interviewConfig,
+            Users user, JobCategory category, JobPosition position
+    ) {
         Interview interview = new Interview();
-        interview.title = new InterviewTitle(config.getCategory().getName(), config.getPosition().getName());
-        LocalDateTime now = LocalDateTime.now();
-        interview.expiredTime = now.plusMinutes(config.getDurationMinutes());
-        interview.isDeleted = false;
         interview.users = user;
-        interview.candidateConfig = config;
-        interview.category = position.getCategory();
-        interview.position = position;
+        interview.type = interviewConfig.getInterviewType();
+        initCategory(category, position, interview);
+        initExpiredTime(interview, interviewConfig.getDurationMinutes());
+        interview.isDeleted = false;
         return interview;
+    }
+
+    private static void initExpiredTime(Interview interview, int durationMinutes) {
+        interview.durationMinutes = durationMinutes;
+        interview.expiredTime = LocalDateTime.now().plusMinutes(durationMinutes);
+    }
+
+    private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
+        interview.category = category;
+        interview.position = position;
+        interview.title = new InterviewTitle(category.getName(), position.getName());
     }
 
     // TODO: 사용자가 면접을 강제 종료할 수 있게 만들어야 함.
