@@ -13,11 +13,6 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 
 <br>
 
-![image](https://github.com/Jang990/Gpterview/assets/88225377/02901810-0598-4e5a-b7f1-c93964c0fb7c)
-
-
-<br>
-
 ![image](https://github.com/Jang990/Gpterview/assets/88225377/c14e79cb-6a21-478e-832f-e560cccbd42f)
 
 
