@@ -8,7 +8,8 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 <img src="https://img.shields.io/badge/Gradle-02303A?style=plastic-square&logo=Gradle&logoColor=white"/> <img src="https://img.shields.io/badge/Session-000000?style=plastic-square&logo=Session&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=plastic-square&logo=MySQL&logoColor=white"> <img src="https://img.shields.io/badge/Redis-DC382D?style=plastic-square&logo=redis&logoColor=white">
 
 ## 👀 Demo
-![image](https://github.com/Jang990/Gpterview/assets/88225377/51cdd10b-8066-4880-96bf-0cc93febcaf6)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/845c0264-2d6e-4e7d-9838-1452e1564a33)
+
 
 
 <br>
@@ -18,7 +19,7 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 
 <br>
 
-![image](https://github.com/Jang990/Gpterview/assets/88225377/ae8b015c-73b0-4b4e-9f10-c1084b7a79b3)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/e902da59-b0a3-4dc2-9659-4dad04e17823)
 
 
 <br>
