@@ -1,6 +1,7 @@
 package com.mock.interview.interview.infra;
 
 import com.mock.interview.candidate.domain.model.CandidateConfig;
+import com.mock.interview.interview.domain.model.InterviewTechLink;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
@@ -42,14 +43,13 @@ public class InterviewCacheForAiRequest {
     }
 
     public InterviewInfo convert(Interview interview) {
-        CandidateConfig config = interview.getCandidateConfig();
         InterviewProfile profile = new InterviewProfile(
-                config.getCategory().getName(),
-                config.getPosition().getName(),
-                config.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-                config.getExperienceContent()
+                interview.getCategory().getName(),
+                interview.getPosition().getName(),
+                interview.getTechLink().stream().map(InterviewTechLink::getTechnicalSubjects).map(TechnicalSubjects::getName).toList(),
+                null // TODO: Interview에 경험 연결하기.
         );
-        InterviewConfig interviewConfig = new InterviewConfig(config.getType(), interview.getCreatedAt(), interview.getExpiredTime());
+        InterviewConfig interviewConfig = new InterviewConfig(interview.getType(), interview.getCreatedAt(), interview.getExpiredTime());
         return new InterviewInfo(profile, interviewConfig);
     }
 

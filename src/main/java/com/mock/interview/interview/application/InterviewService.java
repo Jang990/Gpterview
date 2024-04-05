@@ -1,8 +1,9 @@
 package com.mock.interview.interview.application;
 
 import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
-import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.domain.InterviewCreator;
+import com.mock.interview.interview.domain.InterviewTechLinker;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
@@ -13,22 +14,21 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
+import com.mock.interview.tech.application.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.infra.InterviewRepository;
-import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;
-import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
-import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
-import com.mock.interview.candidate.domain.model.CandidateConfig;
-import com.mock.interview.candidate.infra.CandidateConfigRepository;
+import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
+import com.mock.interview.tech.infra.view.CategoryRelatedTechFinder;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
+import com.mock.interview.user.domain.model.UsersTechLink;
 import com.mock.interview.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,16 +42,32 @@ public class InterviewService {
     private final ConversationStarter conversationStarter;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final UserRepository userRepository;
+    private final List<CategoryRelatedTechFinder> categoryRelatedTechFinders;
+    private final TechnicalSubjectsRepository technicalSubjectsRepository;
+    private final InterviewTechLinker interviewTechLinker;
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public InterviewStartingDto create(long loginId, InterviewConfigDto interviewConfig) {
+    public InterviewStartingDto createCustomInterview(long loginId, InterviewConfigDto interviewConfig) {
         Users users = userRepository.findForInterviewSetting(loginId)
                 .orElseThrow(UserNotFoundException::new);
+        List<TechnicalSubjects> userTech = users.getTechLink().stream().map(UsersTechLink::getTechnicalSubjects).toList();
+        List<TechnicalSubjects> relatedInterviewTech = getRelatedInterviewTech(users.getCategory());
+
         Interview interview = interviewCreator
                 .startInterview(repository, interviewConfig, users, users.getCategory(), users.getPosition());
+        if(!userTech.isEmpty())
+            interviewTechLinker.linkUniqueTech(interview, userTech);
+        if(!relatedInterviewTech.isEmpty())
+            interviewTechLinker.linkUniqueTech(interview, relatedInterviewTech);
+
         InterviewConversationPair conversationPair = startConversation(interview, users.getCategory());
         return convert(interview, conversationPair);
+    }
+
+    private List<TechnicalSubjects> getRelatedInterviewTech(JobCategory category) {
+        List<String> relatedTechName = CategoryModuleFinder.findModule(categoryRelatedTechFinders, category.getName()).getRelatedTechName();
+        return TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, relatedTechName);
     }
 
     private static InterviewStartingDto convert(Interview interview, InterviewConversationPair conversationPair) {
@@ -74,24 +90,5 @@ public class InterviewService {
 
     private InterviewResponse convert(Interview activeInterview) {
         return new InterviewResponse(activeInterview.getId(), activeInterview.getTitle().getTitle());
-    }
-
-    @Transactional(readOnly = true)
-    public InterviewInfo findInterviewForAIRequest(long loginId, long interviewId) {
-        Interview interview = repository.findInterviewSetting(interviewId, loginId)
-                .orElseThrow(InterviewNotFoundException::new);
-        return convert(interview, interview.getCandidateConfig().getCategory(), interview.getCandidateConfig().getPosition());
-    }
-
-    private static InterviewInfo convert(Interview interview, JobCategory category, JobPosition position) {
-        CandidateConfig profile = interview.getCandidateConfig();
-        return new InterviewInfo(
-                new InterviewProfile(
-                        category.getName(), position.getName(),
-                        profile.getTechSubjects().stream().map(TechnicalSubjects::getName).toList(),
-                        profile.getExperienceContent()
-                ),
-                new InterviewConfig(interview.getCandidateConfig().getType(), interview.getCreatedAt(), interview.getExpiredTime())
-        );
     }
 }

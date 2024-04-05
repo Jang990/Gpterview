@@ -39,7 +39,7 @@ public class InterviewController {
             InterviewConfigDto interviewConfigDto,
             @AuthenticationPrincipal(expression = "id") Long loginId, Model model
     ) {
-        InterviewStartingDto interviewStartingDto = interviewService.create(loginId, interviewConfigDto);
+        InterviewStartingDto interviewStartingDto = interviewService.createCustomInterview(loginId, interviewConfigDto);
         model.addAttribute("lastConversationPair", interviewStartingDto.getPair());
         return "redirect:/interview/" + interviewStartingDto.getInterviewId();
     }

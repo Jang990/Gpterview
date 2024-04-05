@@ -22,12 +22,11 @@ public class InterviewRepositoryForView {
                     Projections.constructor(InterviewOverviewFragment.class,
                             interview.id,
                             interview.title.title,
-                            interview.candidateConfig.durationMinutes,
+                            interview.durationMinutes,
                             interview.createdAt
                     )
                 )
                 .from(interview)
-                .join(interview.candidateConfig, candidateConfig)
                 .where(interview.users.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
