@@ -15,32 +15,46 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 @RequiredArgsConstructor
-public class QuestionRelationWebController {
+public class QuestionSearchWebController {
     private final InterviewQuestionRepositoryForView questionRepositoryForView;
 
-    @GetMapping("question/{questionId}/child")
-    public String childQuestionListPage(
+    @GetMapping("question")
+    public String questionListPage(
             Model model,
-            @PathVariable(name = "questionId") long questionId,
             QuestionSearchCond searchCond,
             @PageableDefault Pageable pageable
     ) {
-        QuestionSearchOptionsDto searchOptionsDto = QuestionSearchOptionsDto.builder()
-                .parentQuestionIdCond(questionId)
-                .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptionsDto, pageable);
+        QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder().searchCond(searchCond).build();
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond);
         return "/question/list";
     }
 
-    @GetMapping("question/form/parent")
-    public String selectChildQuestionPage(
-            Model model,
+
+
+    @GetMapping("question/category/{categoryName}")
+    public String categoryQuestionListPage(
+            @PathVariable(name = "categoryName") String categoryName,
             QuestionSearchCond searchCond,
-            @PageableDefault Pageable pageable
+            Model model, @PageableDefault Pageable pageable
     ) {
-        // 임시 코드
-        QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder().searchCond(searchCond).build();
+        QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
+                .categoryNameCond(categoryName)
+                .searchCond(searchCond).build();
+        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
+        QuestionPageInitializer.initListPage(model, overviewPage, searchCond);
+        return "/question/list";
+    }
+
+    @GetMapping("question/position/{positionName}")
+    public String positionQuestionListPage(
+            @PathVariable(name = "positionName") String positionName,
+            QuestionSearchCond searchCond,
+            Model model, @PageableDefault Pageable pageable
+    ) {
+        QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
+                .positionNameCond(positionName)
+                .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond);
         return "/question/list";

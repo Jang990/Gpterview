@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<span th:fragment="fragment-tech(tech)" class="flex-fill d-flex">
+    <script th:inline="javascript">
+        var tagify;
+        $(document).ready(function() {
+            var inputElem = document.querySelector('input[name=tech]');
+            tagify = new Tagify(inputElem);
+            tagify.addTags([[${tech}]]);
+            tagify.DOM.input.setAttribute('data-placeholder', "관련 주제 추가 : 'Enter'")
+        });
+    </script>
+    <style>
+    </style>
+    <input class="search-element" name="techCond" id="techCond">
+</span>
+</html>

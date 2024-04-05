@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--https://codepen.io/sargbah84/pen/QqXpqJ-->
-<div th:fragment="fragment-question-search" class="my-3 mx-3">
-    <link th:href="@{/css/question-search-form.css}" href="../css/question-search-form.css" rel="stylesheet">
+<div th:fragment="fragment-question-search(searchCond)" class="my-3 mx-3">
     <style>
         .search-box {
             border-radius: 23px;
@@ -20,21 +19,26 @@
             outline: none;
         }
     </style>
-    <form action="/">
+    <form method="get" th:object="${searchCond}">
         <div class="search-box ps-1">
             <div class="d-flex justify-content-center align-items-center px-1 py-1">
                 <div class="me-1 px-1">
-                    <select class="search-element category">
-                        <option>질문타입</option>
+                    <select class="search-element" name="typeCond" id="typeCond">
+                        <option value="">질문타입</option>
                         <option th:each="questionType : ${T(com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView).values()}"
                                 th:value="${questionType}"
-                                th:text="${questionType.name}">
+                                th:text="${questionType.name}"
+                                th:selected="*{typeCond} == ${questionType}">
                             면접 진행 방식
                         </option>
                     </select>
                 </div>
-                <div class="search-element ps-2 flex-grow-1"><input type="text" class="search-element" placeholder="관련 주제 추가"></div>
-                <div class="search-element ps-2 flex-grow-1"><input type="text" class="search-element" placeholder="검색 키워드"></div>
+                <div class="d-flex search-element px-2 flex-grow-1">
+                    <div th:replace="~{fragments/form/search/tech :: fragment-tech(tech=*{techCond})}">관련기술 영역</div>
+                </div>
+                <div class="d-flex search-element px-2 flex-grow-1">
+                    <input type="text" class="search-element flex-fill" placeholder="검색 키워드" name="keywordCond" id="keywordCond" th:value="${searchCond.keywordCond}">
+                </div>
                 <button class="btn btn-primary" style="border-radius: 50px;" type="submit"><i class="fas fa-search"></i></button>
             </div>
         </div>

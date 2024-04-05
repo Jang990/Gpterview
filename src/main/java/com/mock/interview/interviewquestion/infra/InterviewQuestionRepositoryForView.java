@@ -3,10 +3,10 @@ package com.mock.interview.interviewquestion.infra;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.category.presentation.dto.JobCategoryView;
+import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import com.mock.interview.interviewquestion.presentation.dto.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -57,14 +57,24 @@ public class InterviewQuestionRepositoryForView {
                 .fetch();
     }
 
+    // TODO: tech 검색 미지원
     public Page<QuestionOverview> findOverviewList(
-            Long parentQuestionIdCond, String categoryNameCond, String positionNameCond, String createdBy, Pageable pageable) {
+            QuestionSearchOptionsDto searchOptions,
+            Pageable pageable
+    ) {
+        if(searchOptions == null)
+            searchOptions = new QuestionSearchOptionsDto();
+        if(searchOptions.getSearchCond() == null)
+            searchOptions.setSearchCond(new QuestionSearchCond());
+
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory)
                 .leftJoin(interviewQuestion.position, jobPosition)
                 .where(
-                        searchChildQuestion(parentQuestionIdCond), jobCategoryEq(categoryNameCond),
-                        jobPositionEq(positionNameCond), createdByEq(createdBy)
+                        searchChildQuestion(searchOptions.getParentQuestionIdCond()), jobCategoryEq(searchOptions.getCategoryNameCond()),
+                        jobPositionEq(searchOptions.getPositionNameCond()), createdByEq(searchOptions.getCreatedByCond()),
+                        questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
+                        keywordContains(searchOptions.getSearchCond().getKeywordCond())
                 )
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -75,10 +85,20 @@ public class InterviewQuestionRepositoryForView {
         JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
                 .from(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory)
-                .where(jobCategoryEq(categoryNameCond), createdByEq(createdBy));
+                .where(jobCategoryEq(searchOptions.getCategoryNameCond()), createdByEq(searchOptions.getCreatedByCond()));
 
         // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    private BooleanExpression keywordContains(String keywordCond) {
+        return keywordCond == null ?
+                null : interviewQuestion.question.contains(keywordCond);
+    }
+
+    private BooleanExpression questionTypeEq(QuestionTypeForView typeCond) {
+        return typeCond == null ?
+                null : interviewQuestion.questionType.eq(QuestionConvertor.convert(typeCond));
     }
 
     private List<QuestionOverview> convert(List<InterviewQuestion> questions) {

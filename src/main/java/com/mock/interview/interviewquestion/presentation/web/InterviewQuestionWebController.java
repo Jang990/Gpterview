@@ -6,9 +6,6 @@ import com.mock.interview.interviewquestion.infra.InterviewQuestionRepositoryFor
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,37 +18,6 @@ import java.util.List;
 public class InterviewQuestionWebController {
     private final InterviewQuestionRepositoryForView questionRepositoryForView;
     private final InterviewAnswerRepositoryForView answerRepositoryForView;
-
-    @GetMapping("question")
-    public String questionListPage(Model model, @PageableDefault Pageable pageable) {
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, null, null, pageable);
-        model.addAttribute("headerActiveTap", "interview-question");
-        model.addAttribute("questionPage", overviewPage);
-        return "/question/list";
-    }
-
-    @GetMapping("question/category/{categoryName}")
-    public String categoryQuestionListPage(
-            @PathVariable(name = "categoryName") String categoryName,
-            Model model, @PageableDefault Pageable pageable
-    ) {
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, categoryName, null, null, pageable);
-        model.addAttribute("headerActiveTap", "interview-question");
-        model.addAttribute("questionPage", overviewPage);
-        return "/question/list";
-    }
-
-    @GetMapping("question/position/{positionName}")
-    public String positionQuestionListPage(
-            @PathVariable(name = "positionName") String positionName,
-            Model model, @PageableDefault Pageable pageable
-    ) {
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(null, null, positionName, null, pageable);
-        model.addAttribute("headerActiveTap", "interview-question");
-        model.addAttribute("questionPage", overviewPage);
-        return "/question/list";
-    }
-
 
     @GetMapping("question/{questionId}")
     public String questionDetailPage(

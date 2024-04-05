@@ -2,6 +2,7 @@ package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,8 +26,8 @@ class InterviewQuestionRepositoryForViewTest {
 
 //    @Test
     void test2() {
-        Page<QuestionOverview> result = repositoryForView.findOverviewList(
-                null, "IT", null, null, PageRequest.of(0, 30));
+        QuestionSearchOptionsDto searchCond = QuestionSearchOptionsDto.builder().categoryNameCond("IT").build();
+        Page<QuestionOverview> result = repositoryForView.findOverviewList(searchCond, PageRequest.of(0, 30));
         System.out.println(result.getTotalElements()); // 전체 요소 수 90
         System.out.println(result.getTotalPages()); // 전체 페이지 수 3 (2까지 가능)
         System.out.println(result.getNumber()); // 현재 페이지 넘버 0
