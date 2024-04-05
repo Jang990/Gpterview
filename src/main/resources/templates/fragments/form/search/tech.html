@@ -7,11 +7,10 @@
             var inputElem = document.querySelector('input[name=tech]');
             tagify = new Tagify(inputElem);
             tagify.addTags([[${tech}]]);
-            tagify.DOM.input.setAttribute('data-placeholder', "관련 주제 추가 : 'Enter'")
         });
     </script>
     <style>
     </style>
-    <input class="search-element" name="techCond" id="techCond">
+    <input class="search-element" name="techCond" id="techCond" style="border-left-width: 0px;" placeholder="관련 주제 추가 : 'Enter'">
 </span>
 </html>
