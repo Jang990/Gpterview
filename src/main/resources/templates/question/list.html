@@ -14,7 +14,11 @@
                     <!-- Inner main -->
                     <div class="inner-main">
                         <!-- Inner main header -->
-                        <div class="inner-main-header mt-5">
+                        <div class="inner-main-header my-3">
+                            <div class="ms-3 my-3">
+                                <h4 class="ps-3 py-3 fw-normal">질문목록</h4>
+                            </div>
+
                             <div th:replace="~{fragments/form/search/question-search :: fragment-question-search(base=null,searchCond=${questionSearchCond})}">질문 검색 폼</div>
                         </div>
                         <!-- /Inner main header -->
