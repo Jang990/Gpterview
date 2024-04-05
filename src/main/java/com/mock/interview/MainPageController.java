@@ -4,6 +4,7 @@ import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
+import com.mock.interview.interviewquestion.presentation.web.QuestionPageInitializer;
 import com.mock.interview.review.presentation.dto.ReviewIndexPageFragment;
 import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class MainPageController {
             model.addAttribute("activeInterview", new InterviewResponse());
             model.addAttribute("interviewOverviewList", new ArrayList<>());
             model.addAttribute("reviewOverviewList", new ArrayList<>());
+            QuestionPageInitializer.initEmptyQuestionSearchForm(model);
             return "index";
         }
 
@@ -45,6 +47,7 @@ public class MainPageController {
         model.addAttribute("activeInterview", getActiveInterview(users.getId()));
         model.addAttribute("interviewOverviewList", interviewOverviewList);
         model.addAttribute("reviewOverviewList", reviewOverviewList);
+        QuestionPageInitializer.initEmptyQuestionSearchForm(model);
 
         return "index";
     }

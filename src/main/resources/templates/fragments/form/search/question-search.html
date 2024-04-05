@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <!--https://codepen.io/sargbah84/pen/QqXpqJ-->
-<div th:fragment="fragment-question-search(searchCond)" class="my-3 mx-3">
+<div th:fragment="fragment-question-search(base,searchCond)" class="my-3 mx-3">
     <style>
         .search-box {
             border-radius: 23px;
@@ -19,7 +19,7 @@
             outline: none;
         }
     </style>
-    <form method="get" th:object="${searchCond}">
+    <form method="get" th:object="${searchCond}" th:action="${base == null} ? '' : ${base}">
         <div class="search-box ps-1">
             <div class="d-flex justify-content-center align-items-center px-1 py-1">
                 <div class="me-1 px-1">
@@ -37,7 +37,7 @@
                     <div th:replace="~{fragments/form/search/tech :: fragment-tech(tech=*{techCond})}">관련기술 영역</div>
                 </div>
                 <div class="d-flex search-element px-2 flex-grow-1">
-                    <input type="text" class="search-element flex-fill" placeholder="검색 키워드" name="keywordCond" id="keywordCond" th:value="${searchCond.keywordCond}">
+                    <input type="text" class="search-element flex-fill" placeholder="검색 키워드" name="keywordCond" id="keywordCond" th:value="*{keywordCond}">
                 </div>
                 <button class="btn btn-primary" style="border-radius: 50px;" type="submit"><i class="fas fa-search"></i></button>
             </div>
