@@ -2,10 +2,17 @@ package com.mock.interview.user.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.interview.domain.model.InterviewTechLink;
+import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,11 +35,30 @@ public class Users {
     @JoinColumn(name = "job_position_id")
     private JobPosition position;
 
+    @Cascade(CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    private List<UsersTechLink> techLink = new ArrayList<>();
+
+
     public static Users createUser(String username, String password) {
         Users user = new Users();
         user.username = username;
         user.password = password;
         return user;
+    }
+
+    public void linkTech(List<TechnicalSubjects> techList) {
+        if(techList == null || techList.isEmpty())
+            throw new IllegalArgumentException();
+
+        techList.forEach(this::linkTech);
+    }
+
+    public void linkTech(TechnicalSubjects tech) {
+        if(tech == null)
+            throw new IllegalArgumentException();
+
+        techLink.add(UsersTechLink.createLink(this, tech));
     }
 
     public void linkCategory(JobCategory category) {

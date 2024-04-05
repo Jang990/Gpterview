@@ -13,10 +13,12 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByUsername(String username);
 
     @Query("""
-            SELECT u FROM Users u 
-            JOIN FETCH u.category 
-            JOIN FETCH u.position   
-            Where u.id = :userId
+            SELECT u FROM Users u
+            JOIN FETCH u.category
+            JOIN FETCH u.position
+            LEFT JOIN FETCH u.techLink
+            LEFT JOIN FETCH u.techLink.technicalSubjects
+            WHERE u.id = :userId
             """)
     Optional<Users> findForInterviewSetting(@Param("userId") long userId);
 }
