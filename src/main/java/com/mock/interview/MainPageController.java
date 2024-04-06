@@ -25,10 +25,10 @@ public class MainPageController {
 
     @GetMapping("/")
     public String indexPage(Model model, @AuthenticationPrincipal Users users) {
+        QuestionPageInitializer.initEmptyQuestionSearchForm(model);
         if (users == null) {
             model.addAttribute("activeInterview", new InterviewResponse());
             model.addAttribute("interviewOverviewList", new ArrayList<>());
-            QuestionPageInitializer.initEmptyQuestionSearchForm(model);
             return "index";
         }
 
@@ -38,8 +38,6 @@ public class MainPageController {
 
         model.addAttribute("activeInterview", getActiveInterview(users.getId()));
         model.addAttribute("interviewOverviewList", interviewOverviewList);
-        QuestionPageInitializer.initEmptyQuestionSearchForm(model);
-
         return "index";
     }
 

@@ -4,6 +4,7 @@ import com.mock.interview.interviewquestion.infra.InterviewQuestionRepositoryFor
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +24,14 @@ public class QuestionRelationWebController {
             Model model,
             @PathVariable(name = "questionId") long questionId,
             QuestionSearchCond searchCond,
-            @PageableDefault Pageable pageable
+            @PageableDefault Pageable pageable,
+            HttpServletRequest request
     ) {
         QuestionSearchOptionsDto searchOptionsDto = QuestionSearchOptionsDto.builder()
                 .parentQuestionIdCond(questionId)
                 .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptionsDto, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, searchCond);
+        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "/question/list";
     }
 
@@ -37,12 +39,13 @@ public class QuestionRelationWebController {
     public String selectChildQuestionPage(
             Model model,
             QuestionSearchCond searchCond,
-            @PageableDefault Pageable pageable
+            @PageableDefault Pageable pageable,
+            HttpServletRequest request
     ) {
         // 임시 코드
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder().searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, searchCond);
+        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "/question/list";
     }
 }
