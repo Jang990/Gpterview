@@ -1,8 +1,8 @@
 package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.user.domain.model.Experience;
-import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
-import com.mock.interview.candidate.presentation.dto.InterviewType;
+import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
+import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;
@@ -67,7 +67,7 @@ public class Interview extends BaseTimeEntity {
     private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
 
     public static Interview startInterview(
-            InterviewConfigDto interviewConfig,
+            InterviewConfigForm interviewConfig,
             Users user, JobCategory category, JobPosition position
     ) {
         Interview interview = new Interview();

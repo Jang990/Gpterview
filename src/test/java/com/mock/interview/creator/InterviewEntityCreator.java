@@ -1,7 +1,7 @@
 package com.mock.interview.creator;
 
 import com.mock.interview.candidate.domain.model.CandidateConfig;
-import com.mock.interview.candidate.presentation.dto.InterviewType;
+import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.interview.domain.model.Interview;

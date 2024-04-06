@@ -1,7 +1,6 @@
 package com.mock.interview.interview.presentation.web;
 
-import com.mock.interview.candidate.presentation.dto.CandidateProfileForm;
-import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
@@ -37,10 +36,10 @@ public class InterviewController {
 
     @PostMapping("/interview")
     public String startInterviewRequest(
-            InterviewConfigDto interviewConfigDto,
+            InterviewConfigForm interviewConfigForm,
             @AuthenticationPrincipal(expression = "id") Long loginId, Model model
     ) {
-        InterviewStartingDto interviewStartingDto = interviewService.createCustomInterview(loginId, interviewConfigDto);
+        InterviewStartingDto interviewStartingDto = interviewService.createCustomInterview(loginId, interviewConfigForm);
         model.addAttribute("lastConversationPair", interviewStartingDto.getPair());
         return "redirect:/interview/" + interviewStartingDto.getInterviewId();
     }
@@ -75,8 +74,7 @@ public class InterviewController {
             Model model, @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
         model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("candidateConfig", new CandidateProfileForm());
-        model.addAttribute("interviewDetails", new InterviewConfigDto());
+        model.addAttribute("interviewDetails", new InterviewConfigForm());
         return "interview/form";
     }
 }

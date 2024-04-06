@@ -1,6 +1,6 @@
 package com.mock.interview.interview.application;
 
-import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.domain.InterviewStarter;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
@@ -46,7 +46,7 @@ public class InterviewService {
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public InterviewStartingDto createCustomInterview(long loginId, InterviewConfigDto interviewConfig) {
+    public InterviewStartingDto createCustomInterview(long loginId, InterviewConfigForm interviewConfig) {
         if (repository.findActiveInterview(loginId).isPresent()) // TODO: QueryDSL로 최적화
             throw new InterviewAlreadyInProgressException();
 

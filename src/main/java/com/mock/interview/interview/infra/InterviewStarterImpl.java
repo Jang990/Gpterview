@@ -1,7 +1,7 @@
 package com.mock.interview.interview.infra;
 
 import com.mock.interview.user.domain.model.Experience;
-import com.mock.interview.candidate.presentation.dto.InterviewConfigDto;
+import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.domain.InterviewStarter;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.domain.model.InterviewTechLink;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InterviewStarterImpl implements InterviewStarter {
     @Override
-    public Interview start(Users users, InterviewConfigDto interviewConfig) {
+    public Interview start(Users users, InterviewConfigForm interviewConfig) {
         Interview interview = Interview.startInterview(interviewConfig, users, users.getCategory(), users.getPosition());
         switch (interviewConfig.getInterviewType()) {
             case TECHNICAL -> connectUsersTech(interview, users);

@@ -1,4 +1,4 @@
-package com.mock.interview.candidate.presentation.dto;
+package com.mock.interview.interview.presentation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InterviewConfigDto {
+public class InterviewConfigForm {
     private InterviewType interviewType;
     private int durationMinutes;
     private List<Long> selectedExperience;

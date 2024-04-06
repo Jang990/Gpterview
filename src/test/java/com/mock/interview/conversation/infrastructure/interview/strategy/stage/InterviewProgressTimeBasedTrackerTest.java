@@ -1,6 +1,6 @@
 package com.mock.interview.conversation.infrastructure.interview.strategy.stage;
 
-import com.mock.interview.candidate.presentation.dto.InterviewType;
+import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewConfig;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgressTimeBasedTracker;
