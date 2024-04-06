@@ -5,20 +5,17 @@
 </head>
 <body>
   <section>
-<!--      <link rel="stylesheet" th:href="@{/css/banner-overlay.css}" href="../css/banner-overlay.css">-->
-      <div class="container custom-container-width">
-          <div class="p-3 p-md-5">
-              <h2 class="text-center display-5 fw-normal">면접 질문 검색</h2>
-          </div>
-          <div th:replace="~{fragments/form/search/question-search :: fragment-question-search(base='/question',searchCond=${questionSearchCond})}">질문 검색 폼</div>
-          <br>
-          <div class="container my-5">
-              <!--    <h1>Welcome to My Website</h1>-->
-              <!--    <p>This is the home page.</p>-->
-              <div th:replace="~{fragments/rowtable/row-table :: fragment-row-table(interviewOverviewList=${interviewOverviewList},reviewOverviewList=${reviewOverviewList})}" class="mr-5">RowTable 공간</div>
-          </div>
-          <br>
+      <div class="p-3 p-md-5">
+          <h2 class="text-center display-5 fw-normal">면접 질문 검색</h2>
       </div>
+      <div th:replace="~{fragments/form/search/question-search :: fragment-question-search(base='/question',searchCond=${questionSearchCond})}">질문 검색 폼</div>
+      <br>
+      <div class="container my-5">
+          <!--    <h1>Welcome to My Website</h1>-->
+          <!--    <p>This is the home page.</p>-->
+          <div th:replace="~{fragments/rowtable/row-table :: fragment-row-table(interviewOverviewList=${interviewOverviewList},reviewOverviewList=${reviewOverviewList})}" class="mr-5">RowTable 공간</div>
+      </div>
+      <br>
   </section>
 </body>
 </html>

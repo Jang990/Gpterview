@@ -43,7 +43,6 @@
         <label class="col-form-label me-3">직군</label>
         <div class="me-3">
           <select id="positionId" name="positionId" class="form-select" aria-label="Select position">
-            <option disabled>직군을 선택해주세요.</option>
             <option th:each="position : ${positionList}"
                     th:value="${position.id}" th:text="${position.name}"
                     th:selected="${position.id == selectedPositionId}">백엔드, 모바일</option>
