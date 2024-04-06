@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <th:block th:fragment="fragment-experience(experiences)">
+  <div th:fragment="fragment-experience(experiences)">
     <script th:src="@{/js/experienceForm.js}" src="../js/experienceForm.js"></script>
+    <div class="d-flex flex-column">
+      <button type="button" class="btn btn-secondary btn-sm btn-block" onclick="addExperienceField()">경험 추가</button>
+    </div>
     <div id="experienceForm">
       <div th:if="${#lists.isEmpty(experiences)}">
-        <div class="mb-5 col">
+        <div class="my-3 col">
           <div for="intro" class="form-floating">
             <textarea class="form-control" placeholder="여기에 적어주세요." name="experiences" style="height: 200px"></textarea>
-            <label>직무 관련 경험(프로젝트) (300자 이하) - 생략가능</label>
-          </div>
-          <div class="mt-2">
-            <a class="link-dark" href="#">지원서 예시보기</a>
+            <label>자소서 or 이력서 내용 (500자 이하)</label>
           </div>
         </div>
       </div>
 
-      <div class="mb-5 col" th:unless="${#lists.isEmpty(experiences)}" th:each="experience : *{experiences}" >
+      <div class="my-3 col" th:unless="${#lists.isEmpty(experiences)}" th:each="experience : *{experiences}" >
         <div class="form-floating">
           <textarea class="form-control" placeholder="여기에 적어주세요." name="experiences" th:value="${experience}" style="height: 200px"></textarea>
-          <label>직무 관련 경험(프로젝트) (300자 이하) - 생략가능</label>
+          <label>자소서 or 이력서 내용 (500자 이하)</label>
         </div>
       </div>
     </div>
-    <button type="button" class="btn btn-success" onclick="addExperienceField()">경험 추가</button>
-  </th:block>
+  </div>
 </html>
