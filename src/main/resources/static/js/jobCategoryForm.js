@@ -1,6 +1,7 @@
 let categoryOptionToast, categoryOptionForm, customCategory;
 let positionOptionForm, positionOptionToast, customPosition;
 const CREATE_CATEGORY_API = '/api/category';
+const commonOption = createOption({"id": "", "name": "공통"});
 
 $(function(){
       // 화면 로딩 시
@@ -52,6 +53,11 @@ function createOption(response) {
 
 // 밑은 loading 관련 부분
 function loadPosition(categoryId) {
+    if(categoryId === '') {
+        initPositionForm();
+        return;
+    }
+
     $.ajax({
         type: 'GET',
         url: `/api/category/${categoryId}/position`,
@@ -65,8 +71,13 @@ function loadPosition(categoryId) {
     });
 }
 
-function changePositionOptions(positions) {
+function initPositionForm() {
     positionOptionForm.empty();
+    positionOptionForm.append(commonOption);
+}
+
+function changePositionOptions(positions) {
+    initPositionForm();
     $.each(positions, function(index, value) {
         positionOptionForm.append($('<option>', {
             value: value.id,
@@ -87,7 +98,6 @@ function requestCategory(categoryName) {
             categoryOptionForm.children().last().before(optionElement);
             customCategory.val('');
 
-            positionOptionForm.empty();
             categoryOptionToast.hide();
 
             loadPosition(data);
@@ -100,6 +110,7 @@ function requestCategory(categoryName) {
 
 //Position 생성
 function requestPosition(categoryId, positionName) {
+    initPositionForm();
     $.ajax({
         type: 'POST',
         url: `/api/category/${categoryId}/position`,
