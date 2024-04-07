@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.mock.interview.candidate.domain.model.QCandidateConfig.*;
 import static com.mock.interview.interview.domain.model.QInterview.*;
 
 @Repository
