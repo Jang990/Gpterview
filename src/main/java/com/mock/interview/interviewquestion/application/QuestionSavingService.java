@@ -42,9 +42,8 @@ public class QuestionSavingService {
     }
 
     public void delete(long loginId, long questionId) {
-        System.out.println("loginId = " + loginId + ", questionId = " + questionId);
         InterviewQuestion question = interviewQuestionRepository.findUserQuestion(loginId, questionId)
                 .orElseThrow(QuestionLikeNotFoundException::new);
-        interviewQuestionRepository.delete(question);
+        question.delete();
     }
 }

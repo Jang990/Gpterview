@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.domain.model;
 
+import com.mock.interview.interviewquestion.domain.event.QuestionDeletedEvent;
 import com.mock.interview.user.domain.model.Experience;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
@@ -70,6 +71,8 @@ public class InterviewQuestion extends BaseEntity {
     @JoinColumn(name = "related_experience_id")
     private Experience experience;
 
+    private boolean isDeleted;
+
     public static InterviewQuestion create(
             InterviewQuestionRepository repository, String content, Users users,
             QuestionType questionType, String createdBy
@@ -80,6 +83,7 @@ public class InterviewQuestion extends BaseEntity {
         question.questionType = questionType;
         question.createdBy = createdBy;
         question.likes = 0;
+        question.isDeleted = false;
 
         repository.save(question);
         Events.raise(new QuestionCreatedEvent(question.getId()));
@@ -122,6 +126,14 @@ public class InterviewQuestion extends BaseEntity {
         if(likes <= 0)
             throw new IllegalStateException();
         likes--;
+    }
+
+    public void delete() {
+        if(likes >= 20)
+            throw new IllegalArgumentException("많은 추천을 받아 제거할 수 없음");
+
+        isDeleted = true;
+        Events.raise(new QuestionDeletedEvent(id));
     }
 
     // TODO: boolean 공개여부 추가
