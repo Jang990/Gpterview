@@ -12,10 +12,4 @@ public class TempController {
         model.addAttribute("headerActiveTap", "history");
         return "/temp/history";
     }
-
-    @GetMapping("/auth/{username}")
-    public String myPage(@PathVariable(value = "username") String username) {
-        // TODO: 세션정보와 일치하는지 확인할 것
-        return "/temp/my-page";
-    }
 }

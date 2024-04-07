@@ -22,8 +22,7 @@ public class AccountForm {
 
     private List<TechViewDto> tech;
 
-    @Setter(AccessLevel.NONE)
-    private List<ExperienceDto> experiences;
+    private List<String> experiences;
 
     public String getPassword() {return account.getPassword();}
     public String getUsername() {return account.getUsername();}
@@ -39,19 +38,8 @@ public class AccountForm {
         this.tech = TechViewDto.convert(techString);
     }
 
-    public void setExperiences(List<String> experiences) {
-        this.experiences = experiences.stream()
-                .map(experience -> new ExperienceDto(null, experience))
-                .toList();
-    }
-
     @JsonIgnore
     public List<String> getTechName() {
         return getTech().stream().map(TechViewDto::getName).toList();
-    }
-
-    @JsonIgnore
-    public List<String> getExperiencesName() {
-        return getExperiences().stream().map(ExperienceDto::getContent).toList();
     }
 }

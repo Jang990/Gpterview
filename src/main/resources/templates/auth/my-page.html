@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title th:text="|${account.username}님의 페이지|">사용자님 페이지</title>
+</head>
+<body>
+    <section th:object="${account}">
+        <div th:text="*{username}"></div>
+        <div th:text="${#temporals.format(createdBy, 'yyyy-MM-dd HH:mm ')}"></div>
+        <div th:text="*{category.category}"></div>
+        <div th:text="*{category.position}"></div>
+        <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
+        <div th:each="experience : *{experiences}">
+            <div th:object="${experience}">
+                <span th:text="*{id}">id</span> <span th:text="*{content}">내용</span>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

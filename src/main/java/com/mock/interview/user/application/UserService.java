@@ -38,8 +38,7 @@ public class UserService {
         if(!techs.isEmpty())
             usersTechLinker.lineUniqueTech(users, techs);
 
-        System.out.println(form);
-        for (String experience : form.getExperiencesName()) {
+        for (String experience : form.getExperiences()) {
             users.addExperience(experience);
         }
         userRepository.save(users);
