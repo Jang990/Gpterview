@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class InterviewQuestionWebPostController {
     private final QuestionSavingService questionSavingService;
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
+    private final TechnicalSubjectsService technicalSubjectsService;
 
     @GetMapping("question/form")
     public String questionSavePage(Model model) {
@@ -42,8 +44,29 @@ public class InterviewQuestionWebPostController {
             QuestionForm form, BindingResult bindingResult
     ) throws BindException {
         CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
-        List<Long> relatedTechIds = form.getTech().stream()
-                .map(TechViewDto::getId).toList();
+
+        List<Long> relatedTechIds = technicalSubjectsService.saveTechIfNotExist(form.getTech().stream().map(TechViewDto::getName).toList());
+        // TODO: Tech를 프론트에서 저장해서 들어오게 변경할 것.
+        /*List<Long> relatedTechIds = form.getTech().stream()
+                .map(TechViewDto::getId).toList();*/
         return "redirect:/question/" + questionSavingService.save(loginId, form, relatedTechIds);
+    }
+
+    @PostMapping("question/{questionId}/delete")
+    public String delete(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable("questionId") long questionId
+    ) {
+        questionSavingService.delete(loginId, questionId);
+        return "redirect:/question";
+    }
+
+    @PostMapping("question/{questionId}/edit")
+    public String edit(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable("questionId") long questionId
+    ) {
+        questionSavingService.delete(loginId, questionId);
+        return "redirect:/question";
     }
 }

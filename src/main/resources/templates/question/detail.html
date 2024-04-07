@@ -8,58 +8,38 @@
 <!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
 <body>
     <section>
-        <div class="container custom-container-width my-5">
-            <div class="main-body p-0">
-                <div class="inner-wrapper">
-                    <!-- Inner main -->
-                    <div class="inner-main">
-                        <!-- Inner main header -->
-                        <div class="inner-main-header">
-
-                        </div>
-                        <!-- /Inner main header -->
-
-                        <!-- Inner main body -->
-
-                        <!-- Forum List -->
-                        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
-                            <div class="card">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="card-body">
-                                            <div class="mb-3 ms-2">
-                                                <h4> 질문 정보 </h4>
-                                            </div>
-                                            <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=false)}">질문 정보</div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="card-body">
-                                            <div class="mb-3 ms-2">
-                                                <h4> 관련 질문 </h4>
-                                            </div>
-                                            <div th:replace="~{fragments/overviewList/child-question :: fragment-child-question-overview-list(questionId=${question.id},dataList=${childQuestion})}">꼬리 질문 top3</div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="card-body">
-                                            <div class="mb-3 ms-2">
-                                                <h4> 대답 정보 </h4>
-                                            </div>
-                                            <div th:replace="~{fragments/overviewList/answer-top3 :: fragment-answer-overview-list(questionId=${question.id},dataList=${answerTop3})}">질문 응답 top3</div>
-                                        </div>
-                                    </li>
-                                    <!--<li class="list-group-item">A third item</li>-->
-                                </ul>
-
-
+        <div class="my-3">
+            <div class="p-2 p-sm-3 collapse forum-content show">
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="card-body">
+                                <div class="mb-3 ms-2">
+                                    <h4> 질문 정보 </h4>
+                                </div>
+                                <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=false)}">질문 정보</div>
                             </div>
-                        </div>
-                        <!-- /Forum List -->
+                        </li>
+                        <li class="list-group-item">
+                            <div class="card-body">
+                                <div class="mb-3 ms-2">
+                                    <h4> 관련 질문 </h4>
+                                </div>
+                                <div th:replace="~{fragments/overviewList/child-question :: fragment-child-question-overview-list(questionId=${question.id},dataList=${childQuestion})}">꼬리 질문 top3</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="card-body">
+                                <div class="mb-3 ms-2">
+                                    <h4> 대답 정보 </h4>
+                                </div>
+                                <div th:replace="~{fragments/overviewList/answer-top3 :: fragment-answer-overview-list(questionId=${question.id},dataList=${answerTop3})}">질문 응답 top3</div>
+                            </div>
+                        </li>
+                        <!--<li class="list-group-item">A third item</li>-->
+                    </ul>
 
-                        <!-- /Inner main body -->
-                    </div>
-                    <!-- /Inner main -->
+
                 </div>
             </div>
         </div>

@@ -42,4 +42,11 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             WHERE iq.id = :questionId
             """)
     Optional<InterviewQuestion> findOpenQuestion(@Param("questionId") long questionId);
+
+    @Query("""
+            SELECT iq
+            FROM InterviewQuestion iq
+            WHERE iq.id = :questionId AND iq.owner.id = :userId
+            """)
+    Optional<InterviewQuestion> findUserQuestion(@Param("userId") long userId, @Param("questionId") long questionId);
 }

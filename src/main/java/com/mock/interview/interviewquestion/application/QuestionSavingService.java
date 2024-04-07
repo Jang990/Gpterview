@@ -8,6 +8,7 @@ import com.mock.interview.category.infra.JobPositionRepository;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
+import com.mock.interview.questionlike.domain.exception.QuestionLikeNotFoundException;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
@@ -40,12 +41,10 @@ public class QuestionSavingService {
         return question.getId();
     }
 
-    private JobCategory findMoreDetailCategory(Long category, Long field) {
-        if(field == null)
-            return jobCategoryRepository.findById(category)
-                .orElseThrow(JobCategoryNotFoundException::new);
-
-        return jobCategoryRepository.findById(field)
-                .orElseThrow(JobCategoryNotFoundException::new);
+    public void delete(long loginId, long questionId) {
+        System.out.println("loginId = " + loginId + ", questionId = " + questionId);
+        InterviewQuestion question = interviewQuestionRepository.findUserQuestion(loginId, questionId)
+                .orElseThrow(QuestionLikeNotFoundException::new);
+        interviewQuestionRepository.delete(question);
     }
 }
