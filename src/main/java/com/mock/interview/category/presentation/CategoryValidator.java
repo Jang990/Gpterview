@@ -5,7 +5,10 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-public abstract class CategoryValidator {
+public final class CategoryValidator {
+
+    private CategoryValidator() {}
+
     public static void validate(BindingResult bindingResult, JobCategorySelectedIds categorySelectedIds) throws BindException {
         if (bindingResult.hasErrors()) {
             throw new BindException(bindingResult);
