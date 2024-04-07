@@ -50,8 +50,8 @@ public class Users {
         return user;
     }
 
-    public void addExperience(Experience experience) {
-        this.experiences.add(experience);
+    public void addExperience(String experience) {
+        this.experiences.add(Experience.create(this, experience));
     }
 
     public void linkTech(List<TechnicalSubjects> techList) {

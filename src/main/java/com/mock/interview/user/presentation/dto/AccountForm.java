@@ -2,6 +2,7 @@ package com.mock.interview.user.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
+import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.*;
 
@@ -20,7 +21,9 @@ public class AccountForm {
     private JobCategorySelectedIds categories = new JobCategorySelectedIds();
 
     private List<TechViewDto> tech;
-    private List<String> experiences;
+
+    @Setter(AccessLevel.NONE)
+    private List<ExperienceDto> experiences;
 
     public String getPassword() {return account.getPassword();}
     public String getUsername() {return account.getUsername();}
@@ -36,8 +39,19 @@ public class AccountForm {
         this.tech = TechViewDto.convert(techString);
     }
 
+    public void setExperiences(List<String> experiences) {
+        this.experiences = experiences.stream()
+                .map(experience -> new ExperienceDto(null, experience))
+                .toList();
+    }
+
     @JsonIgnore
     public List<String> getTechName() {
         return getTech().stream().map(TechViewDto::getName).toList();
+    }
+
+    @JsonIgnore
+    public List<String> getExperiencesName() {
+        return getExperiences().stream().map(ExperienceDto::getContent).toList();
     }
 }

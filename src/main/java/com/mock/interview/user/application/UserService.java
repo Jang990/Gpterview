@@ -9,6 +9,7 @@ import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
 import com.mock.interview.user.domain.UsersTechLinker;
+import com.mock.interview.user.domain.model.Experience;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
 import com.mock.interview.user.presentation.dto.AccountForm;
@@ -33,7 +34,14 @@ public class UserService {
     public void create(AccountForm form, List<Long> relatedTechIds) {
         List<TechnicalSubjects> techs = technicalSubjectsRepository.findAllById(relatedTechIds);
         Users users = Users.createUser(form.getUsername(), passwordEncoder.encode(form.getPassword()));
-        usersTechLinker.lineUniqueTech(users, techs);
+
+        if(!techs.isEmpty())
+            usersTechLinker.lineUniqueTech(users, techs);
+
+        System.out.println(form);
+        for (String experience : form.getExperiencesName()) {
+            users.addExperience(experience);
+        }
         userRepository.save(users);
 
         if (hasPosition(form)) {
