@@ -1,11 +1,16 @@
 package com.mock.interview.interview.presentation.web;
 
+import com.mock.interview.category.application.JobCategoryService;
+import com.mock.interview.category.application.JobPositionService;
+import com.mock.interview.category.presentation.CategoryViewer;
+import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
 import com.mock.interview.interviewquestion.application.QuestionRecommendationService;
+import com.mock.interview.user.infrastructure.UserRepositoryForView;
 import com.mock.interview.user.presentation.InfoPageInitializer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +35,9 @@ public class InterviewController {
 
     private final InterviewConversationRepositoryForView conversationRepositoryForView;
     private final QuestionRecommendationService questionRecommendationService;
+    private final UserRepositoryForView userRepositoryForView;
+    private final JobCategoryService categoryService;
+    private final JobPositionService positionService;
 
     @GetMapping("/interview/{interviewId}")
     public String interviewPage(
@@ -62,6 +70,10 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("interviewDetails", new InterviewConfigForm());
+
+        InterviewAccountForm accountForm = userRepositoryForView.findUserInterviewForm(loginId);
+        model.addAttribute("interviewAccount", accountForm);
+        CategoryViewer.initInterviewFormPage(model, accountForm.getCategoryId(), categoryService, positionService);
         return "interview/form";
     }
 
@@ -73,6 +85,7 @@ public class InterviewController {
     ) {
         // TODO: 임시코드
         InfoPageInitializer.initInterviewInfoPage(model, "면접 만료 성공", "진행중인 면접을 성공적으로 만료시켰습니다.", "/");
+
         return "/info/info";
     }
 

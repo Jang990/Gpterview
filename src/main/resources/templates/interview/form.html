@@ -3,20 +3,29 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
 <head>
-  <title>인터뷰 개인 설정</title>
+  <title>모의 면접 설정</title>
 </head>
 <body>
     <section>
-        <div class="container custom-container-width">
-            <form action="/interview" method="POST">
-                <div class="ms-3 my-3">
+        <div style="width=400px;">
+            <div class="d-flex flex-column my-3">
+                <div class="ps-3">
                     <h4 class="ps-3 py-3 fw-normal">면접 설정</h4>
                 </div>
-                <div class="mb-3 row" th:object="${interviewDetails}">
-                    <div th:replace="~{fragments/form/interview-config :: fragment-interview-config(selectedMinutes=*{durationMinutes},selectedType=*{interviewType})}">인터뷰 설정 부분</div>
+                <div>
+                    <form action="/interview" method="POST">
+                        <div class="mb-3 row" th:object="${interviewDetails}">
+                            <div th:replace="~{fragments/form/interview-config :: fragment-interview-config(selectedMinutes=*{durationMinutes},selectedType=*{interviewType})}">인터뷰 설정 부분</div>
+                        </div>
+                        <div th:object="${interviewAccount}">
+                            <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=*{categoryId},selectedPositionId=*{positionId},categoryList=${categoryList},positionList=${positionList})}">분야, 직무 카테고리 선택 구역</div>
+                            <script th:src="@{/js/CategoryRelatedTech.js}" href="../js/CategoryRelatedTech.js"></script>
+                            <div class="mb-3"th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
+                        </div>
+                        <input type="submit" class="btn btn-primary" value="면접 시작">
+                    </form>
                 </div>
-                <input type="submit" class="btn btn-primary" value="면접 시작">
-            </form>
+            </div>
         </div>
     </section>
 </body>
