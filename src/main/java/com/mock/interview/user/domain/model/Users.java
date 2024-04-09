@@ -2,7 +2,7 @@ package com.mock.interview.user.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
-import com.mock.interview.global.auditing.BaseEntity;
+import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -17,7 +17,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Users extends BaseEntity {
+public class Users extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
