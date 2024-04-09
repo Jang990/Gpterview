@@ -1,5 +1,6 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.domain.InterviewStarter;
@@ -87,5 +88,11 @@ public class InterviewService {
 
     private InterviewResponse convert(Interview activeInterview) {
         return new InterviewResponse(activeInterview.getId(), activeInterview.getTitle().getTitle());
+    }
+
+    public void expireInterview(long loginId, long interviewId) {
+        Interview interview = repository.findByIdAndUserId(interviewId, loginId)
+                .orElseThrow(InterviewNotFoundException::new);
+        interview.expire();
     }
 }

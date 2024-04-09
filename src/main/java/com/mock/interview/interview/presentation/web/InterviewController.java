@@ -1,13 +1,13 @@
 package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
-import com.mock.interview.interview.application.InterviewService;
-import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
 import com.mock.interview.interviewquestion.application.QuestionRecommendationService;
+import com.mock.interview.user.presentation.InfoPageInitializer;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -29,20 +28,8 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 public class InterviewController {
 
-    private final InterviewService interviewService;
     private final InterviewConversationRepositoryForView conversationRepositoryForView;
     private final QuestionRecommendationService questionRecommendationService;
-
-
-    @PostMapping("/interview")
-    public String startInterviewRequest(
-            InterviewConfigForm interviewConfigForm,
-            @AuthenticationPrincipal(expression = "id") Long loginId, Model model
-    ) {
-        InterviewStartingDto interviewStartingDto = interviewService.createCustomInterview(loginId, interviewConfigForm);
-        model.addAttribute("lastConversationPair", interviewStartingDto.getPair());
-        return "redirect:/interview/" + interviewStartingDto.getInterviewId();
-    }
 
     @GetMapping("/interview/{interviewId}")
     public String interviewPage(
@@ -77,4 +64,16 @@ public class InterviewController {
         model.addAttribute("interviewDetails", new InterviewConfigForm());
         return "interview/form";
     }
+
+    @GetMapping("/interview/{interviewId}/expiration/result")
+    public String expireInterview(
+            Model model,
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable("interviewId") long interviewId
+    ) {
+        // TODO: 임시코드
+        InfoPageInitializer.initInterviewInfoPage(model, "면접 만료 성공", "진행중인 면접을 성공적으로 만료시켰습니다.", "/");
+        return "/info/info";
+    }
+
 }

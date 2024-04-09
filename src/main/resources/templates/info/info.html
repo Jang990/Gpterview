@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+
+<head>
+  <title th:text="${info.title}">정보창</title>
+</head>
+<body>
+<section class="d-flex justify-content-center my-5">
+  <div th:object="${info}" style="width: 400px;">
+    <h2 class="mb-5 text-center" th:text="*{title}">회원가입</h2>
+    <div class="text-center" th:text="*{description}"></div>
+    <a class="btn btn-secondary btn-block my-5 col-12" th:href="*{redirectLinkUrl}">돌아가기</a>
+  </div>
+</section>
+</body>
+</html>

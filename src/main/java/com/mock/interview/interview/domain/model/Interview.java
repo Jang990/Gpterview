@@ -118,7 +118,6 @@ public class Interview extends BaseTimeEntity {
         interview.title = new InterviewTitle(category.getName(), position.getName());
     }
 
-    // TODO: 사용자가 면접을 강제 종료할 수 있게 만들어야 함.
     public void expire() {
         if(isTimeout())
             throw new IsAlreadyTimeoutInterviewException();
