@@ -1,9 +1,16 @@
 package com.mock.interview.interviewquestion.infra.ai;
 
 import com.mock.interview.category.infra.CategoryModuleFinder;
+import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
+import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
+import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
+import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
+import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.domain.model.QuestionType;
+import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
@@ -17,6 +24,10 @@ import com.mock.interview.interviewquestion.infra.ai.prompt.AiPrompt;
 import com.mock.interview.interviewquestion.infra.ai.prompt.PromptCreator;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator.InterviewPromptConfigurator;
+import com.mock.interview.tech.application.TechSavingHelper;
+import com.mock.interview.tech.domain.model.TechnicalSubjects;
+import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
+import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +39,29 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
     private final InterviewCacheForAiRequest interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
 
+    private final InterviewRepository repository;
+    private final InterviewQuestionRepository questionRepository;
+    private final TechnicalSubjectsRepository technicalSubjectsRepository;
+
     private final List<InterviewPromptConfigurator> interviewPromptConfiguratorList;
     private final AIRequester requester;
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
 
+    public InterviewQuestion createQuestion(long interviewId, CreationOption creationOption) {
+        RecommendedQuestion recommendedQuestion = create(interviewId, creationOption);
+        Interview interview = repository.findById(interviewId)
+                .orElseThrow(InterviewNotFoundException::new);
+        List<TechnicalSubjects> relatedTechList = TechSavingHelper
+                .saveTechIfNotExist(technicalSubjectsRepository, recommendedQuestion.topic());
+
+        InterviewQuestion question = createQuestion(interview, recommendedQuestion);
+        question.linkJob(interview.getCategory(), interview.getPosition());
+        question.linkTech(relatedTechList);
+        return question;
+    }
+
+    // TODO: 제거할 것
     public RecommendedQuestion create(long interviewId, CreationOption creationOption) {
         InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
         MessageHistory history = conversationCache.findCurrentConversation(interviewId);
@@ -71,5 +100,15 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         InterviewPromptConfigurator configurator = CategoryModuleFinder
                 .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category());
         return configurator.configStrategy(requester, interviewInfo.profile(), progress);
+    }
+
+    private InterviewQuestion createQuestion(Interview interview, RecommendedQuestion recommendedQuestion) {
+        Users users = interview.getUsers();
+        String content = recommendedQuestion.question();
+        QuestionType type = QuestionConvertor.convert(recommendedQuestion.progress().phase());
+        return InterviewQuestion.create(
+                questionRepository, content, users,
+                type, recommendedQuestion.createdBy()
+        );
     }
 }

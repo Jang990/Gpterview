@@ -4,6 +4,7 @@ import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
 import com.mock.interview.interviewconversationpair.application.LastConversationHelper;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.infra.ai.progress.TraceResult;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /** 변경이 있을 때 같이 볼 것
  * @see com.mock.interview.interviewquestion.infra.cache.RecommendationCacheAspect
@@ -47,24 +49,31 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     private final int TOP_3 = 3;
 
     @Override
-    public Top3Question recommendTop3(RecommendationTarget target) {
+    public List<InterviewQuestion> recommend(int recommendationSize, RecommendationTarget target) {
         InterviewInfo interview = interviewCache.findAiInterviewSetting(target.interviewId());
+        TraceResult traceResult = topicTracker.trace(interview);
         InterviewConversationPair targetConversation = LastConversationHelper
                 .findLastConversation(conversationPairRepository, target.interviewId());
         List<QuestionMetaData> questionForRecommend = questionRepository
                 .findRandomQuestion(interview.profile().category(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
                 .stream().map(this::convertQuestion).toList();
 
-        TraceResult traceResult = topicTracker.trace(interview);
+        CurrentConversation currentConversation = createCurrentConversation(interview, targetConversation, traceResult.topic());
 
         try {
             List<Long> result = recommender
-                    .recommendTechQuestion(TOP_3, createCurrentConversation(interview, targetConversation, traceResult.topic()), questionForRecommend);
-            return new Top3Question(result);
+                    .recommendTechQuestion(recommendationSize, currentConversation, questionForRecommend);
+            return result.stream().map(questionRepository::findById).map(op -> op.orElseThrow(InterviewQuestionNotFoundException::new)).toList();
         } catch (NotEnoughQuestion e) {
             log.warn("추천 기능 예외 발생", e);
             throw new IllegalArgumentException(e);
         }
+    }
+
+    @Override
+    public Top3Question recommendTop3(RecommendationTarget target) {
+        List<InterviewQuestion> recommended = recommend(TOP_3, target);
+        return new Top3Question(recommended.stream().map(InterviewQuestion::getId).toList());
     }
 
     @Override

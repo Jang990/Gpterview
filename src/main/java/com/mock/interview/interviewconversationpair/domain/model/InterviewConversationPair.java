@@ -50,6 +50,16 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
     }
 
+    // TODO: 임시 메소드명 - 통합할 것
+    public void connectQuestionTemp(InterviewQuestion question) {
+        if(status != PairStatus.WAITING_QUESTION)
+            throw new IllegalStateException();
+
+        this.question = question;
+        status = PairStatus.WAITING_ANSWER;
+        Events.raise(new QuestionConnectedEvent(interview.getId(), this.getId(), question.getId()));
+    }
+
     public void recommendAiQuestion() {
         if(status != PairStatus.START && status != PairStatus.RECOMMENDING)
             throw new IllegalStateException();
