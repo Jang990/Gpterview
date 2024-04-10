@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
+import com.mock.interview.interviewconversationpair.application.LastConversationHelper;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.infra.ai.progress.TraceResult;
@@ -35,7 +36,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionRecommenderImpl implements QuestionRecommender {
 
-    private final Pageable LIMIT_ONE = PageRequest.of(0, 1);
     private final InterviewCacheForAiRequest interviewCache;
     private final InterviewQuestionRepository questionRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
@@ -49,7 +49,8 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     @Override
     public Top3Question recommendTop3(RecommendationTarget target) {
         InterviewInfo interview = interviewCache.findAiInterviewSetting(target.interviewId());
-        InterviewConversationPair targetConversation = getLastConversation(target.interviewId());
+        InterviewConversationPair targetConversation = LastConversationHelper
+                .findLastConversation(conversationPairRepository, target.interviewId());
         List<QuestionMetaData> questionForRecommend = questionRepository
                 .findRandomQuestion(interview.profile().category(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
                 .stream().map(this::convertQuestion).toList();
@@ -95,12 +96,5 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
 
     private List<String> convertTechLink(InterviewQuestion q) {
         return q.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).map(TechnicalSubjects::getName).toList();
-    }
-
-    private InterviewConversationPair getLastConversation(long interviewId) {
-        List<InterviewConversationPair> lastCompletedConversation = conversationPairRepository.findLastCompletedConversation(interviewId, LIMIT_ONE);
-        if(lastCompletedConversation.isEmpty())
-            return null;
-        return lastCompletedConversation.get(0);
     }
 }
