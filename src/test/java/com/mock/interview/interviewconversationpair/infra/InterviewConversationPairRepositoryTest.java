@@ -5,14 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 
-//@SpringBootTest
+@SpringBootTest
 class InterviewConversationPairRepositoryTest {
 
     @Autowired InterviewConversationPairRepository repository;
 
+    final PageRequest LAST = PageRequest.of(0, 1);
+
 //    @Test
     void test1() {
-        System.out.println(repository.findLastCompletedConversation(0L, PageRequest.of(0, 1)));
+        System.out.println(repository.findLastCompletedConversation(0L, LAST));
     }
 
 //    @Test
@@ -25,4 +27,8 @@ class InterviewConversationPairRepositoryTest {
         System.out.println(repository.findByIdWithInterviewId(67, 154).isPresent());
     }
 
+    @Test
+    void test4() {
+        System.out.println(repository.findLastCompletedConversation(7, 125, LAST).get(0).getId());
+    }
 }

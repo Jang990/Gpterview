@@ -42,6 +42,15 @@ public interface InterviewConversationPairRepository extends JpaRepository<Inter
             """)
     List<InterviewConversationPair> findLastCompletedConversation(@Param("interviewId") long interviewId, Pageable pageable);
 
+    @Query(value = """
+            SELECT icp FROM InterviewConversationPair icp
+            JOIN FETCH icp.question
+            JOIN FETCH icp.answer
+            WHERE icp.interview.id = :interviewId AND icp.interview.users.id = :userId AND icp.status = 'COMPLETED'
+            ORDER BY icp.createdAt DESC
+            """)
+    List<InterviewConversationPair> findLastCompletedConversation(@Param("userId") long userId, @Param("interviewId") long interviewId, Pageable pageable);
+
     @Query("""
             SELECT icp FROM InterviewConversationPair icp
             JOIN FETCH icp.question

@@ -17,6 +17,12 @@ public final class LastConversationHelper {
         if(lastCompletedConversation.isEmpty())
             throw new IllegalArgumentException();
         return lastCompletedConversation.get(0);
+    }
 
+    public static InterviewConversationPair findLastConversation(InterviewConversationPairRepository repository, long userId, long interviewId) {
+        List<InterviewConversationPair> lastCompletedConversation = repository.findLastCompletedConversation(userId, interviewId, LIMIT_ONE);
+        if(lastCompletedConversation.isEmpty())
+            throw new IllegalArgumentException();
+        return lastCompletedConversation.get(0);
     }
 }
