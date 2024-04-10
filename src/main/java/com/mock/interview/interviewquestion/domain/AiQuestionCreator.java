@@ -1,8 +1,11 @@
 package com.mock.interview.interviewquestion.domain;
 
-import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 
 public interface AiQuestionCreator {
-    InterviewQuestion create(long interviewId);
-    InterviewQuestion changeTopic(long interviewId);
+    enum CreationOption {
+        NORMAL, CHANGING_TOPIC
+    }
+
+    RecommendedQuestion create(long interviewId, CreationOption creationOption);
 }
