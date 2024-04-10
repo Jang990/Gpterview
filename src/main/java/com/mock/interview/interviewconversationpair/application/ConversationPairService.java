@@ -30,6 +30,6 @@ public class ConversationPairService {
         InterviewConversationPair conversationPair = conversationPairRepository.findWithInterviewUser(pairId, interviewId, loginId)
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
-        conversationPair.recommendAnotherQuestions();
+        conversationPair.requestAnotherQuestion();
     }
 }

@@ -42,93 +42,62 @@ public class InterviewConversationPair extends BaseTimeEntity {
         return conversationPair;
     }
 
-    public void waitQuestion() {
-        if(status != PairStatus.START)
+    private void waitQuestion() {
+        if(status == PairStatus.COMPLETED)
             throw new IllegalStateException();
 
         status = PairStatus.WAITING_QUESTION;
+    }
+
+    public void startConversation() {
+        if(status != PairStatus.START)
+            throw new IllegalStateException();
+
+        waitQuestion();
         Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
     }
 
-    // TODO: 임시 메소드명 - 통합할 것
-    public void connectQuestionTemp(InterviewQuestion question) {
+    public void changeTopic() {
+        requireQuestion();
+        waitQuestion();
+        Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.id));
+    }
+
+    public void requestAi() {
+        requireQuestion();
+        waitQuestion();
+        Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
+    }
+
+    public void requestAnotherQuestion() {
+        requireQuestion();
+        waitQuestion();
+        Events.raise(new AnotherQuestionRecommendedEvent(interview.getId(), this.id));
+    }
+
+    public void connectQuestion(InterviewQuestion question) {
         if(status != PairStatus.WAITING_QUESTION)
             throw new IllegalStateException();
 
         this.question = question;
         status = PairStatus.WAITING_ANSWER;
-        Events.raise(new QuestionConnectedEvent(interview.getId(), this.getId(), question.getId()));
-    }
-
-    public void recommendAiQuestion() {
-        if(status != PairStatus.START && status != PairStatus.RECOMMENDING)
-            throw new IllegalStateException();
-        status = PairStatus.WAITING_AI;
-        Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
-    }
-
-    public void recommendExistingQuestion() {
-        if(status != PairStatus.START)
-            throw new IllegalStateException();
-
-        status = PairStatus.RECOMMENDING;
-        Events.raise(new ExistingQuestionRecommendedEvent(interview.getId(), this.id));
-    }
-
-    public void recommendAnotherQuestions() {
-        if(status != PairStatus.RECOMMENDING)
-            throw new IllegalStateException();
-
-        Events.raise(new AnotherQuestionRecommendedEvent(interview.getId(), this.id));
-    }
-
-
-    public void connectAiQuestion(InterviewQuestion question) {
-        if(status != PairStatus.WAITING_AI)
-            throw new IllegalStateException();
-
-        this.question = question;
-        status = PairStatus.WAITING_ANSWER;
-        Events.raise(new QuestionConnectedEvent(interview.getId(), this.getId(), question.getId()));
-    }
-
-    public void connectQuestion(InterviewQuestion question) {
-        if(status != PairStatus.RECOMMENDING)
-            throw new IllegalStateException();
-
-        this.question = question;
-        status = PairStatus.WAITING_ANSWER;
+        Events.raise(new QuestionConnectedEvent(interview.getId(), this.id, question.getId()));
     }
 
     public void answerQuestion(InterviewAnswer answer) {
-        verifyWaitingAnswer();
+        verifyWaitingAnswerStatus();
 
         this.answer = answer;
         this.status = PairStatus.COMPLETED;
         Events.raise(new ConversationCompletedEvent(interview.getId()));
     }
 
-    public void changeTopic(InterviewQuestion question) {
-        if(status != PairStatus.CHANGING)
+    private void requireQuestion() {
+        if(status != PairStatus.WAITING_ANSWER || question == null)
             throw new IllegalStateException();
-
-        this.question = question;
-        this.status = PairStatus.WAITING_ANSWER;
-        Events.raise(new QuestionConnectedEvent(interview.getId(), id, question.getId()));
     }
 
-    // TODO: 디폴트 접근 제어자로 수정할 것
-    public void changeStatusToChangeTopic() {
-        verifyWaitingAnswer();
-        status = PairStatus.CHANGING;
-        Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.getId()));
-    }
-
-    public boolean isRecommendationDeniedState() {
-        return status != PairStatus.RECOMMENDING;
-    }
-
-    private void verifyWaitingAnswer() {
+    private void verifyWaitingAnswerStatus() {
         if(status != PairStatus.WAITING_ANSWER)
             throw new IllegalStateException();
     }

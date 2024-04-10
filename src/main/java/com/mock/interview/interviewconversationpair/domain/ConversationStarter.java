@@ -13,7 +13,7 @@ public class ConversationStarter {
     ) {
         InterviewConversationPair conversationPair = InterviewConversationPair.create(interview);
         repository.save(conversationPair);
-        conversationPair.waitQuestion();
+        conversationPair.startConversation();
         return conversationPair;
     }
 }

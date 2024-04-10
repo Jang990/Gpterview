@@ -21,13 +21,6 @@ public class ExistingQuestionRecommendedEventHandler {
     private final QuestionRecommender questionRecommender;
     private final QuestionRecommendedService questionRecommendedService;
 
-    @EventListener(ExistingQuestionRecommendedEvent.class)
-    public void handle(ExistingQuestionRecommendedEvent event) {
-        InterviewConversationPair pair = interviewConversationPairRepository.findByIdWithInterviewId(event.pairId(), event.interviewId())
-                .orElseThrow(InterviewConversationPairNotFoundException::new);
-        questionRecommendedService.recommendQuestion(questionRecommender, pair);
-    }
-
     @EventListener(AnotherQuestionRecommendedEvent.class)
     public void handle(AnotherQuestionRecommendedEvent event) {
         InterviewConversationPair pair = interviewConversationPairRepository.findByIdWithInterviewId(event.pairId(), event.interviewId())

@@ -18,9 +18,6 @@ public class QuestionRecommendedService {
             QuestionRecommender questionRecommender,
             InterviewConversationPair pair
     ) {
-        if(pair.isRecommendationDeniedState())
-            throw new IllegalStateException();
-
         long interviewId = pair.getInterview().getId();
         long pairId = pair.getId();
         try {
@@ -35,9 +32,6 @@ public class QuestionRecommendedService {
             QuestionRecommender questionRecommender,
             InterviewConversationPair pair
     ) {
-        if(pair.isRecommendationDeniedState())
-            throw new IllegalStateException();
-
         long interviewId = pair.getInterview().getId();
         long pairId = pair.getId();
         try {
