@@ -7,22 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ConversationStarter {
-    private final int MIN_RECOMMENDED_SIZE = 50;
     public InterviewConversationPair start(
             InterviewConversationPairRepository repository,
-            Interview interview, long relationCategoryQuestionSize
+            Interview interview
     ) {
         InterviewConversationPair conversationPair = InterviewConversationPair.create(interview);
         repository.save(conversationPair);
-        selectConversationType(relationCategoryQuestionSize, conversationPair);
-
+        conversationPair.waitQuestion();
         return conversationPair;
-    }
-
-    private void selectConversationType(long relationCategoryQuestionSize, InterviewConversationPair conversationPair) {
-        if(relationCategoryQuestionSize < MIN_RECOMMENDED_SIZE)
-            conversationPair.recommendAiQuestion();
-        else
-            conversationPair.recommendExistingQuestion();
     }
 }

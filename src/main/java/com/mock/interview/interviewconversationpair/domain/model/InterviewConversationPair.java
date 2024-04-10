@@ -42,6 +42,14 @@ public class InterviewConversationPair extends BaseTimeEntity {
         return conversationPair;
     }
 
+    public void waitQuestion() {
+        if(status != PairStatus.START)
+            throw new IllegalStateException();
+
+        status = PairStatus.WAITING_QUESTION;
+        Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
+    }
+
     public void recommendAiQuestion() {
         if(status != PairStatus.START && status != PairStatus.RECOMMENDING)
             throw new IllegalStateException();

@@ -59,7 +59,7 @@ public class InterviewService {
         interview.linkTech(relatedInterviewTech);
         repository.save(interview);
 
-        InterviewConversationPair conversationPair = startConversation(interview, users.getCategory());
+        InterviewConversationPair conversationPair = conversationStarter.start(pairRepository, interview);
         return convert(interview, conversationPair);
     }
 
@@ -70,11 +70,6 @@ public class InterviewService {
 
     private static InterviewStartingDto convert(Interview interview, InterviewConversationPair conversationPair) {
         return new InterviewStartingDto(interview.getId(), new InterviewConversationPairDto(conversationPair.getId(), conversationPair.getStatus()));
-    }
-
-    private InterviewConversationPair startConversation(Interview interview, JobCategory category) {
-        long questionCount = interviewQuestionRepository.countCategoryQuestion(category.getName());
-        return conversationStarter.start(pairRepository, interview, questionCount);
     }
 
     @Transactional(readOnly = true)

@@ -17,16 +17,13 @@ import org.springframework.stereotype.Service;
 public class InterviewContinuedEventHandler {
     private final InterviewConversationPairRepository interviewConversationPairRepository;
     private final InterviewRepository interviewRepository;
-    private final InterviewQuestionRepository interviewQuestionRepository;
     private final ConversationStarter conversationStarter;
 
     @EventListener(InterviewContinuedEvent.class)
     public void handle(InterviewContinuedEvent event) {
         Interview interview = interviewRepository.findById(event.interviewId())
                 .orElseThrow(InterviewNotFoundException::new);
-        JobCategory category = interview.getCategory();
 
-        long questionCount = interviewQuestionRepository.countCategoryQuestion(category.getName());
-        conversationStarter.start(interviewConversationPairRepository, interview, questionCount);
+        conversationStarter.start(interviewConversationPairRepository, interview);
     }
 }

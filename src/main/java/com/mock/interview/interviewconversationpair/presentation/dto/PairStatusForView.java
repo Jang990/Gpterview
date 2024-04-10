@@ -9,7 +9,7 @@ public enum PairStatusForView {
         return switch (status) {
             case START -> START;
             case RECOMMENDING -> RECOMMENDING;
-            case WAITING_AI, CHANGING -> WAITING_AI;
+            case WAITING_AI, CHANGING, WAITING_QUESTION -> WAITING_AI;
             case WAITING_ANSWER -> WAITING_ANSWER;
             case COMPLETED -> COMPLETED;
         };
