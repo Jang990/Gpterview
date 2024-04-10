@@ -2,8 +2,8 @@ package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interviewconversationpair.domain.event.AiQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
+import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
-import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
@@ -29,8 +29,6 @@ import java.util.List;
 public class QuestionEventHandler {
     private final AiQuestionCreator aiQuestionCreator;
     private final InterviewRepository interviewRepository;
-    private final InterviewCacheForAiRequest interviewCache;
-    private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final AiQuestionCreationService aiQuestionCreationService;
@@ -44,7 +42,7 @@ public class QuestionEventHandler {
     )
     public void handle(AiQuestionRecommendedEvent event) {
         long interviewId = event.interviewId();
-        RecommendedQuestion question = AiQuestionHelper.createQuestion(aiQuestionCreator, interviewCache, conversationCache, interviewId);
+        RecommendedQuestion question = aiQuestionCreator.create(interviewId, AiQuestionCreator.CreationOption.NORMAL);
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, question.topic());

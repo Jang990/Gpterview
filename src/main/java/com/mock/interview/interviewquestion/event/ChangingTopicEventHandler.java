@@ -1,17 +1,15 @@
 package com.mock.interview.interviewquestion.event;
 
-import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreationService;
-import com.mock.interview.interviewquestion.infra.ai.AiQuestionCreator;
 import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interviewconversationpair.domain.event.StatusChangedToChangingEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
 import com.mock.interview.tech.application.TechSavingHelper;
@@ -33,8 +31,6 @@ public class ChangingTopicEventHandler {
     private final AiQuestionCreator aiQuestionCreator;
     private final InterviewRepository interviewRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
-    private final InterviewCacheForAiRequest interviewCache;
-    private final ConversationCacheForAiRequest conversationCache;
     private final InterviewQuestionRepository questionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final AiQuestionCreationService aiQuestionCreationService;
@@ -51,7 +47,7 @@ public class ChangingTopicEventHandler {
         InterviewConversationPair conversationPair = conversationPairRepository.findById(event.pairId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
-        RecommendedQuestion recommendedQuestion = AiQuestionHelper.changeTopic(aiQuestionCreator, interviewCache, conversationCache, event.interviewId());
+        RecommendedQuestion recommendedQuestion = aiQuestionCreator.create(event.interviewId(), AiQuestionCreator.CreationOption.CHANGING_TOPIC);
         saveQuestion(interviewId, recommendedQuestion, conversationPair);
     }
 
