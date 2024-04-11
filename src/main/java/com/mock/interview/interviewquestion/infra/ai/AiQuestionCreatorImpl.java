@@ -48,8 +48,9 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
     private final InterviewProgressTimeBasedTracker progressTracker;
     private final PromptCreator promptCreator;
 
-    public InterviewQuestion createQuestion(long interviewId, CreationOption creationOption) {
-        RecommendedQuestion recommendedQuestion = create(interviewId, creationOption);
+    @Override
+    public InterviewQuestion create(long interviewId, CreationOption creationOption) {
+        RecommendedQuestion recommendedQuestion = createAiQuestion(interviewId, creationOption);
         Interview interview = repository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         List<TechnicalSubjects> relatedTechList = TechSavingHelper
@@ -61,8 +62,8 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         return question;
     }
 
-    // TODO: 제거할 것
-    public RecommendedQuestion create(long interviewId, CreationOption creationOption) {
+    // TODO: RecommendedQuestion 제거하고 다른 DTO 사용할 것
+    private RecommendedQuestion createAiQuestion(long interviewId, CreationOption creationOption) {
         InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
         MessageHistory history = conversationCache.findCurrentConversation(interviewId);
 

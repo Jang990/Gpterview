@@ -22,7 +22,7 @@ public class ConversationQuestionSelector {
             RecommendationTarget target = new RecommendationTarget(interviewId, pair.getId());
             question = recommender.recommend(SINGLE, target).get(FIRST_IDX);
         } else {
-            question = aiCreator.createQuestion(interviewId, AiQuestionCreator.selectCreationOption(pair));
+            question = aiCreator.create(interviewId, AiQuestionCreator.selectCreationOption(pair));
         }
 
         Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
