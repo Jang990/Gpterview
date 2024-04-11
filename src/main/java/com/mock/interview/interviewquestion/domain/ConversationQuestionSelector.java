@@ -1,13 +1,12 @@
 package com.mock.interview.interviewquestion.domain;
 
 import com.mock.interview.global.Events;
+import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewquestion.domain.event.ConversationQuestionCreatedEvent;
-import com.mock.interview.interviewquestion.domain.event.QuestionRecommendedEvent;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class ConversationQuestionSelector {
@@ -16,17 +15,17 @@ public class ConversationQuestionSelector {
     private final int FIRST_IDX = 0;
     public void select(
             AiQuestionCreator aiCreator, QuestionRecommender recommender,
-            long relatedCategoryQuestionSize, long interviewId, long pairId
+            long relatedCategoryQuestionSize, long interviewId, InterviewConversationPair pair
     ) {
         InterviewQuestion question;
         if (hasEnoughQuestion(relatedCategoryQuestionSize)) {
-            RecommendationTarget target = new RecommendationTarget(interviewId, pairId);
+            RecommendationTarget target = new RecommendationTarget(interviewId, pair.getId());
             question = recommender.recommend(SINGLE, target).get(FIRST_IDX);
         } else {
-            question = aiCreator.createQuestion(interviewId, AiQuestionCreator.CreationOption.NORMAL);
+            question = aiCreator.createQuestion(interviewId, AiQuestionCreator.selectCreationOption(pair));
         }
 
-        Events.raise(new ConversationQuestionCreatedEvent(pairId, question.getId()));
+        Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
     }
 
     private boolean hasEnoughQuestion(long relatedCategoryQuestionSize) {

@@ -10,7 +10,7 @@ public class PairAiStatusService {
     public void changeTopic(Interview interview, InterviewConversationPair conversationPair) {
         verifyActiveInterview(interview);
 
-        conversationPair.changeTopic();
+        conversationPair.requestAnotherQuestion();
     }
 
     public void changeRecommendationToAi(Interview interview, InterviewConversationPair conversationPair) {

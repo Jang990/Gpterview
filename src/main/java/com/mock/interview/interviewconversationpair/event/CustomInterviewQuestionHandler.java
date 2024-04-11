@@ -10,7 +10,6 @@ import com.mock.interview.interviewconversationpair.infra.InterviewConversationP
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.event.ConversationQuestionCreatedEvent;
-import com.mock.interview.interviewquestion.domain.model.TopicChangedQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -26,16 +25,6 @@ public class CustomInterviewQuestionHandler {
     @EventListener(ConversationQuestionCreatedEvent.class)
     public void handle(ConversationQuestionCreatedEvent event) {
         InterviewConversationPair conversationPair = interviewConversationPairRepository.findById(event.conversationId())
-                .orElseThrow(InterviewConversationPairNotFoundException::new);
-        InterviewQuestion question = interviewQuestionRepository.findById(event.questionId())
-                .orElseThrow(InterviewQuestionNotFoundException::new);
-
-        conversationPair.connectQuestion(question);
-    }
-
-    @EventListener(TopicChangedQuestionCreatedEvent.class)
-    public void handle(TopicChangedQuestionCreatedEvent event) {
-        InterviewConversationPair conversationPair = interviewConversationPairRepository.findById(event.pairId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
         InterviewQuestion question = interviewQuestionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);

@@ -57,12 +57,6 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
     }
 
-    public void changeTopic() {
-        verifyHasQuestionStatus();
-        waitQuestion();
-        Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.id));
-    }
-
     public void requestAi() {
         verifyHasQuestionStatus();
         waitQuestion();
@@ -91,6 +85,10 @@ public class InterviewConversationPair extends BaseTimeEntity {
         this.answer = answer;
         this.status = PairStatus.COMPLETED;
         Events.raise(new ConversationCompletedEvent(interview.getId()));
+    }
+
+    public boolean isChangeTopicStatus() {
+        return status == PairStatus.WAITING_QUESTION && question != null;
     }
 
     private void verifyHasQuestionStatus() {

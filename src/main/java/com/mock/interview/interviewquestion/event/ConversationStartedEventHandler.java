@@ -5,6 +5,9 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
 import com.mock.interview.interviewconversationpair.domain.event.ConversationStartedEvent;
+import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
+import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
+import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.domain.ConversationQuestionSelector;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
@@ -22,6 +25,8 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class ConversationStartedEventHandler {
     private final InterviewRepository interviewRepository;
     private final InterviewQuestionRepository questionRepository;
+    private final InterviewConversationPairRepository conversationPairRepository;
+
     private final ConversationQuestionSelector conversationQuestionSelector;
     private final AiQuestionCreator aiQuestionCreator;
     private final QuestionRecommender questionRecommender;
@@ -37,11 +42,14 @@ public class ConversationStartedEventHandler {
     public void handle(ConversationStartedEvent event) {
         Interview interview = interviewRepository.findById(event.interviewId())
                 .orElseThrow(InterviewNotFoundException::new);
+        InterviewConversationPair conversationPair = conversationPairRepository.findById(event.pairId())
+                .orElseThrow(InterviewConversationPairNotFoundException::new);
+
         Long relatedCategoryQuestionSize = questionRepository.countCategoryQuestion(interview.getCategory().getName());
 
         conversationQuestionSelector.select(
                 aiQuestionCreator, questionRecommender, relatedCategoryQuestionSize,
-                event.interviewId(), event.pairId()
+                event.interviewId(), conversationPair
         );
     }
 }
