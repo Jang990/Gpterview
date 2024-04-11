@@ -86,7 +86,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     public void answerQuestion(InterviewAnswer answer) {
-        verifyWaitingAnswerStatus();
+        verifyHasQuestionStatus();
 
         this.answer = answer;
         this.status = PairStatus.COMPLETED;
@@ -95,11 +95,6 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
     private void verifyHasQuestionStatus() {
         if(status != PairStatus.WAITING_ANSWER || question == null)
-            throw new IllegalStateException();
-    }
-
-    private void verifyWaitingAnswerStatus() {
-        if(status != PairStatus.WAITING_ANSWER)
             throw new IllegalStateException();
     }
 }
