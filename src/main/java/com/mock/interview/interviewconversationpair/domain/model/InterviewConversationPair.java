@@ -58,21 +58,22 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     public void changeTopic() {
-        requireQuestion();
+        verifyHasQuestionStatus();
         waitQuestion();
         Events.raise(new StatusChangedToChangingEvent(interview.getId(), this.id));
     }
 
     public void requestAi() {
-        requireQuestion();
+        verifyHasQuestionStatus();
         waitQuestion();
         Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void requestAnotherQuestion() {
-        requireQuestion();
+        verifyHasQuestionStatus();
         waitQuestion();
-        Events.raise(new AnotherQuestionRecommendedEvent(interview.getId(), this.id));
+//        Events.raise(new AnotherQuestionRecommendedEvent(interview.getId(), this.id));
+        Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
     }
 
     public void connectQuestion(InterviewQuestion question) {
@@ -92,7 +93,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new ConversationCompletedEvent(interview.getId()));
     }
 
-    private void requireQuestion() {
+    private void verifyHasQuestionStatus() {
         if(status != PairStatus.WAITING_ANSWER || question == null)
             throw new IllegalStateException();
     }
