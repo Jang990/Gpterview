@@ -57,16 +57,16 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
     }
 
-    public void requestAi() {
+    // TODO: 수정필요. Question과 결합을 갖게 된다...
+    public void restartConversationWithAi() {
         verifyHasQuestionStatus();
         waitQuestion();
         Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
-    public void requestAnotherQuestion() {
+    public void restartConversation() {
         verifyHasQuestionStatus();
         waitQuestion();
-//        Events.raise(new AnotherQuestionRecommendedEvent(interview.getId(), this.id));
         Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
     }
 
