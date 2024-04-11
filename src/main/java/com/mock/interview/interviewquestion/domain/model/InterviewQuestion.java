@@ -48,7 +48,7 @@ public class InterviewQuestion extends BaseEntity {
     @JoinColumn(name = "job_position_id")
     private JobPosition position;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 600)
     private String question;
 
     @Enumerated(EnumType.STRING)
