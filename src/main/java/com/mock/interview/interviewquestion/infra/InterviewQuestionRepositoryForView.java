@@ -42,7 +42,7 @@ public class InterviewQuestionRepositoryForView {
         if(question == null)
             throw new InterviewQuestionNotFoundException();
 
-        return convert(question);
+        return QuestionConvertor.convert(question);
     }
 
     public List<ChildQuestionOverview> findChildQuestionTop3Likes(Long questionIdCond) {
@@ -114,15 +114,7 @@ public class InterviewQuestionRepositoryForView {
     }
 
     private List<QuestionOverview> convert(List<InterviewQuestion> questions) {
-        return questions.stream().map(InterviewQuestionRepositoryForView::convert).toList();
-    }
-
-    private static QuestionOverview convert(InterviewQuestion question) {
-        return new QuestionOverview(question.getId(), question.getCreatedBy(),
-                CategoryConvertor.convert(question.getCategory(), question.getPosition()),
-                question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
-                question.getQuestion(), question.getCreatedAt(), question.getLikes()
-        );
+        return questions.stream().map(QuestionConvertor::convert).toList();
     }
 
     private BooleanExpression findChildQuestion(Long parentQuestionIdCond) {

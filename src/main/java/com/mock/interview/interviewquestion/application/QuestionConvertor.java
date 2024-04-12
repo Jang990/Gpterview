@@ -1,7 +1,10 @@
 package com.mock.interview.interviewquestion.application;
 
+import com.mock.interview.category.application.CategoryConvertor;
+import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
 
 public class QuestionConvertor {
@@ -19,5 +22,13 @@ public class QuestionConvertor {
             case EXPERIENCE -> QuestionType.EXPERIENCE;
             case PERSONALITY -> QuestionType.PERSONALITY;
         };
+    }
+
+    public static QuestionOverview convert(InterviewQuestion question) {
+        return new QuestionOverview(question.getId(), question.getCreatedBy(),
+                CategoryConvertor.convert(question.getCategory(), question.getPosition()),
+                question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
+                question.getQuestion(), question.getCreatedAt(), question.getLikes()
+        );
     }
 }
