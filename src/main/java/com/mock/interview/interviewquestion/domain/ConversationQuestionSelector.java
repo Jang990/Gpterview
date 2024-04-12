@@ -29,7 +29,7 @@ public class ConversationQuestionSelector {
     }
 
     private boolean hasEnoughQuestion(long relatedCategoryQuestionSize) {
-        return relatedCategoryQuestionSize < MIN_RECOMMENDED_SIZE;
+        return relatedCategoryQuestionSize >= MIN_RECOMMENDED_SIZE;
     }
 
 }
