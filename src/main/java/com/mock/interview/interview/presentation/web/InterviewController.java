@@ -8,11 +8,9 @@ import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
 import com.mock.interview.interviewquestion.application.QuestionRecommendationService;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
 import com.mock.interview.user.presentation.InfoPageInitializer;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -57,10 +55,6 @@ public class InterviewController {
         List<ConversationContentDto> content = interviewConversations.getContent();
         InterviewConversationPairDto lastConversationPair = content.get(content.size() - 1).getPair();
         model.addAttribute("lastConversationPair", lastConversationPair);
-        if (lastConversationPair.getStatus() == PairStatusForView.RECOMMENDING) {
-            model.addAttribute("recommendationQuestions",
-                    questionRecommendationService.findRecommendation(interviewId, lastConversationPair.getId()));
-        }
         return "interview/start";
     }
 
