@@ -1,5 +1,6 @@
 package com.mock.interview.user.infrastructure;
 
+import com.mock.interview.category.application.CategoryConvertor;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.category.presentation.dto.JobCategoryView;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
@@ -35,7 +36,7 @@ public class UserRepositoryForView {
         return new AccountDetailDto(
                 result.getUsername(),
                 result.getCreatedAt(),
-                convertJobCategoryView(result),
+                CategoryConvertor.convert(result.getCategory(), result.getPosition()),
                 convertTech(result),
                 convertExperiences(result)
         );
@@ -67,13 +68,6 @@ public class UserRepositoryForView {
 
     private BooleanExpression userIdEq(Long userId) {
         return userId == null ? null : users.id.eq(userId);
-    }
-
-    private JobCategoryView convertJobCategoryView(Users users) {
-        return new JobCategoryView(
-                users.getCategory() == null ? null : users.getCategory().getName(),
-                users.getPosition() == null ? null : users.getPosition().getName()
-        );
     }
 
     private JobCategorySelectedIds convertSelectedJobCategoryView(Users users) {

@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.infra;
 
+import com.mock.interview.category.application.CategoryConvertor;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.category.presentation.dto.JobCategoryView;
@@ -118,16 +119,9 @@ public class InterviewQuestionRepositoryForView {
 
     private static QuestionOverview convert(InterviewQuestion question) {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
-                convert(question.getCategory(), question.getPosition()),
+                CategoryConvertor.convert(question.getCategory(), question.getPosition()),
                 question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
                 question.getQuestion(), question.getCreatedAt(), question.getLikes()
-        );
-    }
-
-    private static JobCategoryView convert(JobCategory category, JobPosition position) {
-        return new JobCategoryView(
-                category == null ? null : category.getName(),
-                position == null ? null : position.getName()
         );
     }
 
