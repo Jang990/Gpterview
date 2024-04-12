@@ -24,7 +24,7 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
                 ) random
             INNER JOIN FETCH iq.questionToken qt
             LEFT JOIN FETCH iq.category c
-            WHERE iq.id >= CAST(random.id as long) AND c.name = :category
+            WHERE iq.id >= CAST(random.id as long) AND c.name = :category AND iq.isDeleted = FALSE
             """)
     List<InterviewQuestion> findRandomQuestion(@Param("category") String category, Pageable pageable);
 
@@ -32,21 +32,21 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             SELECT COUNT(*)
             FROM InterviewQuestion iq
             LEFT JOIN iq.category c
-            WHERE c.name = :category
+            WHERE c.name = :category AND iq.isDeleted = FALSE
             """)
     Long countCategoryQuestion(@Param("category") String category);
 
     @Query("""
             SELECT iq
             FROM InterviewQuestion iq
-            WHERE iq.id = :questionId
+            WHERE iq.id = :questionId AND iq.isDeleted = FALSE
             """)
     Optional<InterviewQuestion> findOpenQuestion(@Param("questionId") long questionId);
 
     @Query("""
             SELECT iq
             FROM InterviewQuestion iq
-            WHERE iq.id = :questionId AND iq.owner.id = :userId
+            WHERE iq.id = :questionId AND iq.owner.id = :userId AND iq.isDeleted = FALSE
             """)
     Optional<InterviewQuestion> findUserQuestion(@Param("userId") long userId, @Param("questionId") long questionId);
 }
