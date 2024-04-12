@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-//@SpringBootTest
+@SpringBootTest
 class InterviewConversationRepositoryForViewTest {
 
     @Autowired InterviewConversationRepositoryForView repository;
@@ -25,6 +25,12 @@ class InterviewConversationRepositoryForViewTest {
         for (ConversationContentDto conversationContentDto : content) {
             System.out.println("interviewConversationPairDto = " + conversationContentDto);
         }
+    }
+
+    @Test
+    void test2() {
+        ConversationContentDto conversation = repository.findConversation(7, 1, 1);
+        System.out.println(conversation);
     }
 
 }
