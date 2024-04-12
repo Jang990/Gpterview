@@ -22,7 +22,6 @@ import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,14 +50,12 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     @Override
     public List<InterviewQuestion> recommend(int recommendationSize, RecommendationTarget target) {
         InterviewInfo interview = interviewCache.findAiInterviewSetting(target.interviewId());
-        TraceResult traceResult = topicTracker.trace(interview);
-        InterviewConversationPair targetConversation = LastConversationHelper
-                .findLastConversation(conversationPairRepository, target.interviewId());
+        String currentInterviewTopic = topicTracker.trace(interview).topic();
         List<QuestionMetaData> questionForRecommend = questionRepository
                 .findRandomQuestion(interview.profile().category(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
                 .stream().map(this::convertQuestion).toList();
 
-        CurrentConversation currentConversation = createCurrentConversation(interview, targetConversation, traceResult.topic());
+        CurrentConversation currentConversation = initCurrentConversation(target.interviewId(), interview, currentInterviewTopic);
 
         try {
             List<Long> result = recommender
@@ -68,6 +65,28 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
             log.warn("추천 기능 예외 발생", e);
             throw new IllegalArgumentException(e);
         }
+    }
+
+    private CurrentConversation initCurrentConversation(long interviewId, InterviewInfo interview, String currentTopic) {
+        Optional<InterviewConversationPair> optCurrentConversation = LastConversationHelper
+                .findCurrentCompletedConversation(conversationPairRepository, interviewId);
+
+        if(optCurrentConversation.isEmpty())
+            return createEmptyConversation(interview, currentTopic);
+
+        InterviewConversationPair currentConversation = optCurrentConversation.get();
+        if(currentConversation.getQuestion() == null)
+            return createEmptyConversation(interview, currentTopic);
+
+        return new CurrentConversation(
+                currentConversation.getAnswer().getId(),
+                stringAnalyzer.extractNecessaryTokens(currentConversation.getAnswer().getAnswer()),
+                currentTopic, interview.profile().field()
+        );
+    }
+
+    private CurrentConversation createEmptyConversation(InterviewInfo interview, String topic) {
+        return new CurrentConversation(null,null, topic, interview.profile().field());
     }
 
     @Override
@@ -80,18 +99,6 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     public Top3Question retryRecommendation(RecommendationTarget target) {
         // 현재 저장된 캐시를 만료하고 새롭게 저장 - AOP 처리
         return recommendTop3(target);
-    }
-
-    private CurrentConversation createCurrentConversation(InterviewInfo interview, InterviewConversationPair lastConversation, String topic) {
-        if (lastConversation == null || lastConversation.getQuestion() == null) {
-            return new CurrentConversation(null,null, topic, interview.profile().field());
-        }
-
-        return new CurrentConversation(
-                lastConversation.getAnswer().getId(),
-                stringAnalyzer.extractNecessaryTokens(lastConversation.getAnswer().getAnswer()),
-                topic, interview.profile().field()
-        );
     }
 
     private QuestionMetaData convertQuestion(InterviewQuestion question) {

@@ -6,23 +6,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public final class LastConversationHelper {
     private static final Pageable LIMIT_ONE = PageRequest.of(0, 1);
+    private static final int FIRST_IDX = 0;
 
     private LastConversationHelper() {}
 
-    public static InterviewConversationPair findLastConversation(InterviewConversationPairRepository repository, long interviewId) {
-        List<InterviewConversationPair> lastCompletedConversation = repository.findLastCompletedConversation(interviewId, LIMIT_ONE);
-        if(lastCompletedConversation.isEmpty())
-            throw new IllegalArgumentException();
-        return lastCompletedConversation.get(0);
-    }
+    public static Optional<InterviewConversationPair> findCurrentCompletedConversation(InterviewConversationPairRepository repository, long interviewId) {
+        List<InterviewConversationPair> result = repository
+                .findLastCompletedConversation(interviewId, LIMIT_ONE);
 
-    public static InterviewConversationPair findLastConversation(InterviewConversationPairRepository repository, long userId, long interviewId) {
-        List<InterviewConversationPair> lastCompletedConversation = repository.findLastCompletedConversation(userId, interviewId, LIMIT_ONE);
-        if(lastCompletedConversation.isEmpty())
-            throw new IllegalArgumentException();
-        return lastCompletedConversation.get(0);
+        if(result.isEmpty()) // 이제 대화 시작
+            return Optional.empty();
+        return Optional.of(result.get(FIRST_IDX)); // 이전 대화 존재
     }
 }
