@@ -1,6 +1,5 @@
 package com.mock.interview.interview.infra.lock.progress;
 
-import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -22,6 +21,7 @@ public class InterviewProgressLockAspect {
     private final StringRedisTemplate stringRedisTemplate;
     private final String KEY_FORMAT = "INTERVIEW:%d:USER:%d:PROGRESS";
     private final String LOCK_VALUE = "LOCK";
+    private final long LOCK_TIMEOUT_MS = 2_000;
 
     @Around("@within(com.mock.interview.interview.infra.lock.progress.InterviewProgressLock) " +
             "|| @annotation(com.mock.interview.interview.infra.lock.progress.InterviewProgressLock)")
