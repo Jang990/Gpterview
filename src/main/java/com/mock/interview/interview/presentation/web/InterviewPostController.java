@@ -1,6 +1,7 @@
 package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.interview.application.InterviewService;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
 import com.mock.interview.user.presentation.InfoPageInitializer;
@@ -37,7 +38,8 @@ public class InterviewPostController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable("interviewId") long interviewId
     ) {
-        interviewService.expireInterview(loginId, interviewId);
+        InterviewLockDto lockDto = new InterviewLockDto(loginId, interviewId);
+        interviewService.expireInterview(lockDto);
         return "redirect:/interview/" + interviewId + "/expiration/result";
     }
 }
