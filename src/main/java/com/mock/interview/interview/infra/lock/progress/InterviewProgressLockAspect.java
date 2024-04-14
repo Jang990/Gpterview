@@ -23,13 +23,8 @@ public class InterviewProgressLockAspect {
     private final String KEY_FORMAT = "INTERVIEW:%d:USER:%d:PROGRESS";
     private final String LOCK_VALUE = "LOCK";
 
-    private final long EXTRA_PROCESSING_MS = 500;
-    private final long LOCK_TIMEOUT_MS = AISpecification.CONNECT_TIMEOUT_MS
-            + AISpecification.READ_TIMEOUT_MS
-            + EXTRA_PROCESSING_MS;
-
-    @Around("@within(com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock) " +
-            "|| @annotation(com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock)")
+    @Around("@within(com.mock.interview.interview.infra.lock.progress.InterviewProgressLock) " +
+            "|| @annotation(com.mock.interview.interview.infra.lock.progress.InterviewProgressLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
         InterviewProgressLockable lockInfo = getLockInfo(pjp.getArgs());
         String key = createKey(lockInfo);
