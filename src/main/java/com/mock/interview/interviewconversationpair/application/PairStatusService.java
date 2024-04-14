@@ -1,5 +1,7 @@
 package com.mock.interview.interviewconversationpair.application;
 
+import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
 import com.mock.interview.interviewconversationpair.domain.PairAiStatusService;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -15,14 +17,18 @@ public class PairStatusService {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final PairAiStatusService pairAiStatusService;
 
-    public void changeQuestionTopic(long loginId, long interviewId, long pairId) {
-        InterviewConversationPair conversationPair = conversationPairRepository.findWithInterviewUser(pairId, interviewId, loginId)
+    @InterviewProgressLock
+    public void changeQuestionTopic(InterviewConversationLockDto conversationDto) {
+        InterviewConversationPair conversationPair = conversationPairRepository
+                .findWithInterviewUser(conversationDto.conversationId(), conversationDto.interviewId(), conversationDto.userId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
         pairAiStatusService.changeTopic(conversationPair.getInterview(), conversationPair);
     }
 
-    public void changeRequestingAi(long loginId, long interviewId, long pairId) {
-        InterviewConversationPair conversationPair = conversationPairRepository.findWithInterviewUser(pairId, interviewId, loginId)
+    @InterviewProgressLock
+    public void changeRequestingAi(InterviewConversationLockDto conversationDto) {
+        InterviewConversationPair conversationPair = conversationPairRepository
+                .findWithInterviewUser(conversationDto.conversationId(), conversationDto.interviewId(), conversationDto.userId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
         pairAiStatusService.changeRecommendationToAi(conversationPair.getInterview(), conversationPair);
     }

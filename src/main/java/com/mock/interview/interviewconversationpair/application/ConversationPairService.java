@@ -1,5 +1,7 @@
 package com.mock.interview.interviewconversationpair.application;
 
+import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
@@ -17,8 +19,10 @@ public class ConversationPairService {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final InterviewQuestionRepository questionRepository;
 
-    public void connectQuestion(long loginId, long interviewId, long pairId, long questionId) {
-        InterviewConversationPair conversationPair = conversationPairRepository.findWithInterviewUser(pairId, interviewId, loginId)
+    @InterviewProgressLock
+    public void connectQuestion(InterviewConversationLockDto lockDto, long questionId) {
+        InterviewConversationPair conversationPair = conversationPairRepository
+                .findWithInterviewUser(lockDto.conversationId(), lockDto.interviewId(), lockDto.userId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
         InterviewQuestion question = questionRepository.findOpenQuestion(questionId)
                 .orElseThrow(InterviewQuestionNotFoundException::new);
@@ -26,8 +30,10 @@ public class ConversationPairService {
         conversationPair.connectQuestion(question);
     }
 
-    public void recommendAnotherQuestion(long loginId, long interviewId, long pairId) {
-        InterviewConversationPair conversationPair = conversationPairRepository.findWithInterviewUser(pairId, interviewId, loginId)
+    @InterviewProgressLock
+    public void recommendAnotherQuestion(InterviewConversationLockDto lockDto) {
+        InterviewConversationPair conversationPair = conversationPairRepository
+                .findWithInterviewUser(lockDto.conversationId(), lockDto.interviewId(), lockDto.userId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
         conversationPair.restartConversation();

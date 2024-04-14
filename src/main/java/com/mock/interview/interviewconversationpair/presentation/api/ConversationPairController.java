@@ -1,5 +1,6 @@
 package com.mock.interview.interviewconversationpair.presentation.api;
 
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
 import com.mock.interview.interviewconversationpair.application.ConversationPairService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,8 @@ public class ConversationPairController {
             @PathVariable(name = "interviewId") long interviewId,
             @PathVariable(name = "pairId") long pairId
     ) {
-        conversationPairService.recommendAnotherQuestion(loginId, interviewId, pairId);
+        InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
+        conversationPairService.recommendAnotherQuestion(conversationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -30,8 +32,8 @@ public class ConversationPairController {
             @PathVariable(name = "pairId") long pairId,
             @PathVariable(name = "questionId") long questionId
     ) {
-
-        conversationPairService.connectQuestion(loginId, interviewId, pairId, questionId);
+        InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
+        conversationPairService.connectQuestion(conversationDto, questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
