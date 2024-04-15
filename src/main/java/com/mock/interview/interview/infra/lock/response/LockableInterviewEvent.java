@@ -1,9 +1,13 @@
 package com.mock.interview.interview.infra.lock.response;
 
+import com.mock.interview.interview.infra.lock.progress.InterviewProgressLockable;
+
 /**
- * 모의 면접 진행 락을 걸고 싶다면 이벤트에 해당 인터페이스를 구현할 것
- * @see AiResponseAwaitLock
+ * 사용되지 않음.
+ * 사용자 요청을 처리하는 서비스에 락을 걸어서 중복 요청을 제어하도록 변경함
+ * @see InterviewProgressLockable
  */
+@Deprecated
 public interface LockableInterviewEvent {
     Long getInterviewId();
 }

@@ -8,12 +8,16 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import com.mock.interview.interview.infra.lock.progress.InterviewProgressLockAspect;
 
 import java.time.Duration;
 
-/** @see AiResponseAwaitLock
- * 해당 어노테이션의 AOP 구현체
+/**
+ * 사용되지 않음.
+ * 사용자 요청을 처리하는 서비스에 락을 걸어서 중복 요청을 제어하도록 변경함
+ * @see InterviewProgressLockAspect
  */
+@Deprecated
 @Slf4j
 @Aspect
 @Component

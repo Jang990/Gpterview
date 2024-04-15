@@ -6,8 +6,6 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.AiConversationQuestionService;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
-import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,6 @@ public class AiQuestionEventHandler {
     private final AiQuestionCreator aiQuestionCreator;
 
     @Async
-    @AiResponseAwaitLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
             classes = AiQuestionRecommendedEvent.class,

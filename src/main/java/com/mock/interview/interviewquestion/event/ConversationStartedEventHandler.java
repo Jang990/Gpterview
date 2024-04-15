@@ -3,7 +3,6 @@ package com.mock.interview.interviewquestion.event;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;
-import com.mock.interview.interview.infra.lock.response.AiResponseAwaitLock;
 import com.mock.interview.interviewconversationpair.domain.event.ConversationStartedEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -33,7 +32,6 @@ public class ConversationStartedEventHandler {
 
 
     @Async
-    @AiResponseAwaitLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener(
             classes = ConversationStartedEvent.class,
