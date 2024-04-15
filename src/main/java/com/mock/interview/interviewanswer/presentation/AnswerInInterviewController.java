@@ -1,5 +1,6 @@
 package com.mock.interview.interviewanswer.presentation;
 
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewanswer.application.InterviewAnswerInInterviewService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class AnswerInInterviewController {
             @PathVariable(name = "pairId") long pairId,
             @RequestBody MessageDto answer // TODO: Request로 이름 변경
     ) {
-        interviewAnswerInInterviewService.create(loginId, interviewId, pairId, answer);
+        InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
+        interviewAnswerInInterviewService.create(conversationDto, answer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

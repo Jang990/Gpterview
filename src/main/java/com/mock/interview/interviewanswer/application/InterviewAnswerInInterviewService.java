@@ -1,5 +1,7 @@
 package com.mock.interview.interviewanswer.application;
 
+import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interview.application.InterviewVerificationHelper;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -23,11 +25,13 @@ public class InterviewAnswerInInterviewService {
     private final InterviewAnswerRepository interviewAnswerRepository;
     private final InterviewAnswerService interviewAnswerService;
 
-    public void create(long loginId, long interviewId, long pairId, MessageDto answerDto) {
-        InterviewVerificationHelper.verify(interviewRepository, interviewId, loginId);
-        Interview interview = interviewRepository.findByIdAndUserId(interviewId, loginId)
+    @InterviewProgressLock
+    public void create(InterviewConversationLockDto conversationDto, MessageDto answerDto) {
+        InterviewVerificationHelper.verify(interviewRepository, conversationDto.interviewId(), conversationDto.userId());
+        Interview interview = interviewRepository.findByIdAndUserId(conversationDto.interviewId(), conversationDto.userId())
                 .orElseThrow(InterviewNotFoundException::new);
-        InterviewConversationPair conversationPair = conversationPairRepository.findByIdWithInterviewId(pairId, interviewId)
+        InterviewConversationPair conversationPair = conversationPairRepository
+                .findByIdWithInterviewId(conversationDto.conversationId(), conversationDto.interviewId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
         interviewAnswerService.saveAnswerInInterview(interviewAnswerRepository, interview, conversationPair, answerDto);
