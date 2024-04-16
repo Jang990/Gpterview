@@ -36,11 +36,10 @@ function request(interviewId, conversationId, retryCount) {
 
 // 요청 재시도 또는 종료하는 함수
 function retryOrExit(interviewId, conversationId, retryCount) {
-    if (retryCount >  3) { // 최대 3번 시도
+    if (retryCount >= 3) { // 최대 3번 시도
         exit(); // 3번의 재시도 후에도 결과가 없으면 종료
         return;
     }
-
     setTimeout(function() {
         request(interviewId, conversationId, retryCount + 1); // 재요청
     }, 3000); // 3초 후에 재시도
