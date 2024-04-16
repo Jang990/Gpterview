@@ -78,7 +78,7 @@ public class InterviewController {
             @PathVariable("interviewId") long interviewId
     ) {
         // TODO: 임시코드
-        InfoPageInitializer.initInterviewInfoPage(model, "면접 만료 성공", "진행중인 면접을 성공적으로 만료시켰습니다.", "/");
+        InfoPageInitializer.initInterviewInfoPage(model, "면접 종료 성공", "진행중인 면접을 성공적으로 종료시켰습니다.", "/");
 
         return "/info/info";
     }
