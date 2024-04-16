@@ -56,17 +56,15 @@ public class ChatGPTRequester implements AIRequester {
      * @return
      */
     private ChatGptResponse sendRequestToOpenAIServer(ChatGptRequest openAIRequest) {
-        try{
+        try {
             ChatGptResponse response = openaiRestTemplate.postForObject(apiUrl, openAIRequest, ChatGptResponse.class);
-            if(response == null)
+            if (response == null)
                 return new ChatGptResponse();
             return response;
-        } catch(HttpClientErrorException e) {
-            // MaxToken을 초과했을 가능성이 제일 높음. - HttpClientErrorException$BadRequest
-            log.warn(e.getMessage());
-            throw new RuntimeException("BadRequest or AI 서버 오류", e); // TODO: 커스텀 예외로 바꿀 것
+        } catch (Exception e) {
+            log.error("ChatGPT 오류 발생", e);
+            throw e;
         }
-
     }
 
     private List<OpenAIMessage> convertHistory(List<Message> history) {
