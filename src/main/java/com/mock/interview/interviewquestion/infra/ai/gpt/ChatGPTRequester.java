@@ -46,7 +46,7 @@ public class ChatGPTRequester implements AIRequester {
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
         String responseMessage = response.getResult();
 
-        log.info("답변: {} - 응답: {}", history.get(history.size()-1).getContent(), responseMessage);
+        log.info("GPT 응답: {}", responseMessage);
         return new Message(InterviewRole.AI, responseMessage);
     }
 
