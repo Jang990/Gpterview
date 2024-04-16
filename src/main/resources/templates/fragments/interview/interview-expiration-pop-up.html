@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="fragment-interview-expiration-pop-up" class="modal fade" id="interviewExpirationPopUp" tabindex="-1" aria-labelledby="interviewExpirationPopUpLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="interviewExpirationPopUpLabel">면접 종료</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          현재 진행중인 면접이 종료됩니다.
+          종료하시겠습니까?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+          <form th:action="@{/interview/{interviewId}/expiration(interviewId=${interviewId})}" method="post">
+            <button type="submit" class="btn btn-primary">종료</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</html>

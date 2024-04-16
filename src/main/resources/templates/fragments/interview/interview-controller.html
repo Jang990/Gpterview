@@ -21,9 +21,7 @@
           <div class="py-1 border-0">
             <div class="d-flex justify-content-between">
               <div>
-                <form th:action="@{/interview/{interviewId}/expiration(interviewId=${interviewId})}" method="post">
-                  <button type="submit" class="btn btn-primary btn-sm sendBtn">면접 종료</button>
-                </form>
+                <button type="button" class="btn btn-primary btn-sm sendBtn" data-bs-toggle="modal" data-bs-target="#interviewExpirationPopUp">면접 종료</button>
               </div>
               <div>
                 <button type="button" class="btn btn-success btn-sm" id="speckBtn" onclick="startRecognition()">말하기</button>
@@ -37,5 +35,6 @@
         </div>
       </li>
     </ul>
+    <div th:replace="~{fragments/interview/interview-expiration-pop-up :: fragment-interview-expiration-pop-up}">면접 종료 팝업</div>
   </div>
 </html>
