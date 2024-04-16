@@ -6,7 +6,7 @@
         <th:block th:each="message, messageStat : ${messageHistory.content}" class="d-flex mb-3">
           <li th:object="${message.question}" th:if="${not #strings.isEmpty(message.question.content)}"
               class="d-flex mb-3 justify-content-start">
-            <div class="d-flex flex-row justify-content-start col-8" style="min-width:0px;">
+            <div class="d-flex flex-row justify-content-start col-10" style="min-width:0px;">
               <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
               <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
                 <input type="hidden" name="role" class="role" th:value="*{role}">
@@ -26,7 +26,7 @@
           </li>
           <li th:object="${message.answer}" th:if="${not #strings.isEmpty(message.answer.content)}"
               class="d-flex mb-3 justify-content-end">
-            <div class="d-flex flex-row justify-content-end col-8" style="min-width:0px;">
+            <div class="d-flex flex-row justify-content-end col-10" style="min-width:0px;">
               <div class="p-3 me-3 border" style="border-radius: 15px; background-color: #fbfbfb; min-width:0px;">
                 <input type="hidden" name="role" class="role" th:value="*{role}">
                 <p class="small mb-0 content" name="content" th:text="*{content}">면접 지원자 텍스트</p>
