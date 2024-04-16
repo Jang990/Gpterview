@@ -12,7 +12,7 @@
           종료하시겠습니까?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
           <form th:action="@{/interview/{interviewId}/expiration(interviewId=${interviewId})}" method="post">
             <button type="submit" class="btn btn-primary">종료</button>
           </form>
