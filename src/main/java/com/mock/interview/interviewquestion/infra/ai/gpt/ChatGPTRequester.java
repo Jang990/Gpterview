@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class ChatGPTRequester implements AIRequester {
 
     private final RestTemplate openaiRestTemplate;
-    private final OpenAIResponseConvertor convertor;
     private final Encoding stringTokenCounter;
     private final String SIGNATURE = "GPT";
 
@@ -41,18 +40,14 @@ public class ChatGPTRequester implements AIRequester {
     @Override
     public Message sendRequest(InterviewAIRequest request) {
         final String prompt = request.getAiPrompt().getPrompt();
-        final List<OpenAIMessage> history = convertHistory(request.getHistory(), prompt);
-
+        final List<OpenAIMessage> history = convertHistory(request.getHistory());
         ChatGptRequest openAIRequest = ChatGptRequest.create(model, history, prompt);
+
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
-        String responseMessage = convertor.convertMessageResult(response);
+        String responseMessage = response.getResult();
 
         log.info("답변: {} - 응답: {}", history.get(history.size()-1).getContent(), responseMessage);
         return new Message(InterviewRole.AI, responseMessage);
-    }
-
-    private boolean isStartingRequest(InterviewAIRequest request) {
-        return request.getHistory().isEmpty() || request.getHistory().size() < 2; // TODO: 매직넘버 쓰지 말 것
     }
 
     /**
@@ -62,8 +57,10 @@ public class ChatGPTRequester implements AIRequester {
      */
     private ChatGptResponse sendRequestToOpenAIServer(ChatGptRequest openAIRequest) {
         try{
-//            return openaiRestTemplate.postForObject(apiUrl, openAIRequest, ChatGptResponse.class);
-            return openaiRestTemplate.postForObject(apiUrl, openAIRequest, ChatGptResponse.class);
+            ChatGptResponse response = openaiRestTemplate.postForObject(apiUrl, openAIRequest, ChatGptResponse.class);
+            if(response == null)
+                return new ChatGptResponse();
+            return response;
         } catch(HttpClientErrorException e) {
             // MaxToken을 초과했을 가능성이 제일 높음. - HttpClientErrorException$BadRequest
             log.warn(e.getMessage());
@@ -72,12 +69,10 @@ public class ChatGPTRequester implements AIRequester {
 
     }
 
-    private List<OpenAIMessage> convertHistory(List<Message> history, String prompt) {
-        List<OpenAIMessage> historyForRequest = history.stream()
+    private List<OpenAIMessage> convertHistory(List<Message> history) {
+        return history.stream()
                 .map(msg -> new OpenAIMessage(convertRole(msg.getRole()), msg.getContent()))
                 .collect(Collectors.toList());
-        historyForRequest.add(new OpenAIMessage(SYSTEM_ROLE, prompt));
-        return historyForRequest;
     }
 
     private String convertRole(InterviewRole role) {

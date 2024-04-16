@@ -10,19 +10,27 @@ import java.util.List;
 @NoArgsConstructor
 public class ChatGptResponse {
 
-    private List<Choice> choices;
-    private Usage usage;
+    private List<Choice> choices; // GPT 응답 결과 객체
+    private Usage usage; // 현재 요청의 토큰 사용량
+
+    @JsonIgnore
+    public String getResult() {
+        if (isEmptyChoice()) {
+            throw new IllegalArgumentException("ChatGPT Message Response 데이터 누락 오류"); // TODO: 커스텀 예외로 바꿀 것
+        }
+        return choices.get(0).message.getContent();
+    }
+
+    @JsonIgnore
+    private boolean isEmptyChoice() {
+        return choices == null || choices.isEmpty();
+    }
 
     @Data
     @NoArgsConstructor
     public static class Choice {
         private int index;
         private OpenAIMessage message;
-    }
-
-    @JsonIgnore
-    public String getFunctionResultString() {
-        return choices.get(0).message.getResponseMessage();
     }
 
     @Data
