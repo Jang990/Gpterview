@@ -41,6 +41,7 @@ public class ConversationQuestionSelector {
             handleException(e, interviewId, pair.getId());
         } catch (Exception e) {
             Events.raise(new QuestionSelectionErrorEvent(interviewId, pair.getId()));
+            throw new RuntimeException(e);
         }
     }
 
