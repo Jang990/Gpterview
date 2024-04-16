@@ -33,9 +33,9 @@ public class ChatGPTRequester implements AIRequester {
     @Value("${openai.api.url}")
     private String apiUrl;
 
-    private final String USER_ROLE = "user";
-    private final String INTERVIEWER_ROLE = "assistant";
-    private final String SYSTEM_ROLE = "system";
+    public static final String USER_ROLE = "user";
+    public static final String INTERVIEWER_ROLE = "assistant";
+    public static final String SYSTEM_ROLE = "system";
     private final int LIMIT_TOKEN = 4096;
 
     @Override

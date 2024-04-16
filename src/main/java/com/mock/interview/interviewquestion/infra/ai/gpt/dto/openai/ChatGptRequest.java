@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai.gpt.dto.openai;
 
+import com.mock.interview.interviewquestion.infra.ai.gpt.ChatGPTRequester;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -35,7 +36,7 @@ public class ChatGptRequest {
         ChatGptRequest request = new ChatGptRequest();
         request.model = model;
         request.messages = history;
-        request.messages.add(new OpenAIMessage("system", orderPrompt));
+        request.messages.add(new OpenAIMessage(ChatGPTRequester.SYSTEM_ROLE, orderPrompt));
         return request;
     }
 }
