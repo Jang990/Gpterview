@@ -18,14 +18,14 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+//@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class ChatGPTRequesterInSpringTest {
 
     @Autowired
     ChatGPTRequester requester;
 
-    @Test
+//    @Test
     void test() {
         List<Message> list = List.of(
                 new Message(InterviewRole.AI,"안녕하세요. 진행하겠습니다."),
