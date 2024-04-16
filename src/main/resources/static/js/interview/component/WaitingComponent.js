@@ -18,7 +18,7 @@ function decreaseRemainingTime() {
 // waiting 패널 지우기
 function removeWaitingPanel() {
     clearInterval(decreaseInterval);
-    $('#talk-history .temporary').remove();
+    $('#talk-history .waiting-element').remove();
 }
 
 // waiting 패널 화면 표시
@@ -31,7 +31,7 @@ function displayWaitingPanel(data) {
 function createWaitingPanel(msg) {
 // 로딩 이미지 출처 - https://icons8.com/preloaders/
     return `
-            <li class="mb-3 d-flex justify-content-start temporary">
+            <li class="mb-3 d-flex justify-content-start waiting-element">
                 <div class="d-flex flex-row justify-content-start col-10" style="min-width:0px;">
                     <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
                     <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">

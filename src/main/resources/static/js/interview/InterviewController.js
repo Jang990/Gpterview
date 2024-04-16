@@ -12,11 +12,14 @@ let chattingErrorToast = new bootstrap.Toast(document.getElementById('chattingEr
 let remainingTime = loadingTime;
 let decreaseInterval;
 
+
 $(document).ready(function () {
     const interviewId = getInterviewId();
+    const conversationId = getConversationPairId();
     initSocket(interviewId);
-    if($('#talk-history').find('li').length === 0)
-        waitAiResponse();
+    if(isEmptyHistory()) {
+        restoreHistory(interviewId, conversationId);
+    }
     scroll();
 });
 
