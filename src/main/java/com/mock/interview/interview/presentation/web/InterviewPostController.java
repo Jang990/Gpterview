@@ -38,7 +38,7 @@ public class InterviewPostController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable("interviewId") long interviewId
     ) {
-        InterviewLockDto lockDto = new InterviewLockDto(loginId, interviewId);
+        InterviewLockDto lockDto = new InterviewLockDto(interviewId, loginId);
         interviewService.expireInterview(lockDto);
         return "redirect:/interview/" + interviewId + "/expiration/result";
     }
