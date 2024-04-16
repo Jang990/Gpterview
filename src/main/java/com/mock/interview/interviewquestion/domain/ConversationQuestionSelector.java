@@ -37,22 +37,21 @@ public class ConversationQuestionSelector {
             InterviewQuestion question = aiCreator.create(interviewId, AiQuestionCreator.selectCreationOption(pair));
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
         } catch (RuntimeException e) {
-            log.info("AI 요청기 오류 발생", e);
+            log.info("AI 요청기 RuntimeException 발생", e);
             handleException(e, interviewId, pair.getId());
         } catch (Exception e) {
+            log.info("AI 요청기 Exception 발생", e);
             Events.raise(new QuestionSelectionErrorEvent(interviewId, pair.getId()));
-            throw new RuntimeException(e);
         }
     }
 
     private void handleException(RuntimeException exception, long interviewId, long conversationId) {
         if (isCriticalException(exception)) {
             Events.raise(new CriticalQuestionSelectionErrorEvent(interviewId, conversationId));
-        } else {
-            Events.raise(new QuestionSelectionErrorEvent(interviewId, conversationId));
+            return;
         }
 
-        throw exception;
+        Events.raise(new QuestionSelectionErrorEvent(interviewId, conversationId));
     }
 
     private boolean isCriticalException(RuntimeException exception) {
