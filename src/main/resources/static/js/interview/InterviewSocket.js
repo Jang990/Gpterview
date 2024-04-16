@@ -1,17 +1,7 @@
 let stompClient = null;
 let socket = null;
-let interviewId = null;
 
-$(document).ready(function () {
-    interviewId = getInterviewId();
-});
-
-function getInterviewId() {
-    const currentUrl = window.location.pathname;
-    return currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-}
-
-function initSocket() {
+function initSocket(interviewId) {
     socket = new SockJS('/ws/interview');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {

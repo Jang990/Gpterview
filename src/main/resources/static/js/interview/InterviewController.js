@@ -13,12 +13,17 @@ let remainingTime = loadingTime;
 let decreaseInterval;
 
 $(document).ready(function () {
-    initSocket();
+    const interviewId = getInterviewId();
+    initSocket(interviewId);
     if($('#talk-history').find('li').length === 0)
         waitAiResponse();
     scroll();
 });
 
+function getInterviewId() {
+    const currentUrl = window.location.pathname;
+    return currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
+}
 
 // 마지막 채팅 제거
 function removeLastChatting() {
