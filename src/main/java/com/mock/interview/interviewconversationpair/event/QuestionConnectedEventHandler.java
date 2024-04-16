@@ -1,7 +1,9 @@
 package com.mock.interview.interviewconversationpair.event;
 
+import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
+import com.mock.interview.interviewconversationpair.domain.event.ConversationResetEvent;
 import com.mock.interview.interviewconversationpair.domain.event.QuestionConnectedEvent;
 import com.mock.interview.interviewquestion.domain.event.QuestionRecommendedEvent;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
@@ -49,5 +51,16 @@ public class QuestionConnectedEventHandler {
                 .map(ConversationMessageBroker::createMessageDtoToPublish).toList();
 
         messageBroker.publish(event.interviewId(), event.pairId(), list);
+    }
+
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
+    @TransactionalEventListener(
+            classes = ConversationResetEvent.class,
+            phase = TransactionPhase.AFTER_COMMIT
+    )
+    public void handle(ConversationResetEvent event) {
+        MessageDto messageDto = new MessageDto(null, InterviewRole.SYSTEM, event.resetMessage());
+        messageBroker.publish(event.interviewId(), event.conversationId(), List.of(messageDto));
     }
 }

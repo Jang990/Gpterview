@@ -79,6 +79,18 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new QuestionConnectedEvent(interview.getId(), this.id, question.getId()));
     }
 
+    public void reset(String resetMessage) {
+        if(status != PairStatus.WAITING_QUESTION)
+            throw new IllegalStateException("불필요한 reset");
+
+        if(question == null)
+            status = PairStatus.WAITING_ANSWER;
+        else
+            status = PairStatus.START;
+
+        Events.raise(new ConversationResetEvent(interview.getId(), this.id, resetMessage));
+    }
+
     public void answerQuestion(InterviewAnswer answer) {
         verifyReadyToAnswerStatus();
 
