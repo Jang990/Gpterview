@@ -59,13 +59,13 @@ public class InterviewConversationPair extends BaseTimeEntity {
 
     // TODO: 수정필요. Question과 결합을 갖게 된다...
     public void restartConversationWithAi() {
-        verifyReadyToAnswerStatus();
+        verifyRestartableStatus();
         waitQuestion();
         Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
     }
 
     public void restartConversation() {
-        verifyReadyToAnswerStatus();
+        verifyRestartableStatus();
         waitQuestion();
         Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
     }
@@ -83,16 +83,12 @@ public class InterviewConversationPair extends BaseTimeEntity {
         if(status != PairStatus.WAITING_QUESTION)
             throw new IllegalStateException("불필요한 reset");
 
-        if(question == null)
-            status = PairStatus.WAITING_ANSWER;
-        else
-            status = PairStatus.START;
-
+        status = PairStatus.WAITING_ANSWER;
         Events.raise(new ConversationResetEvent(interview.getId(), this.id, resetMessage));
     }
 
     public void answerQuestion(InterviewAnswer answer) {
-        verifyReadyToAnswerStatus();
+        verifyAnswerNeededStatus();
 
         this.answer = answer;
         this.status = PairStatus.COMPLETED;
@@ -103,10 +99,21 @@ public class InterviewConversationPair extends BaseTimeEntity {
         return status == PairStatus.WAITING_QUESTION && question != null;
     }
 
-    private void verifyReadyToAnswerStatus() {
-        if(question == null)
-            throw new IllegalStateException("질문이 존재하지 않습니다.");
-        if(status != PairStatus.WAITING_ANSWER)
+    private void verifyAnswerNeededStatus() {
+        if(isAnswerNeededStatus())
             throw new IllegalStateException("대답이 필요한 상태가 아닙니다.");
+    }
+
+    private void verifyRestartableStatus() {
+        if(!isRestartableStatus())
+            throw new IllegalStateException("재시작이 불가능한 상태입니다.");
+    }
+
+    private boolean isRestartableStatus() {
+        return status == PairStatus.WAITING_ANSWER;
+    }
+
+    private boolean isAnswerNeededStatus() {
+        return question != null && status == PairStatus.WAITING_ANSWER;
     }
 }
