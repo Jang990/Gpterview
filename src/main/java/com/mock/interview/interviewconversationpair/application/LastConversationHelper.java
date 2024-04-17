@@ -1,5 +1,6 @@
 package com.mock.interview.interviewconversationpair.application;
 
+import com.mock.interview.global.RepositoryConst;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import org.springframework.data.domain.PageRequest;
@@ -9,14 +10,13 @@ import java.util.List;
 import java.util.Optional;
 
 public final class LastConversationHelper {
-    private static final Pageable LIMIT_ONE = PageRequest.of(0, 1);
     private static final int FIRST_IDX = 0;
 
     private LastConversationHelper() {}
 
     public static Optional<InterviewConversationPair> findCurrentCompletedConversation(InterviewConversationPairRepository repository, long interviewId) {
         List<InterviewConversationPair> result = repository
-                .findLastCompletedConversation(interviewId, LIMIT_ONE);
+                .findLastCompletedConversation(interviewId, RepositoryConst.LIMIT_ONE);
 
         if(result.isEmpty()) // 이제 대화 시작
             return Optional.empty();

@@ -22,10 +22,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InterviewStarterImpl implements InterviewStarter {
     private final InterviewRepository repository;
-    private static final Pageable LIMIT_ONE = PageRequest.of(0, 1);
     @Override
     public Interview start(Users users, InterviewConfigForm interviewConfig) {
-        Optional<Interview> currentInterviewOpt = repository.findCurrentInterview(users.getId(), LIMIT_ONE);
+        Optional<Interview> currentInterviewOpt = repository.findCurrentInterview(users.getId(), RepositoryConst.LIMIT_ONE);
         if (currentInterviewOpt.isPresent()) {
             verifyCurrentInterview(currentInterviewOpt.get());
         }
