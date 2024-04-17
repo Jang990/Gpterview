@@ -45,7 +45,7 @@ public class ConversationStartedEventHandler {
 
         Long relatedCategoryQuestionSize = questionRepository.countCategoryQuestion(interview.getCategory().getName());
 
-        conversationQuestionService.select(
+        conversationQuestionService.chooseMethod(
                 aiQuestionCreator, questionRecommender, relatedCategoryQuestionSize,
                 event.interviewId(), conversationPair
         );

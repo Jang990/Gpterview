@@ -15,19 +15,19 @@ public class ConversationQuestionService {
     private final int MIN_RECOMMENDED_SIZE = 50;
     private final int SINGLE = 1;
     private final int FIRST_IDX = 0;
-    public void select(
+    public void chooseMethod(
             AiQuestionCreator aiCreator, QuestionRecommender recommender,
             long relatedCategoryQuestionSize, long interviewId, InterviewConversationPair pair
     ) {
         if (hasEnoughQuestion(relatedCategoryQuestionSize)) {
-            recommend(recommender, interviewId, pair);
+            recommendOnly(recommender, interviewId, pair);
             return;
         }
 
-        create(aiCreator, interviewId, pair);
+        createAiOnly(aiCreator, interviewId, pair);
     }
 
-    private void recommend(QuestionRecommender recommender, long interviewId, InterviewConversationPair pair) {
+    public void recommendOnly(QuestionRecommender recommender, long interviewId, InterviewConversationPair pair) {
         try {
             RecommendationTarget target = new RecommendationTarget(interviewId, pair.getId());
             InterviewQuestion question = recommender.recommend(SINGLE, target).get(FIRST_IDX);
@@ -37,7 +37,7 @@ public class ConversationQuestionService {
         }
     }
 
-    private void create(AiQuestionCreator aiCreator, long interviewId, InterviewConversationPair pair) {
+    public void createAiOnly(AiQuestionCreator aiCreator, long interviewId, InterviewConversationPair pair) {
         try {
             InterviewQuestion question = aiCreator.create(interviewId, AiQuestionCreator.selectCreationOption(pair));
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
@@ -49,5 +49,4 @@ public class ConversationQuestionService {
     private boolean hasEnoughQuestion(long relatedCategoryQuestionSize) {
         return relatedCategoryQuestionSize >= MIN_RECOMMENDED_SIZE;
     }
-
 }
