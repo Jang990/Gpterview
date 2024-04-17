@@ -22,6 +22,12 @@ function request(interviewId, conversationId, retryCount) {
             const pairId = response.pair.id;
             const questionContent = response.question.content;
 
+            if(response.pair.status === "RESTART_RECOMMENDED") {
+                removeWaitingPanel();
+                retryRecommendation();
+                return;
+            }
+
             if(pairId === null || questionContent === null)
                 retryOrExit(interviewId, conversationId, retryCount);
 
