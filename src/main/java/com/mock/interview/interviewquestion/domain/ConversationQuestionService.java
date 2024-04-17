@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class ConversationQuestionSelector {
+public class ConversationQuestionService {
     private final int MIN_RECOMMENDED_SIZE = 50;
     private final int SINGLE = 1;
     private final int FIRST_IDX = 0;

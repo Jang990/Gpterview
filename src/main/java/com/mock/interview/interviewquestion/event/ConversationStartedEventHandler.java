@@ -8,7 +8,7 @@ import com.mock.interview.interviewconversationpair.domain.exception.InterviewCo
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
-import com.mock.interview.interviewquestion.domain.ConversationQuestionSelector;
+import com.mock.interview.interviewquestion.domain.ConversationQuestionService;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class ConversationStartedEventHandler {
     private final InterviewQuestionRepository questionRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
 
-    private final ConversationQuestionSelector conversationQuestionSelector;
+    private final ConversationQuestionService conversationQuestionService;
     private final AiQuestionCreator aiQuestionCreator;
     private final QuestionRecommender questionRecommender;
 
@@ -45,7 +45,7 @@ public class ConversationStartedEventHandler {
 
         Long relatedCategoryQuestionSize = questionRepository.countCategoryQuestion(interview.getCategory().getName());
 
-        conversationQuestionSelector.select(
+        conversationQuestionService.select(
                 aiQuestionCreator, questionRecommender, relatedCategoryQuestionSize,
                 event.interviewId(), conversationPair
         );
