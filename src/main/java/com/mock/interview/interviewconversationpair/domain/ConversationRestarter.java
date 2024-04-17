@@ -6,14 +6,13 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import org.springframework.stereotype.Service;
 
 @Service
-public class PairAiStatusService {
-    public void changeTopic(Interview interview, InterviewConversationPair conversationPair) {
+public class ConversationRestarter {
+    public void restart(Interview interview, InterviewConversationPair conversationPair) {
         verifyActiveInterview(interview);
-
         conversationPair.restartConversation();
     }
 
-    public void changeRecommendationToAi(Interview interview, InterviewConversationPair conversationPair) {
+    public void restartOnlyAi(Interview interview, InterviewConversationPair conversationPair) {
         verifyActiveInterview(interview);
         conversationPair.restartConversationWithAi();
     }
