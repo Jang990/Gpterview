@@ -1,6 +1,6 @@
 package com.mock.interview.interviewanswer.domain;
 
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
+import com.mock.interview.interview.presentation.dto.message.InterviewAnswerRequest;
 import com.mock.interview.global.Events;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.event.ConversationAnsweredEvent;
@@ -14,7 +14,7 @@ public class InterviewAnswerService {
     public void saveAnswerInInterview(
             InterviewAnswerRepository interviewAnswerRepository,
             Interview interview, InterviewConversationPair conversationPair,
-            MessageDto answerDto
+            InterviewAnswerRequest answerDto
     ) {
         InterviewAnswer answer = InterviewAnswer.createAnswer(conversationPair.getQuestion(), answerDto.getContent(), interview.getUsers());
         interviewAnswerRepository.save(answer);

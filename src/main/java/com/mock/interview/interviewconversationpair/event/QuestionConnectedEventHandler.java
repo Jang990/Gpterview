@@ -1,7 +1,5 @@
 package com.mock.interview.interviewconversationpair.event;
 
-import com.mock.interview.interview.presentation.dto.InterviewRole;
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
 import com.mock.interview.interviewconversationpair.domain.event.ConversationResetEvent;
 import com.mock.interview.interviewconversationpair.domain.event.QuestionConnectedEvent;

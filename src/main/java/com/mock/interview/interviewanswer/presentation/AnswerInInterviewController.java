@@ -1,7 +1,7 @@
 package com.mock.interview.interviewanswer.presentation;
 
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
+import com.mock.interview.interview.presentation.dto.message.InterviewAnswerRequest;
 import com.mock.interview.interviewanswer.application.InterviewAnswerInInterviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class AnswerInInterviewController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
             @PathVariable(name = "pairId") long pairId,
-            @RequestBody MessageDto answer // TODO: Request로 이름 변경
+            @RequestBody InterviewAnswerRequest answer
     ) {
         InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
         interviewAnswerInInterviewService.create(conversationDto, answer);

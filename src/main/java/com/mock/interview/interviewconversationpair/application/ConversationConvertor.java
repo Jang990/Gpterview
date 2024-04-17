@@ -1,7 +1,6 @@
 package com.mock.interview.interviewconversationpair.application;
 
-import com.mock.interview.interview.presentation.dto.InterviewRole;
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
+import com.mock.interview.interviewanswer.application.AnswerConvertor;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
@@ -9,7 +8,6 @@ import com.mock.interview.interviewconversationpair.presentation.dto.InterviewCo
 import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
 import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -25,7 +23,7 @@ public final class ConversationConvertor {
         return new ConversationContentDto(
                 convert(conversationPair),
                 QuestionConvertor.convertInterviewQuestion(question),
-                answer == null ? new MessageDto() : new MessageDto(answer.getId(), InterviewRole.USER, answer.getAnswer())
+                AnswerConvertor.convert(answer)
         );
     }
 

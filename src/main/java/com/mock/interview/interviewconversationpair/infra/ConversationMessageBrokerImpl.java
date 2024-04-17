@@ -1,8 +1,6 @@
 package com.mock.interview.interviewconversationpair.infra;
 
-import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interview.presentation.dto.message.PublishedQuestionDto;
 import com.mock.interview.global.WebSocketConfig;
 import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;

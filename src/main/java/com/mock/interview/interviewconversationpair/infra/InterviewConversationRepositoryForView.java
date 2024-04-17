@@ -1,18 +1,9 @@
 package com.mock.interview.interviewconversationpair.infra;
 
-
-import com.mock.interview.interview.presentation.dto.InterviewRole;
-import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
-import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
-import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.querydsl.core.types.ConstructorExpression;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,26 +26,6 @@ public class InterviewConversationRepositoryForView {
                 .where(interviewIdEq(interviewId))
                 .orderBy(interviewConversationPair.createdAt.asc())
                 .fetch();
-    }
-
-    @NotNull
-    private static ConstructorExpression<ConversationContentDto> generateConversationContentDto() {
-        return Projections.constructor(ConversationContentDto.class,
-                Projections.constructor(InterviewConversationPairDto.class,
-                        interviewConversationPair.id,
-                        interviewConversationPair.status
-                ),
-                Projections.constructor(MessageDto.class,
-                        interviewConversationPair.question.id,
-                        Expressions.constant(InterviewRole.AI),
-                        interviewConversationPair.question.question
-                ),
-                Projections.constructor(MessageDto.class,
-                        interviewConversationPair.answer.id,
-                        Expressions.constant(InterviewRole.USER),
-                        interviewConversationPair.answer.answer
-                )
-        );
     }
 
     public InterviewConversationPair findConversation(long userId, long interviewId, long conversationId) {
