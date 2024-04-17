@@ -2,6 +2,7 @@ package com.mock.interview.interview.infra;
 
 import com.mock.interview.global.RepositoryConst;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
+import com.mock.interview.user.domain.exception.DailyInterviewLimitExceededException;
 import com.mock.interview.user.domain.model.Experience;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.domain.InterviewStarter;
@@ -11,8 +12,6 @@ import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.domain.model.UsersTechLink;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +42,8 @@ public class InterviewStarterImpl implements InterviewStarter {
     private void verifyCurrentInterview(Interview currentInterview) {
         if(currentInterview.isActive())
             throw new InterviewAlreadyInProgressException();
+        if(currentInterview.isExecutedToday())
+            throw new DailyInterviewLimitExceededException();
     }
 
 

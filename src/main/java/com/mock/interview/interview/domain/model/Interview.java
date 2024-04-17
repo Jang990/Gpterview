@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +132,10 @@ public class Interview extends BaseTimeEntity {
 
     public boolean isActive() {
         return !isTimeout();
+    }
+
+    public boolean isExecutedToday() {
+        return getCreatedAt().toLocalDate().equals(LocalDate.now());
     }
 
     public boolean continueInterview() {
