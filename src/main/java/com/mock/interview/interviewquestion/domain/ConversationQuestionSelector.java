@@ -3,17 +3,10 @@ package com.mock.interview.interviewquestion.domain;
 import com.mock.interview.global.Events;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewquestion.domain.event.ConversationQuestionCreatedEvent;
-import com.mock.interview.interviewquestion.domain.event.CriticalQuestionSelectionErrorEvent;
-import com.mock.interview.interviewquestion.domain.event.QuestionSelectionErrorEvent;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.ResourceAccessException;
 
 
 @Service
@@ -27,40 +20,30 @@ public class ConversationQuestionSelector {
             long relatedCategoryQuestionSize, long interviewId, InterviewConversationPair pair
     ) {
         if (hasEnoughQuestion(relatedCategoryQuestionSize)) {
+            recommend(recommender, interviewId, pair);
+            return;
+        }
+
+        create(aiCreator, interviewId, pair);
+    }
+
+    private void recommend(QuestionRecommender recommender, long interviewId, InterviewConversationPair pair) {
+        try {
             RecommendationTarget target = new RecommendationTarget(interviewId, pair.getId());
             InterviewQuestion question = recommender.recommend(SINGLE, target).get(FIRST_IDX);
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
-            return;
+        } catch (Exception e) {
+            ConversationQuestionExceptionHandlingHelper.handle(e, interviewId, pair.getId());
         }
+    }
 
+    private static void create(AiQuestionCreator aiCreator, long interviewId, InterviewConversationPair pair) {
         try {
             InterviewQuestion question = aiCreator.create(interviewId, AiQuestionCreator.selectCreationOption(pair));
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
-        } catch (RuntimeException e) {
-            log.info("AI 요청기 RuntimeException 발생", e);
-            handleException(e, interviewId, pair.getId());
         } catch (Exception e) {
-            log.info("AI 요청기 Exception 발생", e);
-            Events.raise(new QuestionSelectionErrorEvent(interviewId, pair.getId()));
+            ConversationQuestionExceptionHandlingHelper.handle(e, interviewId, pair.getId());
         }
-    }
-
-    private void handleException(RuntimeException exception, long interviewId, long conversationId) {
-        if (isCriticalException(exception)) {
-            Events.raise(new CriticalQuestionSelectionErrorEvent(interviewId, conversationId));
-            return;
-        }
-
-        Events.raise(new QuestionSelectionErrorEvent(interviewId, conversationId));
-    }
-
-    private boolean isCriticalException(RuntimeException exception) {
-        if(exception instanceof HttpServerErrorException)
-            return true;
-        if(exception instanceof HttpClientErrorException e)
-            return e.getStatusCode() != HttpStatus.TOO_MANY_REQUESTS;
-
-        return false;
     }
 
     private boolean hasEnoughQuestion(long relatedCategoryQuestionSize) {
