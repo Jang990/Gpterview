@@ -15,17 +15,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class InterviewStarterImpl implements InterviewStarter {
     private final InterviewRepository repository;
+    private final int FIRST_IDX = 0;
     @Override
     public Interview start(Users users, InterviewConfigForm interviewConfig) {
-        Optional<Interview> currentInterviewOpt = repository.findCurrentInterview(users.getId(), RepositoryConst.LIMIT_ONE);
-        if (currentInterviewOpt.isPresent()) {
-            verifyCurrentInterview(currentInterviewOpt.get());
+        List<Interview> currentInterview = repository.findCurrentInterview(users.getId(), RepositoryConst.LIMIT_ONE);
+        if (!currentInterview.isEmpty()) {
+            verifyCurrentInterview(currentInterview.get(FIRST_IDX));
         }
 
         Interview interview = Interview.startInterview(interviewConfig, users, users.getCategory(), users.getPosition());
