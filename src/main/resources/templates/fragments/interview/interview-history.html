@@ -13,7 +13,7 @@
                 <p class="small mb-0 content" name="content" th:text="*{content}">면접관의 텍스트</p>
               </div>
               <div th:if="${messageStat.last AND (message.answer == null OR message.answer.content == null) }" class="d-flex align-items-end col-2 ps-2" style="min-width:0px;" id="retryBtnDiv">
-                <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryResponse()">
+                <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryRecommendation()">
                   <p class="small mb-0">다른 질문</p>
                 </button>
               </div>

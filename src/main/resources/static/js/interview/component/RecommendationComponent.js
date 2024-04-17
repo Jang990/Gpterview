@@ -57,7 +57,7 @@ function selectQuestion(questionId, content) {
 
 // 다른 추천 부탁
 function retryRecommendation() {
-    const apiUri = createConversationPairUriPrefix() + "/recommendation/another";
+    const apiUri = createConversationPairUriPrefix() + "/recommendation";
     removeRecommendationComponent();
     waitAiResponse();
     sendRequest(apiUri, null);
@@ -65,7 +65,7 @@ function retryRecommendation() {
 
 // AI 응답으로 변경
 function requestAi() {
-    const apiUri = createConversationPairUriPrefix() + "/status/ai";
+    const apiUri = createConversationPairUriPrefix() + "/recommendation/ai";
     removeRecommendationComponent();
     waitAiResponse();
     sendPatchRequest(apiUri, null);

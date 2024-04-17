@@ -5,15 +5,6 @@ function displayResponse(pairId, content) {
     $('#talk-history').append(newConversationItem);
 }
 
-// 주제 변경하기 요청
-function retryResponse() {
-    removeLastChatting();
-    const conversationPairId = getConversationPairId();
-
-    waitAiResponse();
-    sendRequest(createConversationPairUriPrefix()+"/status/changing", null);
-}
-
 function createGptMessage(msg) {
     return `
             <li class="mb-3 d-flex justify-content-start">
@@ -24,7 +15,7 @@ function createGptMessage(msg) {
                         <p class="small mb-0 content" name="content">${msg}</p>
                     </div>
                     <div class="d-flex align-items-end col-2 ps-2" style="min-width:0px;" id="retryBtnDiv">
-                        <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryResponse()">
+                        <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryRecommendation()">
                             <p class="small mb-0">다른 질문</p>
                         </button>
                     </div>

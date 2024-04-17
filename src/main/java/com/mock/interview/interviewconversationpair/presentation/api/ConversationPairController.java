@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class ConversationPairController {
     private final ConversationPairService conversationPairService;
 
-    @PostMapping("/recommendation/another")
+    @PostMapping("/recommendation")
     public ResponseEntity<Void> recommendAnotherQuestion(
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId,
@@ -22,6 +22,17 @@ public class ConversationPairController {
     ) {
         InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
         conversationPairService.recommendAnotherQuestion(conversationDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PatchMapping("/recommendation/ai")
+    public ResponseEntity<Void> recommendAiQuestion(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable(name = "interviewId") long interviewId,
+            @PathVariable(name = "pairId") long pairId
+    ) {
+        InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
+        conversationPairService.recommendAiQuestion(conversationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

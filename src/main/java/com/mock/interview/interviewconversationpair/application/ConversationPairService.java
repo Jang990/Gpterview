@@ -40,4 +40,12 @@ public class ConversationPairService {
 
         conversationRestarter.restart(conversationPair.getInterview(), conversationPair);
     }
+
+    @InterviewProgressLock
+    public void recommendAiQuestion(InterviewConversationLockDto conversationDto) {
+        InterviewConversationPair conversationPair = conversationPairRepository
+                .findWithInterviewUser(conversationDto.conversationId(), conversationDto.interviewId(), conversationDto.userId())
+                .orElseThrow(InterviewConversationPairNotFoundException::new);
+        conversationRestarter.restartOnlyAi(conversationPair.getInterview(), conversationPair);
+    }
 }
