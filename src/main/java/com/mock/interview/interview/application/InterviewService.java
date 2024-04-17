@@ -10,10 +10,7 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
-import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
-import com.mock.interview.interviewconversationpair.application.ConversationConvertor;
 import com.mock.interview.interviewconversationpair.domain.ConversationStarter;
-import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.tech.application.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -46,7 +43,7 @@ public class InterviewService {
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public InterviewStartingDto createCustomInterview(long loginId, InterviewConfigForm interviewConfig) {
+    public long createCustomInterview(long loginId, InterviewConfigForm interviewConfig) {
         Users users = userRepository.findForInterviewSetting(loginId)
                 .orElseThrow(UserNotFoundException::new);
 
@@ -55,17 +52,13 @@ public class InterviewService {
         interview.linkTech(relatedInterviewTech);
         repository.save(interview);
 
-        InterviewConversationPair conversationPair = conversationStarter.start(pairRepository, interview);
-        return convert(interview, conversationPair);
+        conversationStarter.start(pairRepository, interview);
+        return interview.getId();
     }
 
     private List<TechnicalSubjects> getRelatedCategoryTech(JobCategory category) {
         List<String> relatedTechName = CategoryModuleFinder.findModule(categoryRelatedTechFinders, category.getName()).getRelatedTechName();
         return TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, relatedTechName);
-    }
-
-    private static InterviewStartingDto convert(Interview interview, InterviewConversationPair conversationPair) {
-        return new InterviewStartingDto(interview.getId(), ConversationConvertor.convert(conversationPair));
     }
 
     @Transactional(readOnly = true)
