@@ -3,18 +3,16 @@ package com.mock.interview.interview.presentation.web;
 import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
+import com.mock.interview.interview.application.InterviewViewService;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
-import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.mock.interview.interviewquestion.application.QuestionRecommendationService;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
 import com.mock.interview.user.presentation.InfoPageInitializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -30,9 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 public class InterviewController {
-
-    private final InterviewConversationRepositoryForView conversationRepositoryForView;
-    private final QuestionRecommendationService questionRecommendationService;
+    private final InterviewViewService interviewViewService;
     private final UserRepositoryForView userRepositoryForView;
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
@@ -46,15 +42,12 @@ public class InterviewController {
         model.addAttribute("headerActiveTap", "interview");
         model.addAttribute("interviewId", interviewId);
 
-        Slice<ConversationContentDto> interviewConversations = conversationRepositoryForView.findInterviewConversations(interviewId, loginId, PageRequest.of(0, 25));
-        model.addAttribute("messageHistory", interviewConversations);
-        if (!interviewConversations.hasContent()) {
-            return "interview/start";
+        List<ConversationContentDto> interviewHistory = interviewViewService.findInterviewHistory(new InterviewLockDto(interviewId, loginId));
+        model.addAttribute("messageHistory", interviewHistory);
+        if (!interviewHistory.isEmpty()) {
+            InterviewConversationPairDto lastConversationPair = interviewHistory.get(interviewHistory.size() - 1).getPair();
+            model.addAttribute("lastConversationPair", lastConversationPair);
         }
-
-        List<ConversationContentDto> content = interviewConversations.getContent();
-        InterviewConversationPairDto lastConversationPair = content.get(content.size() - 1).getPair();
-        model.addAttribute("lastConversationPair", lastConversationPair);
         return "interview/start";
     }
 

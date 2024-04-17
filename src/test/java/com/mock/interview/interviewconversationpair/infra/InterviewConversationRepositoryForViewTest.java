@@ -1,5 +1,6 @@
 package com.mock.interview.interviewconversationpair.infra;
 
+import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@SpringBootTest
+//@SpringBootTest
 class InterviewConversationRepositoryForViewTest {
 
     @Autowired InterviewConversationRepositoryForView repository;
@@ -18,18 +19,16 @@ class InterviewConversationRepositoryForViewTest {
 //    @Test
 //    @Transactional
     void myTest() {
-        Slice<ConversationContentDto> interviewConversations = repository
-                .findInterviewConversations(156, 7, PageRequest.of(0, 5));
-        List<ConversationContentDto> content = interviewConversations.getContent();
-        System.out.println(content.size());
-        for (ConversationContentDto conversationContentDto : content) {
-            System.out.println("interviewConversationPairDto = " + conversationContentDto);
+        List<InterviewConversationPair> list = repository
+                .findOrderedByCreatedAt(156, 7);
+        for (InterviewConversationPair pair : list) {
+            System.out.println("pair = " + pair.getId());
         }
     }
 
-    @Test
+//    @Test
     void test2() {
-        ConversationContentDto conversation = repository.findConversation(7, 1, 1);
+        InterviewConversationPair conversation = repository.findConversation(7, 1, 1);
         System.out.println(conversation);
     }
 

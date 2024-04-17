@@ -12,6 +12,7 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.interview.presentation.dto.InterviewStartingDto;
+import com.mock.interview.interviewconversationpair.application.ConversationConvertor;
 import com.mock.interview.interviewconversationpair.domain.ConversationStarter;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
@@ -71,7 +72,7 @@ public class InterviewService {
     }
 
     private static InterviewStartingDto convert(Interview interview, InterviewConversationPair conversationPair) {
-        return new InterviewStartingDto(interview.getId(), new InterviewConversationPairDto(conversationPair.getId(), conversationPair.getStatus()));
+        return new InterviewStartingDto(interview.getId(), ConversationConvertor.convert(conversationPair));
     }
 
     @Transactional(readOnly = true)

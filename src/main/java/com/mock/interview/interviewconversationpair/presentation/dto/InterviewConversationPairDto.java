@@ -10,8 +10,8 @@ public class InterviewConversationPairDto {
     private Long id;
     private PairStatusForView status;
 
-    public InterviewConversationPairDto(Long id, PairStatus status) {
+    public InterviewConversationPairDto(Long id, PairStatusForView pairStatus) {
         this.id = id;
-        this.status = PairStatusForView.convert(status);
+        this.status = pairStatus;
     }
 }
