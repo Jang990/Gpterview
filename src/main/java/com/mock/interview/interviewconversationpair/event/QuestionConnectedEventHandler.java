@@ -5,10 +5,12 @@ import com.mock.interview.interview.presentation.dto.message.MessageDto;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
 import com.mock.interview.interviewconversationpair.domain.event.ConversationResetEvent;
 import com.mock.interview.interviewconversationpair.domain.event.QuestionConnectedEvent;
+import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.event.QuestionRecommendedEvent;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
+import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -36,7 +38,7 @@ public class QuestionConnectedEventHandler {
         InterviewQuestion question = questionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        List<MessageDto> list = List.of(ConversationMessageBroker.createMessageDtoToPublish(question));
+        List<InterviewQuestionResponse> list = List.of(QuestionConvertor.convertInterviewQuestion(question));
         messageBroker.publish(event.interviewId(), event.pairId(),list);
     }
 
@@ -47,8 +49,8 @@ public class QuestionConnectedEventHandler {
             phase = TransactionPhase.AFTER_COMMIT
     )
     public void handle(QuestionRecommendedEvent event) {
-        List<MessageDto> list = questionRepository.findAllById(event.questionIds()).stream()
-                .map(ConversationMessageBroker::createMessageDtoToPublish).toList();
+        List<InterviewQuestionResponse> list = questionRepository.findAllById(event.questionIds()).stream()
+                .map(QuestionConvertor::convertInterviewQuestion).toList();
 
         messageBroker.publish(event.interviewId(), event.pairId(), list);
     }
@@ -60,7 +62,7 @@ public class QuestionConnectedEventHandler {
             phase = TransactionPhase.AFTER_COMMIT
     )
     public void handle(ConversationResetEvent event) {
-        MessageDto messageDto = new MessageDto(null, InterviewRole.SYSTEM, event.resetMessage());
-        messageBroker.publish(event.interviewId(), event.conversationId(), List.of(messageDto));
+        InterviewQuestionResponse errorMessage = QuestionConvertor.convertErrorMessage(event.resetMessage());
+        messageBroker.publish(event.interviewId(), event.conversationId(), List.of(errorMessage));
     }
 }
