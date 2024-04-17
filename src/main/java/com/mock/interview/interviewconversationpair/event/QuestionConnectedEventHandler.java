@@ -32,7 +32,6 @@ public class QuestionConnectedEventHandler {
             phase = TransactionPhase.AFTER_COMMIT
     )
     public void handle(QuestionConnectedEvent event) {
-        // TODO: 발행 실패 시 복구가 필요?
         InterviewQuestion question = questionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
