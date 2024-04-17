@@ -100,7 +100,7 @@ public class InterviewConversationPair extends BaseTimeEntity {
     }
 
     private void verifyAnswerNeededStatus() {
-        if(isAnswerNeededStatus())
+        if(!isAnswerNeededStatus())
             throw new IllegalStateException("대답이 필요한 상태가 아닙니다.");
     }
 
