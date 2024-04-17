@@ -1,6 +1,7 @@
 package com.mock.interview.interview.infra;
 
 import com.mock.interview.interview.domain.model.Interview;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,6 +35,13 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
 
     @Query("Select iv From Interview iv Where iv.expiredTime > current_timestamp")
     Optional<Interview> findActiveInterview(Long loginId);
+
+    @Query("""
+            Select iv From Interview iv
+            Where iv.users.id = :userId
+            ORDER BY iv.createdAt DESC
+            """)
+    Optional<Interview> findCurrentInterview(@Param("userId") long loginId, Pageable pageable);
 
     /** 인터뷰 소유자 검증을 위한 쿼리 메소드 */
     boolean existsByIdAndUsersId(long interviewId, long usersId);

@@ -6,7 +6,6 @@ import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.domain.InterviewStarter;
-import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
@@ -16,8 +15,6 @@ import com.mock.interview.interviewconversationpair.application.ConversationConv
 import com.mock.interview.interviewconversationpair.domain.ConversationStarter;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
-import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.tech.application.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.infra.InterviewRepository;
@@ -41,7 +38,6 @@ public class InterviewService {
     private final InterviewRepository repository;
     private final InterviewConversationPairRepository pairRepository;
     private final ConversationStarter conversationStarter;
-    private final InterviewQuestionRepository interviewQuestionRepository;
     private final UserRepository userRepository;
     private final List<CategoryRelatedTechFinder> categoryRelatedTechFinders;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
@@ -51,9 +47,6 @@ public class InterviewService {
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public InterviewStartingDto createCustomInterview(long loginId, InterviewConfigForm interviewConfig) {
-        if (repository.findActiveInterview(loginId).isPresent()) // TODO: QueryDSL로 최적화
-            throw new InterviewAlreadyInProgressException();
-
         Users users = userRepository.findForInterviewSetting(loginId)
                 .orElseThrow(UserNotFoundException::new);
 
