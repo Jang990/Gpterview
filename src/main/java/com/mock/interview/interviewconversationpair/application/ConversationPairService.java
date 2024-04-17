@@ -2,6 +2,7 @@ package com.mock.interview.interviewconversationpair.application;
 
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
+import com.mock.interview.interviewconversationpair.domain.PairAiStatusService;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ConversationPairService {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final InterviewQuestionRepository questionRepository;
+    private final PairAiStatusService pairAiStatusService;
 
     @InterviewProgressLock
     public void connectQuestion(InterviewConversationLockDto lockDto, long questionId) {
@@ -36,6 +38,6 @@ public class ConversationPairService {
                 .findWithInterviewUser(lockDto.conversationId(), lockDto.interviewId(), lockDto.userId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
-        conversationPair.restartConversation();
+        pairAiStatusService.changeTopic(conversationPair.getInterview(), conversationPair);
     }
 }
