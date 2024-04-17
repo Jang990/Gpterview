@@ -37,7 +37,7 @@ public class ConversationQuestionSelector {
         }
     }
 
-    private static void create(AiQuestionCreator aiCreator, long interviewId, InterviewConversationPair pair) {
+    private void create(AiQuestionCreator aiCreator, long interviewId, InterviewConversationPair pair) {
         try {
             InterviewQuestion question = aiCreator.create(interviewId, AiQuestionCreator.selectCreationOption(pair));
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
