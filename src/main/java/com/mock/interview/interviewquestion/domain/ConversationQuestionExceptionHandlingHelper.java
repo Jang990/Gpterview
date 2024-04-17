@@ -24,18 +24,18 @@ public final class ConversationQuestionExceptionHandlingHelper {
         handleException(exception, interviewId, conversationId);
     }
 
-    private static void handleException(Exception exception, long interviewId, long conversationId) {
-        if(exception instanceof NotEnoughQuestion)
-            Events.raise(new CriticalQuestionSelectionErrorEvent(interviewId, conversationId));
-        Events.raise(new QuestionSelectionErrorEvent(interviewId, conversationId));
+    private static void handleException(Exception e, long interviewId, long conversationId) {
+        if(e instanceof NotEnoughQuestion)
+            Events.raise(new CriticalQuestionSelectionErrorEvent(e.getClass(), interviewId, conversationId));
+        Events.raise(new QuestionSelectionErrorEvent(e.getClass(), interviewId, conversationId));
     }
 
     private static void handleRuntimeException(RuntimeException e, long interviewId, long conversationId) {
         if (isCriticalException(e)) {
-            Events.raise(new CriticalQuestionSelectionErrorEvent(interviewId, conversationId));
+            Events.raise(new CriticalQuestionSelectionErrorEvent(e.getClass(), interviewId, conversationId));
             return;
         }
-        Events.raise(new QuestionSelectionErrorEvent(interviewId, conversationId));
+        Events.raise(new QuestionSelectionErrorEvent(e.getClass(), interviewId, conversationId));
     }
 
     private static boolean isCriticalException(Exception exception) {
