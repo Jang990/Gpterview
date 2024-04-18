@@ -1,7 +1,7 @@
 package com.mock.interview.interviewanswer.application;
 
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
-import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationIds;
 import com.mock.interview.interviewanswer.presentation.dto.InterviewAnswerRequest;
 import com.mock.interview.interview.application.InterviewVerificationHelper;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
@@ -26,7 +26,7 @@ public class InterviewAnswerInInterviewService {
     private final InterviewAnswerService interviewAnswerService;
 
     @InterviewProgressLock
-    public void create(InterviewConversationLockDto conversationDto, InterviewAnswerRequest answerDto) {
+    public void create(InterviewConversationIds conversationDto, InterviewAnswerRequest answerDto) {
         InterviewVerificationHelper.verify(interviewRepository, conversationDto.interviewId(), conversationDto.userId());
         Interview interview = interviewRepository.findByIdAndUserId(conversationDto.interviewId(), conversationDto.userId())
                 .orElseThrow(InterviewNotFoundException::new);

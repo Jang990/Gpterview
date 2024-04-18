@@ -2,7 +2,7 @@ package com.mock.interview.interview.application;
 
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
-import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.domain.InterviewStarter;
@@ -75,7 +75,7 @@ public class InterviewService {
     }
 
     @InterviewProgressLock
-    public void expireInterview(InterviewLockDto lockDto) {
+    public void expireInterview(InterviewUserIds lockDto) {
         Interview interview = repository.findByIdAndUserId(lockDto.getInterviewId(), lockDto.getUserId())
                 .orElseThrow(InterviewNotFoundException::new);
         interview.expire();

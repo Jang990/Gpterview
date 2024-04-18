@@ -1,7 +1,7 @@
 package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.interview.application.InterviewService;
-import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class InterviewPostController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable("interviewId") long interviewId
     ) {
-        InterviewLockDto lockDto = new InterviewLockDto(interviewId, loginId);
+        InterviewUserIds lockDto = new InterviewUserIds(interviewId, loginId);
         interviewService.expireInterview(lockDto);
         return "redirect:/interview/" + interviewId + "/expiration/result";
     }

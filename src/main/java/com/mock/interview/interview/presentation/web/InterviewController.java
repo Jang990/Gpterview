@@ -4,7 +4,7 @@ import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.interview.application.InterviewViewService;
-import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewProgressDto;
@@ -43,9 +43,9 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
 
-        InterviewProgressDto interviewDto = interviewViewService.findInterview(new InterviewLockDto(interviewId, loginId));
+        InterviewProgressDto interviewDto = interviewViewService.findInterview(new InterviewUserIds(interviewId, loginId));
         model.addAttribute("interview", interviewDto);
-        List<ConversationContentDto> interviewHistory = interviewViewService.findInterviewHistory(new InterviewLockDto(interviewId, loginId));
+        List<ConversationContentDto> interviewHistory = interviewViewService.findInterviewHistory(new InterviewUserIds(interviewId, loginId));
         model.addAttribute("messageHistory", interviewHistory);
 
         if (interviewDto.getExpiredTime().isBefore(LocalDateTime.now())) {

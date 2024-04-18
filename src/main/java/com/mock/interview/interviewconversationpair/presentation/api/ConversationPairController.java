@@ -1,6 +1,6 @@
 package com.mock.interview.interviewconversationpair.presentation.api;
 
-import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationIds;
 import com.mock.interview.interviewconversationpair.application.ConversationPairService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class ConversationPairController {
             @PathVariable(name = "interviewId") long interviewId,
             @PathVariable(name = "pairId") long pairId
     ) {
-        InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
+        InterviewConversationIds conversationDto = new InterviewConversationIds(interviewId, loginId, pairId);
         conversationPairService.recommendAnotherQuestion(conversationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -31,7 +31,7 @@ public class ConversationPairController {
             @PathVariable(name = "interviewId") long interviewId,
             @PathVariable(name = "pairId") long pairId
     ) {
-        InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
+        InterviewConversationIds conversationDto = new InterviewConversationIds(interviewId, loginId, pairId);
         conversationPairService.recommendAiQuestion(conversationDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -43,7 +43,7 @@ public class ConversationPairController {
             @PathVariable(name = "pairId") long pairId,
             @PathVariable(name = "questionId") long questionId
     ) {
-        InterviewConversationLockDto conversationDto = new InterviewConversationLockDto(interviewId, loginId, pairId);
+        InterviewConversationIds conversationDto = new InterviewConversationIds(interviewId, loginId, pairId);
         conversationPairService.connectQuestion(conversationDto, questionId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
