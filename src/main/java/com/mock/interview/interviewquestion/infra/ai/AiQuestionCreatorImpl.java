@@ -64,7 +64,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
 
     // TODO: RecommendedQuestion 제거하고 다른 DTO 사용할 것
     private RecommendedQuestion createAiQuestion(long interviewId, CreationOption creationOption) {
-        InterviewInfo interviewInfo = interviewCache.findAiInterviewSetting(interviewId);
+        InterviewInfo interviewInfo = interviewCache.findProgressingInterviewInfo(interviewId);
         MessageHistory history = conversationCache.findCurrentConversation(interviewId);
 
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());

@@ -43,7 +43,7 @@ class InterviewCacheForAiRequestTest {
         InterviewInfo mockInfo = mock(InterviewInfo.class);
         when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.of(mockInfo));
 
-        InterviewInfo result = cacheRepo.findAiInterviewSetting(testInterviewId);
+        InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
         assertThat(result).isEqualTo(mockInfo);
         verify(interviewRepository, times(0)).findInterviewSetting(testInterviewId);
@@ -59,7 +59,7 @@ class InterviewCacheForAiRequestTest {
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
         when(mockInterview.getExpiredTime()).thenReturn(activeTime);
 
-        InterviewInfo result = cacheRepo.findAiInterviewSetting(testInterviewId);
+        InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
         verify(interviewRepository, times(1)).findInterviewSetting(testInterviewId);
         verify(interviewRedisRepository, times(1)).saveInterviewIfActive(eq(testInterviewId), eq(result), anyLong());
@@ -77,7 +77,7 @@ class InterviewCacheForAiRequestTest {
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
         when(mockInterview.getExpiredTime()).thenReturn(expiredTime);
 
-        InterviewInfo result = cacheRepo.findAiInterviewSetting(testInterviewId);
+        InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
         verify(interviewRepository, times(1)).findInterviewSetting(testInterviewId);
         verify(interviewRedisRepository, times(0)).saveInterviewIfActive(eq(testInterviewId), eq(result), anyLong());

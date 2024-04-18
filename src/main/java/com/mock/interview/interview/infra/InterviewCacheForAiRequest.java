@@ -25,7 +25,7 @@ public class InterviewCacheForAiRequest {
     private final InterviewRedisRepository redisRepository;
     private final InterviewRepository interviewRepository;
 
-    public InterviewInfo findAiInterviewSetting(long interviewId) {
+    public InterviewInfo findProgressingInterviewInfo(long interviewId) {
         Optional<InterviewInfo> cache = redisRepository.findActiveInterview(interviewId);
         if (cache.isPresent()) {
             return cache.get();

@@ -5,7 +5,6 @@ import com.mock.interview.interviewconversationpair.application.LastConversation
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
-import com.mock.interview.interviewquestion.infra.ai.progress.TraceResult;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
@@ -49,7 +48,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
 
     @Override
     public List<InterviewQuestion> recommend(int recommendationSize, RecommendationTarget target) {
-        InterviewInfo interview = interviewCache.findAiInterviewSetting(target.interviewId());
+        InterviewInfo interview = interviewCache.findProgressingInterviewInfo(target.interviewId());
         String currentInterviewTopic = topicTracker.trace(interview).topic();
         List<QuestionMetaData> questionForRecommend = questionRepository
                 .findRandomQuestion(interview.profile().category(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
