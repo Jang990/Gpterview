@@ -1,5 +1,6 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
 import com.mock.interview.interviewconversationpair.application.ConversationConvertor;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -21,6 +22,9 @@ public class InterviewViewService {
     public List<ConversationContentDto> findInterviewHistory(InterviewLockDto interviewUserDto) {
         List<InterviewConversationPair> conversations = conversationRepositoryForView
                 .findOrderedByCreatedAt(interviewUserDto.interviewId(), interviewUserDto.userId());
+
+        if(conversations.isEmpty())
+            throw new InterviewNotFoundException();
 
         return conversations.stream().map(
                 conversationPair -> ConversationConvertor.convert(
