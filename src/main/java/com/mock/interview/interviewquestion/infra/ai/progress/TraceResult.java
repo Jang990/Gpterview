@@ -1,4 +1,4 @@
 package com.mock.interview.interviewquestion.infra.ai.progress;
 
-public record TraceResult(InterviewProgress progress, String topic) {
+public record TraceResult(InterviewProgress progress, String currentTopic) {
 }

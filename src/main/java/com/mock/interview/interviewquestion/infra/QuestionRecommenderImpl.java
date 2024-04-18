@@ -5,6 +5,9 @@ import com.mock.interview.interviewconversationpair.application.LastConversation
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
+import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
+import com.mock.interview.interviewquestion.infra.ai.progress.TraceResult;
+import com.mock.interview.interviewquestion.infra.recommend.CurrentConversationConvertor;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
@@ -43,20 +46,19 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     private final KoreaStringAnalyzer stringAnalyzer;
     private final CurrentTopicTracker topicTracker;
 
-    private final int RECOMMENDED_QUESTION_COUNT = 30;
+    private final int RECOMMENDED_QUESTION_SIZE = 30;
     private final int TOP_3 = 3;
 
     @Override
     public List<InterviewQuestion> recommend(int recommendationSize, RecommendationTarget target) {
         InterviewInfo interview = interviewCache.findProgressingInterviewInfo(target.interviewId());
-        String currentInterviewTopic = topicTracker.trace(interview).topic();
-        List<QuestionMetaData> questionForRecommend = questionRepository
-                .findRandomQuestion(interview.profile().category(), PageRequest.of(0, RECOMMENDED_QUESTION_COUNT))
-                .stream().map(this::convertQuestion).toList();
-
-        CurrentConversation currentConversation = initCurrentConversation(target.interviewId(), interview, currentInterviewTopic);
+        TraceResult interviewTraceResult = topicTracker.trace(interview);
+        List<QuestionMetaData> questionForRecommend = findRelatedRandomQuestions(interview, interviewTraceResult.progress().phase(),RECOMMENDED_QUESTION_SIZE);
 
         try {
+            CurrentConversation currentConversation = CurrentConversationConvertor
+                    .create(conversationPairRepository, stringAnalyzer,
+                            target.interviewId(), interview, interviewTraceResult.currentTopic());
             List<Long> result = recommender
                     .recommendTechQuestion(recommendationSize, currentConversation, questionForRecommend);
             return result.stream().map(questionRepository::findById).map(op -> op.orElseThrow(InterviewQuestionNotFoundException::new)).toList();
@@ -66,26 +68,15 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
         }
     }
 
-    private CurrentConversation initCurrentConversation(long interviewId, InterviewInfo interview, String currentTopic) {
-        Optional<InterviewConversationPair> optCurrentConversation = LastConversationHelper
-                .findCurrentCompletedConversation(conversationPairRepository, interviewId);
-
-        if(optCurrentConversation.isEmpty())
-            return createEmptyConversation(interview, currentTopic);
-
-        InterviewConversationPair currentConversation = optCurrentConversation.get();
-        if(currentConversation.getQuestion() == null)
-            return createEmptyConversation(interview, currentTopic);
-
-        return new CurrentConversation(
-                currentConversation.getAnswer().getId(),
-                stringAnalyzer.extractNecessaryTokens(currentConversation.getAnswer().getAnswer()),
-                currentTopic, interview.profile().field()
-        );
-    }
-
-    private CurrentConversation createEmptyConversation(InterviewInfo interview, String topic) {
-        return new CurrentConversation(null,null, topic, interview.profile().field());
+    private List<QuestionMetaData> findRelatedRandomQuestions(InterviewInfo interview, InterviewPhase phase, int size) {
+        return questionRepository.findRandomQuestion(interview.profile().category(), PageRequest.of(0, size))
+                .stream().map(this::convertQuestion).toList();
+        // TODO: 페이즈별로 다른 쿼리가 필요함.
+//        return switch (phase) {
+//            case TECHNICAL -> null;
+//            case EXPERIENCE -> null;
+//            case PERSONAL -> null;
+//        };
     }
 
     @Override
