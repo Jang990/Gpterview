@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="fragment-question(conversationStatus, question, messageStat)">
+    <li th:object="${question}" class="d-flex mb-3 justify-content-start" th:if="${conversationStatus != T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).EMPTY}">
+        <div class="d-flex flex-row justify-content-start col-10" style="min-width:0px;">
+            <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
+            <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
+                <input type="hidden" name="role" class="role" th:value="*{role}">
+                <p class="small mb-0 content" name="content">
+                    <th:block th:if="${conversationStatus == T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).ONLY_QUESTION
+                        OR conversationStatus == T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).COMPLETED}">
+                        <th:block th:if="*{id == null}">삭제된 질문입니다.</th:block>
+                        <th:block th:unless="*{id == null}" th:text="*{content}">연결된 질문 내용</th:block>
+                    </th:block>
+                    <th:block th:if="${conversationStatus == T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).RESTART_RECOMMENDED}">
+                        오류가 발생했습니다. 잠시후 '다른 질문' 버튼을 통해 재시도해주세요.
+                    </th:block>
+                </p>
+            </div>
+            <div th:if="${messageStat.last AND (message.answer == null OR message.answer.content == null) }" class="d-flex align-items-end col-2 ps-2" style="min-width:0px;" id="retryBtnDiv">
+                <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryRecommendation()">
+                    <p class="small mb-0">다른 질문</p>
+                </button>
+            </div>
+            <div th:if="*{id != null}" class="d-flex align-items-end col-2" style="min-width:0px;" id="reviewBtnDiv">
+                <button id="reviewBtn" class="btn btn-link btn-sm">
+                    <img style="height: 2vh" th:onclick="|review('*{id}')|" th:src="@{/image/review.png}" alt="다시보기">
+                </button>
+            </div>
+        </div>
+    </li>
+</th:block>
+</html>
