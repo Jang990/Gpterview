@@ -6,7 +6,7 @@ import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptC
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
+import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigurationCreator;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.ITInterviewTemplateGetter;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;

@@ -4,7 +4,7 @@ import com.mock.interview.category.application.CategoryConvertor;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
-import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
+import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
 import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;

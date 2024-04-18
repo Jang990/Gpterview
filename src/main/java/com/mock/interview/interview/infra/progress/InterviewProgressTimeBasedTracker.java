@@ -1,7 +1,9 @@
-package com.mock.interview.interviewquestion.infra.ai.progress;
+package com.mock.interview.interview.infra.progress;
 
+import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.interview.infra.cache.dto.InterviewConfig;
+import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 

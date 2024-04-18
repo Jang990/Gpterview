@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.progress;
+package com.mock.interview.interview.infra.progress.dto;
 
 /**
  * 면접 진행 상황에 대한 레코드
