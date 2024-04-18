@@ -22,7 +22,7 @@ public class DefaultInterviewPromptConfigurator extends DefaultCategorySupportCh
     @Override
     public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
         String rawStrategy = getRawInterviewStrategy(progress.phase());
-        return configurationCreator.create(rawStrategy, profile);
+        return null;
     }
 
     @Override

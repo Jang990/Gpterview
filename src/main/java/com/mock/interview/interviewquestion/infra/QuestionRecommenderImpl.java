@@ -66,7 +66,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     }
 
     private List<QuestionMetaData> findRelatedRandomQuestions(InterviewInfo interview, InterviewPhase phase, int size) {
-        return questionRepository.findRandomQuestion(interview.profile().category(), PageRequest.of(0, size))
+        return questionRepository.findRandomQuestion(interview.profile().category().getId(), PageRequest.of(0, size))
                 .stream().map(this::convertQuestion).toList();
         // TODO: 페이즈별로 다른 쿼리가 필요함.
 //        return switch (phase) {

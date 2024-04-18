@@ -53,12 +53,12 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         RecommendedQuestion recommendedQuestion = createAiQuestion(interviewId, creationOption);
         Interview interview = repository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
-        List<TechnicalSubjects> relatedTechList = TechSavingHelper
+        TechnicalSubjects relatedTech = TechSavingHelper
                 .saveTechIfNotExist(technicalSubjectsRepository, recommendedQuestion.topic());
 
         InterviewQuestion question = createQuestion(interview, recommendedQuestion);
         question.linkJob(interview.getCategory(), interview.getPosition());
-        question.linkTech(relatedTechList);
+        question.linkTech(relatedTech);
         return question;
     }
 
@@ -85,21 +85,21 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
     }
 
     private RecommendedQuestion createPublishedQuestion(InterviewProgress progress, PromptConfiguration promptConfig, Message response) {
-        List<String> topic = getTopic(progress.phase(), promptConfig);
+        String topic = getTopic(progress.phase(), promptConfig);
         return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress, topic);
     }
 
-    private List<String> getTopic(InterviewPhase phase, PromptConfiguration promptConfig) {
+    private String getTopic(InterviewPhase phase, PromptConfiguration promptConfig) {
         return switch (phase) {
             case TECHNICAL -> promptConfig.getSkills();
             case EXPERIENCE -> promptConfig.getExperience();
-            case PERSONAL -> List.of();
+            case PERSONAL -> null;
         };
     }
 
     private PromptConfiguration createPromptConfig(InterviewProgress progress, InterviewInfo interviewInfo) {
         InterviewPromptConfigurator configurator = CategoryModuleFinder
-                .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category());
+                .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category().getName());
         return configurator.configStrategy(requester, interviewInfo.profile(), progress);
     }
 

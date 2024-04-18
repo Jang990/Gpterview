@@ -1,7 +1,11 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator;
 
 
+import com.mock.interview.category.presentation.dto.response.CategoryResponse;
+import com.mock.interview.experience.presentation.dto.ExperienceDto;
+import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
+import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,23 +21,27 @@ import java.util.List;
 public class PromptTemplateValidator {
     private final TemplateFormatGetter formatGetter;
 
-    public void verify(String rawTemplate, InterviewProfile profile) {
-        if(hasError(rawTemplate, profile))
+    public void verify(String rawTemplate, PromptConfigElements elements) {
+        if(hasError(rawTemplate, elements))
             throw new InvalidConfigurationException();
     }
 
-    private boolean hasError(String rawTemplate, InterviewProfile profile) {
-        return hasTemplateValueError(rawTemplate, formatGetter.getFieldFormat(), profile.field())
-                || hasTemplateValueError(rawTemplate, formatGetter.getCategoryFormat(), profile.category())
-                || hasTemplateValueError(rawTemplate, formatGetter.getSkillsFormat(), profile.skills())
-                || hasTemplateValueError(rawTemplate, formatGetter.getExperienceFormat(), profile.experience());
+    private boolean hasError(String rawTemplate, PromptConfigElements elements) {
+        return hasTemplateValueError(rawTemplate, formatGetter.getFieldFormat(), elements.field())
+                || hasTemplateValueError(rawTemplate, formatGetter.getCategoryFormat(), elements.category())
+                || hasTemplateValueError(rawTemplate, formatGetter.getSkillsFormat(), elements.tech())
+                || hasTemplateValueError(rawTemplate, formatGetter.getExperienceFormat(), elements.experience());
     }
 
-    private boolean hasTemplateValueError(String rawTemplate, String format, String value) {
+    private boolean hasTemplateValueError(String rawTemplate, String format, CategoryResponse value) {
         return rawTemplate.contains(format) && isEmpty(value);
     }
 
-    private boolean hasTemplateValueError(String rawTemplate, String format, List<String> value) {
+    private boolean hasTemplateValueError(String rawTemplate, String format, TechnicalSubjectsResponse value) {
+        return rawTemplate.contains(format) && isEmpty(value);
+    }
+
+    private boolean hasTemplateValueError(String rawTemplate, String format, ExperienceDto value) {
         return rawTemplate.contains(format) && isEmpty(value);
     }
 
@@ -41,7 +49,15 @@ public class PromptTemplateValidator {
         return !StringUtils.hasText(value);
     }
 
-    private boolean isEmpty(List<String> value) {
-        return value == null || value.isEmpty() || value.stream().noneMatch(StringUtils::hasText);
+    private boolean isEmpty(CategoryResponse value) {
+        return value == null || isEmpty(value.getName());
+    }
+
+    private boolean isEmpty(TechnicalSubjectsResponse value) {
+        return value == null || isEmpty(value.getName());
+    }
+
+    private boolean isEmpty(ExperienceDto value) {
+        return value == null || isEmpty(value.getContent());
     }
 }

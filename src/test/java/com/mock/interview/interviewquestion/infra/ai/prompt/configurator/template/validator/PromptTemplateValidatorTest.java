@@ -1,6 +1,10 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator;
 
+import com.mock.interview.category.presentation.dto.response.CategoryResponse;
+import com.mock.interview.experience.presentation.dto.ExperienceDto;
+import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
+import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,6 +33,11 @@ class PromptTemplateValidatorTest {
     private final String containAllTemplate = fieldFormat + " " + skillsFormat + " "
             + departmentFormat + " " + experienceFormat;
 
+    private final CategoryResponse category = new CategoryResponse(1, "aaa");
+    private final CategoryResponse field = new CategoryResponse(2, "bbb");
+    private final TechnicalSubjectsResponse tech = new TechnicalSubjectsResponse(3, "ccc");
+    private final ExperienceDto experience = new ExperienceDto(4L, "ddd");
+
     @BeforeEach
     void beforeEach() {
         when(getter.getCategoryFormat()).thenReturn(departmentFormat);
@@ -40,43 +49,32 @@ class PromptTemplateValidatorTest {
     @Test
     @DisplayName("성공 - 정상값")
     void test1() {
-        InterviewProfile containAllProfile = new InterviewProfile("aaa", "bbb", List.of("ccc"), List.of("ddd"));
-        validator.verify(containAllTemplate, containAllProfile);
+        PromptConfigElements configElements = PromptConfigElements.builder()
+                .category(category).field(field)
+                .tech(tech).experience(experience).build();
+        validator.verify(containAllTemplate, configElements);
     }
 
     @Test
-    @DisplayName("성공 - 하나라도 있는 리스트")
-    void test2() {
-        InterviewProfile containAllProfile = new InterviewProfile("aaa", "bbb", List.of("ccc"), List.of("", "ddd",""));
-        validator.verify(containAllTemplate, containAllProfile);
-    }
-
-    @Test
-    @DisplayName("실패 - 비어있는 리스트 테스트")
-    void test3() {
-        InterviewProfile containAllProfile = new InterviewProfile("aaa", "bbb", List.of("ccc"), List.of("", ""));
-        Assertions.assertThrows(InvalidConfigurationException.class, () -> validator.verify(containAllTemplate, containAllProfile));
-    }
-
-    @Test
-    @DisplayName("실패 - null 리스트")
+    @DisplayName("실패 - 경험 null")
     void test4() {
-        InterviewProfile containAllProfile = new InterviewProfile("aaa", "bbb", List.of("ccc"), null);
-        Assertions.assertThrows(InvalidConfigurationException.class, () -> validator.verify(containAllTemplate, containAllProfile));
-    }
-
-    @Test
-    @DisplayName("실패 - empty 리스트")
-    void test5() {
-        InterviewProfile containAllProfile = new InterviewProfile("aaa", "bbb", List.of("ccc"), List.of());
-        Assertions.assertThrows(InvalidConfigurationException.class, () -> validator.verify(containAllTemplate, containAllProfile));
+        PromptConfigElements configElements = PromptConfigElements.builder()
+                .category(category).field(field)
+                .tech(tech)
+//                .experience(experience)
+                .build();
+        Assertions.assertThrows(InvalidConfigurationException.class, () -> validator.verify(containAllTemplate, configElements));
     }
 
     @Test
     @DisplayName("성공 - 템플릿에 없는 값 null 초기화")
     void test6() {
         final String templateWithoutSkill = fieldFormat + " " + departmentFormat + " " + experienceFormat;
-        InterviewProfile profileWithoutSkill = new InterviewProfile("aaa", "bbb", null, List.of("ddd"));
-        validator.verify(templateWithoutSkill, profileWithoutSkill);
+        PromptConfigElements configElements = PromptConfigElements.builder()
+                .category(category).field(field)
+//                .tech(tech)
+                .experience(experience)
+                .build();
+        validator.verify(templateWithoutSkill, configElements);
     }
 }

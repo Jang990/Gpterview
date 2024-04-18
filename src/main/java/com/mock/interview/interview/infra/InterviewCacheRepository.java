@@ -1,11 +1,15 @@
 package com.mock.interview.interview.infra;
 
+import com.mock.interview.category.application.CategoryConvertor;
+import com.mock.interview.experience.application.ExperienceConvertor;
+import com.mock.interview.interview.domain.model.InterviewExperienceLink;
 import com.mock.interview.interview.domain.model.InterviewTechLink;
 import com.mock.interview.interviewquestion.infra.cache.dto.InterviewConfig;
 import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
+import com.mock.interview.tech.application.TechConvertHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,13 +48,13 @@ public class InterviewCacheRepository {
 
     public InterviewInfo convert(Interview interview) {
         InterviewProfile profile = new InterviewProfile(
-                interview.getCategory().getName(),
-                interview.getPosition().getName(),
-                interview.getTechLink().stream().map(InterviewTechLink::getTechnicalSubjects).map(TechnicalSubjects::getName).toList(),
-                new ArrayList<>() // TODO: Interview에 경험 연결하기.
+                CategoryConvertor.convert(interview.getCategory()),
+                CategoryConvertor.convert(interview.getPosition()),
+                TechConvertHelper.convert(interview.getTechLink().stream().map(InterviewTechLink::getTechnicalSubjects).toList()),
+                ExperienceConvertor.convert(interview.getExperienceLink().stream().map(InterviewExperienceLink::getExperience).toList())
         );
         InterviewConfig interviewConfig = new InterviewConfig(interview.getType(), interview.getCreatedAt(), interview.getExpiredTime());
-        return new InterviewInfo(profile, interviewConfig);
+        return new InterviewInfo(interview.getId(), profile, interviewConfig);
     }
 
     private long calculateMinuteDifference(LocalDateTime expiredTime) {

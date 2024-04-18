@@ -58,8 +58,8 @@ public class PromptCreator {
         map.put(templateConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
         map.put(templateConstGetter.getField(), creationInfo.getField());
         map.put(templateConstGetter.getCategory(), creationInfo.getCategory());
-        map.put(templateConstGetter.getSkills(), creationInfo.getSkills().toString());
-        map.put(templateConstGetter.getExperience(), creationInfo.getExperience().toString());
+        map.put(templateConstGetter.getSkills(), creationInfo.getSkills());
+        map.put(templateConstGetter.getExperience(), creationInfo.getExperience());
         return map;
 //        return Map.of(
 //                formatConstGetter.getSystemRole(), aiSpec.getSystemRole(),

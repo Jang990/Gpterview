@@ -1,12 +1,15 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
 
 import com.mock.interview.category.infra.support.ITCategorySupportChecker;
+import com.mock.interview.experience.presentation.dto.ExperienceDto;
+import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigurationCreator;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.ITInterviewTemplateGetter;
+import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +33,10 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
     @Override
     public String getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
         return switch (progress.phase()) {
-            case TECHNICAL, EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.skills());
+            case TECHNICAL, EXPERIENCE -> {
+                TechnicalSubjectsResponse tech = selectStringBasedOnProgress(progress.progress(), profile.skills());
+                yield tech == null ? null : tech.getName();
+            }
             case PERSONAL -> null;
         };
     }
@@ -38,27 +44,27 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
     private PromptConfiguration createPersonalPromptConfig(InterviewProfile profile, double progress) {
         return configurationCreator.create(
                 templateGetter.getPersonal(),
-                new InterviewProfile(profile.category(), profile.field(), profile.skills(), profile.experience())
+                PromptConfigElements.builder().category(profile.category()).field(profile.field()).build()
         );
     }
 
     private PromptConfiguration createExperiencePromptConfig(InterviewProfile profile, double progress) {
-        String selectedExperience = selectStringBasedOnProgress(progress, profile.experience());
+        ExperienceDto selectedExperience = selectStringBasedOnProgress(progress, profile.experience());
         return configurationCreator.create(
                 templateGetter.getExperience(),
-                new InterviewProfile(profile.category(), profile.field(), profile.skills(), List.of(selectedExperience))
+                PromptConfigElements.builder().category(profile.category()).field(profile.field()).experience(selectedExperience).build()
         );
     }
 
     private PromptConfiguration createTechPromptConfig(InterviewProfile profile, double progress) {
-        String selectedSkills = selectStringBasedOnProgress(progress, profile.skills());
+        TechnicalSubjectsResponse selectedTech = selectStringBasedOnProgress(progress, profile.skills());
         return configurationCreator.create(
                 templateGetter.getTechnical(),
-                new InterviewProfile(profile.category(), profile.field(), List.of(selectedSkills), profile.experience())
+                PromptConfigElements.builder().category(profile.category()).field(profile.field()).tech(selectedTech).build()
         );
     }
 
-    private String selectStringBasedOnProgress(double progress, List<String> list) {
+    private <T> T selectStringBasedOnProgress(double progress, List<T> list) {
         if(list.isEmpty())
             return null;
         int n = (int) Math.floor(progress * list.size());

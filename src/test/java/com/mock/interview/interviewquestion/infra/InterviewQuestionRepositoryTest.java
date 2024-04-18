@@ -13,7 +13,7 @@ class InterviewQuestionRepositoryTest {
 
 //    @Test
     void recommendQueryTest() {
-        List<InterviewQuestion> it = repository.findRandomQuestion("IT", PageRequest.of(0, 10));
+        List<InterviewQuestion> it = repository.findRandomQuestion(1, PageRequest.of(0, 10));
         for (InterviewQuestion question : it) {
             System.out.println(question.getQuestion());
         }

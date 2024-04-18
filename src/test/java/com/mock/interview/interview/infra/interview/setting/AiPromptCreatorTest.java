@@ -72,8 +72,8 @@ class AiPromptCreatorTest {
         when(mock.getPromptTemplate()).thenReturn(promptTemplate);
         when(mock.getCategory()).thenReturn("IT");
         when(mock.getField()).thenReturn("백엔드");
-        when(mock.getSkills()).thenReturn(List.of("Java"));
-        when(mock.getExperience()).thenReturn(List.of("나는 ... 경험했다."));
+        when(mock.getSkills()).thenReturn("Java");
+        when(mock.getExperience()).thenReturn("나는 ... 경험했다.");
         return mock;
     }
 }

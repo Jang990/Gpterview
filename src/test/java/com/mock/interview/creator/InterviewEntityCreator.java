@@ -1,28 +1,35 @@
 package com.mock.interview.creator;
 
-import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.tech.domain.model.TechnicalSubjects;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
 public class InterviewEntityCreator {
-    public static Interview createCategory(LocalDateTime expireTime) {
+    public static Interview createInterview(LocalDateTime expireTime) {
         Interview mock = mock(Interview.class);
+        JobCategory mockCategory = createMockCategory();
+        JobPosition mockPosition = createMockPosition();
         when(mock.getExpiredTime()).thenReturn(expireTime);
+        when(mock.getCategory()).thenReturn(mockCategory);
+        when(mock.getPosition()).thenReturn(mockPosition);
         return mock;
     }
 
-    private static JobCategory createCategory() {
-        return JobCategory.createCategory("test 분야");
+    private static JobCategory createMockCategory() {
+        JobCategory mockCategory = mock(JobCategory.class);
+        when(mockCategory.getId()).thenReturn(1L);
+        when(mockCategory.getName()).thenReturn("test 분야");
+        return mockCategory;
     }
 
-    private static JobPosition createPosition(JobCategory category) {
-        return JobPosition.create("test 직무", category);
+    private static JobPosition createMockPosition() {
+        JobPosition mockPosition = mock(JobPosition.class);
+        when(mockPosition.getId()).thenReturn(1L);
+        when(mockPosition.getName()).thenReturn("test 분야");
+        return mockPosition;
     }
 }

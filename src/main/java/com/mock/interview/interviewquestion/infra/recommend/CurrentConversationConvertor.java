@@ -30,11 +30,11 @@ public final class CurrentConversationConvertor {
         return new CurrentConversation(
                 currentConversation.getAnswer().getId(),
                 stringAnalyzer.extractNecessaryTokens(currentConversation.getAnswer().getAnswer()),
-                currentTopic, interview.profile().field()
+                currentTopic, interview.profile().field().getName()
         );
     }
 
     private static CurrentConversation createEmpty(InterviewInfo interview, String topic) {
-        return new CurrentConversation(null,null, topic, interview.profile().field());
+        return new CurrentConversation(null,null, topic, interview.profile().field().getName());
     }
 }

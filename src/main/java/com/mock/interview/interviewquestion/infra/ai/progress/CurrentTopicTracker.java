@@ -18,7 +18,7 @@ public class CurrentTopicTracker {
     public TraceResult trace(InterviewInfo interviewInfo) {
         InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
         InterviewPromptConfigurator configurator = CategoryModuleFinder
-                .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category());
+                .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category().getName());
 
         return new TraceResult(progress, configurator.getCurrentTopic(interviewInfo.profile(), progress));
     }
