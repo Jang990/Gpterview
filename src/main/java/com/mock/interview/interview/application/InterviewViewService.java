@@ -4,7 +4,7 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
-import com.mock.interview.interview.presentation.dto.InterviewInfoDto;
+import com.mock.interview.interview.presentation.dto.InterviewProgressDto;
 import com.mock.interview.interviewconversationpair.application.ConversationConvertor;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
@@ -22,9 +22,9 @@ public class InterviewViewService {
     private final InterviewRepository repository;
     private final InterviewConversationRepositoryForView conversationRepositoryForView;
 
-    public InterviewInfoDto findInterview(InterviewLockDto interviewLockDto) {
+    public InterviewProgressDto findInterview(InterviewLockDto interviewLockDto) {
         Interview interview = InterviewFindingHelper.find(repository, interviewLockDto);
-        return new InterviewInfoDto(interview.getId(), interview.getTitle().getTitle(),interview.getExpiredTime());
+        return new InterviewProgressDto(interview.getId(), interview.getTitle().getTitle(),interview.getExpiredTime());
     }
 
     // TODO: 페이징 처리 필요.

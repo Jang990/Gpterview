@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InterviewInfoDto {
+public class InterviewProgressDto {
     private Long id;
     private String title;
     private LocalDateTime expiredTime;

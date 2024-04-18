@@ -7,7 +7,7 @@ import com.mock.interview.interview.application.InterviewViewService;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
-import com.mock.interview.interview.presentation.dto.InterviewInfoDto;
+import com.mock.interview.interview.presentation.dto.InterviewProgressDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
@@ -43,7 +43,7 @@ public class InterviewController {
     ) {
         model.addAttribute("headerActiveTap", "interview");
 
-        InterviewInfoDto interviewDto = interviewViewService.findInterview(new InterviewLockDto(interviewId, loginId));
+        InterviewProgressDto interviewDto = interviewViewService.findInterview(new InterviewLockDto(interviewId, loginId));
         model.addAttribute("interview", interviewDto);
         List<ConversationContentDto> interviewHistory = interviewViewService.findInterviewHistory(new InterviewLockDto(interviewId, loginId));
         model.addAttribute("messageHistory", interviewHistory);
