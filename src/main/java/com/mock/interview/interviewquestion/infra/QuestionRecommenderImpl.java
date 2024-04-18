@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra;
 
-import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
+import com.mock.interview.interview.infra.InterviewCacheRepository;
 import com.mock.interview.interviewconversationpair.application.LastConversationHelper;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
@@ -36,7 +36,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class QuestionRecommenderImpl implements QuestionRecommender {
 
-    private final InterviewCacheForAiRequest interviewCache;
+    private final InterviewCacheRepository interviewCache;
     private final InterviewQuestionRepository questionRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
     private final QuestionRankingService recommender;

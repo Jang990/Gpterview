@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class InterviewCacheForAiRequestTest {
+class InterviewCacheRepositoryTest {
 
     @Mock
     InterviewRedisRepository interviewRedisRepository;
@@ -30,7 +30,7 @@ class InterviewCacheForAiRequestTest {
     InterviewRepository interviewRepository;
 
     @InjectMocks
-    InterviewCacheForAiRequest cacheRepo;
+    InterviewCacheRepository cacheRepo;
     long testInterviewId = 25;
 
     @BeforeEach

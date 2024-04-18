@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class InterviewCacheForAiRequest {
+public class InterviewCacheRepository {
 
     private final InterviewRedisRepository redisRepository;
     private final InterviewRepository interviewRepository;

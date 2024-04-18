@@ -3,7 +3,7 @@ package com.mock.interview.interviewquestion.infra.ai;
 import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.infra.InterviewCacheForAiRequest;
+import com.mock.interview.interview.infra.InterviewCacheRepository;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.application.QuestionConvertor;
@@ -36,7 +36,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AiQuestionCreatorImpl implements AiQuestionCreator {
-    private final InterviewCacheForAiRequest interviewCache;
+    private final InterviewCacheRepository interviewCache;
     private final ConversationCacheForAiRequest conversationCache;
 
     private final InterviewRepository repository;
