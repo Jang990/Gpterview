@@ -58,7 +58,8 @@ function selectQuestion(questionId, content) {
 // 다른 추천 부탁
 function retryRecommendation() {
     const apiUri = createConversationPairUriPrefix() + "/recommendation";
-    removeRecommendationComponent();
+//    removeRecommendationComponent();
+    removeLastChatting();
     waitAiResponse();
     sendRequest(apiUri, null);
 }
