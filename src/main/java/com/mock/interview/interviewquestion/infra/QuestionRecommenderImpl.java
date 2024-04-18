@@ -1,16 +1,17 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
+import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.TraceResult;
 import com.mock.interview.interviewquestion.infra.recommend.CurrentConversationConvertor;
+import com.mock.interview.interviewquestion.infra.recommend.QuestionMetaDataConvertor;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.progress.CurrentTopicTracker;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionRankingService;
@@ -18,7 +19,6 @@ import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversat
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
 import com.mock.interview.questiontoken.domain.KoreaStringAnalyzer;
-import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -38,6 +38,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
 
     private final InterviewCacheRepository interviewCache;
     private final InterviewQuestionRepository questionRepository;
+    private final RandomQuestionRepository randomQuestionRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
     private final QuestionRankingService recommender;
     private final KoreaStringAnalyzer stringAnalyzer;
@@ -50,12 +51,13 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     public List<InterviewQuestion> recommend(int recommendationSize, RecommendationTarget target) {
         InterviewInfo interview = interviewCache.findProgressingInterviewInfo(target.interviewId());
         TraceResult interviewTraceResult = topicTracker.trace(interview);
-        List<QuestionMetaData> questionForRecommend = findRelatedRandomQuestions(interview, interviewTraceResult.progress().phase(),RECOMMENDED_QUESTION_SIZE);
+        List<InterviewQuestion> relatedQuestions = findRelatedRandomQuestions(interviewTraceResult, RECOMMENDED_QUESTION_SIZE);
+        List<QuestionMetaData> questionForRecommend = QuestionMetaDataConvertor.convert(relatedQuestions);
 
         try {
             CurrentConversation currentConversation = CurrentConversationConvertor
                     .create(conversationPairRepository, stringAnalyzer,
-                            target.interviewId(), interview, interviewTraceResult.currentTopic());
+                            target.interviewId(), interview, interviewTraceResult.getTopicContent());
             List<Long> result = recommender
                     .recommendTechQuestion(recommendationSize, currentConversation, questionForRecommend);
             return result.stream().map(questionRepository::findById).map(op -> op.orElseThrow(InterviewQuestionNotFoundException::new)).toList();
@@ -65,15 +67,13 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
         }
     }
 
-    private List<QuestionMetaData> findRelatedRandomQuestions(InterviewInfo interview, InterviewPhase phase, int size) {
-        return questionRepository.findRandomQuestion(interview.profile().category().getId(), PageRequest.of(0, size))
-                .stream().map(this::convertQuestion).toList();
-        // TODO: 페이즈별로 다른 쿼리가 필요함.
-//        return switch (phase) {
-//            case TECHNICAL -> null;
-//            case EXPERIENCE -> null;
-//            case PERSONAL -> null;
-//        };
+    private List<InterviewQuestion> findRelatedRandomQuestions(TraceResult traceResult, int size) {
+        final PageRequest pageable = PageRequest.of(0, size);
+        return switch (traceResult.phase()) {
+            case TECHNICAL -> randomQuestionRepository.findTechQuestion(traceResult.getTopicId(), pageable);
+            case EXPERIENCE -> randomQuestionRepository.findExperienceQuestion(traceResult.getTopicId(), pageable);
+            case PERSONAL -> randomQuestionRepository.findPersonalQuestion(pageable);
+        };
     }
 
     @Override
@@ -86,20 +86,5 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     public Top3Question retryRecommendation(RecommendationTarget target) {
         // 현재 저장된 캐시를 만료하고 새롭게 저장 - AOP 처리
         return recommendTop3(target);
-    }
-
-    private QuestionMetaData convertQuestion(InterviewQuestion question) {
-        return new QuestionMetaData(
-                question.getId(),
-                (question.getParentQuestion() == null) ? null : question.getParentQuestion().getId(),
-                (question.getPosition() == null) ? null : question.getPosition().getName(),
-                convertTechLink(question),
-                question.getQuestionToken().getResult(),
-                question.getLikes()
-        );
-    }
-
-    private List<String> convertTechLink(InterviewQuestion q) {
-        return q.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).map(TechnicalSubjects::getName).toList();
     }
 }

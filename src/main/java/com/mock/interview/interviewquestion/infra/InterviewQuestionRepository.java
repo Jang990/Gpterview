@@ -25,7 +25,7 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             INNER JOIN FETCH iq.questionToken qt
             WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId AND iq.isDeleted = FALSE
             """)
-    List<InterviewQuestion> findRandomQuestion(@Param("categoryId") long categoryId, Pageable pageable);
+    List<InterviewQuestion> findRandomTechQuestion(@Param("categoryId") long categoryId, Pageable pageable);
 
     @Query("""
             SELECT COUNT(*)

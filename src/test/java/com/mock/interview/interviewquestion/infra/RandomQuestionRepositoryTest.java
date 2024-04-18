@@ -7,12 +7,15 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 //@SpringBootTest
-class InterviewQuestionRepositoryTest {
+class RandomQuestionRepositoryTest {
     @Autowired
-    InterviewQuestionRepository repository;
+    RandomQuestionRepository repository;
 
 //    @Test
-    void test2() {
-        System.out.println(repository.countCategoryQuestion("IT"));
+    void recommendQueryTest() {
+        List<InterviewQuestion> it = repository.findTechQuestion(1, PageRequest.of(0, 10));
+        for (InterviewQuestion question : it) {
+            System.out.println(question.getQuestion());
+        }
     }
 }

@@ -22,7 +22,7 @@ public class CurrentTopicTracker {
         InterviewPromptConfigurator configurator = CategoryModuleFinder
                 .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category().getName());
 
-        return new TraceResult(progress, configurator.getCurrentTopic(interviewInfo.profile(), progress));
+        return new TraceResult(progress.phase(), configurator.getCurrentTopic(interviewInfo.profile(), progress));
     }
 
 }

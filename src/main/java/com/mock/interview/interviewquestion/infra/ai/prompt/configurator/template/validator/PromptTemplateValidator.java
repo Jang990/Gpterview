@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.templa
 
 
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
-import com.mock.interview.experience.presentation.dto.ExperienceDto;
+import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class PromptTemplateValidator {
         return rawTemplate.contains(format) && isEmpty(value);
     }
 
-    private boolean hasTemplateValueError(String rawTemplate, String format, ExperienceDto value) {
+    private boolean hasTemplateValueError(String rawTemplate, String format, ExperienceResponse value) {
         return rawTemplate.contains(format) && isEmpty(value);
     }
 
@@ -54,7 +54,7 @@ public class PromptTemplateValidator {
         return value == null || isEmpty(value.getName());
     }
 
-    private boolean isEmpty(ExperienceDto value) {
+    private boolean isEmpty(ExperienceResponse value) {
         return value == null || isEmpty(value.getContent());
     }
 }

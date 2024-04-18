@@ -1,8 +1,8 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator;
 
+import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator.PromptTemplateValidator;
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
-import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.Builder;
 
@@ -16,5 +16,5 @@ import lombok.Builder;
  * @param experience     ~경험이 있습니다.
  */
 @Builder
-public record PromptConfigElements(CategoryResponse category, CategoryResponse field, TechnicalSubjectsResponse tech, ExperienceDto experience) {
+public record PromptConfigElements(CategoryResponse category, CategoryResponse field, TechnicalSubjectsResponse tech, ExperienceResponse experience) {
 }

@@ -2,6 +2,8 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.genera
 
 import com.mock.interview.category.infra.support.ITCategorySupportChecker;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
+import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
+import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
@@ -31,12 +33,9 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
     }
 
     @Override
-    public String getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
+    public InterviewTopic getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
         return switch (progress.phase()) {
-            case TECHNICAL, EXPERIENCE -> {
-                TechnicalSubjectsResponse tech = selectStringBasedOnProgress(progress.progress(), profile.skills());
-                yield tech == null ? null : tech.getName();
-            }
+            case TECHNICAL, EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.skills());
             case PERSONAL -> null;
         };
     }
@@ -49,7 +48,7 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
     }
 
     private PromptConfiguration createExperiencePromptConfig(InterviewProfile profile, double progress) {
-        ExperienceDto selectedExperience = selectStringBasedOnProgress(progress, profile.experience());
+        ExperienceResponse selectedExperience = selectStringBasedOnProgress(progress, profile.experience());
         return configurationCreator.create(
                 templateGetter.getExperience(),
                 PromptConfigElements.builder().category(profile.category()).field(profile.field()).experience(selectedExperience).build()
@@ -64,7 +63,7 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
         );
     }
 
-    private <T> T selectStringBasedOnProgress(double progress, List<T> list) {
+    private <T extends InterviewTopic> T selectStringBasedOnProgress(double progress, List<T> list) {
         if(list.isEmpty())
             return null;
         int n = (int) Math.floor(progress * list.size());

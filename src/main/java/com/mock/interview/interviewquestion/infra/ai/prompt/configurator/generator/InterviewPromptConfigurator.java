@@ -2,6 +2,7 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.genera
 
 import com.mock.interview.category.infra.support.CategorySupportChecker;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
+import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
@@ -24,5 +25,5 @@ public interface InterviewPromptConfigurator extends CategorySupportChecker {
      */
     PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress);
 
-    String getCurrentTopic(InterviewProfile profile, InterviewProgress progress);
+    InterviewTopic getCurrentTopic(InterviewProfile profile, InterviewProgress progress);
 }
