@@ -1,4 +1,4 @@
-package com.mock.interview.interview.presentation.dto.message;
+package com.mock.interview.interviewanswer.presentation.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.mock.interview.interviewconversationpair.presentation.dto;
 
-import com.mock.interview.interview.presentation.dto.message.InterviewAnswerRequest;
+import com.mock.interview.interviewanswer.presentation.dto.InterviewAnswerRequest;
 import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;
 import lombok.Data;
 

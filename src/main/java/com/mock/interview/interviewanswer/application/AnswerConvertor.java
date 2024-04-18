@@ -1,6 +1,6 @@
 package com.mock.interview.interviewanswer.application;
 
-import com.mock.interview.interview.presentation.dto.message.InterviewAnswerRequest;
+import com.mock.interview.interviewanswer.presentation.dto.InterviewAnswerRequest;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

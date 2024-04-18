@@ -1,7 +1,7 @@
 package com.mock.interview.interviewanswer.presentation;
 
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationLockDto;
-import com.mock.interview.interview.presentation.dto.message.InterviewAnswerRequest;
+import com.mock.interview.interviewanswer.presentation.dto.InterviewAnswerRequest;
 import com.mock.interview.interviewanswer.application.InterviewAnswerInInterviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
