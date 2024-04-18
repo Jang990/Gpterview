@@ -12,7 +12,7 @@ import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.RecommendedQuestion;
-import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
 import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AIRequester;

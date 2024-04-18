@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.infra.ai.progress;
 
 import com.mock.interview.category.infra.CategoryModuleFinder;
-import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator.InterviewPromptConfigurator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

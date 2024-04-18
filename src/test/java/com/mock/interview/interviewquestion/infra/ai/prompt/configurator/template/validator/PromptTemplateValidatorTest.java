@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator;
 
-import com.mock.interview.interviewquestion.infra.ai.dto.InterviewProfile;
+import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

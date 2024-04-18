@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.dto;
+package com.mock.interview.interviewquestion.infra.cache.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

@@ -1,8 +1,6 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interview.infra.InterviewCacheRepository;
-import com.mock.interview.interviewconversationpair.application.LastConversationHelper;
-import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
@@ -13,7 +11,7 @@ import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
-import com.mock.interview.interviewquestion.infra.ai.dto.InterviewInfo;
+import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.progress.CurrentTopicTracker;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionRankingService;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
@@ -28,7 +26,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /** 변경이 있을 때 같이 볼 것
  * @see com.mock.interview.interviewquestion.infra.cache.RecommendationCacheAspect
