@@ -1,6 +1,7 @@
 package com.mock.interview.interview.infra;
 
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
+import com.mock.interview.interview.infra.cache.InterviewRedisRepository;
+import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

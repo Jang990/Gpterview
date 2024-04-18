@@ -4,13 +4,10 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.templa
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import java.util.List;
 
 /**
  * @see com.mock.interview.interviewquestion.infra.ai.prompt.fomatter.StringFormatter

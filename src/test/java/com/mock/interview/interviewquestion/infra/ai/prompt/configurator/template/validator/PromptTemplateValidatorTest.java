@@ -3,7 +3,6 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.templa
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 

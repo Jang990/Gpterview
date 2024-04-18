@@ -1,6 +1,6 @@
-package com.mock.interview.interview.infra;
+package com.mock.interview.interview.infra.cache;
 
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
+import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

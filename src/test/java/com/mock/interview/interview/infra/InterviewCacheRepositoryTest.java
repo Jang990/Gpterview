@@ -1,7 +1,9 @@
 package com.mock.interview.interview.infra;
 
 import com.mock.interview.interview.domain.model.InterviewTechLink;
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
+import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
+import com.mock.interview.interview.infra.cache.InterviewRedisRepository;
+import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.creator.InterviewEntityCreator;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;

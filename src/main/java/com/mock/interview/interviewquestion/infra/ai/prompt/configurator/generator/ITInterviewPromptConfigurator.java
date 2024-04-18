@@ -3,7 +3,7 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.genera
 import com.mock.interview.category.infra.support.ITCategorySupportChecker;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
+import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;

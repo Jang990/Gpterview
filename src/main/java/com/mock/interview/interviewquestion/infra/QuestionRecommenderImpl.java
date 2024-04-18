@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra;
 
-import com.mock.interview.interview.infra.InterviewCacheRepository;
+import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewPhase;
@@ -11,7 +11,7 @@ import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
+import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.ai.progress.CurrentTopicTracker;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionRankingService;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;

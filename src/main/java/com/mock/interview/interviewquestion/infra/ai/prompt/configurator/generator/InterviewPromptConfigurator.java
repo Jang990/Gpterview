@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
 
 import com.mock.interview.category.infra.support.CategorySupportChecker;
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewProfile;
+import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.ai.progress.InterviewProgress;

@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.cache.dto;
+package com.mock.interview.interview.infra.cache.dto;
 
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;

@@ -3,7 +3,7 @@ package com.mock.interview.interviewquestion.infra.recommend;
 import com.mock.interview.interviewconversationpair.application.LastConversationHelper;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
-import com.mock.interview.interviewquestion.infra.cache.dto.InterviewInfo;
+import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
 import com.mock.interview.questiontoken.domain.KoreaStringAnalyzer;
 
