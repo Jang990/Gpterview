@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InterviewInfoDto {
-    private long id;
+    private Long id;
+    private String title;
     private LocalDateTime expiredTime;
 }

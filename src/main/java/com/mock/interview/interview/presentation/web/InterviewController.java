@@ -7,6 +7,7 @@ import com.mock.interview.interview.application.InterviewViewService;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewLockDto;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
+import com.mock.interview.interview.presentation.dto.InterviewInfoDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -40,10 +42,16 @@ public class InterviewController {
             @PathVariable(name = "interviewId") long interviewId
     ) {
         model.addAttribute("headerActiveTap", "interview");
-        model.addAttribute("interviewId", interviewId);
 
+        InterviewInfoDto interviewDto = interviewViewService.findInterview(new InterviewLockDto(interviewId, loginId));
+        model.addAttribute("interview", interviewDto);
         List<ConversationContentDto> interviewHistory = interviewViewService.findInterviewHistory(new InterviewLockDto(interviewId, loginId));
         model.addAttribute("messageHistory", interviewHistory);
+
+        if (interviewDto.getExpiredTime().isBefore(LocalDateTime.now())) {
+            // TODO: return "면접 진행이 아닌 정보 페이지로 Redirect 필요";
+        }
+
         if (!interviewHistory.isEmpty()) {
             InterviewConversationPairDto lastConversationPair = interviewHistory.get(interviewHistory.size() - 1).getPair();
             model.addAttribute("lastConversationPair", lastConversationPair);
