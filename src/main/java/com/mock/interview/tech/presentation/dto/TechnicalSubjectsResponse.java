@@ -1,6 +1,6 @@
 package com.mock.interview.tech.presentation.dto;
 
-import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
+import com.mock.interview.interview.infra.progress.dto.topic.InterviewTopic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

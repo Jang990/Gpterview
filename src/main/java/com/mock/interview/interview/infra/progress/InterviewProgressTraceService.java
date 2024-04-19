@@ -3,7 +3,7 @@ package com.mock.interview.interview.infra.progress;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
-import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
+import com.mock.interview.interview.infra.progress.dto.topic.InterviewTopic;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

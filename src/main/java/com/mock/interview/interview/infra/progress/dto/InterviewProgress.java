@@ -1,6 +1,7 @@
 package com.mock.interview.interview.infra.progress.dto;
 
 import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
+import com.mock.interview.interview.infra.progress.dto.topic.InterviewTopic;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 
 public record InterviewProgress(InterviewPhase phase, InterviewTopic interviewTopic, double progress) {
