@@ -18,10 +18,8 @@ public class TemplateConstGetter {
     private String category;
     @Value("${interview.profile.field}")
     private String field;
-    @Value("${interview.profile.skills}")
-    private String skills;
-    @Value("${interview.profile.experience}")
-    private String experience;
+    @Value("${interview.profile.topic}")
+    private String topic;
 
     @Value("${interview.template.common.skip}")
     private String changingTopicCommand;

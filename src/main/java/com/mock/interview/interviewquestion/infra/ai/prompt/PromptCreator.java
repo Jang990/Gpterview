@@ -47,8 +47,7 @@ public class PromptCreator {
      *     {"interviewer":"assistant"},
      *     {"category":"IT"},
      *     {"field":"백엔드"},
-     *     {"skills":"Java, MySQL, Spring"},
-     *     {"experience":"저는 ~프로젝트를 진행하며 ... ~문제를 해결. ~기술 사용 ..."},
+     *     {"topic":"Java, MySQL, Spring" or "저는 ~프로젝트를 진행하며 ... ~문제를 해결. ~기술 사용 ..."}
      * }
      */
     private Map<String, String> getFormatParameter(AISpecification aiSpec, PromptConfiguration creationInfo) {
@@ -56,10 +55,9 @@ public class PromptCreator {
         map.put(templateConstGetter.getSystemRole(), aiSpec.getSystemRole());
         map.put(templateConstGetter.getUserRole(), aiSpec.getUserRole());
         map.put(templateConstGetter.getInterviewerRole(), aiSpec.getInterviewerRole());
-        map.put(templateConstGetter.getField(), creationInfo.getField());
         map.put(templateConstGetter.getCategory(), creationInfo.getCategory());
-        map.put(templateConstGetter.getSkills(), creationInfo.getSkills());
-        map.put(templateConstGetter.getExperience(), creationInfo.getExperience());
+        map.put(templateConstGetter.getField(), creationInfo.getField());
+        map.put(templateConstGetter.getTopic(), creationInfo.getTopic());
         return map;
 //        return Map.of(
 //                formatConstGetter.getSystemRole(), aiSpec.getSystemRole(),

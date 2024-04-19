@@ -1,10 +1,7 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator;
 
 
-import com.mock.interview.category.presentation.dto.response.CategoryResponse;
-import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
-import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -24,37 +21,16 @@ public class PromptTemplateValidator {
     }
 
     private boolean hasError(String rawTemplate, PromptConfigElements elements) {
-        return hasTemplateValueError(rawTemplate, formatGetter.getFieldFormat(), elements.field())
-                || hasTemplateValueError(rawTemplate, formatGetter.getCategoryFormat(), elements.category())
-                || hasTemplateValueError(rawTemplate, formatGetter.getSkillsFormat(), elements.tech())
-                || hasTemplateValueError(rawTemplate, formatGetter.getExperienceFormat(), elements.experience());
+        return hasTemplateValueError(rawTemplate, formatGetter.getCategoryFormat(), elements.category())
+                || hasTemplateValueError(rawTemplate, formatGetter.getFieldFormat(), elements.field())
+                || hasTemplateValueError(rawTemplate, formatGetter.getTopicFormat(), elements.topic());
     }
 
-    private boolean hasTemplateValueError(String rawTemplate, String format, CategoryResponse value) {
-        return rawTemplate.contains(format) && isEmpty(value);
-    }
-
-    private boolean hasTemplateValueError(String rawTemplate, String format, TechnicalSubjectsResponse value) {
-        return rawTemplate.contains(format) && isEmpty(value);
-    }
-
-    private boolean hasTemplateValueError(String rawTemplate, String format, ExperienceResponse value) {
+    private boolean hasTemplateValueError(String rawTemplate, String format, String value) {
         return rawTemplate.contains(format) && isEmpty(value);
     }
 
     private boolean isEmpty(String value) {
         return !StringUtils.hasText(value);
-    }
-
-    private boolean isEmpty(CategoryResponse value) {
-        return value == null || isEmpty(value.getName());
-    }
-
-    private boolean isEmpty(TechnicalSubjectsResponse value) {
-        return value == null || isEmpty(value.getName());
-    }
-
-    private boolean isEmpty(ExperienceResponse value) {
-        return value == null || isEmpty(value.getContent());
     }
 }

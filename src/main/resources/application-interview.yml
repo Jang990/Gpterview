@@ -6,8 +6,7 @@ interview:
   profile: # fommater에서 변환할 수 있는 profile 키
     category: category
     field: field
-    skills: skills
-    experience: experience
+    topic: topic
   format:
     prefix: $_
     suffix: _
@@ -18,8 +17,7 @@ interview:
     profile:
       category: ${interview.format.prefix}${interview.profile.category}${interview.format.suffix}
       field: ${interview.format.prefix}${interview.profile.field}${interview.format.suffix}
-      skills: ${interview.format.prefix}${interview.profile.skills}${interview.format.suffix}
-      experience: ${interview.format.prefix}${interview.profile.experience}${interview.format.suffix}
+      topic: ${interview.format.prefix}${interview.profile.topic}${interview.format.suffix}
 
   template:
     common:
@@ -28,34 +26,32 @@ interview:
         메시지가 길다고 마음대로 면접을 마무리하지마. 이미 대화한 주제를 질문하지마.
         항상 마지막 문장은 질문으로 끝내. 지원자의 응답에 대한 평가는 간단히.
         항상 3문장 이하로 응답. 질문 설명은 자세히. 항상 단 하나의 질문만.
-      skills: ${interview.format.role.user}는 ${interview.format.profile.skills} 등의 기술을 보유.
-      experience: ${interview.format.role.user}는 다음과 같은 경험을 함 ${interview.format.profile.experience}.
+      topic: ${interview.format.role.user}는 ${interview.format.profile.topic} 을 주제로 질문해.
       skip: 마지막 대화의 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
     default: # 기본 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
         기술에 관한 질문은 모두 잊고, 컬쳐핏과 인성에 대한 질문에 집중해.
       experience: |
+        ${interview.template.common.topic} 
         ${interview.template.common.rule}
-        ${interview.template.common.experience}
-        ${interview.template.common.skills} 
         지원자가 진행한 프로젝트를 진행하면서 경험한 일들에 대해서 질문해줘.
       technical: |
         ${interview.template.common.rule}
-        ${interview.template.common.skills} 
+        ${interview.template.common.topic} 
         지원자가 가지고 있는 기술들에 대해서 질문해줘.
     IT: # IT 분야 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
         기술에 관한 질문은 모두 잊고 협업, 커리어, 인성에 대한 질문에 집중해.
       experience: |
-        ${interview.template.common.experience}
+        ${interview.template.common.topic}
         ${interview.template.common.rule}
         지원자 경험을 기반으로 개발 의도가 무엇인지 확인하고, 
         잘못된 부분이나 개선 방향이 있다면 제시하며 지원자의 의견을 묻고 지원자의 개발 능력을 판단해.
         다양한 경험을 전체적으로 질문해.
       technical: |
         ${interview.template.common.rule}
-        ${interview.format.profile.skills} 기술을 주제로 질문해줘. 
+        ${interview.format.profile.topic} 기술을 주제로 질문해줘. 
         지원자의 수준을 파악해야해. 간단한 개념질문보다는 컴퓨터 전공자 수준의 응용질문을 해봐.
         기술면접을 진행해.

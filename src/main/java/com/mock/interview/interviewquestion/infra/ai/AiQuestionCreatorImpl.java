@@ -85,16 +85,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
     }
 
     private RecommendedQuestion createPublishedQuestion(InterviewProgress progress, PromptConfiguration promptConfig, Message response) {
-        String topic = getTopic(progress.phase(), promptConfig);
-        return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress, topic);
-    }
-
-    private String getTopic(InterviewPhase phase, PromptConfiguration promptConfig) {
-        return switch (phase) {
-            case TECHNICAL -> promptConfig.getSkills();
-            case EXPERIENCE -> promptConfig.getExperience();
-            case PERSONAL -> null;
-        };
+        return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress, promptConfig.getTopic());
     }
 
     private PromptConfiguration createPromptConfig(InterviewProgress progress, InterviewInfo interviewInfo) {
