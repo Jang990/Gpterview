@@ -6,7 +6,6 @@ import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
-import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigurationCreator;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.ITInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
     private final PromptConfigurationCreator configurationCreator;
 
     @Override
-    public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
+    public PromptConfiguration configStrategy(InterviewProfile profile, InterviewProgress progress) {
         String promptTemplate = getTemplate(progress.phase());
         String topic = progress.getTopicContent();
         PromptConfigElements elements = new PromptConfigElements(profile.category().getName(), profile.field().getName(), topic);

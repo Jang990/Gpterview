@@ -90,7 +90,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
     private PromptConfiguration createPromptConfig(InterviewProgress progress, InterviewInfo interviewInfo) {
         InterviewPromptConfigurator configurator = CategoryModuleFinder
                 .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category().getName());
-        return configurator.configStrategy(requester, interviewInfo.profile(), progress);
+        return configurator.configStrategy(interviewInfo.profile(), progress);
     }
 
     private InterviewQuestion createQuestion(Interview interview, RecommendedQuestion recommendedQuestion) {

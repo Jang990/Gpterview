@@ -17,10 +17,9 @@ public interface InterviewPromptConfigurator extends CategorySupportChecker {
     /**
      * 인터뷰 전략에 맞는 프롬프트 생성 정보 반환
      *
-     * @param aiSpec AI 스펙을 확인할 수 있는 인터페이스
      * @param profile 지원자 정보
      * @param progress 면접 진행 정도
      * @return
      */
-    PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress);
+    PromptConfiguration configStrategy(InterviewProfile profile, InterviewProgress progress);
 }
