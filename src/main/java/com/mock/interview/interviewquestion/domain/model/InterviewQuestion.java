@@ -118,6 +118,10 @@ public class InterviewQuestion extends BaseEntity {
         techLink.add(QuestionTechLink.createLink(this, tech));
     }
 
+    public void linkExperience(Experience experience) {
+        this.experience = experience;
+    }
+
     public void like() {
         likes++;
     }
