@@ -1,6 +1,6 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt.configurator;
+package com.mock.interview.interview.infra.prompt.configurator;
 
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator.PromptTemplateValidator;
+import com.mock.interview.interview.infra.prompt.configurator.template.validator.PromptTemplateValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

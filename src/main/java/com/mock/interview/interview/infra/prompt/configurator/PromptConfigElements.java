@@ -1,6 +1,6 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt.configurator;
+package com.mock.interview.interview.infra.prompt.configurator;
 
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator.PromptTemplateValidator;
+import com.mock.interview.interview.infra.prompt.configurator.template.validator.PromptTemplateValidator;
 
 /**
  * Null이 가능하나 프롬프트에 따라 유효성 검증에서 예외가 발생할 수 있음

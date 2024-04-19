@@ -1,8 +1,6 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt.configurator;
+package com.mock.interview.interview.infra.prompt.configurator;
 
 import lombok.Getter;
-
-import java.util.List;
 
 @Getter
 public class PromptConfiguration {

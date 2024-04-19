@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.validator;
+package com.mock.interview.interview.infra.prompt.configurator.template.validator;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

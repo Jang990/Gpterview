@@ -1,10 +1,9 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
+package com.mock.interview.interview.infra.prompt.configurator.generator;
 
 import com.mock.interview.category.infra.support.CategorySupportChecker;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
-import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
+import com.mock.interview.interview.infra.prompt.configurator.PromptConfiguration;
 
 /**
  * 인터뷰 정보에 따라 각 분야(ex IT, 회계, 영업)별 관련 프롬프트 정보 생성기

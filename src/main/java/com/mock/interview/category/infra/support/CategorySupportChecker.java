@@ -1,7 +1,7 @@
 package com.mock.interview.category.infra.support;
 
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator.ITInterviewPromptConfigurator;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator.InterviewPromptConfigurator;
+import com.mock.interview.interview.infra.prompt.configurator.generator.ITInterviewPromptConfigurator;
+import com.mock.interview.interview.infra.prompt.configurator.generator.InterviewPromptConfigurator;
 import com.mock.interview.tech.infra.view.CategoryRelatedTechFinder;
 import com.mock.interview.tech.infra.view.ITCategoryRelatedTechFinder;
 

@@ -1,13 +1,13 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
+package com.mock.interview.interview.infra.prompt.configurator.generator;
 
 import com.mock.interview.category.infra.support.ITCategorySupportChecker;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
+import com.mock.interview.interview.infra.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigurationCreator;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.ITInterviewTemplateGetter;
+import com.mock.interview.interview.infra.prompt.configurator.PromptConfiguration;
+import com.mock.interview.interview.infra.prompt.configurator.PromptConfigurationCreator;
+import com.mock.interview.interview.infra.prompt.configurator.template.ITInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

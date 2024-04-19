@@ -4,16 +4,11 @@ import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.infra.ai.dto.Message;
 import com.mock.interview.interviewquestion.infra.ai.gpt.ChatGPTRequester;
 import com.mock.interview.interviewquestion.infra.ai.gpt.InterviewAIRequest;
-import com.mock.interview.interviewquestion.infra.ai.prompt.AiPrompt;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import com.mock.interview.interview.infra.prompt.AiPrompt;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;

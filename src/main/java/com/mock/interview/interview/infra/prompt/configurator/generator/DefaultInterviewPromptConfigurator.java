@@ -1,8 +1,8 @@
-package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
+package com.mock.interview.interview.infra.prompt.configurator.generator;
 
 import com.mock.interview.category.infra.support.DefaultCategorySupportChecker;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigurationCreator;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.DefaultInterviewTemplateGetter;
+import com.mock.interview.interview.infra.prompt.configurator.PromptConfigurationCreator;
+import com.mock.interview.interview.infra.prompt.configurator.template.DefaultInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
 
 //@Order(1)

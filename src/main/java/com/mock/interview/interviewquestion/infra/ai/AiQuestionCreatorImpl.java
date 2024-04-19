@@ -17,7 +17,7 @@ import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AIRequester;
 import com.mock.interview.interviewquestion.infra.ai.gpt.InterviewAIRequest;
-import com.mock.interview.interviewquestion.infra.ai.prompt.AiPrompt;
+import com.mock.interview.interview.infra.prompt.AiPrompt;
 import com.mock.interview.tech.application.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;

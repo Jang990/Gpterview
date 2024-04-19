@@ -5,10 +5,8 @@ import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
-import com.mock.interview.interviewquestion.infra.ai.prompt.AiPrompt;
-import com.mock.interview.interviewquestion.infra.ai.prompt.PromptCreator;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator.InterviewPromptConfigurator;
+import com.mock.interview.interview.infra.prompt.configurator.PromptConfiguration;
+import com.mock.interview.interview.infra.prompt.configurator.generator.InterviewPromptConfigurator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
