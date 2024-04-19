@@ -4,7 +4,7 @@ import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
-import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
+import com.mock.interview.interviewquestion.infra.gpt.AISpecification;
 import com.mock.interview.interview.infra.prompt.configurator.PromptConfiguration;
 import com.mock.interview.interview.infra.prompt.configurator.generator.InterviewPromptConfigurator;
 import lombok.RequiredArgsConstructor;

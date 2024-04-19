@@ -1,16 +1,16 @@
-package com.mock.interview.interviewquestion.infra.ai.gpt;
+package com.mock.interview.interviewquestion.infra.gpt;
 
 import com.knuddels.jtokkit.api.Encoding;
-import com.mock.interview.interviewquestion.infra.ai.dto.Message;
-import com.mock.interview.interviewquestion.infra.ai.gpt.dto.openai.ChatGptRequest;
-import com.mock.interview.interviewquestion.infra.ai.gpt.dto.openai.ChatGptResponse;
-import com.mock.interview.interviewquestion.infra.ai.gpt.dto.openai.OpenAIMessage;
+import com.mock.interview.interviewquestion.infra.gpt.dto.InterviewAIRequest;
+import com.mock.interview.interviewquestion.infra.gpt.dto.Message;
+import com.mock.interview.interviewquestion.infra.gpt.dto.openai.ChatGptRequest;
+import com.mock.interview.interviewquestion.infra.gpt.dto.openai.ChatGptResponse;
+import com.mock.interview.interviewquestion.infra.gpt.dto.openai.OpenAIMessage;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ChatGPTRequester implements AIRequester {
+public class ChatGPTRequester implements AISpecification {
 
     private final RestTemplate openaiRestTemplate;
     private final Encoding stringTokenCounter;
@@ -37,7 +37,6 @@ public class ChatGPTRequester implements AIRequester {
     public static final String SYSTEM_ROLE = "system";
     private final int LIMIT_TOKEN = 4096;
 
-    @Override
     public String sendRequest(InterviewAIRequest request) {
         final String prompt = request.getAiPrompt().getPrompt();
         final List<OpenAIMessage> history = convertHistory(request.getHistory());

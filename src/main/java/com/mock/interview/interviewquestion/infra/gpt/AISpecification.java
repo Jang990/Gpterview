@@ -1,4 +1,6 @@
-package com.mock.interview.interviewquestion.infra.ai.gpt;
+package com.mock.interview.interviewquestion.infra.gpt;
+
+import com.mock.interview.interviewquestion.infra.gpt.dto.InterviewAIRequest;
 
 /**
  * AI 종류에 따른 스펙을 알려주는 인터페이스

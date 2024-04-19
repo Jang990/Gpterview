@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai;
+package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
@@ -13,11 +13,10 @@ import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
-import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interview.infra.progress.InterviewTopicConnector;
-import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
-import com.mock.interview.interviewquestion.infra.ai.gpt.AIRequester;
-import com.mock.interview.interviewquestion.infra.ai.gpt.InterviewAIRequest;
+import com.mock.interview.interviewquestion.infra.gpt.ChatGPTRequester;
+import com.mock.interview.interviewquestion.infra.gpt.dto.MessageHistory;
+import com.mock.interview.interviewquestion.infra.gpt.dto.InterviewAIRequest;
 import com.mock.interview.interview.infra.prompt.AiPrompt;
 import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
     private final InterviewRepository repository;
     private final InterviewQuestionRepository questionRepository;
 
-    private final AIRequester requester;
+    private final ChatGPTRequester requester;
     private final InterviewProgressTraceService tracker;
     private final InterviewPromptCreationService promptCreationService;
     private final InterviewTopicConnector interviewTopicConnector;

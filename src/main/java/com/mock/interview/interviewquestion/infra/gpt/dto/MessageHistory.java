@@ -1,7 +1,6 @@
-package com.mock.interview.interviewquestion.infra.ai.dto;
+package com.mock.interview.interviewquestion.infra.gpt.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.LinkedList;

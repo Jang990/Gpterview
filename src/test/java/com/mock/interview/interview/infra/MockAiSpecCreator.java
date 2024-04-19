@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infra;
 
-import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
+import com.mock.interview.interviewquestion.infra.gpt.AISpecification;
 import org.mockito.Mockito;
 
 public class MockAiSpecCreator {

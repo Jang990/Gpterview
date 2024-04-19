@@ -1,9 +1,9 @@
 package com.mock.interview.conversation.infrastructure.interview.gpt;
 
 import com.mock.interview.interview.presentation.dto.InterviewRole;
-import com.mock.interview.interviewquestion.infra.ai.dto.Message;
-import com.mock.interview.interviewquestion.infra.ai.gpt.ChatGPTRequester;
-import com.mock.interview.interviewquestion.infra.ai.gpt.InterviewAIRequest;
+import com.mock.interview.interviewquestion.infra.gpt.dto.Message;
+import com.mock.interview.interviewquestion.infra.gpt.ChatGPTRequester;
+import com.mock.interview.interviewquestion.infra.gpt.dto.InterviewAIRequest;
 import com.mock.interview.interview.infra.prompt.AiPrompt;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

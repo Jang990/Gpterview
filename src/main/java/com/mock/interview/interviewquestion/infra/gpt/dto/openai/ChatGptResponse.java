@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.gpt.dto.openai;
+package com.mock.interview.interviewquestion.infra.gpt.dto.openai;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.infra.ai.gpt;
+package com.mock.interview.interviewquestion.infra.gpt;
 
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;

@@ -1,6 +1,6 @@
 package com.mock.interview.conversation.infrastructure;
 
-import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
+import com.mock.interview.interviewquestion.infra.gpt.dto.MessageHistory;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
