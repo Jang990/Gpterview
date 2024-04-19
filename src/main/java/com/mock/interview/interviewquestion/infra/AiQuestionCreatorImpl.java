@@ -42,7 +42,8 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         InterviewProgress interviewProgress = tracker.trace(interviewInfo);
 
         String aiQuestion = requestAiServer(interviewInfo, interviewProgress, creationOption);
-        return createQuestion(interviewId, interviewProgress, aiQuestion);
+        InterviewQuestion question = createQuestion(interviewId, interviewProgress, aiQuestion);
+        return questionRepository.save(question);
     }
 
     private String requestAiServer(InterviewInfo interviewInfo, InterviewProgress interviewProgress, CreationOption creationOption) {
@@ -64,6 +65,6 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         );
         question.linkJob(interview.getCategory(), interview.getPosition());
         interviewTopicConnector.connect(question, progress);
-        return questionRepository.save(question);
+        return question;
     }
 }
