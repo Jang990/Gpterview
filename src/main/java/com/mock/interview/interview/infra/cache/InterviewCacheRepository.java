@@ -49,8 +49,8 @@ public class InterviewCacheRepository {
         InterviewProfile profile = new InterviewProfile(
                 CategoryConvertor.convert(interview.getCategory()),
                 CategoryConvertor.convert(interview.getPosition()),
-                TechConvertHelper.convert(interview.getTechLink().stream().map(InterviewTechLink::getTechnicalSubjects).toList()),
-                ExperienceConvertor.convert(interview.getExperienceLink().stream().map(InterviewExperienceLink::getExperience).toList())
+                TechConvertHelper.convertTopic(interview.getTechLink().stream().map(InterviewTechLink::getTechnicalSubjects).toList()),
+                ExperienceConvertor.convertTopic(interview.getExperienceLink().stream().map(InterviewExperienceLink::getExperience).toList())
         );
         InterviewConfig interviewConfig = new InterviewConfig(interview.getType(), interview.getCreatedAt(), interview.getExpiredTime());
         return new InterviewInfo(interview.getId(), profile, interviewConfig);

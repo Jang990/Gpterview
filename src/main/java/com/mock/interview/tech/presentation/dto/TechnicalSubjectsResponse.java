@@ -1,6 +1,5 @@
 package com.mock.interview.tech.presentation.dto;
 
-import com.mock.interview.interview.infra.progress.dto.topic.InterviewTopic;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TechnicalSubjectsResponse implements InterviewTopic {
+public class TechnicalSubjectsResponse {
     private Long id;
     private String name;
 }
