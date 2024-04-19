@@ -1,4 +1,4 @@
-package com.mock.interview.experience.domain;
+package com.mock.interview.experience.domain.exception;
 
 import com.mock.interview.global.exception.CustomClientException;
 import lombok.Getter;

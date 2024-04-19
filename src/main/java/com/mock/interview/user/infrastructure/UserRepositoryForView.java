@@ -2,7 +2,6 @@ package com.mock.interview.user.infrastructure;
 
 import com.mock.interview.category.application.CategoryConvertor;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
-import com.mock.interview.category.presentation.dto.JobCategoryView;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
@@ -12,7 +11,6 @@ import com.mock.interview.user.presentation.dto.AccountDetailDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +18,8 @@ import java.util.List;
 
 import static com.mock.interview.category.domain.model.QJobCategory.*;
 import static com.mock.interview.category.domain.model.QJobPosition.*;
+import static com.mock.interview.experience.domain.QExperience.*;
 import static com.mock.interview.tech.domain.model.QTechnicalSubjects.*;
-import static com.mock.interview.user.domain.model.QExperience.*;
 import static com.mock.interview.user.domain.model.QUsers.*;
 import static com.mock.interview.user.domain.model.QUsersTechLink.*;
 

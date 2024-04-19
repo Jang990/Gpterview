@@ -1,6 +1,6 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.user.domain.model.Experience;
+import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;

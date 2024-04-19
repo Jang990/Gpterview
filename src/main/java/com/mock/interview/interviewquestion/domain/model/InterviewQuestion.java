@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.domain.model;
 
 import com.mock.interview.interviewquestion.domain.event.QuestionDeletedEvent;
-import com.mock.interview.user.domain.model.Experience;
+import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;

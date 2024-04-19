@@ -2,6 +2,7 @@ package com.mock.interview.user.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import jakarta.persistence.*;

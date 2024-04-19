@@ -1,6 +1,7 @@
-package com.mock.interview.user.domain.model;
+package com.mock.interview.experience.domain;
 
 import com.mock.interview.global.auditing.BaseTimeEntity;
+import com.mock.interview.user.domain.model.Users;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Experience extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    static Experience create(Users users, String content) {
+    public static Experience create(Users users, String content) {
         Experience experience = new Experience();
         experience.users = users;
         experience.content = content;
