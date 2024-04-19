@@ -1,6 +1,5 @@
 package com.mock.interview.experience.application;
 
-import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.interview.infra.progress.dto.topic.ExperienceTopic;
 import com.mock.interview.user.domain.model.Experience;

@@ -14,13 +14,11 @@ import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
+import com.mock.interview.interview.infra.progress.InterviewTopicConnector;
 import com.mock.interview.interviewquestion.infra.ai.dto.MessageHistory;
 import com.mock.interview.interviewquestion.infra.ai.gpt.AIRequester;
 import com.mock.interview.interviewquestion.infra.ai.gpt.InterviewAIRequest;
 import com.mock.interview.interview.infra.prompt.AiPrompt;
-import com.mock.interview.tech.application.TechSavingHelper;
-import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,11 +31,11 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
 
     private final InterviewRepository repository;
     private final InterviewQuestionRepository questionRepository;
-    private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     private final AIRequester requester;
     private final InterviewProgressTraceService tracker;
     private final InterviewPromptCreationService promptCreationService;
+    private final InterviewTopicConnector interviewTopicConnector;
 
     @Override
     public InterviewQuestion create(long interviewId, CreationOption creationOption) {
@@ -61,16 +59,12 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         Users users = interview.getUsers();
         QuestionType type = QuestionConvertor.convert(progress.phase());
 
-        // TODO: 기술, 경험, 인성 등등 여러 페이즈를 지원해야함.
-        TechnicalSubjects relatedTech = TechSavingHelper
-                .saveTechIfNotExist(technicalSubjectsRepository, progress.getTopicContent());
-
         InterviewQuestion question = InterviewQuestion.create(
                 questionRepository, aiQuestion, users,
                 type, requester.getSignature()
         );
         question.linkJob(interview.getCategory(), interview.getPosition());
-        question.linkTech(relatedTech);
+        interviewTopicConnector.connect(question, progress);
         return questionRepository.save(question);
     }
 }

@@ -21,11 +21,11 @@ public class InterviewProgressTraceService {
         LocalDateTime now = LocalDateTime.now();
         InterviewPhase phase = progressTracker.tracePhase(now, interviewInfo.config());
         double progress = progressTracker.traceProgress(now, interviewInfo.config());
-        InterviewTopic currentTopic = getCurrentTopic(phase, progress, interviewInfo.profile());
+        InterviewTopic<?> currentTopic = getCurrentTopic(phase, progress, interviewInfo.profile());
         return new InterviewProgress(phase, currentTopic, progress);
     }
 
-    private InterviewTopic getCurrentTopic(InterviewPhase phase, double progress, InterviewProfile profile) {
+    private InterviewTopic<?> getCurrentTopic(InterviewPhase phase, double progress, InterviewProfile profile) {
         return switch (phase) {
             case TECHNICAL -> selectStringBasedOnProgress(progress, profile.skills());
             case EXPERIENCE -> selectStringBasedOnProgress(progress, profile.experience());
@@ -33,7 +33,7 @@ public class InterviewProgressTraceService {
         };
     }
 
-    private <T extends InterviewTopic> T selectStringBasedOnProgress(double progress, List<T> list) {
+    private <T extends InterviewTopic<?>> T selectStringBasedOnProgress(double progress, List<T> list) {
         if(list.isEmpty())
             return null;
         int n = (int) Math.floor(progress * list.size());

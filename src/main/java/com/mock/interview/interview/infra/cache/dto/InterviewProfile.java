@@ -1,10 +1,8 @@
 package com.mock.interview.interview.infra.cache.dto;
 
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
-import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.interview.infra.progress.dto.topic.ExperienceTopic;
 import com.mock.interview.interview.infra.progress.dto.topic.TechTopic;
-import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 
 import java.util.List;
 
