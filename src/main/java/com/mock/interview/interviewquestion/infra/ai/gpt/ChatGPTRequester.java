@@ -38,7 +38,7 @@ public class ChatGPTRequester implements AIRequester {
     private final int LIMIT_TOKEN = 4096;
 
     @Override
-    public Message sendRequest(InterviewAIRequest request) {
+    public String sendRequest(InterviewAIRequest request) {
         final String prompt = request.getAiPrompt().getPrompt();
         final List<OpenAIMessage> history = convertHistory(request.getHistory());
         ChatGptRequest openAIRequest = ChatGptRequest.create(model, history, prompt);
@@ -47,7 +47,7 @@ public class ChatGPTRequester implements AIRequester {
         String responseMessage = response.getResult();
 
         log.info("GPT 응답: {}", responseMessage);
-        return new Message(InterviewRole.AI, responseMessage);
+        return responseMessage;
     }
 
     /**

@@ -52,7 +52,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         MessageHistory history = conversationCache.findCurrentConversation(interviewInfo.interviewId());
         AiPrompt prompt = promptCreationService.create(interviewInfo, interviewProgress, creationOption);
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
-        return requester.sendRequest(new InterviewAIRequest(history.getMessages(), prompt)).getContent();
+        return requester.sendRequest(new InterviewAIRequest(history.getMessages(), prompt));
     }
 
     private InterviewQuestion createQuestion(long interviewId, InterviewProgress progress, String aiQuestion) {

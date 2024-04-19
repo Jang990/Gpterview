@@ -16,5 +16,5 @@ public interface AIRequester extends AISpecification {
      *                다른 곳에 영향을 줄 수 있음. 써야한다면 Clone해서 깊은 복사로 사용할 것.
      * @return Request로 받은 Response 메시지
      */
-    Message sendRequest(InterviewAIRequest request);
+    String sendRequest(InterviewAIRequest request);
 }
