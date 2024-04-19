@@ -5,6 +5,7 @@ import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
+import com.mock.interview.interview.infra.progress.dto.TraceResult;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
@@ -25,9 +26,9 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
     private final PromptConfigurationCreator configurationCreator;
 
     @Override
-    public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
+    public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, TraceResult progress) {
         String promptTemplate = getTemplate(progress.phase());
-        String topic = getTopic(profile, progress);
+        String topic = progress.getTopicContent();
         PromptConfigElements elements = new PromptConfigElements(profile.category().getName(), profile.field().getName(), topic);
         return configurationCreator.create(promptTemplate, elements);
     }
@@ -38,28 +39,5 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
             case EXPERIENCE -> templateGetter.getExperience();
             case PERSONAL -> templateGetter.getPersonal();
         };
-    }
-
-    public String getTopic(InterviewProfile profile, InterviewProgress progress) {
-        return switch (progress.phase()) {
-            case TECHNICAL -> selectStringBasedOnProgress(progress.progress(), profile.skills()).getName();
-            case EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.experience()).getName();
-            case PERSONAL -> null;
-        };
-    }
-
-    @Override
-    public InterviewTopic getCurrentTopic(InterviewProfile profile, InterviewProgress progress) {
-        return switch (progress.phase()) {
-            case TECHNICAL, EXPERIENCE -> selectStringBasedOnProgress(progress.progress(), profile.skills());
-            case PERSONAL -> null;
-        };
-    }
-
-    private <T extends InterviewTopic> T selectStringBasedOnProgress(double progress, List<T> list) {
-        if(list.isEmpty())
-            return null;
-        int n = (int) Math.floor(progress * list.size());
-        return list.get(n);
     }
 }

@@ -5,6 +5,8 @@ import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interview.infra.InterviewRepository;
+import com.mock.interview.interview.infra.progress.InterviewProgressTracker;
+import com.mock.interview.interview.infra.progress.dto.TraceResult;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
@@ -45,7 +47,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
 
     private final List<InterviewPromptConfigurator> interviewPromptConfiguratorList;
     private final AIRequester requester;
-    private final InterviewProgressTimeBasedTracker progressTracker;
+    private final InterviewProgressTracker progressTracker;
     private final PromptCreator promptCreator;
 
     @Override
@@ -54,7 +56,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         Interview interview = repository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         TechnicalSubjects relatedTech = TechSavingHelper
-                .saveTechIfNotExist(technicalSubjectsRepository, recommendedQuestion.topic());
+                .saveTechIfNotExist(technicalSubjectsRepository, recommendedQuestion.progress().getTopicContent());
 
         InterviewQuestion question = createQuestion(interview, recommendedQuestion);
         question.linkJob(interview.getCategory(), interview.getPosition());
@@ -67,14 +69,14 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         InterviewInfo interviewInfo = interviewCache.findProgressingInterviewInfo(interviewId);
         MessageHistory history = conversationCache.findCurrentConversation(interviewId);
 
-        InterviewProgress progress = progressTracker.getCurrentInterviewProgress(interviewInfo.config());
-        PromptConfiguration promptConfig = createPromptConfig(progress, interviewInfo);
+        TraceResult traceResult = progressTracker.trace(interviewInfo);
+        PromptConfiguration promptConfig = createPromptConfig(traceResult, interviewInfo);
         AiPrompt prompt = createPrompt(promptConfig, creationOption);
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
         Message response = requester.sendRequest(new InterviewAIRequest(history.getMessages(), prompt));
-        return createPublishedQuestion(progress, promptConfig, response);
+        return createPublishedQuestion(traceResult, response);
     }
 
     private AiPrompt createPrompt(PromptConfiguration promptConfig, CreationOption creationOption) {
@@ -84,11 +86,11 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         };
     }
 
-    private RecommendedQuestion createPublishedQuestion(InterviewProgress progress, PromptConfiguration promptConfig, Message response) {
-        return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress, promptConfig.getTopic());
+    private RecommendedQuestion createPublishedQuestion(TraceResult progress, Message response) {
+        return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress);
     }
 
-    private PromptConfiguration createPromptConfig(InterviewProgress progress, InterviewInfo interviewInfo) {
+    private PromptConfiguration createPromptConfig(TraceResult progress, InterviewInfo interviewInfo) {
         InterviewPromptConfigurator configurator = CategoryModuleFinder
                 .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category().getName());
         return configurator.configStrategy(requester, interviewInfo.profile(), progress);

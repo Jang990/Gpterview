@@ -43,17 +43,21 @@ class InterviewProgressTimeBasedTrackerTest {
         InterviewPhase[] stageOrder = tracker.getPhaseOrder(testType);
         long eachStageMinute = interviewDurationMinute / stageOrder.length;
         for (int elapsedMinute = 0; elapsedMinute <= interviewDurationMinute; elapsedMinute++) {
-            LocalDateTime start = LocalDateTime.now().minusMinutes(elapsedMinute);
-            InterviewConfig active1HoursConfig = new InterviewConfig(testType, start, start.plusMinutes(interviewDurationMinute));
-            InterviewProgress progress = tracker.getCurrentInterviewProgress(active1HoursConfig);
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime startTime = now.minusMinutes(elapsedMinute);
+            LocalDateTime expiredTime = startTime.plusMinutes(interviewDurationMinute);
+            InterviewConfig active1HoursConfig = new InterviewConfig(testType, startTime, expiredTime);
+
+            InterviewPhase phase = tracker.tracePhase(now, active1HoursConfig);
+            double progress = tracker.traceProgress(now, active1HoursConfig);
 
             long stageElapsedMinute = (elapsedMinute % eachStageMinute);
-            assertThat((double) stageElapsedMinute / eachStageMinute).isEqualTo(progress.progress());
+            assertThat((double) stageElapsedMinute / eachStageMinute).isEqualTo(progress);
             int stageIdx = (int) (elapsedMinute / eachStageMinute);
             if(stageIdx < stageOrder.length)
-                assertThat(stageOrder[stageIdx]).isEqualTo(progress.phase());
+                assertThat(stageOrder[stageIdx]).isEqualTo(phase);
             else
-                assertThat(stageOrder[stageOrder.length - 1]).isEqualTo(progress.phase());
+                assertThat(stageOrder[stageOrder.length - 1]).isEqualTo(phase);
         }
     }
 

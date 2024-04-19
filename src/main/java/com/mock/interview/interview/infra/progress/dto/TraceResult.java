@@ -3,7 +3,7 @@ package com.mock.interview.interview.infra.progress.dto;
 import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.tech.presentation.dto.TechnicalSubjectsResponse;
 
-public record TraceResult(InterviewPhase phase, InterviewTopic interviewTopic) {
+public record TraceResult(InterviewPhase phase, InterviewTopic interviewTopic, double progress) {
     public TraceResult {
         verify(phase, interviewTopic);
     }

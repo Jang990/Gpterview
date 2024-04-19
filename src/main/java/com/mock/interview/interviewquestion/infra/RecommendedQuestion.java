@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra;
 
-import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
+import com.mock.interview.interview.infra.progress.dto.TraceResult;
 
-public record RecommendedQuestion(String createdBy, String question, InterviewProgress progress, String topic) {
+public record RecommendedQuestion(String createdBy, String question, TraceResult progress) {
 }
