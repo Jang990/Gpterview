@@ -5,7 +5,7 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
-import com.mock.interview.interview.infra.progress.InterviewProgressTracker;
+import com.mock.interview.interview.infra.progress.InterviewProgressTraceService;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interview.infra.prompt.InterviewPromptCreationService;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
@@ -36,7 +36,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     private final AIRequester requester;
-    private final InterviewProgressTracker tracker;
+    private final InterviewProgressTraceService tracker;
     private final InterviewPromptCreationService promptCreationService;
 
     @Override

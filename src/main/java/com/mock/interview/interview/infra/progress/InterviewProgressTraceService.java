@@ -14,7 +14,7 @@ import java.util.List;
 /** 현재 면접 주제 파악 서비스 */
 @Service
 @RequiredArgsConstructor
-public class InterviewProgressTracker {
+public class InterviewProgressTraceService {
     private final InterviewProgressTimeBasedTracker progressTracker;
 
     public InterviewProgress trace(InterviewInfo interviewInfo) {
