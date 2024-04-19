@@ -1,10 +1,8 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
-import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
-import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.TraceResult;
 import com.mock.interview.interviewquestion.infra.recommend.CurrentConversationConvertor;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionMetaDataConvertor;
@@ -13,7 +11,7 @@ import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
-import com.mock.interview.interview.infra.progress.CurrentTopicTracker;
+import com.mock.interview.interview.infra.progress.InterviewProgressTracker;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionRankingService;
 import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
 import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
@@ -42,7 +40,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final QuestionRankingService recommender;
     private final KoreaStringAnalyzer stringAnalyzer;
-    private final CurrentTopicTracker topicTracker;
+    private final InterviewProgressTracker interviewProgressTracker;
 
     private final int RECOMMENDED_QUESTION_SIZE = 30;
     private final int TOP_3 = 3;
@@ -50,7 +48,7 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     @Override
     public List<InterviewQuestion> recommend(int recommendationSize, RecommendationTarget target) {
         InterviewInfo interview = interviewCache.findProgressingInterviewInfo(target.interviewId());
-        TraceResult interviewTraceResult = topicTracker.trace(interview);
+        TraceResult interviewTraceResult = interviewProgressTracker.trace(interview);
         List<InterviewQuestion> relatedQuestions = findRelatedRandomQuestions(interviewTraceResult, RECOMMENDED_QUESTION_SIZE);
         List<QuestionMetaData> questionForRecommend = QuestionMetaDataConvertor.convert(relatedQuestions);
 
