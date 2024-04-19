@@ -4,7 +4,7 @@ import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
-import com.mock.interview.interview.infra.progress.dto.TraceResult;
+import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +17,12 @@ import java.util.List;
 public class InterviewProgressTracker {
     private final InterviewProgressTimeBasedTracker progressTracker;
 
-    public TraceResult trace(InterviewInfo interviewInfo) {
+    public InterviewProgress trace(InterviewInfo interviewInfo) {
         LocalDateTime now = LocalDateTime.now();
         InterviewPhase phase = progressTracker.tracePhase(now, interviewInfo.config());
         double progress = progressTracker.traceProgress(now, interviewInfo.config());
         InterviewTopic currentTopic = getCurrentTopic(phase, progress, interviewInfo.profile());
-        return new TraceResult(phase, currentTopic, progress);
+        return new InterviewProgress(phase, currentTopic, progress);
     }
 
     private InterviewTopic getCurrentTopic(InterviewPhase phase, double progress, InterviewProfile profile) {

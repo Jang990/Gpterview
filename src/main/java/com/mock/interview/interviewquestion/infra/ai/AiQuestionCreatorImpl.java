@@ -6,7 +6,7 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interview.infra.progress.InterviewProgressTracker;
-import com.mock.interview.interview.infra.progress.dto.TraceResult;
+import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
 import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
@@ -66,14 +66,14 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         InterviewInfo interviewInfo = interviewCache.findProgressingInterviewInfo(interviewId);
         MessageHistory history = conversationCache.findCurrentConversation(interviewId);
 
-        TraceResult traceResult = progressTracker.trace(interviewInfo);
-        PromptConfiguration promptConfig = createPromptConfig(traceResult, interviewInfo);
+        InterviewProgress interviewProgress = progressTracker.trace(interviewInfo);
+        PromptConfiguration promptConfig = createPromptConfig(interviewProgress, interviewInfo);
         AiPrompt prompt = createPrompt(promptConfig, creationOption);
 
         // TODO: AI에 request 토큰 제한이 있기 때문에 message List에서 필요한 부분만 추출해서 넣어야 함.
 
         Message response = requester.sendRequest(new InterviewAIRequest(history.getMessages(), prompt));
-        return createPublishedQuestion(traceResult, response);
+        return createPublishedQuestion(interviewProgress, response);
     }
 
     private AiPrompt createPrompt(PromptConfiguration promptConfig, CreationOption creationOption) {
@@ -83,11 +83,11 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
         };
     }
 
-    private RecommendedQuestion createPublishedQuestion(TraceResult progress, Message response) {
+    private RecommendedQuestion createPublishedQuestion(InterviewProgress progress, Message response) {
         return new RecommendedQuestion(requester.getSignature(), response.getContent(), progress);
     }
 
-    private PromptConfiguration createPromptConfig(TraceResult progress, InterviewInfo interviewInfo) {
+    private PromptConfiguration createPromptConfig(InterviewProgress progress, InterviewInfo interviewInfo) {
         InterviewPromptConfigurator configurator = CategoryModuleFinder
                 .findModule(interviewPromptConfiguratorList, interviewInfo.profile().category().getName());
         return configurator.configStrategy(requester, interviewInfo.profile(), progress);

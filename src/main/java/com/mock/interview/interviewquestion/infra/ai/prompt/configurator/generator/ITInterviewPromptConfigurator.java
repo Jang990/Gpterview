@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.genera
 
 import com.mock.interview.category.infra.support.ITCategorySupportChecker;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
-import com.mock.interview.interview.infra.progress.dto.TraceResult;
+import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigElements;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
@@ -12,8 +12,6 @@ import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.templat
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class ITInterviewPromptConfigurator extends ITCategorySupportChecker implements InterviewPromptConfigurator {
@@ -21,7 +19,7 @@ public class ITInterviewPromptConfigurator extends ITCategorySupportChecker impl
     private final PromptConfigurationCreator configurationCreator;
 
     @Override
-    public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, TraceResult progress) {
+    public PromptConfiguration configStrategy(AISpecification aiSpec, InterviewProfile profile, InterviewProgress progress) {
         String promptTemplate = getTemplate(progress.phase());
         String topic = progress.getTopicContent();
         PromptConfigElements elements = new PromptConfigElements(profile.category().getName(), profile.field().getName(), topic);
