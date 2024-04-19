@@ -3,10 +3,8 @@ package com.mock.interview.interview.infra.progress;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
-import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
 import com.mock.interview.interview.infra.progress.dto.TraceResult;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator.InterviewPromptConfigurator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InterviewProgressTracker {
-    private final List<InterviewPromptConfigurator> interviewPromptConfiguratorList;
     private final InterviewProgressTimeBasedTracker progressTracker;
 
     public TraceResult trace(InterviewInfo interviewInfo) {

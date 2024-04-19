@@ -1,12 +1,6 @@
 package com.mock.interview.interviewquestion.infra.ai.prompt.configurator.generator;
 
 import com.mock.interview.category.infra.support.DefaultCategorySupportChecker;
-import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
-import com.mock.interview.interview.infra.progress.dto.InterviewTopic;
-import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfiguration;
-import com.mock.interview.interviewquestion.infra.ai.gpt.AISpecification;
-import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
-import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.PromptConfigurationCreator;
 import com.mock.interview.interviewquestion.infra.ai.prompt.configurator.template.DefaultInterviewTemplateGetter;
 import lombok.RequiredArgsConstructor;
