@@ -12,11 +12,7 @@
         <div th:text="*{category.category}"></div>
         <div th:text="*{category.position}"></div>
         <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
-        <div th:each="experience : *{experiences}">
-            <div th:object="${experience}">
-                <span th:text="*{id}">id</span> <span th:text="*{content}">내용</span>
-            </div>
-        </div>
+        <div th:replace="~{fragments/card/experience :: fragment-experience(experienceList=*{experienceList}, username=${username})}"></div>
     </section>
 </body>
 </html>

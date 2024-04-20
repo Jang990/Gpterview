@@ -1,5 +1,6 @@
 package com.mock.interview.experience.application;
 
+import com.mock.interview.experience.presentation.dto.ExperienceEditForm;
 import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;
 import com.mock.interview.interview.infra.progress.dto.topic.ExperienceTopic;
 import com.mock.interview.experience.domain.Experience;
@@ -23,5 +24,9 @@ public final class ExperienceConvertor {
 
     public static ExperienceTopic convertTopic(Experience experience) {
         return new ExperienceTopic(experience.getId(), experience.getContent());
+    }
+
+    public static ExperienceEditForm convertEditForm(Experience experience) {
+        return new ExperienceEditForm(experience.getId(), experience.getContent());
     }
 }

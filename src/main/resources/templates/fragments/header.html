@@ -33,9 +33,9 @@
                 <i class="fas fa-user mx-1"></i> 프로필
               </a>
               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/auth/login">로그인</a></span>
-                <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/auth/sign-up">회원가입</a></span>
-                <span sec:authorize="isAuthenticated()"><a class="dropdown-item" th:href="@{/auth/{username}(username=${#authentication.principal.username})}">내 정보</a></span>
+                <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/users/login">로그인</a></span>
+                <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/users/sign-up">회원가입</a></span>
+                <span sec:authorize="isAuthenticated()"><a class="dropdown-item" th:href="@{/users/{username}(username=${#authentication.principal.username})}">내 정보</a></span>
                 <span sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/logout">로그아웃</a></span>
               </div>
             </li>

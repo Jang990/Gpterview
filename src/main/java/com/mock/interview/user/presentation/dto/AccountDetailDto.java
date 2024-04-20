@@ -18,5 +18,5 @@ public class AccountDetailDto {
     private LocalDateTime createdBy;
     private JobCategoryView category;
     private List<TechViewDto> tech;
-    private List<ExperienceDto> experiences;
+    private List<ExperienceDto> experienceList;
 }

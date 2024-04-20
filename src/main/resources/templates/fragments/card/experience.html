@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fragment-experience(experienceList, username)">
+    <div th:each="experience : ${experienceList}">
+        <div class="my-3 col">
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="여기에 적어주세요." style="height: 200px" th:text="${experience.content}" disabled></textarea>
+            </div>
+            <th:block>
+                <form th:action="@{/users/{username}/experience/{id}/delete(username=${username},id=${experience.id})}" method="post">
+                    <button class="btn btn-danger" type="submit">삭제</button>
+                </form>
+                <a class="btn btn-secondary" th:href="@{/users/{username}/experience/{id}/edit(username=${username},id=${experience.id})}">수정</a>
+            </th:block>
+        </div>
+    </div>
+</div>

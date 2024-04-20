@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title th:text="|${username}님의 페이지|">사용자님 페이지</title>
+</head>
+<body>
+    <section>
+        <form method="post" th:action="@{/users/{username}/experience/{experienceId}/edit(username=${username}, experienceId=${experienceEditForm.id})}">
+            <div id="experienceEditForm">
+                <div class="my-3 col">
+                    <div for="intro" class="form-floating">
+                        <textarea class="form-control" placeholder="여기에 적어주세요." th:field="${experienceEditForm.content}" style="height: 200px"></textarea>
+                        <label>자소서 or 이력서 내용 (500자 이하)</label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn-primary">수정완료</button>
+        </form>
+    </section>
+</body>
+</html>
