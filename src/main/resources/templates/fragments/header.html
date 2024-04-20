@@ -14,8 +14,9 @@
               <a href="/interview/form" class="nav-link px-2 text-decoration-none">모의면접</a>
               <div class="underline"></div>
             </li>
-            <li class="nav-link" th:classappend="${headerActiveTap == 'history'} ? active-link : text-muted">
-              <a href="/history" class="nav-link px-2 text-decoration-none">면접기록</a>
+            <li class="nav-link" th:classappend="${headerActiveTap == 'interview-list'} ? active-link : text-muted">
+              <a sec:authorize="isAnonymous()"  href="/login">면접기록</a>
+              <a sec:authorize="isAuthenticated()" th:href="@{/users/{username}/interview(username=${#authentication.principal.username})}" class="nav-link px-2 text-decoration-none">면접기록</a>
               <div class="underline"></div>
             </li>
             <li class="nav-link" th:classappend="${headerActiveTap == 'interview-question'} ? active-link : text-muted">

@@ -1,10 +1,16 @@
 package com.mock.interview.interview.infra;
 
+import com.mock.interview.interview.application.InterviewConvertor;
+import com.mock.interview.interview.domain.model.Interview;
+import com.mock.interview.interview.presentation.dto.InterviewOverview;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,5 +37,20 @@ public class InterviewRepositoryForView {
                 .limit(pageable.getPageSize())
                 .orderBy(interview.createdAt.desc())
                 .fetch();
+    }
+
+    public Page<InterviewOverview> findInterviewList(long userId, Pageable pageable) {
+        List<Interview> result = query.selectFrom(interview)
+                .where(interview.users.id.eq(userId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(interview.createdAt.desc())
+                .fetch();
+
+        List<InterviewOverview> content = InterviewConvertor.convert(result);
+        JPAQuery<Long> countQuery = query.select(interview.count()).from(interview)
+                .where(interview.users.id.eq(userId));
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 }

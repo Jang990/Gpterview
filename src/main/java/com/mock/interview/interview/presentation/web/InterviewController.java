@@ -4,16 +4,26 @@ import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.interview.application.InterviewViewService;
+import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
+import com.mock.interview.interview.presentation.dto.InterviewOverview;
 import com.mock.interview.interview.presentation.dto.InterviewProgressDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
+import com.mock.interview.interviewquestion.presentation.web.QuestionPageInitializer;
+import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
 import com.mock.interview.user.presentation.InfoPageInitializer;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -34,6 +44,7 @@ public class InterviewController {
     private final UserRepositoryForView userRepositoryForView;
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
+    private final InterviewRepositoryForView interviewRepositoryForView;
 
     @GetMapping("/interview/{interviewId}")
     public String interviewPage(
@@ -82,6 +93,21 @@ public class InterviewController {
         InfoPageInitializer.initInterviewInfoPage(model, "면접 종료 성공", "진행중인 면접을 성공적으로 종료시켰습니다.", "/");
 
         return "/info/info";
+    }
+
+    @GetMapping("/users/{username}/interview")
+    public String interviewListPage(
+            Model model, @AuthenticationPrincipal() Users loginUser,
+            @PathVariable("username") String username,
+            @PageableDefault Pageable pageable,
+            HttpServletRequest request
+    ) {
+        if (!loginUser.getUsername().equals(username))
+            return "redirect:/users/"+username+"/unauthorized";
+
+        Page<InterviewOverview> overviewPage = interviewRepositoryForView.findInterviewList(loginUser.getId(), pageable);
+        InterviewPageInitializer.initListPage(model, overviewPage, request);
+        return "/interview/list";
     }
 
 }

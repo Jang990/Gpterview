@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="fragment-interview-overview-list(interviewList)">
+    <table class="table mb-0 table-hover">
+        <tbody>
+            <tr class="align-middle" th:each="interview: ${interviewList}" th:onclick="@{location.href='/interview/{interviewId}'( interviewId=${interview.id} )}" style="cursor: pointer;">
+                <td th:text="${interview.title}">제목 정보</td>
+                <td th:text="${interview.type.name}">타입</td>
+                <td th:text="|${#temporals.format(interview.createdAt, 'MM-dd HH:mm')} 생성|">생성일</td>
+                <td th:text="|${interview.durationMinutes}분 진행|">진행 시간</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

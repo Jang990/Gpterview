@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title>면접 질문</title>
+</head>
+<body>
+    <section>
+        <div class="inner-main-header my-3">
+            <div class="ms-3 my-3">
+                <h4 class="ps-3 pt-3 fw-normal">면접기록</h4>
+            </div>
+        </div>
+        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+            <div th:replace="~{fragments/interview/interview-overview-list :: fragment-interview-overview-list(interviewList=${interviewPage.content})}"></div>
+
+            <div>
+                <div class="my-3 d-flex justify-content-end align-items-center">
+                    <div class="me-2"><span>검색된 결과 수 : </span><span class="mx-1" th:text="${interviewPage.totalElements}"></span></div>
+                    <div><a th:href="@{/interview/form}" class="btn btn-sm btn-primary">면접 시작</a></div>
+                </div>
+            </div>
+
+            <div th:replace="~{fragments/page-nav :: fragment-page-nav(
+                                isFirst=${interviewPage.first}, isLast=${interviewPage.last},
+                                currentPageNumber=${interviewPage.number}, totalPages=${interviewPage.totalPages})}">페이징 컨트롤 네비게이션 공간</div>
+        </div>
+    </section>
+</body>
+</html>
