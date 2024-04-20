@@ -9,7 +9,7 @@
   <div class="d-flex justify-content-center my-5">
     <div>
       <h2 class="mb-4">회원가입</h2>
-      <form style="width: 400px" method="post" action="/auth/sign-up" th:object="${account}">
+      <form style="width: 400px" method="post" action="/sign-up" th:object="${account}">
         <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=${null}, selectedPositionId=${null},categoryList=${categoryList},positionList=${positionList})}">
           카테고리 선택
         </div>

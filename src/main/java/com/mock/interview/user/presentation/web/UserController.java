@@ -20,13 +20,13 @@ public class UserController {
     private final JobPositionService positionService;
     private final UserRepositoryForView repositoryForView;
 
-    @GetMapping("/users/login")
+    @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("account", new AccountDto());
         return "/users/login";
     }
 
-    @GetMapping("/users/sign-up")
+    @GetMapping("/sign-up")
     public String signUpPage(Model model) {
         model.addAttribute("account", new AccountForm());
         CategoryViewer.setCategoriesView(model, categoryService, positionService);

@@ -28,8 +28,8 @@ public class SecurityConfig {
                         (form) ->
                                 form
                                         .defaultSuccessUrl("/")
-                                        .failureUrl("/auth/login")
-                                        .loginPage("/auth/login")
+                                        .failureUrl("/login")
+                                        .loginPage("/login")
                                         .loginProcessingUrl("/login")
                 )
                 .csrf(csrf -> csrf.disable());
