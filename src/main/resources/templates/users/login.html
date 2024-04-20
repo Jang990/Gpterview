@@ -13,29 +13,20 @@
           <div th:replace="~{fragments/form/account :: fragment-account}">로그인 계정 정보 컴포넌트</div>
 
           <!-- Submit button -->
-          <button type="submit" class="btn btn-primary btn-block mb-4 col-12">로그인</button>
-
-          <div class="row mb-4">
-            <div class="col d-flex justify-content-center">
-              <!-- Checkbox -->
-              <!--<div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-                <label class="form-check-label" for="form2Example31"> 기억하기 </label>
-              </div>-->
-              <a class="link-dark" href="/sign-up">회원가입</a>
-            </div>
-
-            <div class="col">
-              <!-- Simple link -->
-              <a class="link-dark" href="#!">비밀번호 찾기</a>
-            </div>
-          </div>
+          <button type="submit" class="btn btn-primary btn-block mb-2 col-12">로그인</button>
         </form>
 
         <hr>
 
-        <!-- Register buttons -->
-        <div th:replace="~{fragments/auth/oauth-selector :: fragment-oauth-selector}">oauth 컴포넌트</div>
+        <div class="row mb-4">
+          <div class="col d-flex justify-content-center">
+            <a class="link-offset-2 link-underline link-underline-opacity-10" href="/sign-up">회원가입</a>
+          </div>
+
+          <div class="col d-flex justify-content-center">
+            <a class="link-offset-2 link-underline link-underline-opacity-10" href="#"><i class="fab fa-google"></i> 계정가입</a>
+          </div>
+        </div>
 
     </div>
   </section>
