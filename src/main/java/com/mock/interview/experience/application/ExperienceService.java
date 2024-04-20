@@ -1,7 +1,10 @@
 package com.mock.interview.experience.application;
 
 import com.mock.interview.experience.domain.Experience;
+import com.mock.interview.experience.domain.exception.ExperienceNotFoundException;
+import com.mock.interview.experience.infra.ExperienceExistsRepository;
 import com.mock.interview.experience.infra.ExperienceRepository;
+import com.mock.interview.experience.infra.InterviewExperienceLinkRepository;
 import com.mock.interview.experience.presentation.dto.ExperienceBulkForm;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
@@ -19,7 +22,6 @@ import java.util.stream.Collectors;
 public class ExperienceService {
     private final UserRepository userRepository;
     private final ExperienceRepository repository;
-
     public void create(String username, ExperienceBulkForm experienceBulkForm) {
         Users users = userRepository.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);

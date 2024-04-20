@@ -64,6 +64,7 @@ public class InterviewQuestion extends BaseEntity {
     @JoinColumn(name = "parent_question_id")
     private InterviewQuestion parentQuestion;
 
+    @Cascade(CascadeType.ALL)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "interviewQuestion")
     private QuestionTokenization questionToken;
 

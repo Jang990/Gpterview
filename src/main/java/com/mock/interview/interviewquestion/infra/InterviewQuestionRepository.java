@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.infra;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -49,4 +50,9 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             WHERE iq.id = :questionId AND iq.owner.id = :userId AND iq.isDeleted = FALSE
             """)
     Optional<InterviewQuestion> findUserQuestion(@Param("userId") long userId, @Param("questionId") long questionId);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("DELETE FROM InterviewQuestion iq WHERE iq.experience.id = :experienceId")
+    int deleteByExperienceId(@Param("experienceId") long experienceId);
+
 }
