@@ -1,26 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="fragment-job-category(selectedCategoryId,selectedPositionId,categoryList,positionList)">
+  <div th:fragment="fragment-job-category(selectedCategoryId,selectedPositionId,categoryList,positionList)" class="d-flex">
     <script th:src="@{/js/jobCategoryForm.js}" href="../js/jobCategoryForm.js"></script>
-    <div class="mb-3 row">
-      <div class="d-flex justify-content-start">
-        <label class="col-form-label me-3">분야</label>
-        <div class="me-3">
-          <select id="categoryId" name="categoryId" class="form-select" aria-label="Select category">
-            <option th:if="${categoryId != null}" disabled>분야 선택</option>
-            <option value="">공통</option>
-            <option th:each="category : ${categoryList}"
-                    th:value="${category.id}" th:text="${category.name}"
-                    th:selected="${category.id == selectedCategoryId}">IT (프로그래밍)</option>
-          </select>
-        </div>
-        <div class="me-3">
-          <button type="button" class="btn btn-dark" onclick="showCategoryToast()">분야 추가</button>
-        </div>
+    <div class="me-3">
+      <label class="m-2">분야</label>
+      <div>
+        <select id="categoryId" name="categoryId" class="form-select" aria-label="Select category">
+          <option th:if="${categoryId != null}" disabled>분야 선택</option>
+          <option value="">공통</option>
+          <option th:each="category : ${categoryList}"
+                  th:value="${category.id}" th:text="${category.name}"
+                  th:selected="${category.id == selectedCategoryId}">IT (프로그래밍)</option>
+        </select>
+      </div>
+      <div class="m-2">
+        <button type="button" class="btn btn-dark" onclick="showCategoryToast()">분야 추가</button>
       </div>
     </div>
 
-    <!--마음에 안듦. 다른 위치로 옮겨야함-->
     <div class="row ms-5 mb-3">
       <div class="col-3 toast align-items-center mb-3" id="categoryOptionToast" role="polite" aria-live="assertive" aria-atomic="true" data-bs-delay="15000">
         <div class="d-flex" style="min-width:0px">
@@ -39,20 +36,18 @@
       </div>
     </div>
 
-    <div class="mb-3 row">
-      <div class="d-flex justify-content-start">
-        <label class="col-form-label me-3">직군</label>
-        <div class="me-3">
-          <select id="positionId" name="positionId" class="form-select" aria-label="Select position">
-            <option value="">공통</option>
-            <option th:each="position : ${positionList}"
-                    th:value="${position.id}" th:text="${position.name}"
-                    th:selected="${position.id == selectedPositionId}">백엔드, 모바일</option>
-          </select>
-        </div>
-        <div class="me-3">
-          <button type="button" class="btn btn-dark" onclick="showPositionToast()">직군 추가</button>
-        </div>
+    <div class="me-3">
+      <label class="m-2">직군</label>
+      <div class="me-3">
+        <select id="positionId" name="positionId" class="form-select" aria-label="Select position">
+          <option value="">공통</option>
+          <option th:each="position : ${positionList}"
+                  th:value="${position.id}" th:text="${position.name}"
+                  th:selected="${position.id == selectedPositionId}">백엔드, 모바일</option>
+        </select>
+      </div>
+      <div class="m-2">
+        <button type="button" class="btn btn-dark" onclick="showPositionToast()">직군 추가</button>
       </div>
     </div>
 
@@ -73,7 +68,5 @@
         </div>
       </div>
     </div>
-
-    <div class="mb-2"></div>
   </div>
 </html>
