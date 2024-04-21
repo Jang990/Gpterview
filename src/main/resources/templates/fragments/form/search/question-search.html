@@ -29,13 +29,13 @@
                                 th:value="${questionType}"
                                 th:text="${questionType.name}"
                                 th:selected="*{typeCond} == ${questionType}">
-                            면접 진행 방식
+                            질문 타입
                         </option>
                     </select>
                 </div>
-                <div class="d-flex search-element px-2 flex-grow-1">
+                <!--/*<div class="d-flex search-element px-2 flex-grow-1">
                     <div th:replace="~{fragments/form/search/tech :: fragment-tech(tech=*{techCond})}">관련기술 영역</div>
-                </div>
+                </div>*/-->
                 <div class="d-flex search-element px-2 flex-grow-1">
                     <input type="text" class="search-element flex-fill" placeholder="검색 키워드" name="keywordCond" id="keywordCond" th:value="*{keywordCond}">
                 </div>

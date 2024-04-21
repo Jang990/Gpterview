@@ -54,7 +54,6 @@ public class InterviewQuestionRepositoryForView {
                 .fetch();
     }
 
-    // TODO: tech 검색 미지원
     public Page<QuestionOverview> findOverviewList(
             QuestionSearchOptionsDto searchOptions,
             Pageable pageable
