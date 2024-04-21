@@ -12,7 +12,7 @@ import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLoc
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.interviewconversationpair.domain.ConversationStarter;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
-import com.mock.interview.tech.application.TechSavingHelper;
+import com.mock.interview.tech.application.helper.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;

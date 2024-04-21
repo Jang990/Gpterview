@@ -1,4 +1,4 @@
-package com.mock.interview.tech.application;
+package com.mock.interview.tech.application.helper;
 
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;

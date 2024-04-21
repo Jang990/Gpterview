@@ -1,4 +1,4 @@
-package com.mock.interview.experience.application;
+package com.mock.interview.experience.application.helper;
 
 import com.mock.interview.experience.domain.exception.ExperienceNotFoundException;
 import com.mock.interview.experience.infra.ExperienceExistsRepository;

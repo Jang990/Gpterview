@@ -1,14 +1,12 @@
 package com.mock.interview.interviewquestion.application;
 
-import com.mock.interview.category.application.JobConnectionHelper;
-import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
-import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.category.application.helper.JobConnectionHelper;
 import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.infra.JobPositionRepository;
+import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
-import com.mock.interview.questionlike.domain.exception.QuestionLikeNotFoundException;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.user.domain.exception.UserNotFoundException;

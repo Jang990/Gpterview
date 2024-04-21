@@ -1,4 +1,4 @@
-package com.mock.interview.interview.application;
+package com.mock.interview.interview.application.helper;
 
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.presentation.dto.InterviewOverview;

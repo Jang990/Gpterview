@@ -1,5 +1,7 @@
 package com.mock.interview.tech.application;
 
+import com.mock.interview.tech.application.helper.TechConvertHelper;
+import com.mock.interview.tech.application.helper.TechSavingHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import lombok.RequiredArgsConstructor;

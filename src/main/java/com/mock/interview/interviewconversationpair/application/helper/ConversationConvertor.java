@@ -1,12 +1,12 @@
-package com.mock.interview.interviewconversationpair.application;
+package com.mock.interview.interviewconversationpair.application.helper;
 
-import com.mock.interview.interviewanswer.application.AnswerConvertor;
+import com.mock.interview.interviewanswer.application.helper.AnswerConvertor;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView;
-import com.mock.interview.interviewquestion.application.QuestionConvertor;
+import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

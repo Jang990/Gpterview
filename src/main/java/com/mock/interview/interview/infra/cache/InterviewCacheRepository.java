@@ -1,7 +1,7 @@
 package com.mock.interview.interview.infra.cache;
 
-import com.mock.interview.category.application.CategoryConvertor;
-import com.mock.interview.experience.application.ExperienceConvertor;
+import com.mock.interview.category.application.helper.CategoryConvertor;
+import com.mock.interview.experience.application.helper.ExperienceConvertor;
 import com.mock.interview.interview.domain.model.InterviewExperienceLink;
 import com.mock.interview.interview.domain.model.InterviewTechLink;
 import com.mock.interview.interview.infra.InterviewRepository;
@@ -10,7 +10,7 @@ import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.tech.application.TechConvertHelper;
+import com.mock.interview.tech.application.helper.TechConvertHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -9,7 +9,7 @@ import com.mock.interview.interview.infra.progress.InterviewProgressTraceService
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
 import com.mock.interview.interview.infra.prompt.InterviewPromptCreationService;
 import com.mock.interview.interviewconversationpair.infra.ConversationCacheForAiRequest;
-import com.mock.interview.interviewquestion.application.QuestionConvertor;
+import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;

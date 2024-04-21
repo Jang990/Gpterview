@@ -1,4 +1,4 @@
-package com.mock.interview.experience.application;
+package com.mock.interview.experience.application.helper;
 
 import com.mock.interview.experience.presentation.dto.ExperienceEditForm;
 import com.mock.interview.experience.presentation.dto.api.ExperienceResponse;

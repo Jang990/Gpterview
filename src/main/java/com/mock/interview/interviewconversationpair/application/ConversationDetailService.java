@@ -1,10 +1,10 @@
 package com.mock.interview.interviewconversationpair.application;
 
+import com.mock.interview.interviewconversationpair.application.helper.ConversationConvertor;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
-import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

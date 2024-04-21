@@ -3,7 +3,7 @@ package com.mock.interview.interviewconversationpair.event;
 import com.mock.interview.interviewconversationpair.domain.ConversationMessageBroker;
 import com.mock.interview.interviewconversationpair.domain.event.ConversationResetEvent;
 import com.mock.interview.interviewconversationpair.domain.event.QuestionConnectedEvent;
-import com.mock.interview.interviewquestion.application.QuestionConvertor;
+import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.event.QuestionRecommendedEvent;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;

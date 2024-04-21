@@ -1,11 +1,12 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.interview.application.helper.InterviewFindingHelper;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewProgressDto;
-import com.mock.interview.interviewconversationpair.application.ConversationConvertor;
+import com.mock.interview.interviewconversationpair.application.helper.ConversationConvertor;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationRepositoryForView;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;

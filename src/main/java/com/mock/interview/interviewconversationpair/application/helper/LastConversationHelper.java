@@ -1,4 +1,4 @@
-package com.mock.interview.interviewconversationpair.application;
+package com.mock.interview.interviewconversationpair.application.helper;
 
 import com.mock.interview.global.RepositoryConst;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;

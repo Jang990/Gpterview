@@ -1,6 +1,6 @@
-package com.mock.interview.interviewquestion.application;
+package com.mock.interview.interviewquestion.application.helper;
 
-import com.mock.interview.category.application.CategoryConvertor;
+import com.mock.interview.category.application.helper.CategoryConvertor;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;

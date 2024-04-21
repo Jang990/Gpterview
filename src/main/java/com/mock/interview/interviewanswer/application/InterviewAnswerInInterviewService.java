@@ -4,7 +4,7 @@ import com.mock.interview.interview.infra.InterviewExistsRepository;
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationIds;
 import com.mock.interview.interviewanswer.presentation.dto.InterviewAnswerRequest;
-import com.mock.interview.interview.application.InterviewVerificationHelper;
+import com.mock.interview.interview.application.helper.InterviewVerificationHelper;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;

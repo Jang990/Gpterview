@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infra;
 
-import com.mock.interview.interview.application.InterviewConvertor;
+import com.mock.interview.interview.application.helper.InterviewConvertor;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.presentation.dto.InterviewOverview;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;

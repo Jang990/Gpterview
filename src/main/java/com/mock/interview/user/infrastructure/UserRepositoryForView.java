@@ -1,6 +1,6 @@
 package com.mock.interview.user.infrastructure;
 
-import com.mock.interview.category.application.CategoryConvertor;
+import com.mock.interview.category.application.helper.CategoryConvertor;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;

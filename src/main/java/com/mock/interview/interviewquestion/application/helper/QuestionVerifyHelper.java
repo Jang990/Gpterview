@@ -1,4 +1,4 @@
-package com.mock.interview.interviewquestion.application;
+package com.mock.interview.interviewquestion.application.helper;
 
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.infra.QuestionExistsRepository;

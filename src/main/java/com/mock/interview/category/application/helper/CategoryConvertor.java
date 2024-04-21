@@ -1,4 +1,4 @@
-package com.mock.interview.category.application;
+package com.mock.interview.category.application.helper;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;

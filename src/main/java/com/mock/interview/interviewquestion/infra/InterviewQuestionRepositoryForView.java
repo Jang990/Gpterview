@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.infra;
 
-import com.mock.interview.interviewquestion.application.QuestionConvertor;
+import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.*;
