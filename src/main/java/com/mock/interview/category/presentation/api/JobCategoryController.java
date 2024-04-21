@@ -26,7 +26,7 @@ public class JobCategoryController {
         return ResponseEntity.ok(service.findCategory(categoryName));
     }
 
-    @PostMapping("/api/category")
+//    @PostMapping("/api/category")
     public ResponseEntity<Long> save(@RequestBody NewCategoryRequest request) {
         return ResponseEntity.ok(service.save(request));
     }

@@ -33,7 +33,7 @@ public class JobPositionController {
         return ResponseEntity.ok(service.findPosition(positionId));
     }
 
-    @PostMapping("/category/{categoryId}/position")
+//    @PostMapping("/category/{categoryId}/position")
     public ResponseEntity<Long> save(
             @PathVariable(name = "categoryId") long categoryId,
             @RequestBody NewCategoryRequest request
