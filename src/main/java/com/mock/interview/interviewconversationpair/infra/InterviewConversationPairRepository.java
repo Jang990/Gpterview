@@ -4,6 +4,7 @@ import com.mock.interview.interviewconversationpair.domain.model.InterviewConver
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -58,4 +59,13 @@ public interface InterviewConversationPairRepository extends JpaRepository<Inter
             WHERE icp.interview.id = :interviewId
             """)
     Slice<InterviewConversationPair> findCurrentConversationHistory(@Param("interviewId") long interviewId, Pageable pageable);
+
+    @Query("""
+            UPDATE InterviewConversationPair icp
+            SET icp.question = null
+            WHERE icp.question.id = :questionId
+            """)
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    void removeQuestion(@Param("questionId") long questionId);
+
 }

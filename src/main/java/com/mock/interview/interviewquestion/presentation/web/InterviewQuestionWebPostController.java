@@ -5,6 +5,7 @@ import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryValidator;
 import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
+import com.mock.interview.interviewquestion.application.QuestionDeleteService;
 import com.mock.interview.interviewquestion.application.QuestionSavingService;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
@@ -30,6 +31,7 @@ public class InterviewQuestionWebPostController {
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
     private final TechnicalSubjectsService technicalSubjectsService;
+    private final QuestionDeleteService questionDeleteService;
 
     @GetMapping("question/form")
     public String questionSavePage(Model model) {
@@ -57,7 +59,7 @@ public class InterviewQuestionWebPostController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable("questionId") long questionId
     ) {
-        questionSavingService.delete(loginId, questionId);
+        questionDeleteService.delete(questionId, loginId);
         return "redirect:/question";
     }
 
@@ -66,7 +68,7 @@ public class InterviewQuestionWebPostController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable("questionId") long questionId
     ) {
-        questionSavingService.delete(loginId, questionId);
+        // TODO: 수정 로직 작성
         return "redirect:/question";
     }
 }
