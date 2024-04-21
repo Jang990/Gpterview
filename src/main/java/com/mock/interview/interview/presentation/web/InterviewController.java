@@ -95,6 +95,18 @@ public class InterviewController {
         return "/info/info";
     }
 
+    @GetMapping("/interview/delete/result")
+    public String deleteInterviewResultPage(
+            Model model,
+            @AuthenticationPrincipal Users loginUser
+    ) {
+        // TODO: 임시코드
+        InfoPageInitializer.initInterviewInfoPage(model, "면접 제거 성공", "면접을 성공적으로 제거했습니다.",
+                "/users/"+loginUser.getUsername()+"/interview");
+
+        return "/info/info";
+    }
+
     @GetMapping("/users/{username}/interview")
     public String interviewListPage(
             Model model, @AuthenticationPrincipal() Users loginUser,

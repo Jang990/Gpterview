@@ -8,6 +8,11 @@
                 <td th:text="${interview.type.name}">타입</td>
                 <td th:text="|${#temporals.format(interview.createdAt, 'MM-dd HH:mm')} 생성|">생성일</td>
                 <td th:text="|${interview.durationMinutes}분 진행|">진행 시간</td>
+                <td>
+                    <form method="post" th:action="@{/interview/{interviewId}/delete(interviewId=${interview.id})}">
+                        <button type="submit" class="btn btn-link"><i class="fas fa-solid fa-trash" style="color: #C81121;"></i></button>
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>

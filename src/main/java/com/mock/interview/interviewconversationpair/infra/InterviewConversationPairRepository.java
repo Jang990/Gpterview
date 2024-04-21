@@ -68,4 +68,12 @@ public interface InterviewConversationPairRepository extends JpaRepository<Inter
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     void removeQuestion(@Param("questionId") long questionId);
 
+    @Query("""
+            UPDATE InterviewConversationPair icp
+            SET icp.interview = null
+            WHERE icp.interview.id = :interviewId
+            """)
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    void removeInterview(@Param("interviewId") long interviewId); // TODO: 추후 추천 기능을 사용할 때 로그로 사용될 수 있다.
+
 }

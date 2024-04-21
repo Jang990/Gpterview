@@ -1,5 +1,6 @@
 package com.mock.interview.interviewanswer.application;
 
+import com.mock.interview.interview.infra.InterviewExistsRepository;
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationIds;
 import com.mock.interview.interviewanswer.presentation.dto.InterviewAnswerRequest;
@@ -24,10 +25,11 @@ public class InterviewAnswerInInterviewService {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final InterviewAnswerRepository interviewAnswerRepository;
     private final InterviewAnswerService interviewAnswerService;
+    private final InterviewExistsRepository interviewExistsRepository;
 
     @InterviewProgressLock
     public void create(InterviewConversationIds conversationDto, InterviewAnswerRequest answerDto) {
-        InterviewVerificationHelper.verify(interviewRepository, conversationDto.interviewId(), conversationDto.userId());
+        InterviewVerificationHelper.verify(interviewExistsRepository, conversationDto.interviewId(), conversationDto.userId());
         Interview interview = interviewRepository.findByIdAndUserId(conversationDto.interviewId(), conversationDto.userId())
                 .orElseThrow(InterviewNotFoundException::new);
         InterviewConversationPair conversationPair = conversationPairRepository
