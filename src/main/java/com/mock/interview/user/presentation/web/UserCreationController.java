@@ -5,6 +5,7 @@ import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.tech.application.TechnicalSubjectsService;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
 import com.mock.interview.user.application.UserService;
+import com.mock.interview.user.presentation.dto.AccountDto;
 import com.mock.interview.user.presentation.dto.AccountForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +23,12 @@ public class UserCreationController {
     private final UserService userService;
     private final TechnicalSubjectsService technicalSubjectsService;
 
-    @PostMapping("auth/sign-up")
+    @PostMapping("/sign-up")
     public String signUp(
-            @Valid @ModelAttribute("account") AccountForm form,
+            @Valid @ModelAttribute("account") AccountDto form,
             BindingResult bindingResult
     ) throws BindException {
-        CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
-        List<Long> savedTechIds = technicalSubjectsService.saveTechIfNotExist(form.getTechName());
-        userService.create(form, savedTechIds);
-        return "redirect:/auth/login";
+        userService.create(form);
+        return "redirect:/login";
     }
 }

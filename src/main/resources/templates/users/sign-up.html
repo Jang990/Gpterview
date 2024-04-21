@@ -10,9 +10,9 @@
     <div>
       <h2 class="mb-4">회원가입</h2>
       <form style="width: 400px" method="post" action="/sign-up" th:object="${account}">
-        <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=${null}, selectedPositionId=${null},categoryList=${categoryList},positionList=${positionList})}">
+        <!--/*<div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=${null}, selectedPositionId=${null},categoryList=${categoryList},positionList=${positionList})}">
           카테고리 선택
-        </div>
+        </div>*/-->
         <div th:replace="~{fragments/form/account :: fragment-account}">로그인 계정 정보 컴포넌트</div>
 
 
@@ -27,7 +27,7 @@
         </div>-->
 
 
-        <div class="my-3 accordion accordion-flush" id="accordionFlushExample">
+        <!--/*<div class="my-3 accordion accordion-flush" id="accordionFlushExample">
           <div class="accordion-item">
             <h2 class="accordion-header">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -52,7 +52,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>*/-->
 
         <input type="submit" class="btn btn-primary btn-block mb-4 col-12" value="회원가입">
       </form>

@@ -1,16 +1,8 @@
 package com.mock.interview.user.application;
 
-import com.mock.interview.category.domain.exception.JobCategoryNotFoundException;
-import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.category.domain.model.JobPosition;
-import com.mock.interview.category.infra.JobCategoryRepository;
-import com.mock.interview.category.infra.JobPositionRepository;
-import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
-import com.mock.interview.user.domain.UsersTechLinker;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
-import com.mock.interview.user.presentation.dto.AccountForm;
+import com.mock.interview.user.presentation.dto.AccountDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,43 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final JobCategoryRepository jobCategoryRepository;
-    private final JobPositionRepository jobPositionRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UsersTechLinker usersTechLinker;
-    private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
-    public void create(AccountForm form, List<Long> relatedTechIds) {
-        List<TechnicalSubjects> techs = technicalSubjectsRepository.findAllById(relatedTechIds);
+    public void create(AccountDto form) {
         Users users = Users.createUser(form.getUsername(), passwordEncoder.encode(form.getPassword()));
-
-        if(!techs.isEmpty())
-            usersTechLinker.lineUniqueTech(users, techs);
-
-        for (String experience : form.getExperiences()) {
-            users.addExperience(experience);
-        }
         userRepository.save(users);
-
-        if (hasPosition(form)) {
-            JobPosition position = jobPositionRepository.findWithCategory(form.getCategoryId(), form.getPositionId())
-                    .orElseThrow(JobCategoryNotFoundException::new);
-            users.linkJob(position.getCategory(), position);
-            return;
-        }
-
-        if (hasCategory(form)) {
-            JobCategory category = jobCategoryRepository.findById(form.getCategoryId())
-                    .orElseThrow(JobCategoryNotFoundException::new);
-            users.linkCategory(category);
-        }
-    }
-
-    private boolean hasCategory(AccountForm form) {
-        return form.getCategoryId() != null;
-    }
-
-    private boolean hasPosition(AccountForm form) {
-        return form.getPositionId() != null;
     }
 }

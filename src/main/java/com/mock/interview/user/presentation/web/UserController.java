@@ -28,8 +28,7 @@ public class UserController {
 
     @GetMapping("/sign-up")
     public String signUpPage(Model model) {
-        model.addAttribute("account", new AccountForm());
-        CategoryViewer.setCategoriesView(model, categoryService, positionService);
+        model.addAttribute("account", new AccountDto());
         return "/users/sign-up";
     }
 
