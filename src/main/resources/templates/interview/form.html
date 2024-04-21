@@ -14,14 +14,22 @@
                 </div>
                 <div>
                     <form action="/interview" method="POST">
-                        <div class="mb-3 row" th:object="${interviewDetails}">
-                            <div th:replace="~{fragments/form/interview-config :: fragment-interview-config(selectedMinutes=*{durationMinutes},selectedType=*{interviewType})}">인터뷰 설정 부분</div>
+                        <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=${interviewAccount.categoryId},selectedPositionId=${interviewAccount.positionId},categoryList=${categoryList},positionList=${positionList})}">
+                            분야, 직무 카테고리 선택 구역
                         </div>
-                        <div th:object="${interviewAccount}">
-                            <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=*{categoryId},selectedPositionId=*{positionId},categoryList=${categoryList},positionList=${positionList})}">분야, 직무 카테고리 선택 구역</div>
-                            <script th:src="@{/js/CategoryRelatedTech.js}" href="../js/CategoryRelatedTech.js"></script>
-                            <div class="mb-3"th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
+                        <script th:src="@{/js/CategoryRelatedTech.js}" href="../js/CategoryRelatedTech.js"></script>
+                        <div class="m-3"></div>
+
+                        <div th:replace="~{fragments/form/interview-config :: fragment-interview-config(selectedMinutes=${interviewDetails.durationMinutes},selectedType=${interviewDetails.interviewType})}">
+                            인터뷰 설정 부분
                         </div>
+                        <div class="m-3"></div>
+
+                        <div th:replace="~{fragments/form/tech :: fragment-tech(tech=${interviewAccount.tech})}">
+                            관련기술 영역
+                        </div>
+                        <div class="m-3"></div>
+
                         <input type="submit" class="btn btn-primary" value="면접 시작">
                     </form>
                 </div>
