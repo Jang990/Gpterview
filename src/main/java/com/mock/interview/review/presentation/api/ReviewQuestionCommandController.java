@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+//@RestController
 @RequiredArgsConstructor
 public class ReviewQuestionCommandController {
     @PostMapping("/api/interview/{interviewId}/conversation/{conversationId}/review")
