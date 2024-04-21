@@ -52,8 +52,7 @@ public class InterviewController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "interviewId") long interviewId
     ) {
-        model.addAttribute("headerActiveTap", "interview");
-
+        InterviewPageInitializer.init(model);
         InterviewProgressDto interviewDto = interviewViewService.findInterview(new InterviewUserIds(interviewId, loginId));
         model.addAttribute("interview", interviewDto);
         List<ConversationContentDto> interviewHistory = interviewViewService.findInterviewHistory(new InterviewUserIds(interviewId, loginId));
@@ -74,37 +73,13 @@ public class InterviewController {
     public String interviewFormPage(
             Model model, @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
-        model.addAttribute("headerActiveTap", "interview");
+        InterviewPageInitializer.init(model);
         model.addAttribute("interviewDetails", new InterviewConfigForm());
 
         InterviewAccountForm accountForm = userRepositoryForView.findUserInterviewForm(loginId);
         model.addAttribute("interviewAccount", accountForm);
         CategoryViewer.initInterviewFormPage(model, accountForm.getCategoryId(), categoryService, positionService);
         return "interview/form";
-    }
-
-    @GetMapping("/interview/{interviewId}/expiration/result")
-    public String expireInterview(
-            Model model,
-            @AuthenticationPrincipal(expression = "id") Long loginId,
-            @PathVariable("interviewId") long interviewId
-    ) {
-        // TODO: 임시코드
-        InfoPageInitializer.initInterviewInfoPage(model, "면접 종료 성공", "진행중인 면접을 성공적으로 종료시켰습니다.", "/");
-
-        return "/info/info";
-    }
-
-    @GetMapping("/interview/delete/result")
-    public String deleteInterviewResultPage(
-            Model model,
-            @AuthenticationPrincipal Users loginUser
-    ) {
-        // TODO: 임시코드
-        InfoPageInitializer.initInterviewInfoPage(model, "면접 제거 성공", "면접을 성공적으로 제거했습니다.",
-                "/users/"+loginUser.getUsername()+"/interview");
-
-        return "/info/info";
     }
 
     @GetMapping("/users/{username}/interview")

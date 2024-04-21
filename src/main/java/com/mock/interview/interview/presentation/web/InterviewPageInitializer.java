@@ -6,8 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 
 public class InterviewPageInitializer {
+    public static void init(Model model) {
+        model.addAttribute("headerActiveTap", "interview");
+    }
+
     public static void initListPage(Model model, Page<InterviewOverview> overviewPage, HttpServletRequest request) {
-        model.addAttribute("headerActiveTap", "interview-list");
+        init(model);
         model.addAttribute("interviewPage", overviewPage);
         model.addAttribute("currentUri", request.getRequestURI());
     }

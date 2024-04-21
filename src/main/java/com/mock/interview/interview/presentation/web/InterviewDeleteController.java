@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-public class InterviewModifiedController {
+public class InterviewDeleteController {
     private final InterviewDeleteService interviewDeleteService;
 
     @PostMapping("/interview/{interviewId}/delete")
