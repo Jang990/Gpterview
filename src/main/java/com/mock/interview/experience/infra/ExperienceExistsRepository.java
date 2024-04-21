@@ -13,10 +13,12 @@ import static com.mock.interview.experience.domain.QExperience.*;
 public class ExperienceExistsRepository {
     private final JPAQueryFactory query;
 
-    public Integer exist(long experienceId, long userId) {
-        return query.selectOne()
+    public boolean isExist(long experienceId, long userId) {
+        Integer exist = query.selectOne()
                 .from(experience)
                 .where(experience.id.eq(experienceId), experience.users.id.eq(userId))
                 .fetchFirst();
+
+        return exist != null;
     }
 }
