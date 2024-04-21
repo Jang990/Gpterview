@@ -24,7 +24,7 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
                     SELECT CEIL( RAND() * (SELECT MAX(iq2.id) FROM InterviewQuestion iq2) ) as id
                 ) random
             INNER JOIN FETCH iq.questionToken qt
-            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId AND iq.isDeleted = FALSE
+            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId
             """)
     List<InterviewQuestion> findRandomTechQuestion(@Param("categoryId") long categoryId, Pageable pageable);
 
@@ -33,21 +33,21 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             FROM InterviewQuestion iq
             LEFT JOIN iq.category c
             INNER JOIN iq.questionToken
-            WHERE c.name = :category AND iq.isDeleted = FALSE
+            WHERE c.name = :category
             """) // 토큰이 없는 질문은 카운트에서 제외함
     Long countCategoryQuestion(@Param("category") String category);
 
     @Query("""
             SELECT iq
             FROM InterviewQuestion iq
-            WHERE iq.id = :questionId AND iq.isDeleted = FALSE
+            WHERE iq.id = :questionId
             """)
     Optional<InterviewQuestion> findOpenQuestion(@Param("questionId") long questionId);
 
     @Query("""
             SELECT iq
             FROM InterviewQuestion iq
-            WHERE iq.id = :questionId AND iq.owner.id = :userId AND iq.isDeleted = FALSE
+            WHERE iq.id = :questionId AND iq.owner.id = :userId
             """)
     Optional<InterviewQuestion> findUserQuestion(@Param("userId") long userId, @Param("questionId") long questionId);
 

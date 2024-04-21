@@ -40,9 +40,6 @@ public class Interview extends BaseTimeEntity {
     private Users users;
 
     @Column(nullable = false)
-    private boolean isDeleted;
-
-    @Column(nullable = false)
     private LocalDateTime expiredTime;
 
     @Enumerated(EnumType.STRING)
@@ -76,7 +73,6 @@ public class Interview extends BaseTimeEntity {
         interview.type = interviewConfig.getInterviewType();
         initCategory(category, position, interview);
         initExpiredTime(interview, interviewConfig.getDurationMinutes());
-        interview.isDeleted = false;
         return interview;
     }
 

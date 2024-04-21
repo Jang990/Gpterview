@@ -1,9 +1,5 @@
 package com.mock.interview.interviewquestion.infra;
 
-import com.mock.interview.category.application.CategoryConvertor;
-import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.category.domain.model.JobPosition;
-import com.mock.interview.category.presentation.dto.JobCategoryView;
 import com.mock.interview.interviewquestion.application.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
@@ -36,7 +32,7 @@ public class InterviewQuestionRepositoryForView {
         InterviewQuestion question = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory)
                 .leftJoin(interviewQuestion.position, jobPosition)
-                .where(questionIdEq(questionIdCond), ownerIdEq(loginIdCond), isActive()) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
+                .where(questionIdEq(questionIdCond), ownerIdEq(loginIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
                 .fetchOne();
 
         if(question == null)
@@ -52,7 +48,7 @@ public class InterviewQuestionRepositoryForView {
                                 interviewQuestion.question, interviewQuestion.likes)
                 )
                 .from(interviewQuestion)
-                .where(findChildQuestion(questionIdCond), isActive())
+                .where(findChildQuestion(questionIdCond))
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .limit(TOP_3)
                 .fetch();
@@ -76,8 +72,7 @@ public class InterviewQuestionRepositoryForView {
                         categoryEq(searchOptions.getCategoryNameCond()),
                         positionEq(searchOptions.getPositionNameCond()), createdByEq(searchOptions.getCreatedByCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
-                        keywordContains(searchOptions.getSearchCond().getKeywordCond()),
-                        isActive()
+                        keywordContains(searchOptions.getSearchCond().getKeywordCond())
                 )
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -95,8 +90,7 @@ public class InterviewQuestionRepositoryForView {
                         positionEq(searchOptions.getPositionNameCond()),
                         createdByEq(searchOptions.getCreatedByCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
-                        keywordContains(searchOptions.getSearchCond().getKeywordCond()),
-                        isActive()
+                        keywordContains(searchOptions.getSearchCond().getKeywordCond())
                 );
 
         // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
@@ -136,10 +130,6 @@ public class InterviewQuestionRepositoryForView {
 
     private BooleanExpression ownerIdEq(Long loginIdCond) {
         return loginIdCond == null ? null : interviewQuestion.owner.id.eq(loginIdCond);
-    }
-
-    private BooleanExpression isActive() {
-        return interviewQuestion.isDeleted.isFalse();
     }
 
     private BooleanExpression questionIdEq(Long questionIdCond) {

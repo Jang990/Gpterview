@@ -44,6 +44,6 @@ public class QuestionSavingService {
     public void delete(long loginId, long questionId) {
         InterviewQuestion question = interviewQuestionRepository.findUserQuestion(loginId, questionId)
                 .orElseThrow(QuestionLikeNotFoundException::new);
-        question.delete();
+        // TODO: delete 로직 추가할 것.
     }
 }
