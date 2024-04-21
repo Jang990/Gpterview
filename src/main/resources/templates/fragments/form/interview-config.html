@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <th:block th:fragment="fragment-interview-config(selectedMinutes,selectedType)">
-    <div class="mb-3 row">
-      <label for="interviewType" class="col-sm-1 col-form-label">면접 타입</label>
-      <div class="col-sm-3">
-        <select id="interviewType" name="interviewType" class="form-select" aria-label="Select Type">
-          <option th:each="interviewType, interviewTypeStat : ${T(com.mock.interview.interview.presentation.dto.InterviewType).values()}"
-                  th:value="${interviewType}"
-                  th:selected="(interviewTypeStat.count == 1 and ${interviewType} == null) or ${interviewType} == ${selectedType}"
-                  th:text="${interviewType.name}">
-            면접 진행 방식
-          </option>
-        </select>
-      </div>
+  <div th:fragment="fragment-interview-config(selectedMinutes,selectedType)" class="d-flex justify-content-start align-items-center">
+    <div class="me-3">
+      <label for="interviewType" class="m-2">면접 타입</label>
+      <select id="interviewType" name="interviewType" class="form-select" aria-label="Select Type">
+        <option th:each="interviewType, interviewTypeStat : ${T(com.mock.interview.interview.presentation.dto.InterviewType).values()}"
+                th:value="${interviewType}"
+                th:selected="(interviewTypeStat.count == 1 and ${interviewType} == null) or ${interviewType} == ${selectedType}"
+                th:text="${interviewType.name}">
+          면접 진행 방식
+        </option>
+      </select>
     </div>
 
-    <div class="mb-3 row">
-      <label for="durationMinutes" class="col-sm-1 col-form-label">면접 시간</label>
-      <div class="col-sm-3">
+    <div class="me-3">
+      <label for="durationMinutes" class="m-2">면접 시간</label>
+      <div>
         <select id="durationMinutes" name="durationMinutes" class="form-select" aria-label="Select Time" required>
           <option value="30" th:selected="${selectedMinutes eq 30}">30분</option>
           <option value="40" th:selected="${selectedMinutes eq 40}">40분</option>
@@ -26,5 +24,5 @@
         </select>
       </div>
     </div>
-  </th:block>
+  </div>
 </html>
