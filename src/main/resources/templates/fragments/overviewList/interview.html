@@ -32,8 +32,11 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer text-end">
-                    <a href="#!" class="btn btn-sm btn-gray">목록으로</a>
+                <div sec:authorize="isAuthenticated()" class="card-footer text-end">
+                    <a th:href="@{/users/{username}/interview(username=${#authentication.principal.username})}" class="btn btn-sm btn-gray">목록으로</a>
+                </div>
+                <div sec:authorize="isAnonymous()" class="card-footer text-end">
+                    <a href="/login" class="btn btn-sm btn-gray">목록으로</a>
                 </div>
             </div>
         </div>
