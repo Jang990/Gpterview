@@ -18,7 +18,7 @@ public class InterviewAccountForm {
 
     private List<TechViewDto> tech;
 
-    private List<ExperienceDto> experiences;
+    private List<ExperienceDto> experienceList;
 
     public Long getCategoryId() {return categories.getCategoryId();}
     public Long getPositionId() {return categories.getPositionId();}

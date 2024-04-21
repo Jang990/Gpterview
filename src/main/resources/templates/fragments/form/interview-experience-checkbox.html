@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="fragment-interview-experience-checkbox(experienceList)" class="d-flex justify-content-start align-items-center" class="accordion">
+    <div class="list-group">
+      <label class="list-group-item" th:each="experience : ${experienceList}">
+        <input class="form-check-input me-1" type="checkbox" th:value="${experience.id}">
+        <span th:text="${experience.content}"></span>
+      </label>
+    </div>
+  </div>
+</html>

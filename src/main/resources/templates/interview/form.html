@@ -30,6 +30,11 @@
                         </div>
                         <div class="m-3"></div>
 
+                        <div th:replace="~{fragments/form/interview-experience-checkbox :: fragment-interview-experience-checkbox(experienceList=${interviewAccount.experienceList})}">
+                            지원자 경험 영역
+                        </div>
+                        <div class="m-3"></div>
+
                         <input type="submit" class="btn btn-primary" value="면접 시작">
                     </form>
                 </div>
