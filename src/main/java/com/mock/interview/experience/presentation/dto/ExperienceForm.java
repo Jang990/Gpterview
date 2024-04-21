@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.LinkedList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExperienceBulkForm {
-    List<String> experience = new LinkedList<>();
+public class ExperienceForm {
+    private String experience;
 }

@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<!--/* 경험 bulk 추가 */-->
+<!--/* 경험 추가 */-->
 <html xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="fragment-experience-bulk">
-    <script th:src="@{/js/ExperienceBulkForm.js}" src="../js/ExperienceBulkForm.js"></script>
-    <div class="d-flex flex-column">
-      <button type="button" class="btn btn-secondary btn-sm btn-block" onclick="addExperienceField()">경험 추가</button>
-    </div>
+  <div th:fragment="fragment-experience">
     <form method="post" th:action="@{/users/{username}/experience(username=${username})}">
-      <div id="experienceBulkForm">
+      <div id="experienceForm">
         <div class="my-3 col">
           <div for="intro" class="form-floating">
             <textarea class="form-control" placeholder="여기에 적어주세요." name="experience" style="height: 200px"></textarea>
-            <label>자소서 or 이력서 내용 (500자 이하)</label>
+            <label>자소서 or 이력서 내용</label>
           </div>
         </div>
       </div>

@@ -1,11 +1,8 @@
 package com.mock.interview.experience.application;
 
 import com.mock.interview.experience.domain.Experience;
-import com.mock.interview.experience.domain.exception.ExperienceNotFoundException;
-import com.mock.interview.experience.infra.ExperienceExistsRepository;
 import com.mock.interview.experience.infra.ExperienceRepository;
-import com.mock.interview.experience.infra.InterviewExperienceLinkRepository;
-import com.mock.interview.experience.presentation.dto.ExperienceBulkForm;
+import com.mock.interview.experience.presentation.dto.ExperienceForm;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
@@ -22,14 +19,12 @@ import java.util.stream.Collectors;
 public class ExperienceService {
     private final UserRepository userRepository;
     private final ExperienceRepository repository;
-    public void create(String username, ExperienceBulkForm experienceBulkForm) {
-        Users users = userRepository.findByUsername(username)
+    public void create(long userId, ExperienceForm experienceForm) {
+        Users users = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        List<Experience> list = experienceBulkForm.getExperience().stream()
-                .map(experienceContent -> Experience.create(users, experienceContent))
-                .collect(Collectors.toList());
-        repository.saveAll(list);
+        Experience experience = Experience.create(users, experienceForm.getExperience());
+        repository.save(experience);
     }
 
 }

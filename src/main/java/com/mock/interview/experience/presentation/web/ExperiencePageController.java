@@ -1,8 +1,7 @@
 package com.mock.interview.experience.presentation.web;
 
 import com.mock.interview.experience.application.ExperienceViewService;
-import com.mock.interview.experience.presentation.dto.ExperienceBulkForm;
-import com.mock.interview.experience.presentation.dto.ExperienceEditForm;
+import com.mock.interview.experience.presentation.dto.ExperienceForm;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.presentation.web.UserPageInitializer;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class ExperiencePageController {
             return "redirect:/users/"+username+"/unauthorized";
 
         UserPageInitializer.initUsername(model, username);
-        model.addAttribute("experienceBulkForm", new ExperienceBulkForm());
+        model.addAttribute("experienceForm", new ExperienceForm());
         return "/users/experience/experience-form";
     }
 
