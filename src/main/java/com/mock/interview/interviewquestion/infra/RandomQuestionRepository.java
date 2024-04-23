@@ -26,7 +26,7 @@ public interface RandomQuestionRepository extends JpaRepository<InterviewQuestio
             """;
 
     @Query(value = COMMON_RANDOM_QUERY + """
-            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId
+            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId AND iq.isHidden = FALSE
             """)
     List<InterviewQuestion> findTechQuestion(@Param("categoryId") long categoryId, Pageable pageable);
 
@@ -36,7 +36,7 @@ public interface RandomQuestionRepository extends JpaRepository<InterviewQuestio
     List<InterviewQuestion> findExperienceQuestion(@Param("experienceId") long experienceId , Pageable pageable);
 
     @Query(value = COMMON_RANDOM_QUERY + """
-            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId
+            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId AND iq.isHidden = FALSE
             """)
     List<InterviewQuestion> findPersonalQuestion(Pageable pageable);
 }
