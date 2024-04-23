@@ -116,6 +116,8 @@ public class InterviewQuestion extends BaseEntity {
     }
 
     public void linkExperience(Experience experience) {
+        if (this.questionType != QuestionType.EXPERIENCE)
+            throw new IllegalStateException();
         this.experience = experience;
     }
 
