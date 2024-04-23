@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infra.prompt.configurator.template.validator;
 
-import com.mock.interview.interview.infra.prompt.configurator.PromptConfigElements;
+import com.mock.interview.interview.infra.prompt.configurator.PromptElements;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,8 +37,8 @@ class PromptTemplateValidatorTest {
         when(getter.getTopicFormat()).thenReturn(topicFormat);
 
 
-        PromptConfigElements configElements = new PromptConfigElements(category, field, topic);
-        validator.verify(containAllTemplate, configElements);
+        PromptElements elements = new PromptElements(category, field, topic);
+        validator.verify(containAllTemplate, elements);
     }
 
     @Test
@@ -46,8 +46,8 @@ class PromptTemplateValidatorTest {
     void test4() {
         when(getter.getCategoryFormat()).thenReturn(categoryFormat);
 
-        PromptConfigElements configElements = new PromptConfigElements(null, field, topic);
-        Assertions.assertThrows(InvalidConfigurationException.class, () -> validator.verify(containAllTemplate, configElements));
+        PromptElements elements = new PromptElements(null, field, topic);
+        Assertions.assertThrows(InvalidConfigurationException.class, () -> validator.verify(containAllTemplate, elements));
     }
 
     @Test
@@ -58,7 +58,7 @@ class PromptTemplateValidatorTest {
         when(getter.getTopicFormat()).thenReturn(topicFormat);
 
         final String templateWithoutTopic = fieldFormat + " " + categoryFormat;
-        PromptConfigElements configElements = new PromptConfigElements(category, field, null);
-        validator.verify(templateWithoutTopic, configElements);
+        PromptElements elements = new PromptElements(category, field, null);
+        validator.verify(templateWithoutTopic, elements);
     }
 }

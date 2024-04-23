@@ -10,5 +10,5 @@ import com.mock.interview.interview.infra.prompt.configurator.template.validator
  * @param field          백엔드, 프론트엔드, 안드로이드, IOS 등등
  * @param topic         Spring, Java 등등 or ~경험이 있습니다.
  */
-public record PromptConfigElements(String category, String field, String topic) {
+public record PromptElements(String category, String field, String topic) {
 }

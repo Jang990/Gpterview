@@ -5,7 +5,7 @@ import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
-import com.mock.interview.interview.infra.prompt.configurator.PromptConfigElements;
+import com.mock.interview.interview.infra.prompt.configurator.PromptElements;
 import com.mock.interview.interview.infra.prompt.configurator.PromptConfigurationCreator;
 import com.mock.interview.interview.infra.prompt.configurator.template.InterviewPromptTemplate;
 import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
@@ -31,7 +31,7 @@ public class InterviewPromptCreationService {
 
     private PromptConfiguration createPromptConfig(InterviewProfile profile, InterviewProgress progress) {
         String template = getPromptTemplate(progress.phase(), profile.category().getName());
-        PromptConfigElements elements = createPromptElements(profile, progress.getTopicContent());
+        PromptElements elements = createPromptElements(profile, progress.getTopicContent());
         return configurationCreator.create(template, elements);
     }
 
@@ -41,8 +41,8 @@ public class InterviewPromptCreationService {
         return promptTemplate.getTemplate(phase);
     }
 
-    private PromptConfigElements createPromptElements(InterviewProfile profile, String topic) {
-        return new PromptConfigElements(
+    private PromptElements createPromptElements(InterviewProfile profile, String topic) {
+        return new PromptElements(
                 profile.category().getName(),
                 profile.field().getName(),
                 topic

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PromptConfigurationCreator {
     private final PromptTemplateValidator templateValidator;
 
-    public PromptConfiguration create(String promptTemplate, PromptConfigElements elements) {
+    public PromptConfiguration create(String promptTemplate, PromptElements elements) {
         if(elements.category() == null || elements.category().isBlank()
                 || elements.field() == null || elements.field().isBlank())
             throw new IllegalArgumentException("CATEGORY, FIELD 필수");

@@ -1,7 +1,7 @@
 package com.mock.interview.interview.infra.prompt.configurator.template.validator;
 
 
-import com.mock.interview.interview.infra.prompt.configurator.PromptConfigElements;
+import com.mock.interview.interview.infra.prompt.configurator.PromptElements;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -15,12 +15,12 @@ import org.springframework.util.StringUtils;
 public class PromptTemplateValidator {
     private final TemplateFormatGetter formatGetter;
 
-    public void verify(String rawTemplate, PromptConfigElements elements) {
+    public void verify(String rawTemplate, PromptElements elements) {
         if(hasError(rawTemplate, elements))
             throw new InvalidConfigurationException();
     }
 
-    private boolean hasError(String rawTemplate, PromptConfigElements elements) {
+    private boolean hasError(String rawTemplate, PromptElements elements) {
         return hasTemplateValueError(rawTemplate, formatGetter.getCategoryFormat(), elements.category())
                 || hasTemplateValueError(rawTemplate, formatGetter.getFieldFormat(), elements.field())
                 || hasTemplateValueError(rawTemplate, formatGetter.getTopicFormat(), elements.topic());
