@@ -8,7 +8,7 @@
 <section class="d-flex justify-content-center my-5">
     <div th:object="${info}" style="width: 400px;">
         <h2 class="mb-5 text-center" th:text="*{title}">제목</h2>
-        <div class="text-center" th:text="|*{element} 계정 접근 권한이 없습니다.|"></div>
+        <div class="text-center" th:text="|*{element}번 질문 접근 권한이 없습니다.|"></div>
         <a class="btn btn-secondary btn-block my-5 col-12" th:href="*{redirectLinkUrl}">돌아가기</a>
     </div>
 </section>

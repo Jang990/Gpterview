@@ -32,7 +32,8 @@ public class QuestionConvertor {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
                 CategoryConvertor.convert(question.getCategory(), question.getPosition()),
                 question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
-                question.getQuestion(), question.getCreatedAt(), question.getLikes()
+                question.getQuestion(), question.getCreatedAt(), question.getLikes(),
+                question.isHidden()
         );
     }
 

@@ -28,11 +28,13 @@ public class InterviewQuestionRepositoryForView {
     private final JPAQueryFactory query;
     private final int TOP_3 = 3;
 
-    public QuestionOverview findQuestion(Long loginIdCond, Long questionIdCond) {
+
+    /** isHidden여부와 상관없이 가져오므로 권한에 따라 redirect 필요 */
+    public QuestionOverview findQuestion(Long questionIdCond) {
         InterviewQuestion question = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory)
                 .leftJoin(interviewQuestion.position, jobPosition)
-                .where(questionIdEq(questionIdCond), ownerIdEq(loginIdCond)) // TODO: 전체 공개 여부가 추가되면 여기도 로그인아이디에 따라 안보이도록 수정해줘야함.
+                .where(questionIdEq(questionIdCond))
                 .fetchOne();
 
         if(question == null)
@@ -48,7 +50,7 @@ public class InterviewQuestionRepositoryForView {
                                 interviewQuestion.question, interviewQuestion.likes)
                 )
                 .from(interviewQuestion)
-                .where(findChildQuestion(questionIdCond))
+                .where(findChildQuestion(questionIdCond), isVisible())
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .limit(TOP_3)
                 .fetch();
@@ -71,7 +73,8 @@ public class InterviewQuestionRepositoryForView {
                         categoryEq(searchOptions.getCategoryNameCond()),
                         positionEq(searchOptions.getPositionNameCond()), createdByEq(searchOptions.getCreatedByCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
-                        keywordContains(searchOptions.getSearchCond().getKeywordCond())
+                        keywordContains(searchOptions.getSearchCond().getKeywordCond()),
+                        isVisible()
                 )
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
@@ -89,7 +92,8 @@ public class InterviewQuestionRepositoryForView {
                         positionEq(searchOptions.getPositionNameCond()),
                         createdByEq(searchOptions.getCreatedByCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
-                        keywordContains(searchOptions.getSearchCond().getKeywordCond())
+                        keywordContains(searchOptions.getSearchCond().getKeywordCond()),
+                        isVisible()
                 );
 
         // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
@@ -127,11 +131,11 @@ public class InterviewQuestionRepositoryForView {
         return createdBy == null ? null : interviewQuestion.createdBy.eq(createdBy);
     }
 
-    private BooleanExpression ownerIdEq(Long loginIdCond) {
-        return loginIdCond == null ? null : interviewQuestion.owner.id.eq(loginIdCond);
-    }
-
     private BooleanExpression questionIdEq(Long questionIdCond) {
         return questionIdCond == null ? null : interviewQuestion.id.eq(questionIdCond);
+    }
+
+    private BooleanExpression isVisible() {
+        return interviewQuestion.isHidden.isFalse();
     }
 }

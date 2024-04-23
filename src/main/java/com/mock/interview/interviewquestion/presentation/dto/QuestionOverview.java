@@ -17,6 +17,7 @@ public class QuestionOverview {
     private String content; // Redis를 왜 사용하나요?
     private LocalDateTime createdAt;
     private long like; // 32
+    private boolean isHidden;
 //    private long hits; // 조회수
 //    private long commentCnt; 댓글 수
     // TODO: 조회수, 댓글수 미구현

@@ -71,6 +71,8 @@ public class InterviewQuestion extends BaseEntity {
     @JoinColumn(name = "related_experience_id")
     private Experience experience;
 
+    private boolean isHidden;
+
     public static InterviewQuestion create(
             InterviewQuestionRepository repository, String content, Users users,
             QuestionType questionType, String createdBy
@@ -81,6 +83,7 @@ public class InterviewQuestion extends BaseEntity {
         question.questionType = questionType;
         question.createdBy = createdBy;
         question.likes = 0;
+        question.reveal();
 
         repository.save(question);
         Events.raise(new QuestionCreatedEvent(question.getId()));
@@ -131,7 +134,15 @@ public class InterviewQuestion extends BaseEntity {
         likes--;
     }
 
-    // TODO: boolean 공개여부 추가
+    public void hide() {
+        isHidden = true;
+    }
+
+    public void reveal() {
+        isHidden = false;
+    }
+
+
     // TODO: 조회 수 추가하기.
     // TODO: 질문에 대한 댓글 추가
 }

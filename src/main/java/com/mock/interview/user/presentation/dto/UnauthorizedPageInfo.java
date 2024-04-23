@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UnauthorizedPageInfo {
     private String title;
-    private String username;
+    private String element;
     private String redirectLinkUrl;
 }
