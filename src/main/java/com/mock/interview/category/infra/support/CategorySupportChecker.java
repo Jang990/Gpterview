@@ -1,7 +1,5 @@
 package com.mock.interview.category.infra.support;
 
-import com.mock.interview.interview.infra.prompt.configurator.generator.ITInterviewPromptConfigurator;
-import com.mock.interview.interview.infra.prompt.configurator.generator.InterviewPromptConfigurator;
 import com.mock.interview.interview.infra.prompt.configurator.template.InterviewPromptTemplate;
 import com.mock.interview.interview.infra.prompt.configurator.template.ITInterviewTemplateGetter;
 import com.mock.interview.tech.infra.view.CategoryRelatedTechFinder;
@@ -14,12 +12,10 @@ import java.util.List;
  * 1. 현재 카테고리 Checker 구현
  * 2. 다음 클래스들을 구현하면서 Checker를 상속할 것.
  * @see CategoryRelatedTechFinder
- * @see InterviewPromptConfigurator
  * @see InterviewPromptTemplate
  *
  * 예시
  * @see ITCategoryRelatedTechFinder
- * @see ITInterviewPromptConfigurator
  * @see ITInterviewTemplateGetter
  */
 public interface CategorySupportChecker {
