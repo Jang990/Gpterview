@@ -1,12 +1,11 @@
 package com.mock.interview.interview.infra.prompt.configurator.template;
 
-import lombok.Getter;
+import com.mock.interview.category.infra.support.DefaultCategorySupportChecker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@Getter
-public class DefaultInterviewTemplateGetter {
+public class DefaultInterviewTemplateGetter extends DefaultCategorySupportChecker implements InterviewPromptTemplate {
     @Value("${interview.template.default.personal}")
     private String personal;
     @Value("${interview.template.default.experience}")
@@ -14,6 +13,18 @@ public class DefaultInterviewTemplateGetter {
     @Value("${interview.template.default.technical}")
     private String technical;
 
-    @Value("${interview.template.common.skip}")
-    private String changingTopicCommand;
+    @Override
+    public String getPersonal() {
+        return personal;
+    }
+
+    @Override
+    public String getExperience() {
+        return experience;
+    }
+
+    @Override
+    public String getTechnical() {
+        return technical;
+    }
 }
