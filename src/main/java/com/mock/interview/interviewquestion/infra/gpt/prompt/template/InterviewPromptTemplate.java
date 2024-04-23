@@ -1,4 +1,4 @@
-package com.mock.interview.interview.infra.prompt.template;
+package com.mock.interview.interviewquestion.infra.gpt.prompt.template;
 
 import com.mock.interview.category.infra.support.CategorySupportChecker;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;

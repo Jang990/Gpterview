@@ -1,7 +1,7 @@
 package com.mock.interview.category.infra.support;
 
-import com.mock.interview.interview.infra.prompt.template.InterviewPromptTemplate;
-import com.mock.interview.interview.infra.prompt.template.ITInterviewTemplateGetter;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.template.InterviewPromptTemplate;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.template.ITInterviewTemplateGetter;
 import com.mock.interview.tech.infra.view.CategoryRelatedTechFinder;
 import com.mock.interview.tech.infra.view.ITCategoryRelatedTechFinder;
 

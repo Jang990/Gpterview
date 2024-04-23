@@ -1,4 +1,4 @@
-package com.mock.interview.interview.infra.prompt.config;
+package com.mock.interview.interviewquestion.infra.gpt.prompt.config;
 
 import lombok.Getter;
 

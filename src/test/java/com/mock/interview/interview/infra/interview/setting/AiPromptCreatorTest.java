@@ -1,9 +1,9 @@
 package com.mock.interview.interview.infra.interview.setting;
 
-import com.mock.interview.interview.infra.prompt.PromptCreator;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.PromptCreator;
 import com.mock.interview.interview.infra.MockAiSpecCreator;
-import com.mock.interview.interview.infra.prompt.config.PromptConfig;
-import com.mock.interview.interview.infra.prompt.fomatter.TemplateConstGetter;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.config.PromptConfig;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.fomatter.TemplateConstGetter;
 import com.mock.interview.interviewquestion.infra.gpt.AISpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

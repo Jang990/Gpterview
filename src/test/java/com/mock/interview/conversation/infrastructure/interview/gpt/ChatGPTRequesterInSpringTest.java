@@ -4,7 +4,7 @@ import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.infra.gpt.dto.Message;
 import com.mock.interview.interviewquestion.infra.gpt.ChatGPTRequester;
 import com.mock.interview.interviewquestion.infra.gpt.dto.InterviewAIRequest;
-import com.mock.interview.interview.infra.prompt.AiPrompt;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.AiPrompt;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;

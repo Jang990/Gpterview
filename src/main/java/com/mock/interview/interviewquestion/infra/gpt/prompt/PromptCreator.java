@@ -1,8 +1,8 @@
-package com.mock.interview.interview.infra.prompt;
+package com.mock.interview.interviewquestion.infra.gpt.prompt;
 
-import com.mock.interview.interview.infra.prompt.config.PromptConfig;
-import com.mock.interview.interview.infra.prompt.fomatter.TemplateConstGetter;
-import com.mock.interview.interview.infra.prompt.fomatter.StringFormatter;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.config.PromptConfig;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.fomatter.TemplateConstGetter;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.fomatter.StringFormatter;
 import com.mock.interview.interviewquestion.infra.gpt.AISpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

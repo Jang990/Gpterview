@@ -1,14 +1,15 @@
-package com.mock.interview.interview.infra.prompt.template.validator;
+package com.mock.interview.interviewquestion.infra.gpt.prompt.template.validator;
 
 
-import com.mock.interview.interview.infra.prompt.config.PromptElements;
-import com.mock.interview.interview.infra.prompt.fomatter.TemplateFormatGetter;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.config.PromptElements;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.fomatter.TemplateFormatGetter;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.fomatter.StringFormatter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**
- * @see com.mock.interview.interview.infra.prompt.fomatter.StringFormatter
+ * @see StringFormatter
  * StringFormatter를 통해 Prompt를 만들 때 템플릿 필수 정보를 설정하는 인터페이스
  */
 @Component

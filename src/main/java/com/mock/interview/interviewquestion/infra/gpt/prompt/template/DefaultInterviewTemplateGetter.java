@@ -1,4 +1,4 @@
-package com.mock.interview.interview.infra.prompt.template;
+package com.mock.interview.interviewquestion.infra.gpt.prompt.template;
 
 import com.mock.interview.category.infra.support.DefaultCategorySupportChecker;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,9 +1,9 @@
 package com.mock.interview.interview.infra.prompt.config.template.validator;
 
-import com.mock.interview.interview.infra.prompt.config.PromptElements;
-import com.mock.interview.interview.infra.prompt.template.validator.InvalidConfigurationException;
-import com.mock.interview.interview.infra.prompt.template.validator.PromptTemplateValidator;
-import com.mock.interview.interview.infra.prompt.fomatter.TemplateFormatGetter;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.config.PromptElements;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.template.validator.InvalidConfigurationException;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.template.validator.PromptTemplateValidator;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.fomatter.TemplateFormatGetter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
