@@ -1,6 +1,6 @@
 package com.mock.interview.interview.infra.prompt;
 
-import com.mock.interview.interview.infra.prompt.configurator.PromptConfiguration;
+import com.mock.interview.interview.infra.prompt.config.PromptConfig;
 import com.mock.interview.interview.infra.prompt.fomatter.TemplateConstGetter;
 import com.mock.interview.interview.infra.prompt.fomatter.StringFormatter;
 import com.mock.interview.interviewquestion.infra.gpt.AISpecification;
@@ -20,17 +20,17 @@ public class PromptCreator {
 
     /**
      * @param aiSpec  getUserRole()은 "user", getInterviewerRole()은 "assistant" 일 때... (다른 필드들도 변환해줌)
-     * @param promptConfiguration 프롬프트로 변환할 정보들
+     * @param promptConfig 프롬프트로 변환할 정보들
      * @return user는 지원자. assistant는 면접관입니다. user의 기술은 Java, MySQL, Spring입니다.
      */
-    public AiPrompt create(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
-        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
-        return new AiPrompt(StringFormatter.format(promptConfiguration.getPromptTemplate(), parameters));
+    public AiPrompt create(AISpecification aiSpec, PromptConfig promptConfig) {
+        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfig);
+        return new AiPrompt(StringFormatter.format(promptConfig.getPromptTemplate(), parameters));
     }
 
-    public AiPrompt changeTopic(AISpecification aiSpec, PromptConfiguration promptConfiguration) {
-        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfiguration);
-        String changeTopicPromptTemplate = promptConfiguration.getPromptTemplate().concat(templateConstGetter.getChangingTopicCommand());
+    public AiPrompt changeTopic(AISpecification aiSpec, PromptConfig promptConfig) {
+        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfig);
+        String changeTopicPromptTemplate = promptConfig.getPromptTemplate().concat(templateConstGetter.getChangingTopicCommand());
         return new AiPrompt(StringFormatter.format(changeTopicPromptTemplate, parameters));
     }
 
@@ -50,7 +50,7 @@ public class PromptCreator {
      *     {"topic":"Java, MySQL, Spring" or "저는 ~프로젝트를 진행하며 ... ~문제를 해결. ~기술 사용 ..."}
      * }
      */
-    private Map<String, String> getFormatParameter(AISpecification aiSpec, PromptConfiguration creationInfo) {
+    private Map<String, String> getFormatParameter(AISpecification aiSpec, PromptConfig creationInfo) {
         Map<String, String> map = new HashMap<>();
         map.put(templateConstGetter.getSystemRole(), aiSpec.getSystemRole());
         map.put(templateConstGetter.getUserRole(), aiSpec.getUserRole());

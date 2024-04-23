@@ -1,6 +1,6 @@
-package com.mock.interview.interview.infra.prompt.configurator.template.validator;
+package com.mock.interview.interview.infra.prompt.config.template.validator;
 
-import com.mock.interview.interview.infra.prompt.configurator.PromptElements;
+import com.mock.interview.interview.infra.prompt.config.PromptElements;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

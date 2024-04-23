@@ -2,7 +2,7 @@ package com.mock.interview.interview.infra.interview.setting;
 
 import com.mock.interview.interview.infra.prompt.PromptCreator;
 import com.mock.interview.interview.infra.MockAiSpecCreator;
-import com.mock.interview.interview.infra.prompt.configurator.PromptConfiguration;
+import com.mock.interview.interview.infra.prompt.config.PromptConfig;
 import com.mock.interview.interview.infra.prompt.fomatter.TemplateConstGetter;
 import com.mock.interview.interviewquestion.infra.gpt.AISpecification;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ class AiPromptCreatorTest {
     @Test
     void success() {
         AISpecification spec = MockAiSpecCreator.createMock();
-        PromptConfiguration info = createMockPromptConfig("$_system_ $_user_ $_interviewer_ $_department_ $_field_ $_topic_");
+        PromptConfig info = createMockPromptConfig("$_system_ $_user_ $_interviewer_ $_department_ $_field_ $_topic_");
 
         String result = creator.create(spec, info).getPrompt();
 
@@ -50,7 +50,7 @@ class AiPromptCreatorTest {
     @Test
     void successWithNull() {
         AISpecification spec = MockAiSpecCreator.createMock();
-        PromptConfiguration info = createMockPromptConfig("$_system_ $_user_ $_interviewer_ $_department_ $_WrongKey_ $_field_ $_topic_ ");
+        PromptConfig info = createMockPromptConfig("$_system_ $_user_ $_interviewer_ $_department_ $_WrongKey_ $_field_ $_topic_ ");
 
         String result = creator.create(spec, info).getPrompt();
 
@@ -64,8 +64,8 @@ class AiPromptCreatorTest {
         assertThat(result).contains("null");
     }
 
-    private PromptConfiguration createMockPromptConfig(String promptTemplate) {
-        PromptConfiguration mock = mock(PromptConfiguration.class);
+    private PromptConfig createMockPromptConfig(String promptTemplate) {
+        PromptConfig mock = mock(PromptConfig.class);
         when(mock.getPromptTemplate()).thenReturn(promptTemplate);
         when(mock.getCategory()).thenReturn("IT");
         when(mock.getField()).thenReturn("백엔드");

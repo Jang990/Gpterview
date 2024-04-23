@@ -1,4 +1,4 @@
-package com.mock.interview.interview.infra.prompt.configurator.template;
+package com.mock.interview.interview.infra.prompt.config.template;
 
 import com.mock.interview.category.infra.support.CategorySupportChecker;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;

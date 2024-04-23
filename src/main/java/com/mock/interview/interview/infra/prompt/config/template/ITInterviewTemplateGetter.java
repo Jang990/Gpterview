@@ -1,16 +1,16 @@
-package com.mock.interview.interview.infra.prompt.configurator.template;
+package com.mock.interview.interview.infra.prompt.config.template;
 
-import com.mock.interview.category.infra.support.DefaultCategorySupportChecker;
+import com.mock.interview.category.infra.support.ITCategorySupportChecker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DefaultInterviewTemplateGetter extends DefaultCategorySupportChecker implements InterviewPromptTemplate {
-    @Value("${interview.template.default.personal}")
+public class ITInterviewTemplateGetter extends ITCategorySupportChecker implements InterviewPromptTemplate {
+    @Value("${interview.template.IT.personal}")
     private String personal;
-    @Value("${interview.template.default.experience}")
+    @Value("${interview.template.IT.experience}")
     private String experience;
-    @Value("${interview.template.default.technical}")
+    @Value("${interview.template.IT.technical}")
     private String technical;
 
     @Override
