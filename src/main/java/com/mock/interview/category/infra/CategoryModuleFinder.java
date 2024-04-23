@@ -8,7 +8,7 @@ import java.util.List;
 public final class CategoryModuleFinder {
     private CategoryModuleFinder() {}
 
-    /** List<CategorySupportChecker>로 직접 말고 하위 인터페이스를 사용할 것 */
+    /** CategorySupportChecker 하위 인터페이스를 사용할 것 - CategorySupportChecker를 직접 사용하는 것은 의미없음 */
     public static <T extends CategorySupportChecker> T findModule(List<T> modules, String categoryName) {
         T defaultModule = null;
         for (T module : modules) {
