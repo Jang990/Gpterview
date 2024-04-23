@@ -13,21 +13,6 @@ import java.util.Optional;
 
 @Repository
 public interface InterviewQuestionRepository extends JpaRepository<InterviewQuestion, Long> {
-    /*
-    TODO: 다른 방식을 찾아봐야한다.
-        1~100에서 90~100이 유효 데이터라면 90이 선택될 확률이 90%이다. 이정도면 랜덤이 아니다.
-     */
-    @Query(value = """
-            SELECT iq
-            FROM InterviewQuestion iq
-                JOIN (
-                    SELECT CEIL( RAND() * (SELECT MAX(iq2.id) FROM InterviewQuestion iq2) ) as id
-                ) random
-            INNER JOIN FETCH iq.questionToken qt
-            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId
-            """)
-    List<InterviewQuestion> findRandomTechQuestion(@Param("categoryId") long categoryId, Pageable pageable);
-
     @Query("""
             SELECT COUNT(*)
             FROM InterviewQuestion iq
