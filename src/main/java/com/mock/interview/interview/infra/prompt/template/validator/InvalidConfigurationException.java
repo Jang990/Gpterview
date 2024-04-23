@@ -1,4 +1,4 @@
-package com.mock.interview.interview.infra.prompt.config.template.validator;
+package com.mock.interview.interview.infra.prompt.template.validator;
 
 import com.mock.interview.global.exception.CustomServerException;
 
