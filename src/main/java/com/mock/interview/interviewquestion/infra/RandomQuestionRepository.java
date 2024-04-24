@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,20 +24,23 @@ public interface RandomQuestionRepository extends JpaRepository<InterviewQuestio
                     SELECT CEIL( RAND() * (SELECT MAX(iq2.id) FROM InterviewQuestion iq2) ) as id
                 ) random
             INNER JOIN FETCH iq.questionToken qt
+            WHERE iq.id >= CAST(random.id as long) AND iq.questionType = :type
             """;
 
     @Query(value = COMMON_RANDOM_QUERY + """
-            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId AND iq.isHidden = FALSE
+                AND iq.category.id = :categoryId
+                AND iq.isHidden = FALSE
             """)
-    List<InterviewQuestion> findTechQuestion(@Param("categoryId") long categoryId, Pageable pageable);
+    List<InterviewQuestion> findTechQuestion(@Param("type") QuestionType type, @Param("categoryId") long categoryId, Pageable pageable);
 
     @Query(value = COMMON_RANDOM_QUERY + """
-            WHERE iq.id >= CAST(random.id as long) AND iq.experience.id = :experienceId
+                AND iq.experience.id = :experienceId
+                AND iq.isHidden = FALSE
             """)
-    List<InterviewQuestion> findExperienceQuestion(@Param("experienceId") long experienceId , Pageable pageable);
+    List<InterviewQuestion> findExperienceQuestion(@Param("type") QuestionType type, @Param("experienceId") long experienceId , Pageable pageable);
 
     @Query(value = COMMON_RANDOM_QUERY + """
-            WHERE iq.id >= CAST(random.id as long) AND iq.category.id = :categoryId AND iq.isHidden = FALSE
+                AND iq.isHidden = FALSE
             """)
-    List<InterviewQuestion> findPersonalQuestion(Pageable pageable);
+    List<InterviewQuestion> findPersonalQuestion(@Param("type") QuestionType type, Pageable pageable);
 }

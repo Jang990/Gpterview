@@ -2,8 +2,10 @@ package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
+import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interviewquestion.infra.recommend.CurrentConversationConvertor;
 import com.mock.interview.interviewquestion.infra.recommend.QuestionMetaDataConvertor;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
@@ -67,10 +69,11 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
 
     private List<InterviewQuestion> findRelatedRandomQuestions(InterviewProgress interviewProgress, int size) {
         final PageRequest pageable = PageRequest.of(0, size);
+        QuestionType type = QuestionConvertor.convert(interviewProgress.phase());
         return switch (interviewProgress.phase()) {
-            case TECHNICAL -> randomQuestionRepository.findTechQuestion(interviewProgress.getTopicId(), pageable);
-            case EXPERIENCE -> randomQuestionRepository.findExperienceQuestion(interviewProgress.getTopicId(), pageable);
-            case PERSONAL -> randomQuestionRepository.findPersonalQuestion(pageable);
+            case TECHNICAL -> randomQuestionRepository.findTechQuestion(type, interviewProgress.getTopicId(), pageable);
+            case EXPERIENCE -> randomQuestionRepository.findExperienceQuestion(type, interviewProgress.getTopicId(), pageable);
+            case PERSONAL -> randomQuestionRepository.findPersonalQuestion(type, pageable);
         };
     }
 
