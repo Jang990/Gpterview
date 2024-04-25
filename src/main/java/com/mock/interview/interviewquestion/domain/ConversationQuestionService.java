@@ -32,8 +32,9 @@ public class ConversationQuestionService {
             RecommendationTarget target = new RecommendationTarget(interviewId, pair.getId());
             InterviewQuestion question = recommender.recommend(SINGLE, target).get(FIRST_IDX);
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
-        } catch (Exception e) {
-            ConversationQuestionExceptionHandlingHelper.handle(e, interviewId, pair.getId());
+        } catch (Throwable throwable) {
+            ConversationQuestionExceptionHandlingHelper.handle(throwable, interviewId, pair.getId());
+            throw throwable;
         }
     }
 
@@ -41,8 +42,9 @@ public class ConversationQuestionService {
         try {
             InterviewQuestion question = aiCreator.create(interviewId, AiQuestionCreator.selectCreationOption(pair));
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
-        } catch (Exception e) {
-            ConversationQuestionExceptionHandlingHelper.handle(e, interviewId, pair.getId());
+        } catch (Throwable throwable) {
+            ConversationQuestionExceptionHandlingHelper.handle(throwable, interviewId, pair.getId());
+            throw throwable;
         }
     }
 

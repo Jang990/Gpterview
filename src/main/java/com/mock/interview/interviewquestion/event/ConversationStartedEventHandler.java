@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.event;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;
+import com.mock.interview.interview.infra.cache.InterviewRedisRepository;
 import com.mock.interview.interviewconversationpair.domain.event.ConversationStartedEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -25,6 +26,7 @@ public class ConversationStartedEventHandler {
     private final InterviewRepository interviewRepository;
     private final InterviewQuestionRepository questionRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
+    private final InterviewRedisRepository interviewRedisRepository;
 
     private final ConversationQuestionService conversationQuestionService;
     private final AiQuestionCreator aiQuestionCreator;
@@ -45,9 +47,13 @@ public class ConversationStartedEventHandler {
 
         Long relatedCategoryQuestionSize = questionRepository.countCategoryQuestion(interview.getCategory().getName());
 
-        conversationQuestionService.chooseMethod(
-                aiQuestionCreator, questionRecommender, relatedCategoryQuestionSize,
-                event.interviewId(), conversationPair
-        );
+        try {
+            conversationQuestionService.chooseMethod(
+                    aiQuestionCreator, questionRecommender, relatedCategoryQuestionSize,
+                    event.interviewId(), conversationPair
+            );
+        } catch (Throwable throwable) {
+            interviewRedisRepository.delete(event.interviewId());
+        }
     }
 }

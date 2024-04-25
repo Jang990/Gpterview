@@ -43,7 +43,7 @@ class InterviewRedisRepositoryTest {
         InterviewInfo mock = mock(InterviewInfo.class);
         when(mockOps.get(any())).thenReturn(mock);
 
-        Optional<InterviewInfo> result = interviewRedisRepository.findActiveInterview(testId);
+        Optional<InterviewInfo> result = interviewRedisRepository.find(testId);
 
         Assertions.assertThat(result.isPresent()).isTrue();
         Assertions.assertThat(result.get()).isEqualTo(mock);
@@ -57,7 +57,7 @@ class InterviewRedisRepositoryTest {
         when(interviewRedisTemplate.opsForValue()).thenReturn(mockOps);
         doNothing().when(mockOps).set(anyString(), eq(data), any());
 
-        interviewRedisRepository.saveInterviewIfActive(testId, data, testLong);
+        interviewRedisRepository.save(testId, data, testLong);
 
         verify(mockOps, times(1)).set(any(), any(), any());
     }

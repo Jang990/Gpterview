@@ -43,7 +43,7 @@ class InterviewCacheRepositoryTest {
     @DisplayName("캐시 히트")
     void test1() {
         InterviewInfo mockInfo = mock(InterviewInfo.class);
-        when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.of(mockInfo));
+        when(interviewRedisRepository.find(testInterviewId)).thenReturn(Optional.of(mockInfo));
 
         InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
@@ -57,14 +57,14 @@ class InterviewCacheRepositoryTest {
         LocalDateTime activeTime = LocalDateTime.now().plusHours(1);
         Interview mockInterview = InterviewEntityCreator.createInterview(activeTime);
 
-        when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.empty());
+        when(interviewRedisRepository.find(testInterviewId)).thenReturn(Optional.empty());
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
         when(mockInterview.getExpiredTime()).thenReturn(activeTime);
 
         InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
         verify(interviewRepository, times(1)).findInterviewSetting(testInterviewId);
-        verify(interviewRedisRepository, times(1)).saveInterviewIfActive(eq(testInterviewId), eq(result), anyLong());
+        verify(interviewRedisRepository, times(1)).save(eq(testInterviewId), eq(result), anyLong());
 
         isEqual(result, mockInterview);
     }
@@ -75,14 +75,14 @@ class InterviewCacheRepositoryTest {
         LocalDateTime expiredTime = LocalDateTime.now().minusHours(1);
         Interview mockInterview = InterviewEntityCreator.createInterview(expiredTime);
 
-        when(interviewRedisRepository.findActiveInterview(testInterviewId)).thenReturn(Optional.empty());
+        when(interviewRedisRepository.find(testInterviewId)).thenReturn(Optional.empty());
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
         when(mockInterview.getExpiredTime()).thenReturn(expiredTime);
 
         InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
         verify(interviewRepository, times(1)).findInterviewSetting(testInterviewId);
-        verify(interviewRedisRepository, times(0)).saveInterviewIfActive(eq(testInterviewId), eq(result), anyLong());
+        verify(interviewRedisRepository, times(0)).save(eq(testInterviewId), eq(result), anyLong());
 
         isEqual(result, mockInterview);
     }

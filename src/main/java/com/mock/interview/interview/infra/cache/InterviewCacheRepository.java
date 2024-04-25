@@ -30,7 +30,7 @@ public class InterviewCacheRepository {
     private final InterviewRepository interviewRepository;
 
     public InterviewInfo findProgressingInterviewInfo(long interviewId) {
-        Optional<InterviewInfo> cache = redisRepository.findActiveInterview(interviewId);
+        Optional<InterviewInfo> cache = redisRepository.find(interviewId);
         if (cache.isPresent()) {
             return cache.get();
         }
@@ -42,7 +42,7 @@ public class InterviewCacheRepository {
         long diffMinute = TimeDifferenceCalculator
                 .calculate(ChronoUnit.MINUTES, LocalDateTime.now(), interview.getExpiredTime());
         if (diffMinute > 0) {
-            redisRepository.saveInterviewIfActive(interviewId, result, diffMinute);
+            redisRepository.save(interviewId, result, diffMinute);
         }
         return result;
     }

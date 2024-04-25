@@ -12,20 +12,25 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class InterviewRedisRepository {
     private final RedisTemplate<String, InterviewInfo> interviewRedisTemplate;
-    private final String INTERVIEW_PROGRESS_KEY_PREFIX = "INTERVIEW:PROGRESS:";
+    private final String INTERVIEW_PROGRESS_KEY_PREFIX = "INTERVIEW:PROGRESS:%d";
 
     private String createKey(long interviewId) {
-        return INTERVIEW_PROGRESS_KEY_PREFIX + interviewId;
+        return String.format(INTERVIEW_PROGRESS_KEY_PREFIX, interviewId);
     }
 
-    public Optional<InterviewInfo> findActiveInterview(long interviewId) {
+    public Optional<InterviewInfo> find(long interviewId) {
         String key = createKey(interviewId);
         return Optional.ofNullable(interviewRedisTemplate.opsForValue().get(key));
     }
 
-    public void saveInterviewIfActive(long interviewId, InterviewInfo data, long expiredMinute) {
+    public void save(long interviewId, InterviewInfo data, long expiredMinute) {
         String key = createKey(interviewId);
         interviewRedisTemplate.opsForValue().set(key, data, Duration.ofMinutes(expiredMinute));
+    }
+
+    public void delete(long interviewId) {
+        String key = createKey(interviewId);
+        interviewRedisTemplate.delete(key);
     }
 
 
