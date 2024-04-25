@@ -64,9 +64,9 @@ public class Interview extends BaseTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview")
     private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
 
-    public static Interview startInterview(
-            InterviewConfigForm interviewConfig,
-            Users user, JobCategory category, JobPosition position
+    public static Interview create(
+            InterviewConfigForm interviewConfig, Users user,
+            JobCategory category, JobPosition position
     ) {
         Interview interview = new Interview();
         interview.users = user;
@@ -74,6 +74,17 @@ public class Interview extends BaseTimeEntity {
         initCategory(category, position, interview);
         initExpiredTime(interview, interviewConfig.getDurationMinutes());
         return interview;
+    }
+
+    private static void initExpiredTime(Interview interview, int durationMinutes) {
+        interview.durationMinutes = durationMinutes;
+        interview.expiredTime = LocalDateTime.now().plusMinutes(durationMinutes);
+    }
+
+    private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
+        interview.category = category;
+        interview.position = position;
+        interview.title = new InterviewTitle(category.getName(), position.getName());
     }
 
     public void linkTech(List<TechnicalSubjects> techList) {
@@ -104,20 +115,8 @@ public class Interview extends BaseTimeEntity {
         experienceLink.add(InterviewExperienceLink.createLink(this, experience));
     }
 
-    private static void initExpiredTime(Interview interview, int durationMinutes) {
-        interview.durationMinutes = durationMinutes;
-        interview.expiredTime = LocalDateTime.now().plusMinutes(durationMinutes);
-    }
-
-    private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
-        interview.category = category;
-        interview.position = position;
-        interview.title = new InterviewTitle(category.getName(), position.getName());
-    }
-
     public void expire() {
-        if(isTimeout())
-            throw new IsAlreadyTimeoutInterviewException();
+        verifyTimeoutState();
 
         expiredTime = LocalDateTime.now();
     }
@@ -134,11 +133,45 @@ public class Interview extends BaseTimeEntity {
         return getCreatedAt().toLocalDate().equals(LocalDate.now());
     }
 
-    public boolean continueInterview() {
-        if(isTimeout())
-            return false;
-
+    public void continueInterview() {
+        verifyReadyToContinue();
         Events.raise(new InterviewContinuedEvent(this.id));
-        return true;
+    }
+
+    private void verifyReadyToContinue() {
+        verifyIdExists();
+        verifyCategoryPositionExists();
+        verifyInterviewTypeRequirement();
+        verifyTimeoutState();
+    }
+
+    private void verifyIdExists() {
+        if(this.id == null)
+            throw new IllegalStateException();
+    }
+
+    private void verifyCategoryPositionExists() {
+        if(category == null || position == null)
+            throw new IllegalStateException("면접 진행 시 분야-직무는 필수");
+    }
+
+    private void verifyInterviewTypeRequirement() {
+        switch (type) {
+            case TECHNICAL -> {
+                if(techLink == null || techLink.isEmpty())
+                    throw new IllegalStateException("기술 면접은 기술이 필수");
+            }
+            case EXPERIENCE -> {
+                if(experienceLink == null || experienceLink.isEmpty())
+                    throw new IllegalStateException("경험 면접은 경험이 필수");
+            }
+            case PERSONALITY -> { /* 딱히 검증할 것 없음*/}
+            default -> throw new IllegalStateException("지원하지 않는 면접 타입");
+        }
+    }
+
+    private void verifyTimeoutState() {
+        if(isTimeout())
+            throw new IsAlreadyTimeoutInterviewException();
     }
 }
