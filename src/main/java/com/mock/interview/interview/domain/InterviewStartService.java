@@ -25,7 +25,5 @@ public class InterviewStartService {
     private void verifyCurrentInterview(Interview currentInterview) {
         if(currentInterview.isActive())
             throw new InterviewAlreadyInProgressException();
-        if(currentInterview.isExecutedToday())
-            throw new DailyInterviewLimitExceededException();
     }
 }

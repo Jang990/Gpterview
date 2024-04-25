@@ -129,10 +129,6 @@ public class Interview extends BaseTimeEntity {
         return !isTimeout();
     }
 
-    public boolean isExecutedToday() {
-        return getCreatedAt().toLocalDate().equals(LocalDate.now());
-    }
-
     public void continueInterview() {
         verifyReadyToContinue();
         Events.raise(new InterviewContinuedEvent(this.id));

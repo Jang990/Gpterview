@@ -4,6 +4,7 @@ import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
+import com.mock.interview.user.application.rate.WithUserInterviewRateLimiter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,6 +22,7 @@ public class InterviewProgressController {
     private final InterviewService interviewService;
 
     @PostMapping("/interview")
+    @WithUserInterviewRateLimiter
     public String startInterviewRequest(
             InterviewConfigForm configForm,
             InterviewAccountForm accountForm,
