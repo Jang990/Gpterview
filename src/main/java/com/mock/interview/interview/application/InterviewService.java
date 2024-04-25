@@ -9,6 +9,7 @@ import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interview.domain.InterviewStartService;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
+import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
@@ -43,6 +44,7 @@ public class InterviewService {
     private final InterviewStartService interviewStartService;
     private final JobCategoryRepository jobCategoryRepository;
     private final JobPositionRepository jobPositionRepository;
+    private final InterviewCacheRepository interviewCacheRepository;
 
 
     @InterviewCreationUserLock
@@ -98,5 +100,6 @@ public class InterviewService {
         Interview interview = repository.findByIdAndUserId(lockDto.getInterviewId(), lockDto.getUserId())
                 .orElseThrow(InterviewNotFoundException::new);
         interview.expire();
+        interviewCacheRepository.expireInterviewInfo(lockDto.getInterviewId());
     }
 }

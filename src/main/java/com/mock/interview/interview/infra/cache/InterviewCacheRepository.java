@@ -47,6 +47,10 @@ public class InterviewCacheRepository {
         return result;
     }
 
+    public void expireInterviewInfo(long interviewId) {
+        redisRepository.delete(interviewId);
+    }
+
     public InterviewInfo convert(Interview interview) {
         InterviewProfile profile = new InterviewProfile(
                 CategoryConvertor.convert(interview.getCategory()),
