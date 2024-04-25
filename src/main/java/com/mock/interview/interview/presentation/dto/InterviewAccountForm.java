@@ -32,7 +32,9 @@ public class InterviewAccountForm {
 
     @JsonIgnore
     public List<Long> getExperienceIds() {
-        return experienceList.stream().mapToLong(ExperienceDto::getId).boxed().toList();
+        // checkbox를 리스트로 고정하고 받기 떄문에 일부를 체크하지 않으면 experienceDto 내부 값이 null일 수 있음
+        return experienceList.stream().filter(experienceDto -> experienceDto.getId() != null)
+                .mapToLong(ExperienceDto::getId).boxed().toList();
     }
 
     @JsonIgnore
