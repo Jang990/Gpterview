@@ -6,18 +6,11 @@ import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.interview.application.InterviewViewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
-import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
-import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
-import com.mock.interview.interview.presentation.dto.InterviewOverview;
-import com.mock.interview.interview.presentation.dto.InterviewProgressDto;
+import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
-import com.mock.interview.interviewquestion.presentation.web.QuestionPageInitializer;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
-import com.mock.interview.user.presentation.InfoPageInitializer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,10 +67,10 @@ public class InterviewController {
             Model model, @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
         InterviewPageInitializer.init(model);
-        model.addAttribute("interviewDetails", new InterviewConfigForm());
 
         InterviewAccountForm accountForm = userRepositoryForView.findUserInterviewForm(loginId);
-        model.addAttribute("interviewAccount", accountForm);
+        model.addAttribute("configForm", new InterviewConfigForm());
+        model.addAttribute("accountForm", accountForm);
         CategoryViewer.initInterviewFormPage(model, accountForm.getCategoryId(), categoryService, positionService);
         return "interview/form";
     }

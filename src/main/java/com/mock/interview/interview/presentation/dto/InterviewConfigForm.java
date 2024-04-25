@@ -16,5 +16,4 @@ import java.util.List;
 public class InterviewConfigForm {
     private InterviewType interviewType;
     private int durationMinutes;
-    private List<Long> selectedExperience;
 }

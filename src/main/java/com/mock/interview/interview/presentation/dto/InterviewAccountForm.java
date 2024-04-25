@@ -31,7 +31,12 @@ public class InterviewAccountForm {
     }
 
     @JsonIgnore
-    public List<String> getTechName() {
-        return getTech().stream().map(TechViewDto::getName).toList();
+    public List<Long> getExperienceIds() {
+        return experienceList.stream().mapToLong(ExperienceDto::getId).boxed().toList();
+    }
+
+    @JsonIgnore
+    public List<Long> getTechIds() {
+        return tech.stream().mapToLong(TechViewDto::getId).boxed().toList();
     }
 }

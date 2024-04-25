@@ -2,6 +2,7 @@ package com.mock.interview.interview.presentation.web;
 
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
+import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,11 @@ public class InterviewProgressController {
 
     @PostMapping("/interview")
     public String startInterviewRequest(
-            InterviewConfigForm interviewConfigForm,
+            InterviewConfigForm configForm,
+            InterviewAccountForm accountForm,
             @AuthenticationPrincipal(expression = "id") Long loginId
     ) {
-        long interviewId = interviewService.createCustomInterview(loginId, interviewConfigForm);
+        long interviewId = interviewService.createCustomInterview(loginId, configForm, accountForm);
         return "redirect:/interview/" + interviewId;
     }
 

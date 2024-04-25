@@ -1,8 +1,12 @@
 package com.mock.interview.interview.application;
 
+import com.mock.interview.experience.application.helper.ExperienceFinder;
+import com.mock.interview.experience.domain.Experience;
+import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
+import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.category.infra.CategoryModuleFinder;
 import com.mock.interview.interview.domain.InterviewStarter;
@@ -38,16 +42,17 @@ public class InterviewService {
     private final UserRepository userRepository;
     private final List<CategoryRelatedTechFinder> categoryRelatedTechFinders;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
+    private final ExperienceRepository experienceRepository;
     private final InterviewStarter interviewStarter;
 
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public long createCustomInterview(long loginId, InterviewConfigForm interviewConfig) {
+    public long createCustomInterview(long loginId, InterviewConfigForm interviewConfig, InterviewAccountForm accountForm) {
         Users users = userRepository.findForInterviewSetting(loginId)
                 .orElseThrow(UserNotFoundException::new);
 
-        Interview interview = interviewStarter.start(users, interviewConfig);
+        Interview interview = interviewStarter.start(users, interviewConfig, accountForm);
         List<TechnicalSubjects> relatedInterviewTech = getRelatedCategoryTech(users.getCategory());
         interview.linkTech(relatedInterviewTech);
         repository.save(interview);

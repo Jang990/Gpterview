@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ExperienceRepository extends JpaRepository<Experience, Long> {
     @Query("SELECT e FROM Experience e WHERE e.id = :experienceId AND e.users.id = :userId")
     Optional<Experience> findByIdAndUserId(@Param("experienceId") long experienceId, @Param("userId") long userId);
+
+    @Query("SELECT e FROM Experience e WHERE e.id IN (:experienceIds) AND e.users.id = :userId")
+    List<Experience> findAllByIdsAndUserID(@Param("experienceIds") List<Long> experienceIds, @Param("userId") long userId);
 }
