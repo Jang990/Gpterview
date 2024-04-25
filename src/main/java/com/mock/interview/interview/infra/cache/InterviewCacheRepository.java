@@ -2,6 +2,7 @@ package com.mock.interview.interview.infra.cache;
 
 import com.mock.interview.category.application.helper.CategoryConvertor;
 import com.mock.interview.experience.application.helper.ExperienceConvertor;
+import com.mock.interview.global.TimeDifferenceCalculator;
 import com.mock.interview.interview.domain.model.InterviewExperienceLink;
 import com.mock.interview.interview.domain.model.InterviewTechLink;
 import com.mock.interview.interview.infra.InterviewRepository;
@@ -38,7 +39,8 @@ public class InterviewCacheRepository {
                 .orElseThrow(InterviewNotFoundException::new);
         InterviewInfo result = convert(interview);
 
-        long diffMinute = calculateMinuteDifference(interview.getExpiredTime());
+        long diffMinute = TimeDifferenceCalculator
+                .calculate(ChronoUnit.MINUTES, LocalDateTime.now(), interview.getExpiredTime());
         if (diffMinute > 0) {
             redisRepository.saveInterviewIfActive(interviewId, result, diffMinute);
         }
@@ -55,9 +57,4 @@ public class InterviewCacheRepository {
         InterviewConfig interviewConfig = new InterviewConfig(interview.getType(), interview.getCreatedAt(), interview.getExpiredTime());
         return new InterviewInfo(interview.getId(), profile, interviewConfig);
     }
-
-    private long calculateMinuteDifference(LocalDateTime expiredTime) {
-        return ChronoUnit.MINUTES.between(LocalDateTime.now(), expiredTime);
-    }
-
 }

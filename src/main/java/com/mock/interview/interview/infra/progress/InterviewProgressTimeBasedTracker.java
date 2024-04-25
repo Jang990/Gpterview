@@ -1,5 +1,6 @@
 package com.mock.interview.interview.infra.progress;
 
+import com.mock.interview.global.TimeDifferenceCalculator;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.interview.infra.cache.dto.InterviewConfig;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
@@ -84,11 +85,8 @@ public class InterviewProgressTimeBasedTracker {
         return phaseOrders[phaseOrders.length - 1];
     }
 
-    /** base - target (Minute 단위) */
+    /** base - target (Second 단위) */
     private long getSecondDifference(LocalDateTime base, LocalDateTime target) {
-        long diffSecond = ChronoUnit.SECONDS.between(base, target);
-        if(diffSecond < 0)
-            throw new IllegalArgumentException("base < target");
-        return diffSecond;
+        return TimeDifferenceCalculator.calculate(ChronoUnit.SECONDS, base, target);
     }
 }
