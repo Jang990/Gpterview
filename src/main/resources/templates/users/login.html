@@ -6,29 +6,12 @@
 <body>
   <section>
     <div class="d-flex justify-content-center my-5">
-      <div>
-        <h2 class="mb-4">로그인</h2>
-
-        <form action="/login" method="POST" style="width: 400px" th:object="${account}">
-          <a class="btn btn-primary btn-block mb-2 col-12" href="/oauth2/authorization/google">구글 로그인</a>
-          <div th:replace="~{fragments/form/account :: fragment-account}">로그인 계정 정보 컴포넌트</div>
-
-          <!-- Submit button -->
-          <button type="submit" class="btn btn-primary btn-block mb-2 col-12">로그인</button>
-        </form>
-
-        <hr>
-
-        <div class="row mb-4">
-          <div class="col d-flex justify-content-center">
-            <a class="link-offset-2 link-underline link-underline-opacity-10" href="/sign-up">회원가입</a>
-          </div>
-
-          <div class="col d-flex justify-content-center">
-            <a class="link-offset-2 link-underline link-underline-opacity-10" href="#"><i class="fab fa-google"></i> 계정가입</a>
-          </div>
-        </div>
-
+      <div style="width: 300px">
+        <h2 class="mb-5">로그인</h2>
+        <a class="btn btn-primary btn-block mb-2 col-12" href="/oauth2/authorization/google">
+          <i class="fab fa-google"></i> 계정으로 시작
+        </a>
+      </div>
     </div>
   </section>
 </body>
