@@ -38,4 +38,5 @@ out/
 
 application-openai.yml
 application-prod.yml
+application-oauth.yml
 /src/main/generated/

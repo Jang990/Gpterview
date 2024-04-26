@@ -1,5 +1,6 @@
 package com.mock.interview.global.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -13,7 +14,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -24,13 +27,16 @@ public class SecurityConfig {
                                         .requestMatchers("/interview/**", "/profile/**").authenticated()
                                         .anyRequest().permitAll()
                 )
-                .formLogin(
-                        (form) ->
-                                form
-                                        .defaultSuccessUrl("/")
-                                        .failureUrl("/login")
+                .logout(
+                        (logout) ->
+                                logout.logoutSuccessUrl("/")
+                )
+                .oauth2Login(
+                        (login) ->
+                                login.userInfoEndpoint( // 로그인 이후 사용자 정보를 가져와서 다루기 위한 설정
+                                                config -> config.userService(customOAuth2UserService) // 소셜 로그인 성공 이후 후처리 (계정 등록 등등)
+                                        )
                                         .loginPage("/login")
-                                        .loginProcessingUrl("/login")
                 )
                 .csrf(csrf -> csrf.disable());
 

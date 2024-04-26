@@ -25,9 +25,15 @@ public class Users extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false, unique = true)
     private String username;
-    @Column(nullable = false)
-    private String password;
+
+    private String picture;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_category_id")
@@ -46,11 +52,17 @@ public class Users extends BaseTimeEntity {
     private List<Experience> experiences = new ArrayList<>();
 
 
-    public static Users createUser(String username, String password) {
+    public static Users createUser(String email, String username, String picture) {
         Users user = new Users();
+        user.email = email;
         user.username = username;
-        user.password = password;
+        user.picture = picture;
+        user.role = UserRole.USER;
         return user;
+    }
+
+    public void updatePicture(String picture) {
+        this.picture = picture;
     }
 
     public void addExperience(String experience) {
