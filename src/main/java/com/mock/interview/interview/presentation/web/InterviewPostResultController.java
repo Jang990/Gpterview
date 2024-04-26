@@ -1,8 +1,7 @@
 package com.mock.interview.interview.presentation.web;
 
-import com.mock.interview.user.domain.model.Users;
+import com.mock.interview.global.security.dto.LoginUser;
 import com.mock.interview.user.presentation.InfoPageInitializer;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -28,7 +27,7 @@ public class InterviewPostResultController {
     @GetMapping("/interview/delete/result")
     public String deleteInterviewResultPage(
             Model model,
-            @AuthenticationPrincipal Users loginUser
+            @AuthenticationPrincipal LoginUser loginUser
     ) {
         // TODO: 임시코드
         InfoPageInitializer.initInterviewInfoPage(model, "면접 제거 성공", "면접을 성공적으로 제거했습니다.",

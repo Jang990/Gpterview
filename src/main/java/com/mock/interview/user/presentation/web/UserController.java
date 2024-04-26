@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-    private final JobCategoryService categoryService;
-    private final JobPositionService positionService;
     private final UserRepositoryForView repositoryForView;
 
     @GetMapping("/login")
@@ -26,22 +24,16 @@ public class UserController {
         return "/users/login";
     }
 
-    @GetMapping("/sign-up")
-    public String signUpPage(Model model) {
-        model.addAttribute("account", new AccountDto());
-        return "/users/sign-up";
-    }
-
-    @GetMapping("/users/{username}")
-    public String myPage(Model model, @PathVariable(value = "username") String username) {
+    @GetMapping("/users/{userId}")
+    public String myPage(Model model, @PathVariable(value = "userId") long userId) {
         // TODO: 세션정보와 일치하는지 확인할 것
-        UserPageInitializer.initUserDetailPage(model, repositoryForView, username);
+        UserPageInitializer.initUserDetailPage(model, repositoryForView, userId);
         return "/users/my-page";
     }
 
-    @GetMapping("/users/{username}/unauthorized")
-    public String unauthorizedPage(Model model, @PathVariable(value = "username") String username) {
-        model.addAttribute("info", new UnauthorizedPageInfo("접근 권한 없음", username, "/"));
+    @GetMapping("/users/{userId}/unauthorized")
+    public String unauthorizedPage(Model model, @PathVariable(value = "username") long userId) {
+        model.addAttribute("info", new UnauthorizedPageInfo("접근 권한 없음", String.valueOf(userId), "/"));
         return "/users/unauthorized";
     }
 }

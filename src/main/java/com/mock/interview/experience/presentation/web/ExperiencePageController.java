@@ -2,8 +2,7 @@ package com.mock.interview.experience.presentation.web;
 
 import com.mock.interview.experience.application.ExperienceViewService;
 import com.mock.interview.experience.presentation.dto.ExperienceForm;
-import com.mock.interview.user.domain.model.Users;
-import com.mock.interview.user.presentation.web.UserPageInitializer;
+import com.mock.interview.global.security.dto.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,31 +17,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ExperiencePageController {
     private final ExperienceViewService experienceViewService;
 
-    @GetMapping("/users/{username}/experience/form")
+    @GetMapping("/users/{userId}/experience/form")
     public String experienceFormPage(
             Model model,
-            @AuthenticationPrincipal Users loginUser,
-            @PathVariable(value = "username") String username
+            @AuthenticationPrincipal LoginUser loginUser,
+            @PathVariable(value = "userId") long userId
     ) {
-        if (!loginUser.getUsername().equals(username))
-            return "redirect:/users/"+username+"/unauthorized";
+        if (!loginUser.getId().equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
 
-        UserPageInitializer.initUsername(model, username);
         model.addAttribute("experienceForm", new ExperienceForm());
         return "/users/experience/experience-form";
     }
 
-    @GetMapping("/users/{username}/experience/{experienceId}/edit")
+    @GetMapping("/users/{userId}/experience/{experienceId}/edit")
     public String experienceEditFormPage(
             Model model,
-            @AuthenticationPrincipal Users loginUser,
-            @PathVariable(value = "username") String username,
+            @AuthenticationPrincipal LoginUser loginUser,
+            @PathVariable(value = "userId") long userId,
             @PathVariable(value = "experienceId") long experienceId
     ) {
-        if (!loginUser.getUsername().equals(username))
-            return "redirect:/users/"+username+"/unauthorized";
+        if (!loginUser.getId().equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
 
-        UserPageInitializer.initUsername(model, username);
         model.addAttribute("experienceEditForm", experienceViewService.findExperience(experienceId, loginUser.getId()));
         return "/users/experience/experience-edit-form";
     }

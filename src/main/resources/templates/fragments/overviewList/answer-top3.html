@@ -25,7 +25,7 @@
         </tbody>
     </table>
     <div class="card-footer text-end">
-        <a sec:authorize="isAuthenticated()" class="btn btn-gray me-2" th:href="@{/question/{questionId}/answer/{username}(questionId=${questionId}, username=${#authentication.principal.username})}">내 대답</a>
+        <a sec:authorize="isAuthenticated()" class="btn btn-gray me-2" th:href="@{/question/{questionId}/answer/{userId}(questionId=${questionId}, userId=${#authentication.principal.id})}">내 대답</a>
         <a href="#!" class="btn btn-gray">목록으로</a>
     </div>
 </div>

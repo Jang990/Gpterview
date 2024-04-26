@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--/* 경험 추가 */-->
 <html xmlns:th="http://www.thymeleaf.org">
-  <div th:fragment="fragment-experience">
-    <form method="post" th:action="@{/users/{username}/experience(username=${username})}">
+  <div th:fragment="fragment-experience-form(userId)">
+    <form method="post" th:action="@{/users/{userId}/experience(userId=${userId})}">
       <div id="experienceForm">
         <div class="my-3 col">
           <div for="intro" class="form-floating">

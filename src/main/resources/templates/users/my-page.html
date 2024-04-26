@@ -12,8 +12,8 @@
         <div th:text="*{category.category}"></div>
         <div th:text="*{category.position}"></div>
         <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">관련기술 영역</div>
-        <div><a class="btn btn-primary" th:href="@{/users/{username}/experience/form(username=${username})}">경험 추가</a></div>
-        <div th:replace="~{fragments/card/experience :: fragment-experience(experienceList=*{experienceList}, username=${username})}"></div>
+        <div><a class="btn btn-primary" th:href="@{/users/{userId}/experience/form(userId=${userId})}">경험 추가</a></div>
+        <div th:replace="~{fragments/card/experience :: fragment-experience-card(experienceList=*{experienceList}, userId=${userId})}"></div>
     </section>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package com.mock.interview.interview.presentation.web;
 
+import com.mock.interview.global.security.dto.LoginUser;
 import com.mock.interview.interview.application.InterviewDeleteService;
-import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +17,7 @@ public class InterviewDeleteController {
 
     @PostMapping("/interview/{interviewId}/delete")
     public String delete(
-            @AuthenticationPrincipal Users loginUser,
+            @AuthenticationPrincipal LoginUser loginUser,
             @PathVariable(name = "interviewId") long interviewId
     ) {
         interviewDeleteService.delete(interviewId, loginUser.getId());

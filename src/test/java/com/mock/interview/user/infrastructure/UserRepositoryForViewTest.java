@@ -12,6 +12,6 @@ class UserRepositoryForViewTest {
 
 //    @Test
     void findUserDetail() {
-        System.out.println(repository.findUserDetail("test1"));
+        System.out.println(repository.findUserDetail(7L));
     }
 }

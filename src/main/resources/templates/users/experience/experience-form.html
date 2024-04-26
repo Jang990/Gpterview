@@ -3,11 +3,11 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
 <head>
-  <title th:text="|${username}님의 페이지|">사용자님 페이지</title>
+  <title th:text="|${#authentication.principal.username}님의 페이지|">사용자님 페이지</title>
 </head>
 <body>
     <section>
-        <div th:replace="~{fragments/form/experience :: fragment-experience}"></div>
+        <div th:replace="~{fragments/form/experience :: fragment-experience-form(userId=${userId})}"></div>
     </section>
 </body>
 </html>

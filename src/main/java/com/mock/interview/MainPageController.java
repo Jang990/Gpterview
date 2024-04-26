@@ -1,12 +1,11 @@
 package com.mock.interview;
 
+import com.mock.interview.global.security.dto.LoginUser;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.interviewquestion.presentation.web.QuestionPageInitializer;
-import com.mock.interview.review.presentation.dto.ReviewIndexPageFragment;
-import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,7 +23,7 @@ public class MainPageController {
     private final InterviewRepositoryForView interviewRepositoryForView;
 
     @GetMapping("/")
-    public String indexPage(Model model, @AuthenticationPrincipal Users users) {
+    public String indexPage(Model model, @AuthenticationPrincipal LoginUser users) {
         QuestionPageInitializer.initEmptyQuestionSearchForm(model);
         if (users == null) {
             model.addAttribute("activeInterview", new InterviewResponse());

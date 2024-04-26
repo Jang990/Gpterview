@@ -3,7 +3,7 @@ package com.mock.interview.experience.presentation.web;
 import com.mock.interview.experience.application.ExperienceDeleteService;
 import com.mock.interview.experience.application.ExperienceService;
 import com.mock.interview.experience.presentation.dto.ExperienceForm;
-import com.mock.interview.user.domain.model.Users;
+import com.mock.interview.global.security.dto.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,30 +19,30 @@ public class ExperiencePostController {
 
     private final ExperienceService experienceService;
     private final ExperienceDeleteService experienceDeleteService;
-    @PostMapping("/users/{username}/experience")
+    @PostMapping("/users/{userId}/experience")
     public String create(
-            @AuthenticationPrincipal Users loginUser,
-            @PathVariable(value = "username") String username,
+            @AuthenticationPrincipal LoginUser loginUser,
+            @PathVariable(value = "userId") long userId,
             ExperienceForm experienceForm
     ) {
-        if (!loginUser.getUsername().equals(username))
-            return "redirect:/users/"+username+"/unauthorized";
+        if (!loginUser.getId().equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
 
         experienceService.create(loginUser.getId(), experienceForm);
-        return "redirect:/users/"+username;
+        return "redirect:/users/"+userId;
     }
 
-    @PostMapping("/users/{username}/experience/{experienceId}/delete")
+    @PostMapping("/users/{userId}/experience/{experienceId}/delete")
     public String delete(
             Model model,
-            @AuthenticationPrincipal Users loginUser,
-            @PathVariable(value = "username") String username,
+            @AuthenticationPrincipal LoginUser loginUser,
+            @PathVariable(value = "userId") long userId,
             @PathVariable(value = "experienceId") long experienceId
     ) {
-        if (!loginUser.getUsername().equals(username))
-            return "redirect:/users/"+username+"/unauthorized";
+        if (!loginUser.getId().equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
 
-        experienceDeleteService.delete(experienceId,loginUser.getId());
-        return "redirect:/users/"+username;
+        experienceDeleteService.delete(experienceId, loginUser.getId());
+        return "redirect:/users/"+userId;
     }
 }

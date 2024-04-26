@@ -12,7 +12,7 @@
             </li>
             <li class="nav-link" th:classappend="${headerActiveTap == 'interview'} ? active-link : text-muted">
               <a sec:authorize="isAnonymous()" href="/login" class="nav-link px-2 text-decoration-none">모의면접</a>
-              <a sec:authorize="isAuthenticated()" th:href="@{/users/{username}/interview(username=${#authentication.principal.username})}" class="nav-link px-2 text-decoration-none">모의면접</a>
+              <a sec:authorize="isAuthenticated()" th:href="@{/users/{userId}/interview(userId=${#authentication.principal.id})}" class="nav-link px-2 text-decoration-none">모의면접</a>
               <div class="underline"></div>
             </li>
             <li class="nav-link" th:classappend="${headerActiveTap == 'interview-question'} ? active-link : text-muted">
@@ -36,7 +36,7 @@
               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/login">로그인</a></span>
                 <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/sign-up">회원가입</a></span>
-                <span sec:authorize="isAuthenticated()"><a class="dropdown-item" th:href="@{/users/{username}(username=${#authentication.principal.username})}">내 정보</a></span>
+                <span sec:authorize="isAuthenticated()"><a class="dropdown-item" th:href="@{/users/{userId}(userId=${#authentication.principal.id})}">내 정보</a></span>
                 <span sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/logout">로그아웃</a></span>
               </div>
             </li>

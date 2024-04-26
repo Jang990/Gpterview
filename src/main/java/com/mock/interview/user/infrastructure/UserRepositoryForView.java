@@ -29,8 +29,8 @@ import static com.mock.interview.user.domain.model.QUsersTechLink.*;
 public class UserRepositoryForView {
     private final JPAQueryFactory query;
 
-    public AccountDetailDto findUserDetail(String username) {
-        Users result = findUserView(null, username);
+    public AccountDetailDto findUserDetail(long userId) {
+        Users result = findUserView(userId);
         return new AccountDetailDto(
                 result.getUsername(),
                 result.getCreatedAt(),
@@ -41,7 +41,7 @@ public class UserRepositoryForView {
     }
 
     public InterviewAccountForm findUserInterviewForm(long userId) {
-        Users result = findUserView(userId, null);
+        Users result = findUserView(userId);
         return new InterviewAccountForm(
                 convertSelectedJobCategoryView(result),
                 convertTech(result),
@@ -49,14 +49,14 @@ public class UserRepositoryForView {
         );
     }
 
-    private Users findUserView(Long userIdCond, String usernameCond) {
+    private Users findUserView(Long userIdCond) {
         return query.selectFrom(users)
                 .leftJoin(users.experiences, experience)
                 .leftJoin(users.category, jobCategory)
                 .leftJoin(users.position, jobPosition)
                 .leftJoin(users.techLink, usersTechLink)
                 .leftJoin(usersTechLink.technicalSubjects, technicalSubjects)
-                .where(userIdEq(userIdCond), usernameEq(usernameCond))
+                .where(userIdEq(userIdCond))
                 .fetchOne();
     }
 

@@ -2,6 +2,7 @@ package com.mock.interview.user.application.rate;
 
 import com.mock.interview.global.TimeDifferenceCalculator;
 import com.mock.interview.global.security.AuthenticationFinder;
+import com.mock.interview.global.security.dto.LoginUser;
 import com.mock.interview.user.domain.UsersConst;
 import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,7 @@ public class UserInterviewRateLimitService {
     }
 
     private String createKey() {
-        Users authenticatedUser = authenticationFinder.findAuthenticatedUser();
+        LoginUser authenticatedUser = authenticationFinder.findAuthenticatedUser();
         return String.format(UsersConst.DAILY_LIMIT_KEY_FORMAT, authenticatedUser.getId());
     }
 }

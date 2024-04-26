@@ -3,13 +3,13 @@ package com.mock.interview.interview.presentation.web;
 import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
+import com.mock.interview.global.security.dto.LoginUser;
 import com.mock.interview.interview.application.InterviewViewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.*;
 import com.mock.interview.interviewconversationpair.presentation.dto.ConversationContentDto;
 import com.mock.interview.interviewconversationpair.presentation.dto.InterviewConversationPairDto;
-import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -75,15 +75,15 @@ public class InterviewController {
         return "interview/form";
     }
 
-    @GetMapping("/users/{username}/interview")
+    @GetMapping("/users/{userId}/interview")
     public String interviewListPage(
-            Model model, @AuthenticationPrincipal() Users loginUser,
-            @PathVariable("username") String username,
+            Model model, @AuthenticationPrincipal LoginUser loginUser,
+            @PathVariable("userId") long userId,
             @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
-        if (!loginUser.getUsername().equals(username))
-            return "redirect:/users/"+username+"/unauthorized";
+        if (!loginUser.getId().equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
 
         Page<InterviewOverview> overviewPage = interviewRepositoryForView.findInterviewList(loginUser.getId(), pageable);
         InterviewPageInitializer.initListPage(model, overviewPage, request);

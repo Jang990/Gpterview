@@ -1,11 +1,11 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
+import com.mock.interview.global.security.dto.LoginUser;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForView;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
-import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.presentation.dto.UnauthorizedPageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,7 +32,7 @@ public class InterviewQuestionWebController {
     @GetMapping("/question/{questionId}")
     public String questionDetailPage(
             Model model,
-            @AuthenticationPrincipal Users users,
+            @AuthenticationPrincipal LoginUser users,
             @PathVariable(name = "questionId") long questionId
     ) {
         model.addAttribute("headerActiveTap", "interview-question");
@@ -50,7 +50,7 @@ public class InterviewQuestionWebController {
         return "/question/detail";
     }
 
-    private static boolean isUnauthorized(Users users, QuestionOverview question) {
+    private static boolean isUnauthorized(LoginUser users, QuestionOverview question) {
         if(!question.isHidden())
             return false;
 
