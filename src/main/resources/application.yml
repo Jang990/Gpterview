@@ -1,6 +1,10 @@
 #hello: 안녕하세요
 
 spring:
+  session:
+    store-type: redis
+    redis:
+      namespace: spring:session
   cache:
     type: redis
   redis:
