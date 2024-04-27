@@ -45,7 +45,7 @@ public class UserInterviewRateLimitService {
     }
 
     private String createKey() {
-        LoginUserDetail loginUserDetail = authenticationFinder.findAuthenticatedUser();
+        LoginUserDetail loginUserDetail = authenticationFinder.findCurrentAuthenticatedUser();
         return String.format(UsersConst.DAILY_LIMIT_KEY_FORMAT, loginUserDetail.getId());
     }
 }

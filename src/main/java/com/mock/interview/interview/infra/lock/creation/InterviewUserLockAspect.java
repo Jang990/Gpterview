@@ -26,7 +26,7 @@ public class InterviewUserLockAspect {
     @Around("@within(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock) " +
             "|| @annotation(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
-        LoginUserDetail loginUserDetail = authenticationFinder.findAuthenticatedUser();
+        LoginUserDetail loginUserDetail = authenticationFinder.findCurrentAuthenticatedUser();
         String key = createKey(loginUserDetail);
         try {
             if(!lock(key))

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public final class AuthenticationFinder {
-    public LoginUserDetail findAuthenticatedUser() {
+    public LoginUserDetail findCurrentAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null
                 || authentication instanceof AnonymousAuthenticationToken
