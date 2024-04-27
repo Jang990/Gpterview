@@ -19,7 +19,9 @@ import java.util.List;
 
 import static com.mock.interview.category.domain.model.QJobCategory.*;
 import static com.mock.interview.category.domain.model.QJobPosition.*;
+import static com.mock.interview.interviewconversationpair.domain.model.QInterviewConversationPair.interviewConversationPair;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.*;
+import static com.mock.interview.questiontoken.domain.QQuestionTokenization.questionTokenization;
 
 @Repository
 @Transactional(readOnly = true)
@@ -32,8 +34,9 @@ public class QuestionRepositoryForView {
     /** isHidden여부와 상관없이 가져오므로 권한에 따라 redirect 필요 */
     public QuestionOverview findQuestion(Long questionIdCond) {
         InterviewQuestion question = query.selectFrom(interviewQuestion)
-                .leftJoin(interviewQuestion.category, jobCategory)
-                .leftJoin(interviewQuestion.position, jobPosition)
+                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
+                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
+                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
                 .where(questionIdEq(questionIdCond))
                 .fetchOne();
 
@@ -66,8 +69,9 @@ public class QuestionRepositoryForView {
             searchOptions.setSearchCond(new QuestionSearchCond());
 
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
-                .leftJoin(interviewQuestion.category, jobCategory)
-                .leftJoin(interviewQuestion.position, jobPosition)
+                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
+                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
+                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
                 .where(
                         findChildQuestion(searchOptions.getParentQuestionIdCond()),
                         categoryEq(searchOptions.getCategoryNameCond()),
@@ -84,8 +88,9 @@ public class QuestionRepositoryForView {
         List<QuestionOverview> content = QuestionConvertor.convert(questions);
         JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
                 .from(interviewQuestion)
-                .leftJoin(interviewQuestion.category, jobCategory)
-                .leftJoin(interviewQuestion.position, jobPosition)
+                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
+                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
+                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
                 .where(
                         findChildQuestion(searchOptions.getParentQuestionIdCond()),
                         categoryEq(searchOptions.getCategoryNameCond()),

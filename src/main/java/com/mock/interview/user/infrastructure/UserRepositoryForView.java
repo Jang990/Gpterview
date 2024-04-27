@@ -51,11 +51,11 @@ public class UserRepositoryForView {
 
     private Users findUserView(Long userIdCond) {
         return query.selectFrom(users)
-                .leftJoin(users.experiences, experience)
-                .leftJoin(users.category, jobCategory)
-                .leftJoin(users.position, jobPosition)
-                .leftJoin(users.techLink, usersTechLink)
-                .leftJoin(usersTechLink.technicalSubjects, technicalSubjects)
+                .leftJoin(users.experiences, experience).fetchJoin()
+                .leftJoin(users.category, jobCategory).fetchJoin()
+                .leftJoin(users.position, jobPosition).fetchJoin()
+                .leftJoin(users.techLink, usersTechLink).fetchJoin()
+                .leftJoin(usersTechLink.technicalSubjects, technicalSubjects).fetchJoin()
                 .where(userIdEq(userIdCond))
                 .fetchOne();
     }
