@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
+import com.mock.interview.interview.infra.InterviewQuestionRepositoryForView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class QuestionSearchWebController {
     private final QuestionRepositoryForView questionRepositoryForView;
+    private final InterviewQuestionRepositoryForView interviewQuestionRepositoryForView;
 
     @GetMapping("question")
     public String questionListPage(
@@ -32,7 +34,19 @@ public class QuestionSearchWebController {
         return "/question/list";
     }
 
-
+    @GetMapping("/interview/{interviewId}/question")
+    public String interviewQuestionListPage(
+            Model model,
+            @PathVariable("interviewId") long interviewId,
+            @PageableDefault Pageable pageable,
+            HttpServletRequest request
+    ) {
+        System.out.println("====>시작");
+        Page<QuestionOverview> overviewPage = interviewQuestionRepositoryForView.findOverviewList(interviewId, pageable);
+        QuestionPageInitializer.initListPage(model, overviewPage, new QuestionSearchCond(/* 임시코드 */), request);
+        System.out.println("====>끝");
+        return "/interview/question";
+    }
 
     @GetMapping("question/category/{categoryName}")
     public String categoryQuestionListPage(

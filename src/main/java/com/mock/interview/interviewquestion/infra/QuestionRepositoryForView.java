@@ -81,7 +81,7 @@ public class QuestionRepositoryForView {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        List<QuestionOverview> content = convert(questions);
+        List<QuestionOverview> content = QuestionConvertor.convert(questions);
         JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
                 .from(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory)
@@ -108,10 +108,6 @@ public class QuestionRepositoryForView {
     private BooleanExpression questionTypeEq(QuestionTypeForView typeCond) {
         return typeCond == null ?
                 null : interviewQuestion.questionType.eq(QuestionConvertor.convert(typeCond));
-    }
-
-    private List<QuestionOverview> convert(List<InterviewQuestion> questions) {
-        return questions.stream().map(QuestionConvertor::convert).toList();
     }
 
     private BooleanExpression findChildQuestion(Long parentQuestionIdCond) {

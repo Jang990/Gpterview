@@ -11,6 +11,8 @@ import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQ
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
+import java.util.List;
+
 public class QuestionConvertor {
     public static QuestionType convert(InterviewPhase phase) {
         return switch (phase) {
@@ -35,6 +37,10 @@ public class QuestionConvertor {
                 question.getQuestion(), question.getCreatedAt(), question.getLikes(),
                 question.isHidden()
         );
+    }
+
+    public static List<QuestionOverview> convert(List<InterviewQuestion> questionList) {
+        return questionList.stream().map(QuestionConvertor::convert).toList();
     }
 
     @Nonnull
