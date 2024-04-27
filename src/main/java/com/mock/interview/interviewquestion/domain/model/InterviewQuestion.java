@@ -56,7 +56,7 @@ public class InterviewQuestion extends BaseEntity {
     private long likes;
 
     @Cascade(CascadeType.ALL)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+    @OneToMany(mappedBy = "question")
     private List<QuestionTechLink> techLink = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

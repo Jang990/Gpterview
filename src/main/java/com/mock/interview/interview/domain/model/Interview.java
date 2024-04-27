@@ -57,11 +57,11 @@ public class Interview extends BaseTimeEntity {
     private JobPosition position;
 
     @Cascade(CascadeType.ALL)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview")
+    @OneToMany(mappedBy = "interview")
     private List<InterviewTechLink> techLink = new ArrayList<>();
 
     @Cascade(CascadeType.ALL)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "interview")
+    @OneToMany(mappedBy = "interview")
     private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
 
     public static Interview create(

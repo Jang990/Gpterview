@@ -44,11 +44,11 @@ public class Users extends BaseTimeEntity {
     private JobPosition position;
 
     @Cascade(CascadeType.ALL)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @OneToMany(mappedBy = "users")
     private List<UsersTechLink> techLink = new ArrayList<>();
 
     @Cascade(CascadeType.ALL)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @OneToMany(mappedBy = "users")
     private List<Experience> experiences = new ArrayList<>();
 
 

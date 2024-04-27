@@ -23,7 +23,7 @@ public class JobCategory {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    @OneToMany(mappedBy = "category")
     private List<JobPosition> relatedPosition;
 
     /**
