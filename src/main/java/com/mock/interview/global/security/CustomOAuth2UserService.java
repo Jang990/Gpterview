@@ -1,6 +1,6 @@
 package com.mock.interview.global.security;
 
-import com.mock.interview.global.security.dto.LoginUser;
+import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.global.security.dto.OAuthAttributes;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
@@ -31,7 +31,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, usernameAttributeName, oAuth2User.getAttributes());
 
         Users users = saveOrUpdate(attributes);
-        return new LoginUser(users.getId(), users.getEmail(), users.getUsername(), users.getRole());
+        return new LoginUserDetail(users.getId(), users.getEmail(), users.getUsername(), users.getRole());
     }
 
     private Users saveOrUpdate(OAuthAttributes attributes) {

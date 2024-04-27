@@ -1,6 +1,6 @@
 package com.mock.interview;
 
-import com.mock.interview.global.security.dto.LoginUser;
+import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
@@ -23,7 +23,7 @@ public class MainPageController {
     private final InterviewRepositoryForView interviewRepositoryForView;
 
     @GetMapping("/")
-    public String indexPage(Model model, @AuthenticationPrincipal LoginUser users) {
+    public String indexPage(Model model, @AuthenticationPrincipal LoginUserDetail users) {
         QuestionPageInitializer.initEmptyQuestionSearchForm(model);
         if (users == null) {
             model.addAttribute("activeInterview", new InterviewResponse());

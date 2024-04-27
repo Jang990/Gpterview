@@ -3,7 +3,7 @@ package com.mock.interview.interview.presentation.web;
 import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
-import com.mock.interview.global.security.dto.LoginUser;
+import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interview.application.InterviewViewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
@@ -77,15 +77,15 @@ public class InterviewController {
 
     @GetMapping("/users/{userId}/interview")
     public String interviewListPage(
-            Model model, @AuthenticationPrincipal LoginUser loginUser,
+            Model model, @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable("userId") long userId,
             @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
-        if (!loginUser.getId().equals(userId))
+        if (!loginUserDetail.getId().equals(userId))
             return "redirect:/users/"+userId+"/unauthorized";
 
-        Page<InterviewOverview> overviewPage = interviewRepositoryForView.findInterviewList(loginUser.getId(), pageable);
+        Page<InterviewOverview> overviewPage = interviewRepositoryForView.findInterviewList(loginUserDetail.getId(), pageable);
         InterviewPageInitializer.initListPage(model, overviewPage, request);
         return "/interview/list";
     }

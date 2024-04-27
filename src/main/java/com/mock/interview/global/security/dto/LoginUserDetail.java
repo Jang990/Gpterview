@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @ToString
-public class LoginUser implements UserDetails, OAuth2User {
+public class LoginUserDetail implements UserDetails, OAuth2User {
     @Serial
     private static final long serialVersionUID = 8740389776504078975L;
 
@@ -26,7 +26,7 @@ public class LoginUser implements UserDetails, OAuth2User {
     private final String username;
     private final String role;
 
-    public LoginUser(Long id, String email, String username, UserRole role) {
+    public LoginUserDetail(Long id, String email, String username, UserRole role) {
         Objects.requireNonNull(id);
         Objects.requireNonNull(email);
         Objects.requireNonNull(username);

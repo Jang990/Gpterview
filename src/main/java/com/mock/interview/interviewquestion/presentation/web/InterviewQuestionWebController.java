@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
-import com.mock.interview.global.security.dto.LoginUser;
+import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForView;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepositoryForView;
@@ -32,7 +32,7 @@ public class InterviewQuestionWebController {
     @GetMapping("/question/{questionId}")
     public String questionDetailPage(
             Model model,
-            @AuthenticationPrincipal LoginUser users,
+            @AuthenticationPrincipal LoginUserDetail users,
             @PathVariable(name = "questionId") long questionId
     ) {
         model.addAttribute("headerActiveTap", "interview-question");
@@ -50,7 +50,7 @@ public class InterviewQuestionWebController {
         return "/question/detail";
     }
 
-    private static boolean isUnauthorized(LoginUser users, QuestionOverview question) {
+    private static boolean isUnauthorized(LoginUserDetail users, QuestionOverview question) {
         if(!question.isHidden())
             return false;
 

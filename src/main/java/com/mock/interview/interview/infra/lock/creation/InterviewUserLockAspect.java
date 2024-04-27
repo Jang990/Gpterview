@@ -1,7 +1,7 @@
 package com.mock.interview.interview.infra.lock.creation;
 
 import com.mock.interview.global.security.AuthenticationFinder;
-import com.mock.interview.global.security.dto.LoginUser;
+import com.mock.interview.global.security.dto.LoginUserDetail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -26,8 +26,8 @@ public class InterviewUserLockAspect {
     @Around("@within(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock) " +
             "|| @annotation(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
-        LoginUser loginUser = authenticationFinder.findAuthenticatedUser();
-        String key = createKey(loginUser);
+        LoginUserDetail loginUserDetail = authenticationFinder.findAuthenticatedUser();
+        String key = createKey(loginUserDetail);
         try {
             if(!lock(key))
                 // 여러 사용자가 몰리는 부분이 아님. 대기하지 않고 바로 예외를 반환함
@@ -38,8 +38,8 @@ public class InterviewUserLockAspect {
         }
     }
 
-    private String createKey(LoginUser loginUser) {
-        long loginId = loginUser.getId();
+    private String createKey(LoginUserDetail loginUserDetail) {
+        long loginId = loginUserDetail.getId();
         return String.format(KEY_FORMAT, loginId);
     }
 

@@ -3,7 +3,7 @@ package com.mock.interview.experience.presentation.web;
 import com.mock.interview.experience.application.ExperienceDeleteService;
 import com.mock.interview.experience.application.ExperienceService;
 import com.mock.interview.experience.presentation.dto.ExperienceForm;
-import com.mock.interview.global.security.dto.LoginUser;
+import com.mock.interview.global.security.dto.LoginUserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,28 +21,28 @@ public class ExperiencePostController {
     private final ExperienceDeleteService experienceDeleteService;
     @PostMapping("/users/{userId}/experience")
     public String create(
-            @AuthenticationPrincipal LoginUser loginUser,
+            @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable(value = "userId") long userId,
             ExperienceForm experienceForm
     ) {
-        if (!loginUser.getId().equals(userId))
+        if (!loginUserDetail.getId().equals(userId))
             return "redirect:/users/"+userId+"/unauthorized";
 
-        experienceService.create(loginUser.getId(), experienceForm);
+        experienceService.create(loginUserDetail.getId(), experienceForm);
         return "redirect:/users/"+userId;
     }
 
     @PostMapping("/users/{userId}/experience/{experienceId}/delete")
     public String delete(
             Model model,
-            @AuthenticationPrincipal LoginUser loginUser,
+            @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable(value = "userId") long userId,
             @PathVariable(value = "experienceId") long experienceId
     ) {
-        if (!loginUser.getId().equals(userId))
+        if (!loginUserDetail.getId().equals(userId))
             return "redirect:/users/"+userId+"/unauthorized";
 
-        experienceDeleteService.delete(experienceId, loginUser.getId());
+        experienceDeleteService.delete(experienceId, loginUserDetail.getId());
         return "redirect:/users/"+userId;
     }
 }
