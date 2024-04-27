@@ -31,7 +31,8 @@ interview:
     default: # 기본 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
-        협업, 커리어, 인성에 대한 질문에 집중해.
+        자기소개, 협업, 커리어 목표, 갈등, 장단점 등등 
+        지원자의 사고방식에 대해 알 수 있는 질문에 집중해.
       experience: |
         ${interview.template.common.topic} 
         ${interview.template.common.rule}
@@ -43,7 +44,8 @@ interview:
     IT: # IT 분야 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
-        개발자의 협업, 커리어, 인성에 대한 질문에 집중해.
+        자기소개, 협업, 개발자 커리어 목표, 갈등, 장단점 등등 
+        지원자의 사고방식에 대해 알 수 있는 질문에 집중해.
       experience: |
         ${interview.template.common.topic}
         
