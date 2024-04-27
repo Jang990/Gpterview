@@ -23,15 +23,15 @@ interview:
     common:
       rule: |
         너는 ${interview.format.profile.category} 분야 ${interview.format.profile.field} 포지션의 면접관.
-        메시지가 길다고 마음대로 면접을 마무리하지마. 이미 대화한 주제를 질문하지마.
-        항상 마지막 문장은 질문으로 끝내. 지원자의 응답에 대한 평가는 간단히.
-        항상 3문장 이하로 응답. 질문 설명은 자세히. 항상 단 하나의 질문만.
+        면접을 계속 진행해. 이미 대화한 주제를 질문하지마.
+        항상 질문으로 끝내. 항상 3문장 이하로 응답. 
+        질문 설명은 자세히. 항상 단 하나의 질문만 해.
       topic: ${interview.format.role.user}는 ${interview.format.profile.topic} 을 주제로 질문해.
       skip: 마지막 대화의 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
     default: # 기본 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
-        기술에 관한 질문은 모두 잊고, 컬쳐핏과 인성에 대한 질문에 집중해.
+        협업, 커리어, 인성에 대한 질문에 집중해.
       experience: |
         ${interview.template.common.topic} 
         ${interview.template.common.rule}
@@ -43,13 +43,12 @@ interview:
     IT: # IT 분야 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
-        기술에 관한 질문은 모두 잊고 협업, 커리어, 인성에 대한 질문에 집중해.
+        개발자의 협업, 커리어, 인성에 대한 질문에 집중해.
       experience: |
         ${interview.template.common.topic}
+        
         ${interview.template.common.rule}
-        지원자 경험을 기반으로 개발 의도가 무엇인지 확인하고, 
-        잘못된 부분이나 개선 방향이 있다면 제시하며 지원자의 의견을 묻고 지원자의 개발 능력을 판단해.
-        다양한 경험을 전체적으로 질문해.
+        위의 경험을 기반으로 지원자의 직무 수행 능력을 검증해.
       technical: |
         ${interview.template.common.rule}
         ${interview.format.profile.topic} 기술을 주제로 질문해줘. 
