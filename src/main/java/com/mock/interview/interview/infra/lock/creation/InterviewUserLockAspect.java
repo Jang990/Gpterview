@@ -1,16 +1,13 @@
 package com.mock.interview.interview.infra.lock.creation;
 
-import com.mock.interview.user.domain.model.Users;
+import com.mock.interview.global.security.AuthenticationFinder;
+import com.mock.interview.global.security.dto.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -21,6 +18,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class InterviewUserLockAspect {
     private final StringRedisTemplate stringRedisTemplate;
+    private final AuthenticationFinder authenticationFinder;
     private final String KEY_FORMAT = "INTERVIEW:%d:CREATE";
     private final String LOCK_VALUE = "LOCK";
     private final long LOCK_TIMEOUT_MS = 5_000;
@@ -28,8 +26,8 @@ public class InterviewUserLockAspect {
     @Around("@within(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock) " +
             "|| @annotation(com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock)")
     public Object checkTime(ProceedingJoinPoint pjp) throws Throwable {
-        Users authentication = getAuthenticatedUser();
-        String key = createKey(authentication);
+        LoginUser loginUser = authenticationFinder.findAuthenticatedUser();
+        String key = createKey(loginUser);
         try {
             if(!lock(key))
                 // 여러 사용자가 몰리는 부분이 아님. 대기하지 않고 바로 예외를 반환함
@@ -40,8 +38,8 @@ public class InterviewUserLockAspect {
         }
     }
 
-    private String createKey(Users authentication) {
-        long loginId = authentication.getId();
+    private String createKey(LoginUser loginUser) {
+        long loginId = loginUser.getId();
         return String.format(KEY_FORMAT, loginId);
     }
 
@@ -56,14 +54,5 @@ public class InterviewUserLockAspect {
                         LOCK_VALUE,
                         Duration.ofMillis(LOCK_TIMEOUT_MS)
                 );
-    }
-
-    private Users getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null
-                || authentication instanceof AnonymousAuthenticationToken
-                || !authentication.isAuthenticated())
-            throw new UsernameNotFoundException("사용자 식별 불가");
-        return (Users) authentication.getPrincipal();
     }
 }
