@@ -23,6 +23,8 @@ public record InterviewProgress(InterviewPhase phase, InterviewTopic<?> intervie
     }
 
     public String getTopicContent() {
+        if(interviewTopic == null)
+            return null;
         return interviewTopic.getContent();
     }
 }
