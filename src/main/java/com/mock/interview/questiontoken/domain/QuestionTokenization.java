@@ -23,7 +23,7 @@ public class QuestionTokenization {
     private InterviewQuestion interviewQuestion;
 
     @Convert(converter = StringListConverter.class)
-    @Column(name = "tokens", nullable = false)
+    @Column(name = "tokens", nullable = false, length = 700)
     private List<String> result;
 
     public static QuestionTokenization create(InterviewQuestion interviewQuestion, KoreaStringAnalyzer analyzer) {
