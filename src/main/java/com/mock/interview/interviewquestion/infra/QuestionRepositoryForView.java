@@ -24,7 +24,7 @@ import static com.mock.interview.interviewquestion.domain.model.QInterviewQuesti
 @Repository
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class InterviewQuestionRepositoryForView {
+public class QuestionRepositoryForView {
     private final JPAQueryFactory query;
     private final int TOP_3 = 3;
 

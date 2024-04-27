@@ -10,7 +10,8 @@ import org.springframework.data.domain.PageRequest;
 
 //@SpringBootTest
 class InterviewQuestionRepositoryForViewTest {
-    @Autowired InterviewQuestionRepositoryForView repositoryForView;
+    @Autowired
+    QuestionRepositoryForView repositoryForView;
 
 //    @Test
     void test0() {

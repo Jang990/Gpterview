@@ -1,6 +1,6 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
-import com.mock.interview.interviewquestion.infra.InterviewQuestionRepositoryForView;
+import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 @RequiredArgsConstructor
 public class QuestionSearchWebController {
-    private final InterviewQuestionRepositoryForView questionRepositoryForView;
+    private final QuestionRepositoryForView questionRepositoryForView;
 
     @GetMapping("question")
     public String questionListPage(
