@@ -28,7 +28,6 @@ public class InterviewQuestionRepositoryForView {
     private final JPAQueryFactory query;
 
     public Page<QuestionOverview> findOverviewList(long interviewId, Pageable pageable) {
-        System.out.println("==쿼리 시작");
         List<InterviewConversationPair> conversationPairList = query
                 .selectFrom(interviewConversationPair)
                 .innerJoin(interviewConversationPair.question, interviewQuestion).fetchJoin()
