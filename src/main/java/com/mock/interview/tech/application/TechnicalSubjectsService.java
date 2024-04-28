@@ -16,6 +16,12 @@ import java.util.List;
 public class TechnicalSubjectsService {
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
+    public long create(String techName) {
+        TechnicalSubjects tech = TechnicalSubjects.create(techName);
+        technicalSubjectsRepository.save(tech);
+        return tech.getId();
+    }
+
     public List<Long> saveTechIfNotExist(List<String> skills) {
         List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, skills);
         return TechConvertHelper.convertToTechId(techList);
