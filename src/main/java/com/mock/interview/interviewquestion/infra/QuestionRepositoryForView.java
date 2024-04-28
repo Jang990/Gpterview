@@ -36,7 +36,7 @@ public class QuestionRepositoryForView {
         InterviewQuestion question = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
                 .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
-                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
+                .leftJoin(interviewQuestion.questionToken, questionTokenization).fetchJoin()
                 .where(questionIdEq(questionIdCond))
                 .fetchOne();
 
@@ -69,7 +69,7 @@ public class QuestionRepositoryForView {
             searchOptions.setSearchCond(new QuestionSearchCond());
 
         List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
-                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
+                .leftJoin(interviewQuestion.questionToken, questionTokenization).fetchJoin()
                 .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
                 .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
                 .where(
@@ -88,9 +88,6 @@ public class QuestionRepositoryForView {
         List<QuestionOverview> content = QuestionConvertor.convert(questions);
         JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
                 .from(interviewQuestion)
-                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
-                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
-                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
                 .where(
                         findChildQuestion(searchOptions.getParentQuestionIdCond()),
                         categoryEq(searchOptions.getCategoryNameCond()),

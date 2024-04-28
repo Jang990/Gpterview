@@ -22,21 +22,21 @@ public class InterviewConversationRepositoryForView {
 
     public List<InterviewConversationPair> findOrderedByCreatedAt(long interviewId, long userId) {
         return query.selectFrom(interviewConversationPair)
-                .innerJoin(interviewConversationPair.interview, interview).on(interview.users.id.eq(userId)).fetchJoin()
+                .innerJoin(interviewConversationPair.interview, interview).fetchJoin()
+                .leftJoin(interviewConversationPair.answer, interviewAnswer).fetchJoin()
                 .leftJoin(interviewConversationPair.question, interviewQuestion).fetchJoin()
                 .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
-                .leftJoin(interviewConversationPair.answer, interviewAnswer).fetchJoin()
-                .where(interviewIdEq(interviewId))
+                .where(interviewIdEq(interviewId), userIdEq(userId))
                 .orderBy(interviewConversationPair.createdAt.asc())
                 .fetch();
     }
 
     public InterviewConversationPair findConversation(long userId, long interviewId, long conversationId) {
         return query.selectFrom(interviewConversationPair)
-                .innerJoin(interviewConversationPair.interview, interview).on(interview.users.id.eq(userId)).fetchJoin()
+                .innerJoin(interviewConversationPair.interview, interview).fetchJoin()
+                .leftJoin(interviewConversationPair.answer, interviewAnswer).fetchJoin()
                 .leftJoin(interviewConversationPair.question, interviewQuestion).fetchJoin()
                 .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
-                .leftJoin(interviewConversationPair.answer, interviewAnswer).fetchJoin()
                 .where(conversationIdEq(conversationId), interviewIdEq(interviewId), userIdEq(userId))
                 .orderBy(interviewConversationPair.createdAt.desc())
                 .fetchOne();

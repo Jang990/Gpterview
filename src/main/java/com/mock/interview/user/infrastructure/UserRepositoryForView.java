@@ -54,8 +54,6 @@ public class UserRepositoryForView {
                 .leftJoin(users.experiences, experience).fetchJoin()
                 .leftJoin(users.category, jobCategory).fetchJoin()
                 .leftJoin(users.position, jobPosition).fetchJoin()
-                .leftJoin(users.techLink, usersTechLink).fetchJoin()
-                .leftJoin(usersTechLink.technicalSubjects, technicalSubjects).fetchJoin()
                 .where(userIdEq(userIdCond))
                 .fetchOne();
     }
