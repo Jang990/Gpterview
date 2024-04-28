@@ -35,7 +35,6 @@
               </a>
               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/login">로그인</a></span>
-                <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/sign-up">회원가입</a></span>
                 <span sec:authorize="isAuthenticated()"><a class="dropdown-item" th:href="@{/users/{userId}(userId=${#authentication.principal.id})}">내 정보</a></span>
                 <span sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/logout">로그아웃</a></span>
               </div>
