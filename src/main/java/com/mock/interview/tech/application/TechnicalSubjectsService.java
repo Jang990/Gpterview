@@ -17,7 +17,8 @@ public class TechnicalSubjectsService {
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     public long create(String techName) {
-        TechnicalSubjects tech = TechnicalSubjects.create(techName);
+        TechnicalSubjects tech = technicalSubjectsRepository.findTech(techName)
+                .orElseGet(() -> TechnicalSubjects.create(techName));
         technicalSubjectsRepository.save(tech);
         return tech.getId();
     }
