@@ -1,30 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="container px-0 border" th:fragment="fragment-child-question-overview-list(questionId,dataList)">
+<div class="container px-0" th:fragment="fragment-child-question-overview-list(questionId,dataList)">
     <link th:href="@{/css/overview-list.css}" href="../css/overview-list.css" rel="stylesheet">
+    <div class="mb-3 d-flex">
+        <div class="mx-2"><h4> 하위 질문 </h4></div>
+        <div>
+            <a th:href="@{/question/{questionId}/child(questionId=${questionId})}" class="btn btn-gray btn-sm">목록으로</a>
+        </div>
+    </div>
     <table class="table mb-0 table-hover">
-        <thead class="small text-uppercase bg-body text-muted">
-        <tr>
-            <th class="text-center">작성자</th>
-            <th class="text-center" style="max-width: 300px;">내용</th>
-            <th class="text-center">추천 수</th>
-        </tr>
-        </thead>
         <tbody>
-        <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/question/{questionId}'(questionId=${data.id})}" style="cursor: pointer;">
-            <td class="small text-center" th:text="${data.createdBy}">작성자</td>
-            <td class="small text-wrap" style="max-width: 300px;" th:text="${data.content}">대답 내용</td>
-            <td class="small text-center" th:text="${data.likes}">추천 수</td>
-        </tr>
-        <th:block th:if="${dataList.size() < 3}">
-            <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
-                <td class="small text-center" colspan="3">empty</td>
+            <tr class="align-middle" th:each="data: ${dataList}" th:onclick="@{location.href='/question/{questionId}'(questionId=${data.id})}" style="cursor: pointer;">
+                <td class="small text-break" th:text="${data.content}">하위 질문 내용</td>
+                <td class="small text-center" th:text="|${data.likes}Likes|">추천 수</td>
             </tr>
-        </th:block>
+
+            <th:block th:if="${dataList.size() < 3}">
+                <tr class="align-middle" th:each="num : ${#numbers.sequence(dataList.size(), 2)}">
+                    <td class="small text-center" colspan="3">empty</td>
+                </tr>
+            </th:block>
         </tbody>
     </table>
-    <div class="card-footer text-end">
-        <a th:href="@{/question/{questionId}/child(questionId=${questionId})}" class="btn btn-gray">목록으로</a>
-    </div>
 </div>
 </html>
