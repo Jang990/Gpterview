@@ -19,7 +19,11 @@ public class InterviewPostResultController {
             @PathVariable("interviewId") long interviewId
     ) {
         // TODO: 임시코드
-        InfoPageInitializer.initInterviewInfoPage(model, "면접 종료 성공", "진행중인 면접을 성공적으로 종료시켰습니다.", "/");
+        InfoPageInitializer.initInterviewInfoPage(model,
+                "면접 종료 성공",
+                "진행중인 면접을 성공적으로 종료시켰습니다.",
+                "/users/"+ loginId+"/interview"
+        );
 
         return "/info/info";
     }
@@ -30,8 +34,11 @@ public class InterviewPostResultController {
             @AuthenticationPrincipal LoginUserDetail loginUserDetail
     ) {
         // TODO: 임시코드
-        InfoPageInitializer.initInterviewInfoPage(model, "면접 제거 성공", "면접을 성공적으로 제거했습니다.",
-                "/users/"+ loginUserDetail.getUsername()+"/interview");
+        InfoPageInitializer.initInterviewInfoPage(model,
+                "면접 제거 성공",
+                "면접을 성공적으로 제거했습니다.",
+                "/users/"+ loginUserDetail.getId()+"/interview"
+        );
 
         return "/info/info";
     }
