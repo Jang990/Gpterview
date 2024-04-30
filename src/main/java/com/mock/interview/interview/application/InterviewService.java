@@ -18,6 +18,7 @@ import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
+import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.application.helper.TechFinder;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.infra.InterviewRepository;
@@ -59,11 +60,11 @@ public class InterviewService {
 
         Interview interview = Interview.create(interviewConfig, users, category, position);
         List<Long> techIds = accountForm.getTechIds();
-        if (!techIds.isEmpty()) {
+        if (interview.getType() == InterviewType.TECHNICAL && !techIds.isEmpty()) {
             connectTech(interview, techIds);
         }
         List<Long> experienceIds = accountForm.getExperienceIds();
-        if (!experienceIds.isEmpty()) {
+        if (interview.getType() == InterviewType.EXPERIENCE && !experienceIds.isEmpty()) {
             connectUserExperience(interview, loginId, experienceIds);
         }
 

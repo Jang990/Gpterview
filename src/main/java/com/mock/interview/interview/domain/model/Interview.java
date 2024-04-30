@@ -97,6 +97,8 @@ public class Interview extends BaseTimeEntity {
     public void linkTech(TechnicalSubjects tech) {
         if(tech == null)
             throw new IllegalArgumentException();
+        if(type == InterviewType.TECHNICAL)
+            throw new IllegalStateException();
 
         techLink.add(InterviewTechLink.createLink(this, tech));
     }
@@ -111,6 +113,8 @@ public class Interview extends BaseTimeEntity {
     public void linkExperience(Experience experience) {
         if(experience == null)
             throw new IllegalArgumentException();
+        if(type != InterviewType.EXPERIENCE)
+            throw new IllegalStateException();
 
         experienceLink.add(InterviewExperienceLink.createLink(this, experience));
     }
