@@ -89,11 +89,22 @@ public class Users extends BaseTimeEntity {
         this.category = category;
     }
 
-    public void linkJob(JobCategory category, JobPosition position) {
-        linkCategory(category);
-        if(position == null || !position.getCategory().getId().equals(category.getId()))
-            throw new IllegalArgumentException("사용자에게 받은 category와 position간에 관계가 없습니다.");
-
+    public void linkPosition(JobPosition position) {
+        if(category == null || position == null || category != position.getCategory())
+            throw new IllegalArgumentException();
         this.position = position;
+    }
+
+    public void changeUsername(String username) {
+        this.username = username;
+    }
+
+    public void removeCategory() {
+        category = null;
+        removePosition();
+    }
+
+    public void removePosition() {
+        position = null;
     }
 }

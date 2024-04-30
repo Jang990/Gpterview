@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <div th:fragment="fragment-account" style="width: 400px" th:object="${account}">
-    <div class="form-floating mb-4">
-      <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="ID"/>
-      <label class="form-label" for="username">ID</label>
-      <p th:errors="*{username}" class="field-error">Incorrect data</p>
-    </div>
+
 
     <div class="form-floating mb-4">
       <input type="password" id="password" th:field="*{password}" th:value="*{password}" class="form-control" placeholder="Password"/>

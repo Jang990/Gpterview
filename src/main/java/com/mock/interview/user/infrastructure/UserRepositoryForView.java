@@ -1,14 +1,15 @@
 package com.mock.interview.user.infrastructure;
 
 import com.mock.interview.category.application.helper.CategoryConvertor;
-import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.tech.application.helper.TechConvertHelper;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
+import com.mock.interview.user.application.helper.UserConvertor;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.domain.model.UsersTechLink;
 import com.mock.interview.user.presentation.dto.AccountDetailDto;
+import com.mock.interview.user.presentation.dto.AccountUpdateForm;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +44,19 @@ public class UserRepositoryForView {
         );
     }
 
+    public AccountUpdateForm findUserUpdateForm(long userId) {
+        Users result = query.selectFrom(users)
+                .leftJoin(users.category, jobCategory).fetchJoin()
+                .leftJoin(users.position, jobPosition).fetchJoin()
+                .where(users.id.eq(userId))
+                .fetchOne();
+        return UserConvertor.convertInfo(result);
+    }
+
     public InterviewAccountForm findUserInterviewForm(long userId) {
         Users result = findUserView(userId);
         return new InterviewAccountForm(
-                convertSelectedJobCategoryView(result),
+                CategoryConvertor.convertSelectedJobCategoryView(result),
                 convertTech(result),
                 convertExperiences(result)
         );
@@ -54,7 +64,6 @@ public class UserRepositoryForView {
 
     private Users findUserView(Long userIdCond) {
         return query.selectFrom(users)
-//                .leftJoin(users.experiences, experience).fetchJoin()
                 .leftJoin(users.category, jobCategory).fetchJoin()
                 .leftJoin(users.position, jobPosition).fetchJoin()
                 .where(userIdEq(userIdCond))
@@ -67,13 +76,6 @@ public class UserRepositoryForView {
 
     private BooleanExpression userIdEq(Long userId) {
         return userId == null ? null : users.id.eq(userId);
-    }
-
-    private JobCategorySelectedIds convertSelectedJobCategoryView(Users users) {
-        return new JobCategorySelectedIds(
-                users.getCategory() == null ? null : users.getCategory().getId(),
-                users.getPosition() == null ? null : users.getPosition().getId()
-        );
     }
 
     private List<TechViewDto> convertTech(Users users) {

@@ -5,16 +5,26 @@
   <title>회원가입</title>
 </head>
 <body>
-<section>
+<section th:object="${account}">
   <div class="d-flex justify-content-center my-5">
     <div>
-      <h2 class="mb-4">회원가입</h2>
-      <form style="width: 400px" method="post" action="/sign-up" th:object="${account}">
-        <!--/*<div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=${null}, selectedPositionId=${null},categoryList=${categoryList},positionList=${positionList})}">
+      <h2 class="mb-4">정보 수정</h2>
+      <form style="width: 400px" method="post" th:action="@{/users/{userId}(userId=*{userId})}">
+        <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=*{categoryId}, selectedPositionId=*{positionId},categoryList=${categoryList},positionList=${positionList})}">
           카테고리 선택
-        </div>*/-->
-        <div th:replace="~{fragments/form/account :: fragment-account}">로그인 계정 정보 컴포넌트</div>
+        </div>
 
+        <div class="form-floating mb-4 mt-3">
+          <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Username"/>
+          <label class="form-label" for="username">ID</label>
+          <p th:errors="*{username}" class="field-error">Incorrect data</p>
+        </div>
+
+        <div class="d-flex justify-content-center mb-4">
+          <input type="submit" class="btn btn-primary me-3" value="확인">
+          <a th:href="@{/users/{userId}(userId=*{userId})}" class="btn btn-secondary">취소</a>
+        </div>
+      </form>
 
         <!--<div class="mb-5 col">
           <div for="company" class="form-floating">
@@ -53,9 +63,6 @@
             </div>
           </div>
         </div>*/-->
-
-        <input type="submit" class="btn btn-primary btn-block mb-4 col-12" value="회원가입">
-      </form>
     </div>
   </div>
 </section>

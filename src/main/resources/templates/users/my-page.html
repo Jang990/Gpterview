@@ -18,8 +18,9 @@
                                      alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
                                 <h5 th:text="*{username}">사용자 이름</h5>
                                 <p>
-                                    <a class="link-dark" th:href="@{/question/category/{categoryId}(categoryId=*{category.id})}" th:text="*{category.name}">분야</a>-
-                                    <a class="link-dark" th:href="@{/question/position/{positionId}(positionId=*{position.id})}" th:text="*{position.name}">직무</a>
+                                    <a class="link-dark" th:if="*{not #strings.isEmpty(category.name)}" th:href="@{/question/category/{categoryId}(categoryId=*{category.id})}" th:text="*{category.name}">분야</a>
+                                    <th:block th:if="*{not #strings.isEmpty(position.name)}">-</th:block>
+                                    <a class="link-dark" th:if="*{not #strings.isEmpty(position.name)}" th:href="@{/question/position/{positionId}(positionId=*{position.id})}" th:text="*{position.name}">직무</a>
                                 </p>
                                 <a class="btn btn-light mb-5" th:href="@{/users/{userId}/form(userId=*{userId})}">
                                     <i class="far fa-edit"></i>
