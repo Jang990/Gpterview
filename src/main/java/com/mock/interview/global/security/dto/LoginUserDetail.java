@@ -23,8 +23,8 @@ public class LoginUserDetail implements UserDetails, OAuth2User {
     private final Long id;
     @Getter
     private final String email;
-    private final String username;
-    private final String role;
+    private String username;
+    private String role;
 
     public LoginUserDetail(Long id, String email, String username, UserRole role) {
         Objects.requireNonNull(id);
@@ -87,5 +87,9 @@ public class LoginUserDetail implements UserDetails, OAuth2User {
     @Override
     public String getName() {
         return null;
+    }
+
+    public void updateUsername(String username) {
+        this.username = username;
     }
 }

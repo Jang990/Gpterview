@@ -25,6 +25,10 @@ public class UserService {
 
         UserUpdateHelper.updateCategory(users, categoryRepository, form.getCategoryId());
         UserUpdateHelper.updatePosition(users, positionRepository, form.getPositionId());
-        users.changeUsername(form.getUsername());
+
+        String changedUsername = form.getUsername();
+        if(users.getUsername().equals(changedUsername))
+            return;
+        users.changeUsername(changedUsername);
     }
 }
