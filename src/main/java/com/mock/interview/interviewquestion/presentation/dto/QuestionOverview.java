@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.presentation.dto;
 
 import com.mock.interview.category.presentation.dto.JobCategoryView;
+import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class QuestionOverview {
     private long id; // 1
     private String createdBy;
     private JobCategoryView category;
-    private List<String> tech; // Redis
+    private List<TechViewDto> techList; // Redis
     private String content; // Redis를 왜 사용하나요?
     private LocalDateTime createdAt;
     private long like; // 32

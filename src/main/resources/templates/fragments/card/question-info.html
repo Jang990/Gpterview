@@ -19,8 +19,9 @@
             </p>
         </div>
         <div class="ms-3">
-            <th:block th:each="tech : ${question.tech}">
-                <a href="#" class="btn btn-sm btn-secondary" th:text="${tech}">Redis(관련 기술)</a>
+            <th:block th:each="tech : ${question.techList}">
+                <a th:href="@{/question/tech/{techId}(techId=${tech.id})}"
+                   class="btn btn-sm btn-secondary my-1" th:text="${tech.value}">관련 기술</a>
             </th:block>
         </div>
         <div class="d-flex justify-content-end flex-fill">

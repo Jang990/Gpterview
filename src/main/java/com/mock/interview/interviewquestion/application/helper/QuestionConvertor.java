@@ -3,11 +3,13 @@ package com.mock.interview.interviewquestion.application.helper;
 import com.mock.interview.category.application.helper.CategoryConvertor;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
 import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;
+import com.mock.interview.tech.application.helper.TechConvertHelper;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -33,7 +35,7 @@ public class QuestionConvertor {
     public static QuestionOverview convert(InterviewQuestion question) {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
                 CategoryConvertor.convert(question.getCategory(), question.getPosition()),
-                question.getTechLink().stream().map(link -> link.getTechnicalSubjects().getName()).toList(),
+                TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
                 question.getQuestion(), question.getCreatedAt(), question.getLikes(),
                 question.isHidden()
         );
