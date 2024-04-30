@@ -1,7 +1,6 @@
 package com.mock.interview.user.presentation.dto;
 
-import com.mock.interview.category.presentation.dto.JobCategoryView;
-import com.mock.interview.experience.presentation.dto.ExperienceDto;
+import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,9 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccountDetailDto {
+    private long userId;
     private String username;
-    private LocalDateTime createdBy;
-    private JobCategoryView category;
-    private List<TechViewDto> tech;
-    private List<ExperienceDto> experienceList;
+    private String email;
+    private String picture;
+    private CategoryResponse category;
+    private CategoryResponse position;
+    private LocalDateTime createdAt;
+    private List<TechViewDto> techList;
 }

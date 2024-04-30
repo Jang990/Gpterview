@@ -4,6 +4,7 @@ import com.mock.interview.category.application.helper.CategoryConvertor;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.experience.presentation.dto.ExperienceDto;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
+import com.mock.interview.tech.application.helper.TechConvertHelper;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.domain.model.UsersTechLink;
@@ -18,10 +19,7 @@ import java.util.List;
 
 import static com.mock.interview.category.domain.model.QJobCategory.*;
 import static com.mock.interview.category.domain.model.QJobPosition.*;
-import static com.mock.interview.experience.domain.QExperience.*;
-import static com.mock.interview.tech.domain.model.QTechnicalSubjects.*;
 import static com.mock.interview.user.domain.model.QUsers.*;
-import static com.mock.interview.user.domain.model.QUsersTechLink.*;
 
 @Repository
 @Transactional(readOnly = true)
@@ -32,11 +30,16 @@ public class UserRepositoryForView {
     public AccountDetailDto findUserDetail(long userId) {
         Users result = findUserView(userId);
         return new AccountDetailDto(
+                result.getId(),
                 result.getUsername(),
+                result.getEmail(),
+                result.getPicture(),
+                CategoryConvertor.convert(result.getCategory()),
+                CategoryConvertor.convert(result.getPosition()),
                 result.getCreatedAt(),
-                CategoryConvertor.convert(result.getCategory(), result.getPosition()),
-                convertTech(result),
-                convertExperiences(result)
+                TechConvertHelper.convertView(result.getTechLink().stream().map(UsersTechLink::getTechnicalSubjects).toList())
+//                convertTech(result),
+//                convertExperiences(result)
         );
     }
 
@@ -51,7 +54,7 @@ public class UserRepositoryForView {
 
     private Users findUserView(Long userIdCond) {
         return query.selectFrom(users)
-                .leftJoin(users.experiences, experience).fetchJoin()
+//                .leftJoin(users.experiences, experience).fetchJoin()
                 .leftJoin(users.category, jobCategory).fetchJoin()
                 .leftJoin(users.position, jobPosition).fetchJoin()
                 .where(userIdEq(userIdCond))
