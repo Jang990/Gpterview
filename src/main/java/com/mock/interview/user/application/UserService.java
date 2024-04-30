@@ -2,6 +2,9 @@ package com.mock.interview.user.application;
 
 import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.infra.JobPositionRepository;
+import com.mock.interview.tech.domain.model.TechnicalSubjects;
+import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
+import com.mock.interview.tech.presentation.dto.TechViewDto;
 import com.mock.interview.user.application.helper.UserUpdateHelper;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
@@ -11,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -18,6 +23,7 @@ public class UserService {
     private final UserRepository repository;
     private final JobCategoryRepository categoryRepository;
     private final JobPositionRepository positionRepository;
+    private final TechnicalSubjectsRepository technicalSubjectsRepository;
 
     public void update(AccountUpdateForm form) {
         Users users = repository.findById(form.getUserId())
@@ -30,5 +36,14 @@ public class UserService {
         if(users.getUsername().equals(changedUsername))
             return;
         users.changeUsername(changedUsername);
+    }
+
+    public void replaceTech(long userId, List<Long> techRequest) {
+        Users users = repository
+                .findById(userId).orElseThrow(UserNotFoundException::new);
+
+        List<TechnicalSubjects> techList = technicalSubjectsRepository
+                .findAllById(techRequest);
+        users.replaceTech(techList);
     }
 }

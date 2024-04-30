@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title th:text="|${#authentication.principal.username}님의 페이지|">사용자님 페이지</title>
+</head>
+<body>
+    <section>
+        <div class="inner-main-header my-3">
+            <div class="ms-3 my-3">
+                <h3 class="ps-3 py-3">기술 수정</h3>
+            </div>
+        </div>
+        <th:block th:object="${tech}">
+            <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">
+                관련기술 영역
+            </div>
+        </th:block>
+
+        <div class="d-flex justify-content-end my-5">
+            <form th:action="@{/users/{userId}/tech(userId=${userId})}" method="post">
+                <input type="submit" class="btn btn-primary me-3 px-3" value="저장">
+            </form>
+            <a th:href="@{/users/{userId}(userId=*{userId})}" class="btn btn-secondary px-3">취소</a>
+        </div>
+    </section>
+</body>
+</html>

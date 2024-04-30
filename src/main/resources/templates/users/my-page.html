@@ -24,13 +24,13 @@
                                 </p>
                                 <div class="d-flex flex-column mb-5">
                                     <a class="btn btn-light" th:href="@{/users/{userId}/form(userId=*{userId})}">
-                                        <i class="fa fa-wrench pe-1"></i> 정보 관리
+                                        <i class="fa fa-bars pe-1"></i> 정보 관리
                                     </a>
                                     <a class="btn btn-light" th:href="@{/users/{userId}/experience(userId=*{userId})}">
+                                        <i class="fa fa-book pe-1"></i> 경험 관리
+                                    </a>
+                                    <a class="btn btn-light" th:href="@{/users/{userId}/tech/form(userId=*{userId})}">
                                         <i class="fa fa-wrench pe-1"></i> 기술 관리
-                                    </a>
-                                    <a class="btn btn-light" th:href="@{/users/{userId}/experience(userId=*{userId})}">
-                                        <i class="fa fa-wrench pe-1"></i> 경험 관리
                                     </a>
                                 </div>
 

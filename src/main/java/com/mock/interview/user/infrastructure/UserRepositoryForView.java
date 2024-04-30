@@ -48,7 +48,7 @@ public class UserRepositoryForView {
         Users result = query.selectFrom(users)
                 .leftJoin(users.category, jobCategory).fetchJoin()
                 .leftJoin(users.position, jobPosition).fetchJoin()
-                .where(users.id.eq(userId))
+                .where(userIdEq(userId))
                 .fetchOne();
         return UserConvertor.convertInfo(result);
     }
@@ -60,6 +60,15 @@ public class UserRepositoryForView {
                 convertTech(result),
                 convertExperiences(result)
         );
+    }
+
+    public List<TechViewDto> findUserTech(long userId) {
+        Users result = query.selectFrom(users)
+                .where(userIdEq(userId))
+                .fetchOne();
+        return TechConvertHelper.convertView(
+                result.getTechLink().stream()
+                        .map(UsersTechLink::getTechnicalSubjects).toList());
     }
 
     private Users findUserView(Long userIdCond) {

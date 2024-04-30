@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title th:text="|${#authentication.principal.username}님의 페이지|">사용자님 페이지</title>
+</head>
+<body>
+    <section>
+        <div class="inner-main-header my-3">
+            <div class="ms-3 my-3">
+                <h3 class="ps-3 py-3">나의 경험 리스트</h3>
+            </div>
+        </div>
+        <div th:replace="~{fragments/card/experience :: fragment-experience-card(experienceList=${experienceList}, userId=${userId})}"></div>
+    </section>
+</body>
+</html>

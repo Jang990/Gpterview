@@ -13,6 +13,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -106,5 +107,10 @@ public class Users extends BaseTimeEntity {
 
     public void removePosition() {
         position = null;
+    }
+
+    public void replaceTech(List<TechnicalSubjects> techList) {
+        techList = new LinkedList<>();
+        linkTech(techList);
     }
 }

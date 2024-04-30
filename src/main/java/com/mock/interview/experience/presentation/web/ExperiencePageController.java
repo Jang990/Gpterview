@@ -1,8 +1,10 @@
 package com.mock.interview.experience.presentation.web;
 
 import com.mock.interview.experience.application.ExperienceViewService;
+import com.mock.interview.experience.infra.ExperienceRepositoryView;
 import com.mock.interview.experience.presentation.dto.ExperienceForm;
 import com.mock.interview.global.security.dto.LoginUserDetail;
+import com.mock.interview.user.presentation.web.UserPageInitializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +18,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class ExperiencePageController {
     private final ExperienceViewService experienceViewService;
+    private final ExperienceRepositoryView repositoryView;
+
+    @GetMapping("/users/{userId}/experience")
+    public String experienceListPage(
+            Model model,
+            @AuthenticationPrincipal LoginUserDetail loginUserDetail,
+            @PathVariable(value = "userId") long userId
+    ) {
+        if (!loginUserDetail.getId().equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("experienceList", repositoryView.findExperienceList(userId));
+        return "/users/experience/experience-list";
+    }
 
     @GetMapping("/users/{userId}/experience/form")
     public String experienceFormPage(
