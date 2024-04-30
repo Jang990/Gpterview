@@ -5,7 +5,6 @@ import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
 import com.mock.interview.user.infrastructure.UserRepositoryForView;
 import com.mock.interview.user.presentation.dto.AccountDto;
-import com.mock.interview.user.presentation.dto.AccountForm;
 import com.mock.interview.user.presentation.dto.UnauthorizedPageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

@@ -8,13 +8,6 @@
 
 
     <script th:inline="javascript">
-        //var tagify;
-        //$(document).ready(function() {
-        //    var inputElem = document.querySelector('input[name=tech]');
-        //    tagify = new Tagify(inputElem);
-        //    tagify.addTags();
-        //});
-
         let beforeTagInputText = '';
         let beforeTagInputId = 0;
         const loadDelay = 0.3;
@@ -22,7 +15,7 @@
         let $select;
 
         $(document).ready(function() {
-            $select = $('#input-tech').selectize({
+            $select = $('#tech').selectize({
               create: true,
               create: function(input, callback) {
                 if(input === beforeTagInputText)
@@ -73,14 +66,10 @@
             $select[0].selectize.addItem(id);
         }
     </script>
-    <div>
-        <label class="col-form-label me-2">관련 기술</label>
-        <input name="tech" id="tech" placeholder="기술 입력 후 'Enter'">
-    </div>
 
     <div class="control-group">
-        <label for="input-tech">관련 기술</label>
-        <input type="text" name="input-tech" id="input-tech" class="demo-default" style="text-transform:uppercase">
+        <label for="tech">관련 기술</label>
+        <input type="text" name="tech" id="tech" class="demo-default" style="text-transform:uppercase">
     </div>
 
 </div>

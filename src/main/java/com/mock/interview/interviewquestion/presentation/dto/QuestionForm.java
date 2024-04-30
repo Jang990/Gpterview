@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.presentation.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.*;
@@ -20,8 +21,13 @@ public class QuestionForm {
     private QuestionTypeForView questionType;
     private String content;
 
-    public void setTech(String techString) {
-        this.tech = TechViewDto.convert(techString);
+    public void setTech(List<Long> tech) {
+        this.tech = TechViewDto.convert(tech);
+    }
+
+    @JsonIgnore
+    public List<Long> getTechIds() {
+        return tech.stream().mapToLong(TechViewDto::getId).boxed().toList();
     }
 
     public Long getCategoryId() {return categories.getCategoryId();}

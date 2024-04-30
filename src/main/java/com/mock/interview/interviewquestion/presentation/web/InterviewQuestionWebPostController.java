@@ -8,8 +8,6 @@ import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.interviewquestion.application.QuestionDeleteService;
 import com.mock.interview.interviewquestion.application.QuestionSavingService;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
-import com.mock.interview.tech.application.TechnicalSubjectsService;
-import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +28,6 @@ public class InterviewQuestionWebPostController {
     private final QuestionSavingService questionSavingService;
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
-    private final TechnicalSubjectsService technicalSubjectsService;
     private final QuestionDeleteService questionDeleteService;
 
     @GetMapping("question/form")
@@ -46,12 +43,7 @@ public class InterviewQuestionWebPostController {
             QuestionForm form, BindingResult bindingResult
     ) throws BindException {
         CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
-
-        List<Long> relatedTechIds = technicalSubjectsService.saveTechIfNotExist(form.getTech().stream().map(TechViewDto::getName).toList());
-        // TODO: Tech를 프론트에서 저장해서 들어오게 변경할 것.
-        /*List<Long> relatedTechIds = form.getTech().stream()
-                .map(TechViewDto::getId).toList();*/
-        return "redirect:/question/" + questionSavingService.save(loginId, form, relatedTechIds);
+        return "redirect:/question/" + questionSavingService.save(loginId, form);
     }
 
     @PostMapping("question/{questionId}/delete")

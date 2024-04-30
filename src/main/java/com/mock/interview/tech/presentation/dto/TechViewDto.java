@@ -1,14 +1,11 @@
 package com.mock.interview.tech.presentation.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mock.interview.global.GlobalConst;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -24,14 +21,11 @@ public class TechViewDto {
         return value;
     }
 
-    public static List<TechViewDto> convert(String techString) {
-        if(techString == null || techString.isBlank())
-            return new ArrayList<>();
-
-        try {
-            return Arrays.asList(GlobalConst.om.readValue(techString.getBytes(), TechViewDto[].class));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+    public static List<TechViewDto> convert(List<Long> tech) {
+        List<TechViewDto> result = new LinkedList<>();
+        for (Long id : tech) {
+            result.add(new TechViewDto(id, null));
         }
+        return result;
     }
 }

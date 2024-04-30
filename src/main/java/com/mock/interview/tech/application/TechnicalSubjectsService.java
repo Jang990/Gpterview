@@ -23,9 +23,4 @@ public class TechnicalSubjectsService {
         technicalSubjectsRepository.save(tech);
         return tech.getId();
     }
-
-    public List<Long> saveTechIfNotExist(List<String> skills) {
-        List<TechnicalSubjects> techList = TechSavingHelper.saveTechIfNotExist(technicalSubjectsRepository, skills);
-        return TechConvertHelper.convertToTechId(techList);
-    }
 }

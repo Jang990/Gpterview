@@ -27,9 +27,9 @@ public class QuestionSavingService {
     private final JobPositionRepository jobPositionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final UserRepository userRepository;
-    public long save(long loginId, QuestionForm form, List<Long> techIdList) {
+    public long save(long loginId, QuestionForm form) {
         Users users = userRepository.findById(loginId).orElseThrow(UserNotFoundException::new);
-        List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(techIdList);
+        List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(form.getTechIds());
         InterviewQuestion question = InterviewQuestion.create(
                 interviewQuestionRepository, form.getContent(), users,
                 QuestionConvertor.convert(form.getQuestionType()), users.getUsername()

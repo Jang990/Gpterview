@@ -34,8 +34,8 @@ public class AccountForm {
     public void setCategoryId(Long categoryId) {categories.setCategoryId(categoryId);}
     public void setPositionId(Long positionId) {this.categories.setPositionId(positionId);}
 
-    public void setTech(String techString) {
-        this.tech = TechViewDto.convert(techString);
+    public void setTech(List<Long> tech) {
+        this.tech = TechViewDto.convert(tech);
     }
 
     @JsonIgnore
