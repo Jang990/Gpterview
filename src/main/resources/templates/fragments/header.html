@@ -31,7 +31,9 @@
           <ul class="text-end">
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="#">
-                <i class="fas fa-user mx-1"></i> 프로필
+                <i class="fas fa-user mx-1"></i>
+                <span sec:authorize="isAnonymous()">프로필</span>
+                <span sec:authorize="isAuthenticated()" th:text="|${#authentication.principal.username}님|">사용자이릅</span>
               </a>
               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <span sec:authorize="isAnonymous()"><a class="dropdown-item" href="/login">로그인</a></span>
