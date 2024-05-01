@@ -6,23 +6,22 @@
 </head>
 <body>
     <section>
-        <div class="inner-main-header my-3">
-            <div class="ms-3 my-3">
-                <h3 class="ps-3 py-3">기술 수정</h3>
-            </div>
-        </div>
-        <th:block th:object="${tech}">
-            <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">
-                관련기술 영역
-            </div>
-        </th:block>
+        <div class="d-flex justify-content-center my-5">
+            <div style="width: 400px;">
+                <h2 class="mb-4">기술 관리</h2>
+                <th:block th:object="${tech}">
+                    <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">
+                        관련기술 영역
+                    </div>
+                </th:block>
 
-        <div class="d-flex justify-content-end my-5">
-            <form th:action="@{/users/{userId}/tech(userId=${userId})}" method="post">
-                <input type="submit" class="btn btn-primary me-3 px-3" value="저장">
-            </form>
-            <a th:href="@{/users/{userId}(userId=*{userId})}" class="btn btn-secondary px-3">취소</a>
-        </div>
+                <div class="d-flex justify-content-end my-5">
+                    <form th:action="@{/users/{userId}/tech(userId=${userId})}" method="post">
+                        <input type="submit" class="btn btn-primary me-3 px-3" value="저장">
+                    </form>
+                    <a th:href="@{/users/{userId}(userId=*{userId})}" class="btn btn-secondary px-3">취소</a>
+                </div>
+            </div>
     </section>
 </body>
 </html>
