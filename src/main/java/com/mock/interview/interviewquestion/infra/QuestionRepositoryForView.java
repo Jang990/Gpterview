@@ -28,6 +28,16 @@ public class QuestionRepositoryForView {
     private final JPAQueryFactory query;
     private final int TOP_3 = 3;
 
+    public ParentQuestionSummaryDto findParentQuestionSummary(long parentQuestionId) {
+        return query.select(
+                    Projections.constructor(ParentQuestionSummaryDto.class,
+                            interviewQuestion.id, interviewQuestion.question,
+                            interviewQuestion.owner.id, interviewQuestion.isHidden
+                    )
+                )
+                .from(interviewQuestion)
+                .where(interviewQuestion.id.eq(parentQuestionId)).fetchOne();
+    }
 
     /** isHidden여부와 상관없이 가져오므로 권한에 따라 redirect 필요 */
     public QuestionOverview findQuestion(Long questionIdCond) {

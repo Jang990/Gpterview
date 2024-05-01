@@ -26,9 +26,13 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="mb-3">
-                                        <h4> 질문 추가하기 </h4>
+                                        <h4>하위 질문추가 </h4>
                                     </div>
-                                    <form action="/question" method="post">
+                                    <div class="my-3" th:object="${parentQuestion}">
+                                        <h5>상위 질문</h5>
+                                        <div th:text="*{content}"></div>
+                                    </div>
+                                    <form th:action="@{/question/{parentQuestionId}/child(parentQuestionId=${parentQuestion.id})}" method="post">
                                         <div class="my-3">
                                             <div th:replace="~{fragments/form/job-category :: fragment-job-category(selectedCategoryId=${question.categoryId},selectedPositionId=${question.positionId},categoryList=${categoryList},positionList=${positionList})}">분야, 직무 카테고리 선택 구역</div>
                                         </div>

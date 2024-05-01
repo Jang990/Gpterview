@@ -6,6 +6,7 @@ import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import com.mock.interview.interviewquestion.presentation.dto.ParentQuestionSummaryDto;
 import com.mock.interview.user.presentation.dto.UnauthorizedPageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,7 +38,7 @@ public class InterviewQuestionWebController {
     ) {
         model.addAttribute("headerActiveTap", "interview-question");
         QuestionOverview question = questionRepositoryForView.findQuestion(questionId);
-        if (isUnauthorized(users, question)) {
+        if (QuestionPageInitializer.isUnauthorized(users, question)) {
             return "redirect:/question/"+questionId+"/unauthorized";
         }
 
@@ -48,12 +49,5 @@ public class InterviewQuestionWebController {
         model.addAttribute("answerTop3", answerTop3);
         model.addAttribute("childQuestion", childQuestionTop3);
         return "/question/detail";
-    }
-
-    private static boolean isUnauthorized(LoginUserDetail users, QuestionOverview question) {
-        if(!question.isHidden())
-            return false;
-
-        return users == null || !users.getUsername().equals(question.getCreatedBy());
     }
 }

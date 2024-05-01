@@ -4,6 +4,7 @@ import com.mock.interview.category.application.helper.JobConnectionHelper;
 import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.infra.JobPositionRepository;
 import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
+import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
@@ -28,6 +29,19 @@ public class QuestionSavingService {
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final UserRepository userRepository;
     public long save(long loginId, QuestionForm form) {
+        InterviewQuestion question = saveQuestion(loginId, form);
+        return question.getId();
+    }
+
+    public long save(Long loginId, long parentQuestionId, QuestionForm form) {
+        InterviewQuestion parentQuestion = interviewQuestionRepository.findById(parentQuestionId)
+                .orElseThrow(InterviewQuestionNotFoundException::new);
+        InterviewQuestion question = saveQuestion(loginId, form);
+        question.linkParent(parentQuestion);
+        return question.getId();
+    }
+
+    private InterviewQuestion saveQuestion(long loginId, QuestionForm form) {
         Users users = userRepository.findById(loginId).orElseThrow(UserNotFoundException::new);
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(form.getTechIds());
         InterviewQuestion question = InterviewQuestion.create(
@@ -36,6 +50,6 @@ public class QuestionSavingService {
         );
         JobConnectionHelper.connect(jobCategoryRepository, jobPositionRepository, question, form.getCategoryId(), form.getPositionId());
         question.linkTech(techList);
-        return question.getId();
+        return question;
     }
 }

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.tech.presentation.dto.TechViewDto;
 import lombok.*;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -20,6 +17,7 @@ public class QuestionForm {
     private List<TechViewDto> tech;
     private QuestionTypeForView questionType;
     private String content;
+    private Long experienceId;
 
     public void setTech(List<Long> tech) {
         this.tech = TechViewDto.convert(tech);

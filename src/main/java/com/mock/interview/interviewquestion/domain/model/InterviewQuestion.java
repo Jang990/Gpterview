@@ -149,6 +149,12 @@ public class InterviewQuestion extends BaseEntity {
         this.questionToken = tokenization;
     }
 
+    public void linkParent(InterviewQuestion parent) {
+        if(parent.getId().equals(this.id))
+            throw new IllegalArgumentException("자기 자신을 부모 질문으로 설정할 수 없음");
+        this.parentQuestion = parent;
+    }
+
 
     // TODO: 조회 수 추가하기.
     // TODO: 질문에 대한 댓글 추가
