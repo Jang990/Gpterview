@@ -40,4 +40,7 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
     @Query("DELETE FROM InterviewQuestion iq WHERE iq.experience.id = :experienceId")
     int deleteByExperienceId(@Param("experienceId") long experienceId);
 
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("UPDATE InterviewQuestion iq SET iq.experience = NULL WHERE iq.experience.id = :experienceId")
+    int removeByExperienceId(@Param("experienceId") long experienceId);
 }
