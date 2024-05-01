@@ -29,7 +29,7 @@ public class ExperiencePostController {
             return "redirect:/users/"+userId+"/unauthorized";
 
         experienceService.create(loginUserDetail.getId(), experienceForm);
-        return "redirect:/users/"+userId;
+        return "redirect:/users/"+userId+"/experience";
     }
 
     @PostMapping("/users/{userId}/experience/{experienceId}/delete")
@@ -43,6 +43,6 @@ public class ExperiencePostController {
             return "redirect:/users/"+userId+"/unauthorized";
 
         experienceDeleteService.delete(experienceId, loginUserDetail.getId());
-        return "redirect:/users/"+userId;
+        return "redirect:/users/"+userId+"/experience";
     }
 }
