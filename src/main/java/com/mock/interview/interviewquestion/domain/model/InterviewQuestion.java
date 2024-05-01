@@ -64,7 +64,8 @@ public class InterviewQuestion extends BaseEntity {
     private InterviewQuestion parentQuestion;
 
     @Cascade(CascadeType.ALL)
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "interviewQuestion")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_token_id")
     private QuestionTokenization questionToken;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -140,6 +141,10 @@ public class InterviewQuestion extends BaseEntity {
 
     public void reveal() {
         isHidden = false;
+    }
+
+    public void linkQuestionToken(QuestionTokenization tokenization) {
+        this.questionToken = tokenization;
     }
 
 

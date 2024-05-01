@@ -1,7 +1,6 @@
 package com.mock.interview.interviewconversationpair.infra;
 
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
-import com.mock.interview.questiontoken.domain.QQuestionTokenization;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import static com.mock.interview.interview.domain.model.QInterview.*;
 import static com.mock.interview.interviewanswer.domain.model.QInterviewAnswer.*;
 import static com.mock.interview.interviewconversationpair.domain.model.QInterviewConversationPair.*;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.*;
-import static com.mock.interview.questiontoken.domain.QQuestionTokenization.*;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,7 +23,6 @@ public class InterviewConversationRepositoryForView {
                 .innerJoin(interviewConversationPair.interview, interview).fetchJoin()
                 .leftJoin(interviewConversationPair.answer, interviewAnswer).fetchJoin()
                 .leftJoin(interviewConversationPair.question, interviewQuestion).fetchJoin()
-                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
                 .where(interviewIdEq(interviewId), userIdEq(userId))
                 .orderBy(interviewConversationPair.createdAt.asc())
                 .fetch();
@@ -36,7 +33,6 @@ public class InterviewConversationRepositoryForView {
                 .innerJoin(interviewConversationPair.interview, interview).fetchJoin()
                 .leftJoin(interviewConversationPair.answer, interviewAnswer).fetchJoin()
                 .leftJoin(interviewConversationPair.question, interviewQuestion).fetchJoin()
-                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
                 .where(conversationIdEq(conversationId), interviewIdEq(interviewId), userIdEq(userId))
                 .orderBy(interviewConversationPair.createdAt.desc())
                 .fetchOne();

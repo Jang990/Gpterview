@@ -18,18 +18,13 @@ public class QuestionTokenization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id",nullable = false)
-    private InterviewQuestion interviewQuestion;
-
     @Convert(converter = StringListConverter.class)
     @Column(name = "tokens", nullable = false, length = 700)
     private List<String> result;
 
-    public static QuestionTokenization create(InterviewQuestion interviewQuestion, KoreaStringAnalyzer analyzer) {
+    public static QuestionTokenization create(String question, KoreaStringAnalyzer analyzer) {
         QuestionTokenization questionTokenization = new QuestionTokenization();
-        questionTokenization.interviewQuestion = interviewQuestion;
-        questionTokenization.result = analyzer.extractNecessaryTokens(interviewQuestion.getQuestion());
+        questionTokenization.result = analyzer.extractNecessaryTokens(question);
         return questionTokenization;
     }
 }

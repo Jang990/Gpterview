@@ -19,7 +19,6 @@ import static com.mock.interview.category.domain.model.QJobCategory.jobCategory;
 import static com.mock.interview.category.domain.model.QJobPosition.jobPosition;
 import static com.mock.interview.interviewconversationpair.domain.model.QInterviewConversationPair.*;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.interviewQuestion;
-import static com.mock.interview.questiontoken.domain.QQuestionTokenization.*;
 
 @Repository
 @Transactional(readOnly = true)
@@ -31,7 +30,6 @@ public class InterviewQuestionRepositoryForView {
         List<InterviewConversationPair> conversationPairList = query
                 .selectFrom(interviewConversationPair)
                 .innerJoin(interviewConversationPair.question, interviewQuestion).fetchJoin()
-                .leftJoin(interviewConversationPair.question.questionToken, questionTokenization).fetchJoin()
                 .leftJoin(interviewConversationPair.question.category, jobCategory).fetchJoin()
                 .leftJoin(interviewConversationPair.question.position, jobPosition).fetchJoin()
                 .where(

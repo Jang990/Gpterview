@@ -6,9 +6,7 @@ import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.questiontoken.domain.KoreaStringAnalyzer;
 import com.mock.interview.questiontoken.domain.QuestionTokenization;
-import com.mock.interview.questiontoken.infra.QuestionTokenizationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,7 +20,6 @@ public class QuestionCreationHandler {
 
     private final InterviewQuestionRepository questionRepository;
     private final KoreaStringAnalyzer koreaStringAnalyzer;
-    private final QuestionTokenizationRepository tokenRepository;
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -34,7 +31,7 @@ public class QuestionCreationHandler {
         InterviewQuestion question = questionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        QuestionTokenization tokenization = QuestionTokenization.create(question, koreaStringAnalyzer);
-        tokenRepository.save(tokenization);
+        QuestionTokenization tokenization = QuestionTokenization.create(question.getQuestion(), koreaStringAnalyzer);
+        question.linkQuestionToken(tokenization);
     }
 }
