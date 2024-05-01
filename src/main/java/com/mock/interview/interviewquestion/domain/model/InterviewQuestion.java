@@ -30,10 +30,6 @@ public class InterviewQuestion extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "preferred_answer_id")
-    private InterviewAnswer preferredAnswer;
-
     /** GPT가 질문을 생성할 수도 있기 떄문에 Owner와 createdBy는 다를 수 있음. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
