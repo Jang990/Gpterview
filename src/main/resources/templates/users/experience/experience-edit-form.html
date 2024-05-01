@@ -6,16 +6,25 @@
 </head>
 <body>
     <section>
-        <form method="post" th:action="@{/users/{userId}/experience/{experienceId}/edit(userId=${userId}, experienceId=${experienceEditForm.id})}">
-            <div id="experienceEditForm">
+        <div class="inner-main-header my-3">
+            <div class="ms-3 my-3">
+                <h3 class="ps-3 py-3">경험 수정</h3>
+            </div>
+        </div>
+        <form method="post" th:action="@{/users/{userId}/experience/{experienceId}/edit(userId=${userId}, experienceId=${experienceId})}">
+            <div id="experienceForm">
                 <div class="my-3 col">
                     <div for="intro" class="form-floating">
-                        <textarea class="form-control" placeholder="여기에 적어주세요." th:field="${experienceEditForm.content}" style="height: 200px"></textarea>
-                        <label>자소서 or 이력서 내용 (500자 이하)</label>
+                        <textarea class="form-control" placeholder="여기에 적어주세요." th:field="${experienceEditForm.experience}" style="height: 200px"></textarea>
+                        <label>자소서 or 이력서 내용</label>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn-primary">수정완료</button>
+
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary px-3 me-3">수정</button>
+                <a th:href="@{/users/{userId}/experience(userId=${userId})}" class="btn btn-secondary px-3">취소</a>
+            </div>
         </form>
     </section>
 </body>

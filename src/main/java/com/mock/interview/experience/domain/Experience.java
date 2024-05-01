@@ -29,4 +29,8 @@ public class Experience extends BaseTimeEntity {
         experience.content = content;
         return experience;
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

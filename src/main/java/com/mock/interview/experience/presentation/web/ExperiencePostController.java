@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -34,7 +33,6 @@ public class ExperiencePostController {
 
     @PostMapping("/users/{userId}/experience/{experienceId}/delete")
     public String delete(
-            Model model,
             @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable(value = "userId") long userId,
             @PathVariable(value = "experienceId") long experienceId
@@ -43,6 +41,20 @@ public class ExperiencePostController {
             return "redirect:/users/"+userId+"/unauthorized";
 
         experienceDeleteService.delete(experienceId, loginUserDetail.getId());
+        return "redirect:/users/"+userId+"/experience";
+    }
+
+    @PostMapping("/users/{userId}/experience/{experienceId}/edit")
+    public String update(
+            @AuthenticationPrincipal LoginUserDetail loginUserDetail,
+            @PathVariable(value = "userId") long userId,
+            @PathVariable(value = "experienceId") long experienceId,
+            ExperienceForm editForm
+    ) {
+        if (!loginUserDetail.getId().equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
+
+        experienceService.update(experienceId, loginUserDetail.getId(), editForm);
         return "redirect:/users/"+userId+"/experience";
     }
 }

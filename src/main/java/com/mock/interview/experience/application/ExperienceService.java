@@ -1,6 +1,7 @@
 package com.mock.interview.experience.application;
 
 import com.mock.interview.experience.domain.Experience;
+import com.mock.interview.experience.domain.exception.ExperienceNotFoundException;
 import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.experience.presentation.dto.ExperienceForm;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
@@ -9,9 +10,6 @@ import com.mock.interview.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -25,6 +23,12 @@ public class ExperienceService {
 
         Experience experience = Experience.create(users, experienceForm.getExperience());
         repository.save(experience);
+    }
+
+    public void update(long experienceId, long userId, ExperienceForm form) {
+        Experience experience = repository.findByIdAndUserId(experienceId, userId)
+                .orElseThrow(ExperienceNotFoundException::new);
+        experience.update(form.getExperience());
     }
 
 }

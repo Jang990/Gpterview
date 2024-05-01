@@ -57,6 +57,7 @@ public class ExperiencePageController {
         if (!loginUserDetail.getId().equals(userId))
             return "redirect:/users/"+userId+"/unauthorized";
 
+        model.addAttribute("experienceId", experienceId);
         model.addAttribute("experienceEditForm", experienceViewService.findExperience(experienceId, loginUserDetail.getId()));
         return "/users/experience/experience-edit-form";
     }
