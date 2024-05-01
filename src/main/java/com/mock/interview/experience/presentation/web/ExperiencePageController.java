@@ -2,6 +2,7 @@ package com.mock.interview.experience.presentation.web;
 
 import com.mock.interview.experience.application.ExperienceViewService;
 import com.mock.interview.experience.infra.ExperienceRepositoryView;
+import com.mock.interview.experience.presentation.dto.ExperienceDeleteOptions;
 import com.mock.interview.experience.presentation.dto.ExperienceForm;
 import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.user.presentation.web.UserPageInitializer;
@@ -31,6 +32,7 @@ public class ExperiencePageController {
 
         model.addAttribute("userId", userId);
         model.addAttribute("experienceList", repositoryView.findExperienceList(userId));
+        model.addAttribute("deleteOptions", new ExperienceDeleteOptions());
         return "/users/experience/experience-list";
     }
 

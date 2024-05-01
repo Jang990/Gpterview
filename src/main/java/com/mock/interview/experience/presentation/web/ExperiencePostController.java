@@ -2,6 +2,7 @@ package com.mock.interview.experience.presentation.web;
 
 import com.mock.interview.experience.application.ExperienceDeleteService;
 import com.mock.interview.experience.application.ExperienceService;
+import com.mock.interview.experience.presentation.dto.ExperienceDeleteOptions;
 import com.mock.interview.experience.presentation.dto.ExperienceForm;
 import com.mock.interview.global.security.dto.LoginUserDetail;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +36,16 @@ public class ExperiencePostController {
     public String delete(
             @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable(value = "userId") long userId,
-            @PathVariable(value = "experienceId") long experienceId
+            @PathVariable(value = "experienceId") long experienceId,
+            ExperienceDeleteOptions options
     ) {
         if (!loginUserDetail.getId().equals(userId))
             return "redirect:/users/"+userId+"/unauthorized";
 
-        experienceDeleteService.delete(experienceId, loginUserDetail.getId());
+        if(options.isDeleteRelatedQuestion())
+            experienceDeleteService.deleteWithQuestion(experienceId, loginUserDetail.getId());
+        else
+            experienceDeleteService.delete(experienceId, loginUserDetail.getId());
         return "redirect:/users/"+userId+"/experience";
     }
 

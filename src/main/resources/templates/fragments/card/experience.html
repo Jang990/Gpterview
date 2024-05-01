@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="fragment-experience-card(experienceList, userId)">
+    <script th:inline="javascript">
+        let deleteForm;
+        $(document).ready(function() {
+            deleteForm = $('#experienceDeleteForm');
+        });
+        function generateDeleteUrl(experienceId) {
+            return `/users/[[${userId}]]/experience/${experienceId}/delete`;
+        }
+        function initExperienceDeletePopUp(experienceId) {
+            const newAction = generateDeleteUrl(experienceId);
+            deleteForm.attr('action', newAction);
+        }
+    </script>
     <div th:each="experience : ${experienceList}" class="my-5">
         <div class="my-3 col">
             <div class="form-floating">
                 <textarea class="form-control" placeholder="여기에 적어주세요." style="height: 200px" th:text="${experience.content}" disabled></textarea>
             </div>
             <div class="d-flex justify-content-end my-2">
-                <form class="me-2" th:action="@{/users/{userId}/experience/{id}/delete(userId=${userId},id=${experience.id})}" method="post">
-                    <button class="btn btn-danger px-3" type="submit">삭제</button>
-                </form>
+                <button type="button" class="btn btn-danger px-3 me-2" data-bs-toggle="modal" data-bs-target="#experienceDeletePopUp" th:onclick="|initExperienceDeletePopUp(${experience.id})|">삭제</button>
                 <a class="btn btn-secondary px-3" th:href="@{/users/{userId}/experience/{id}/edit(userId=${userId},id=${experience.id})}">수정</a>
             </div>
         </div>
     </div>
+    <div th:replace="~{fragments/users/experience-delete-pop-up :: fragment-experience-delete-pop-up}">면접 종료 팝업</div>
 </div>
