@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.infra;
 import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.domain.model.QInterviewQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -41,9 +42,11 @@ public class QuestionRepositoryForView {
 
     /** isHidden여부와 상관없이 가져오므로 권한에 따라 redirect 필요 */
     public QuestionOverview findQuestion(Long questionIdCond) {
+        QInterviewQuestion parent = new QInterviewQuestion("parent");
         InterviewQuestion question = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
                 .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
+                .leftJoin(interviewQuestion.parentQuestion, parent).fetchJoin()
                 .where(questionIdEq(questionIdCond))
                 .fetchOne();
 

@@ -55,6 +55,12 @@
             </div>
         </div>
         <div>
+            <div th:if="${question.parentQuestionId != null AND NOT enableLink}">
+                <a th:href="@{/question/{questionId}(questionId=${question.parentQuestionId})}" class="btn btn-gray btn-sm">상위 질문으로</a>
+                <form th:if="${#authentication.principal.id == question.ownerId}" th:action="@{/question/{questionId}/parent/delete(questionId=${question.id})}" method="post">
+                    <input type="submit"  class="btn btn-gray btn-sm" value="상위 질문 제거">
+                </form>
+            </div>
             <div class="text-muted small mb-0"
                  th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm ')}">
                 생성일

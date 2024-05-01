@@ -36,9 +36,14 @@ public class QuestionConvertor {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
                 CategoryConvertor.convert(question.getCategory(), question.getPosition()),
                 TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
-                question.getQuestion(), question.getCreatedAt(), question.getLikes(),
-                question.isHidden()
+                question.getQuestion(), question.getCreatedAt(),
+                getParentId(question.getParentQuestion()), question.getOwner().getId(),
+                question.getLikes(), question.isHidden()
         );
+    }
+
+    private static Long getParentId(InterviewQuestion parentQuestion) {
+        return parentQuestion == null ? null : parentQuestion.getId();
     }
 
     public static List<QuestionOverview> convert(List<InterviewQuestion> questionList) {

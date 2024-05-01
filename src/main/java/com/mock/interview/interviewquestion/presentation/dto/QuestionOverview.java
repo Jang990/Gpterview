@@ -17,6 +17,8 @@ public class QuestionOverview {
     private List<TechViewDto> techList; // Redis
     private String content; // Redis를 왜 사용하나요?
     private LocalDateTime createdAt;
+    private Long parentQuestionId;
+    private Long ownerId;
     private long like; // 32
     private boolean isHidden;
 //    private long hits; // 조회수
