@@ -87,6 +87,12 @@ public class InterviewQuestion extends BaseEntity {
         return question;
     }
 
+    public void linkRelatedExperience(Experience experience) {
+        if(experience.getUsers() == owner)
+            throw new IllegalArgumentException("본인의 경험만 연결할 수 있습니다.");
+        this.experience = experience;
+    }
+
     public void linkCategory(JobCategory category) {
         if(category == null)
             throw new IllegalArgumentException();
