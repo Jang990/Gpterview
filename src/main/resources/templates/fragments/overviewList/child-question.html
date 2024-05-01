@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div class="container px-0" th:fragment="fragment-child-question-overview-list(questionId,dataList)">
     <link th:href="@{/css/overview-list.css}" href="../css/overview-list.css" rel="stylesheet">
     <div class="mb-3 d-flex">
         <div class="mx-2"><h4> 하위 질문 </h4></div>
-        <div>
+        <div class="me-2">
             <a th:href="@{/question/{questionId}/child(questionId=${questionId})}" class="btn btn-gray btn-sm">목록으로</a>
+        </div>
+        <div class="me-2" sec:authorize="isAuthenticated()" >
+            <a class="btn btn-gray btn-sm" th:href="@{/question/{questionId}/child/form(questionId=${questionId})}">질문 추가</a>
         </div>
     </div>
     <table class="table mb-0 table-hover">
