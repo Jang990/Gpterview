@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class UserTechController {
     public String saveUserTech(
             @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable(name = "userId") long userId,
-            TechListForm tech // TODO: tech 입력 오류 처리 필요
+            TechListForm tech
     ) {
         if (!loginUserDetail.getId().equals(userId))
             return "redirect:/users/"+userId+"/unauthorized";

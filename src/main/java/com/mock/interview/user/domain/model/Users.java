@@ -108,9 +108,4 @@ public class Users extends BaseTimeEntity {
     public void removePosition() {
         position = null;
     }
-
-    public void replaceTech(List<TechnicalSubjects> techList) {
-        techList = new LinkedList<>();
-        linkTech(techList);
-    }
 }

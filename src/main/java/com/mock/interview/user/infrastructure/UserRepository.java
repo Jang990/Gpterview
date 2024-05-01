@@ -21,4 +21,12 @@ public interface UserRepository extends JpaRepository<Users, Long> {
             WHERE u.id = :userId
             """)
     Optional<Users> findForInterviewSetting(@Param("userId") long userId);
+
+    @Query("""
+            SELECT u FROM Users u
+            LEFT JOIN FETCH u.techLink
+            LEFT JOIN FETCH u.techLink.technicalSubjects
+            WHERE u.id = :userId
+            """)
+    Optional<Users> findWithTech(@Param("userId") long userId);
 }

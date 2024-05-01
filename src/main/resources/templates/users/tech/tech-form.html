@@ -9,18 +9,18 @@
         <div class="d-flex justify-content-center my-5">
             <div style="width: 400px;">
                 <h2 class="mb-4">기술 관리</h2>
-                <th:block th:object="${tech}">
-                    <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">
-                        관련기술 영역
-                    </div>
-                </th:block>
+                <form th:action="@{/users/{userId}/tech(userId=${userId})}" method="post">
+                    <th:block th:object="${tech}">
+                        <div th:replace="~{fragments/form/tech :: fragment-tech(tech=*{tech})}">
+                            관련기술 영역
+                        </div>
+                    </th:block>
 
-                <div class="d-flex justify-content-end my-5">
-                    <form th:action="@{/users/{userId}/tech(userId=${userId})}" method="post">
+                    <div class="d-flex justify-content-end my-5">
                         <input type="submit" class="btn btn-primary me-3 px-3" value="저장">
-                    </form>
-                    <a th:href="@{/users/{userId}(userId=*{userId})}" class="btn btn-secondary px-3">취소</a>
-                </div>
+                        <a th:href="@{/users/{userId}(userId=*{userId})}" class="btn btn-secondary px-3">취소</a>
+                    </div>
+                </form>
             </div>
     </section>
 </body>
