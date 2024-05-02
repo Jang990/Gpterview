@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.presentation.web;
 import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForListView;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
+import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
@@ -47,6 +48,7 @@ public class QuestionDetailWebController {
         model.addAttribute("question", question);
         model.addAttribute("answerTop3", answerTop3);
         model.addAttribute("childQuestion", childQuestionTop3);
+        model.addAttribute("answer", new AnswerForm());
         return "/question/detail";
     }
 }
