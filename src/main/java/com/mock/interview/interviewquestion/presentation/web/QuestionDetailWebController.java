@@ -6,7 +6,6 @@ import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
-import com.mock.interview.interviewquestion.presentation.dto.ParentQuestionSummaryDto;
 import com.mock.interview.user.presentation.dto.UnauthorizedPageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-public class InterviewQuestionWebController {
+public class QuestionDetailWebController {
     private final QuestionRepositoryForView questionRepositoryForView;
     private final InterviewAnswerRepositoryForView answerRepositoryForView;
 
