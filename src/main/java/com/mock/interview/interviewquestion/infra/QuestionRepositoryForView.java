@@ -40,6 +40,16 @@ public class QuestionRepositoryForView {
                 .where(interviewQuestion.id.eq(parentQuestionId)).fetchOne();
     }
 
+    public ParentQuestionSummaryDto findQuestionSummary(long questionId) {
+        return query.select(
+                        Projections.constructor(ParentQuestionSummaryDto.class,
+                                interviewQuestion.id, interviewQuestion.question, interviewQuestion.owner.id, interviewQuestion.isHidden
+                        )
+                )
+                .from(interviewQuestion)
+                .where(interviewQuestion.id.eq(questionId)).fetchOne();
+    }
+
     public QuestionForm findQuestionForm(long questionIdCond, long userId) {
         QInterviewQuestion parent = new QInterviewQuestion("parent");
         InterviewQuestion question = query.selectFrom(interviewQuestion)

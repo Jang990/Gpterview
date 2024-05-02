@@ -11,9 +11,13 @@ public final class AnswerPageInitializer {
     private AnswerPageInitializer() {}
 
     public static void initListPage(Model model, long questionId, Page<AnswerForView> overviewPage, HttpServletRequest request) {
-        model.addAttribute("headerActiveTap", "interview-question");
+        initAnswerPageHeaderSelected(model);
         model.addAttribute("questionId", questionId);
         model.addAttribute("answerPage", overviewPage);
         model.addAttribute("currentUri", request.getRequestURI());
+    }
+
+    public static void initAnswerPageHeaderSelected(Model model) {
+        model.addAttribute("headerActiveTap", "interview-question");
     }
 }

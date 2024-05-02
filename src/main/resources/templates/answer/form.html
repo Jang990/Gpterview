@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title>면접 질문</title>
+</head>
+<!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
+<body>
+    <section>
+        <div class="container custom-container-width my-5">
+            <div class="main-body p-0">
+                <div class="inner-wrapper">
+                    <!-- Inner main -->
+                    <div class="inner-main">
+                        <!-- Inner main header -->
+                        <div class="inner-main-header">
+
+                        </div>
+                        <!-- /Inner main header -->
+
+                        <!-- Inner main body -->
+
+                        <!-- Forum List -->
+                        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mx-2 mb-3">
+                                        <h4 th:if="${existsAnswerId == null}"> 대답 추가 </h4>
+                                        <h4 th:unless="${existsAnswerId == null}"> 대답 수정 </h4>
+                                    </div>
+                                    <div class="my-3" th:object="${question}">
+                                        <h5>질문 내용</h5>
+                                        <div th:text="*{content}"></div>
+                                    </div>
+                                    <form th:action="${existsAnswerId == null} ? @{/question/{questionId}/answer} : @{/question/{questionId}/answer/edit(answerId=${existsAnswerId})}" method="post">
+                                        <div class="my-3">
+                                            <textarea class="form-control" placeholder="대답 내용을 적어주세요." th:field="${answer.content}" style="height: 100px"></textarea>
+                                        </div>
+
+                                        <div class="d-flex justify-content-end">
+                                            <input type="submit" class="btn btn-primary btn-sm px-3" th:value="${existsAnswerId == null} ? 저장 : 수정">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Forum List -->
+
+                        <!-- /Inner main body -->
+                    </div>
+                    <!-- /Inner main -->
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
