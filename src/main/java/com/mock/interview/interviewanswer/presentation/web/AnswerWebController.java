@@ -24,7 +24,7 @@ public class AnswerWebController {
             HttpServletRequest request
     ) {
         Page<AnswerForView> answerPage = interviewAnswerRepositoryForListView.findQuestionAnswerPage(questionId, pageable);
-        AnswerPageInitializer.initListPage(model, answerPage, request);
+        AnswerPageInitializer.initListPage(model, questionId, answerPage, request);
         return "/answer/list";
     }
 }

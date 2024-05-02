@@ -17,7 +17,9 @@
             <div>
                 <div class="my-3 d-flex justify-content-end align-items-center">
                     <div class="me-2"><span>검색된 결과 수 : </span><span class="mx-1" th:text="${answerPage.totalElements}"></span></div>
-                    <div><a th:href="@{/answer/form}" class="btn btn-sm btn-primary">대답 등록</a></div>
+                    <div sec:authorize="isAuthenticated()">
+                        <a th:href="@{/question/{questionId}/answer/form(questionId=${questionId})}" class="btn btn-sm btn-primary">대답 등록</a>
+                    </div>
                 </div>
             </div>
 

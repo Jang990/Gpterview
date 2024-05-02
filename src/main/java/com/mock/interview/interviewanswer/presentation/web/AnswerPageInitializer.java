@@ -10,8 +10,9 @@ import org.springframework.ui.Model;
 public final class AnswerPageInitializer {
     private AnswerPageInitializer() {}
 
-    public static void initListPage(Model model, Page<AnswerForView> overviewPage, HttpServletRequest request) {
+    public static void initListPage(Model model, long questionId, Page<AnswerForView> overviewPage, HttpServletRequest request) {
         model.addAttribute("headerActiveTap", "interview-question");
+        model.addAttribute("questionId", questionId);
         model.addAttribute("answerPage", overviewPage);
         model.addAttribute("currentUri", request.getRequestURI());
     }
