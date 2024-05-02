@@ -155,6 +155,12 @@ public class InterviewQuestion extends BaseEntity {
         this.parentQuestion = parent;
     }
 
+    public void removeParent() {
+        if(parentQuestion == null)
+            throw new IllegalStateException("상위 질문이 존재하지 않음");
+        parentQuestion = null;
+    }
+
 
     // TODO: 조회 수 추가하기.
     // TODO: 질문에 대한 댓글 추가

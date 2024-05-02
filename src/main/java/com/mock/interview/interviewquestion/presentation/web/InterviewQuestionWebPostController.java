@@ -94,4 +94,13 @@ public class InterviewQuestionWebPostController {
         CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
         return "redirect:/question/" + questionSavingService.save(loginId, parentQuestionId, form);
     }
+
+    @PostMapping("question/{questionId}/parent/delete")
+    public String deleteParentQuestion(
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable("questionId") long questionId
+    ) {
+        questionDeleteService.deleteParent(questionId, loginId);
+        return "redirect:/question/" + questionId;
+    }
 }

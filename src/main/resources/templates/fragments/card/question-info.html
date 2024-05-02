@@ -21,29 +21,17 @@
         <div class="ms-3">
             <th:block th:each="tech : ${question.techList}">
                 <a th:href="@{/question/tech/{techId}(techId=${tech.id})}"
-                   class="btn btn-sm btn-secondary my-1" th:text="${tech.value}">관련 기술</a>
+                   class="btn btn-sm btn-secondary me-1" th:text="${tech.value}">관련 기술</a>
             </th:block>
-        </div>
-        <div class="d-flex justify-content-end flex-fill">
-            <div th:if="${not enableLink}" class="d-flex">
-                <a class="btn btn-link" th:href="@{/question/{questionId}/edit(questionId=${question.id})}"><i class="fas fa-solid fa-pen"></i></a>
-                <form method="post" th:action="@{/question/{questionId}/delete(questionId=${question.id})}">
-                    <button type="submit" class="btn btn-link"><i class="fas fa-solid fa-trash" style="color: #C81121;"></i></button>
-                </form>
-            </div>
         </div>
     </div>
 
-    <div class="mt-3 mb-4 pb-2">
+    <div class="my-4 pb-2">
         <a class="btn btn-light btn-lg btn-block w-100" th:if="${enableLink}" th:href="@{/question/{questionId}(questionId=${question.id})}" th:text="${question.content}">질문 내용</a>
         <span class="btn-lg w-100 fs-5" th:unless="${enableLink}" th:text="${question.content}"></span>
     </div>
 
-    <div class="small d-flex justify-content-end">
-
-    </div>
-
-    <div class="small d-flex justify-content-between">
+    <div class="small d-flex justify-content-between py-1">
         <div class="small d-flex justify-content-start">
             <div>
                 <a href="#">
@@ -55,12 +43,6 @@
             </div>
         </div>
         <div>
-            <div th:if="${question.parentQuestionId != null AND NOT enableLink}">
-                <a th:href="@{/question/{questionId}(questionId=${question.parentQuestionId})}" class="btn btn-gray btn-sm">상위 질문으로</a>
-                <form th:if="${#authentication.principal.id == question.ownerId}" th:action="@{/question/{questionId}/parent/delete(questionId=${question.id})}" method="post">
-                    <input type="submit"  class="btn btn-gray btn-sm" value="상위 질문 제거">
-                </form>
-            </div>
             <div class="text-muted small mb-0"
                  th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm ')}">
                 생성일

@@ -3,6 +3,8 @@ package com.mock.interview.interviewquestion.application;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.application.helper.QuestionVerifyHelper;
+import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
+import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.interviewquestion.infra.QuestionExistsRepository;
 import com.mock.interview.questionlike.domain.QuestionLikesRepository;
@@ -27,5 +29,11 @@ public class QuestionDeleteService {
         interviewConversationPairRepository.removeQuestion(questionId);
         questionLikesRepository.deleteByQuestionId(questionId);
         questionRepository.deleteById(questionId);
+    }
+
+    public void deleteParent(long questionId, long loginId) {
+        InterviewQuestion question = questionRepository.findUserQuestion(loginId, questionId)
+                .orElseThrow(InterviewQuestionNotFoundException::new);
+        question.removeParent();
     }
 }

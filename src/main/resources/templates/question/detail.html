@@ -14,8 +14,30 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                             <div class="card-body">
-                                <div class="mb-3 ms-2">
-                                    <h4> 질문 정보 </h4>
+                                <div class="mb-3 d-flex justify-content-between">
+                                    <div class="d-flex justify-content-start">
+                                        <div class="mx-2"><h4> 질문 정보 </h4></div>
+                                        <th:block th:if="${question.parentQuestionId != null}">
+                                            <div class="me-2">
+                                                <a th:href="@{/question/{questionId}(questionId=${question.parentQuestionId})}" class="btn btn-gray btn-sm">상위질문</a>
+                                            </div>
+                                            <div class="me-2" sec:authorize="isAuthenticated()">
+                                                <form th:if="${#authentication.principal.id == question.ownerId}" th:action="@{/question/{questionId}/parent/delete(questionId=${question.id})}" method="post">
+                                                    <input type="submit"  class="btn btn-gray btn-sm text-danger" value="상위질문 제거">
+                                                </form>
+                                            </div>
+                                        </th:block>
+                                    </div>
+                                    <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id == question.ownerId}">
+                                        <div class="d-flex justify-content-end flex-fill">
+                                            <div class="d-flex">
+                                                <a class="btn btn-link" th:href="@{/question/{questionId}/edit(questionId=${question.id})}"><i class="fas fa-solid fa-pen"></i></a>
+                                                <form method="post" th:action="@{/question/{questionId}/delete(questionId=${question.id})}">
+                                                    <button type="submit" class="btn btn-link"><i class="fas fa-solid fa-trash" style="color: #C81121;"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=false)}">질문 정보</div>
                             </div>
