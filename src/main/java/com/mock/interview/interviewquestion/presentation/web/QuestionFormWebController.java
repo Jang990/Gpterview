@@ -59,6 +59,7 @@ public class QuestionFormWebController {
         QuestionForm question = questionRepositoryForView.findQuestionForm(questionId, loginUserDetail.getId());
         model.addAttribute("question", question);
         model.addAttribute("headerActiveTap", "interview-question");
+        model.addAttribute("existsQuestionId", questionId);
         return "/question/form";
     }
 }

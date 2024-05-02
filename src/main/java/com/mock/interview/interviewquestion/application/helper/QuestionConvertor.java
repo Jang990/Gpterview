@@ -2,6 +2,7 @@ package com.mock.interview.interviewquestion.application.helper;
 
 import com.mock.interview.category.application.helper.CategoryConvertor;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
+import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
@@ -59,8 +60,12 @@ public class QuestionConvertor {
                 TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
                 convert(question.getQuestionType()),
                 question.getQuestion(),
-                question.getId()
+                convert(question.getExperience())
         );
+    }
+
+    private static Long convert(Experience experience) {
+        return experience == null ? null : experience.getId();
     }
 
     private static Long getParentId(InterviewQuestion parentQuestion) {
