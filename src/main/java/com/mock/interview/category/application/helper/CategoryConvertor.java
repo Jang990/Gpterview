@@ -9,12 +9,6 @@ import com.mock.interview.user.domain.model.Users;
 
 public final class CategoryConvertor {
     private CategoryConvertor() {}
-    public static JobCategoryView convert(JobCategory category, JobPosition position) {
-        return new JobCategoryView(
-                category == null ? null : category.getName(),
-                position == null ? null : position.getName()
-        );
-    }
 
     public static CategoryResponse convert(JobCategory category) {
         return category == null ?
@@ -26,6 +20,13 @@ public final class CategoryConvertor {
         return position == null ?
                 new CategoryResponse()
                 : new CategoryResponse(position.getId(), position.getName());
+    }
+
+    public static JobCategoryView convertView(JobCategory category) {
+        return category == null ? null : new JobCategoryView(category.getId(), category.getName());
+    }
+    public static JobCategoryView convertView(JobPosition position) {
+        return position == null ? null : new JobCategoryView(position.getId(), position.getName());
     }
 
     public static JobCategorySelectedIds convertSelectedJobCategoryView(Users users) {

@@ -98,8 +98,8 @@ public class QuestionRepositoryForView {
                 .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
                 .where(
                         findChildQuestion(searchOptions.getParentQuestionIdCond()),
-                        categoryEq(searchOptions.getCategoryNameCond()),
-                        positionEq(searchOptions.getPositionNameCond()), createdByEq(searchOptions.getCreatedByCond()),
+                        categoryIdEq(searchOptions.getCategoryIdCond()),
+                        positionIdEq(searchOptions.getPositionIdCond()), createdByEq(searchOptions.getCreatedByCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
                         keywordContains(searchOptions.getSearchCond().getKeywordCond()),
                         isVisible()
@@ -114,8 +114,8 @@ public class QuestionRepositoryForView {
                 .from(interviewQuestion)
                 .where(
                         findChildQuestion(searchOptions.getParentQuestionIdCond()),
-                        categoryEq(searchOptions.getCategoryNameCond()),
-                        positionEq(searchOptions.getPositionNameCond()),
+                        categoryIdEq(searchOptions.getCategoryIdCond()),
+                        positionIdEq(searchOptions.getPositionIdCond()),
                         createdByEq(searchOptions.getCreatedByCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
                         keywordContains(searchOptions.getSearchCond().getKeywordCond()),
@@ -141,12 +141,12 @@ public class QuestionRepositoryForView {
                 null : interviewQuestion.parentQuestion.id.eq(parentQuestionIdCond);
     }
 
-    private BooleanExpression categoryEq(String jobCategoryCond) {
-        return jobCategoryCond == null ? null : interviewQuestion.category.name.eq(jobCategoryCond);
+    private BooleanExpression categoryIdEq(Long jobCategoryIdCond) {
+        return jobCategoryIdCond == null ? null : interviewQuestion.category.id.eq(jobCategoryIdCond);
     }
 
-    private BooleanExpression positionEq(String jobPositionCond) {
-        return jobPositionCond == null ? null : interviewQuestion.position.name.eq(jobPositionCond);
+    private BooleanExpression positionIdEq(Long jobPositionIdCond) {
+        return jobPositionIdCond == null ? null : interviewQuestion.position.id.eq(jobPositionIdCond);
     }
 
     private BooleanExpression createdByEq(String createdBy) {

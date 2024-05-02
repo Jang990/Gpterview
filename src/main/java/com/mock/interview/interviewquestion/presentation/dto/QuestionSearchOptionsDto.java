@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class QuestionSearchOptionsDto {
     private QuestionSearchCond searchCond;
     private Long parentQuestionIdCond;
-    private String categoryNameCond;
-    private String positionNameCond;
+    private Long categoryIdCond;
+    private Long positionIdCond;
     private String createdByCond;
 }

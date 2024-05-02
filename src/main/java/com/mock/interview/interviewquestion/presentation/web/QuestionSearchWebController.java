@@ -46,30 +46,30 @@ public class QuestionSearchWebController {
         return "/interview/question";
     }
 
-    @GetMapping("question/category/{categoryName}")
+    @GetMapping("question/category/{categoryId}")
     public String categoryQuestionListPage(
-            @PathVariable(name = "categoryName") String categoryName,
+            @PathVariable(name = "categoryId") long categoryId,
             QuestionSearchCond searchCond,
             Model model, @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
-                .categoryNameCond(categoryName)
+                .categoryIdCond(categoryId)
                 .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "/question/list";
     }
 
-    @GetMapping("question/position/{positionName}")
+    @GetMapping("question/position/{positionId}")
     public String positionQuestionListPage(
-            @PathVariable(name = "positionName") String positionName,
+            @PathVariable(name = "positionId") long positionId,
             QuestionSearchCond searchCond,
             Model model, @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
-                .positionNameCond(positionName)
+                .positionIdCond(positionId)
                 .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);

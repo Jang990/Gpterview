@@ -44,7 +44,8 @@ public class QuestionConvertor {
 
     public static QuestionOverview convert(InterviewQuestion question) {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
-                CategoryConvertor.convert(question.getCategory(), question.getPosition()),
+                CategoryConvertor.convertView(question.getCategory()),
+                CategoryConvertor.convertView(question.getPosition()),
                 TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
                 question.getQuestion(), question.getCreatedAt(),
                 getParentId(question.getParentQuestion()), question.getOwner().getId(),

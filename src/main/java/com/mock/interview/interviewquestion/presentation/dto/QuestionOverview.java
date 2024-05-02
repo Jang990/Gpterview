@@ -14,6 +14,7 @@ public class QuestionOverview {
     private long id; // 1
     private String createdBy;
     private JobCategoryView category;
+    private JobCategoryView position;
     private List<TechViewDto> techList; // Redis
     private String content; // Redis를 왜 사용하나요?
     private LocalDateTime createdAt;
