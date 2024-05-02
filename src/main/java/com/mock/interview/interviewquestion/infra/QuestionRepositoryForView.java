@@ -40,6 +40,21 @@ public class QuestionRepositoryForView {
                 .where(interviewQuestion.id.eq(parentQuestionId)).fetchOne();
     }
 
+    public QuestionForm findQuestionForm(long questionIdCond, long userId) {
+        QInterviewQuestion parent = new QInterviewQuestion("parent");
+        InterviewQuestion question = query.selectFrom(interviewQuestion)
+                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
+                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
+                .leftJoin(interviewQuestion.parentQuestion, parent).fetchJoin()
+                .where(questionIdEq(questionIdCond), ownerIdEq(userId))
+                .fetchOne();
+
+        if(question == null)
+            throw new InterviewQuestionNotFoundException();
+
+        return QuestionConvertor.convertForm(question);
+    }
+
     /** isHidden여부와 상관없이 가져오므로 권한에 따라 redirect 필요 */
     public QuestionOverview findQuestion(Long questionIdCond) {
         QInterviewQuestion parent = new QInterviewQuestion("parent");
@@ -140,6 +155,10 @@ public class QuestionRepositoryForView {
 
     private BooleanExpression questionIdEq(Long questionIdCond) {
         return questionIdCond == null ? null : interviewQuestion.id.eq(questionIdCond);
+    }
+
+    private BooleanExpression ownerIdEq(Long ownerId) {
+        return ownerId == null ? null : interviewQuestion.owner.id.eq(ownerId);
     }
 
     private BooleanExpression isVisible() {

@@ -31,7 +31,7 @@
                                     <div sec:authorize="isAuthenticated()" th:if="${#authentication.principal.id == question.ownerId}">
                                         <div class="d-flex justify-content-end flex-fill">
                                             <div class="d-flex">
-                                                <a class="btn btn-link" th:href="@{/question/{questionId}/edit(questionId=${question.id})}"><i class="fas fa-solid fa-pen"></i></a>
+                                                <a class="btn btn-link" th:href="@{/question/{questionId}/edit/form(questionId=${question.id})}"><i class="fas fa-solid fa-pen"></i></a>
                                                 <form method="post" th:action="@{/question/{questionId}/delete(questionId=${question.id})}">
                                                     <button type="submit" class="btn btn-link"><i class="fas fa-solid fa-trash" style="color: #C81121;"></i></button>
                                                 </form>

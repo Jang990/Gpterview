@@ -54,12 +54,13 @@
                                         </div>
 
                                         <div class="mb-3"th:replace="~{fragments/form/tech :: fragment-tech(tech=${question.tech})}">관련기술 영역</div>
-                                        <div class="mb-3"th:text="${question.content}"></div>
-                                        <div class="mb-3">
-                                            <textarea class="form-control" placeholder="질문 내용을 적어주세요." id="content" name="content" style="height: 100px"></textarea>
+                                        <div class="my-3">
+                                            <textarea class="form-control" placeholder="질문 내용을 적어주세요." th:field="${question.content}" style="height: 100px"></textarea>
                                         </div>
 
-                                        <input type="submit" value="저장">
+                                        <div class="d-flex justify-content-end">
+                                            <input type="submit" class="btn btn-primary btn-sm px-3" value="저장">
+                                        </div>
                                     </form>
                                 </div>
                             </div>

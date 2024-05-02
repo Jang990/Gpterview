@@ -1,11 +1,13 @@
 package com.mock.interview.interviewquestion.application.helper;
 
 import com.mock.interview.category.application.helper.CategoryConvertor;
+import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
 import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;
@@ -32,6 +34,14 @@ public class QuestionConvertor {
         };
     }
 
+    public static QuestionTypeForView convert(QuestionType type) {
+        return switch (type) {
+            case TECHNICAL -> QuestionTypeForView.TECHNICAL;
+            case PERSONALITY -> QuestionTypeForView.PERSONALITY;
+            case EXPERIENCE -> QuestionTypeForView.EXPERIENCE;
+        };
+    }
+
     public static QuestionOverview convert(InterviewQuestion question) {
         return new QuestionOverview(question.getId(), question.getCreatedBy(),
                 CategoryConvertor.convert(question.getCategory(), question.getPosition()),
@@ -39,6 +49,16 @@ public class QuestionConvertor {
                 question.getQuestion(), question.getCreatedAt(),
                 getParentId(question.getParentQuestion()), question.getOwner().getId(),
                 question.getLikes(), question.isHidden()
+        );
+    }
+
+    public static QuestionForm convertForm(InterviewQuestion question) {
+        return new QuestionForm(
+                CategoryConvertor.convertSelectedJobCategoryView(question.getCategory(), question.getPosition()),
+                TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
+                convert(question.getQuestionType()),
+                question.getQuestion(),
+                question.getId()
         );
     }
 

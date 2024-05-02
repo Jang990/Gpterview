@@ -48,4 +48,17 @@ public class QuestionFormWebController {
         model.addAttribute("parentQuestion", parentQuestionSummary);
         return "/question/child-form";
     }
+
+    @GetMapping("/question/{questionId}/edit/form")
+    public String questionEditPage(
+            Model model,
+            @AuthenticationPrincipal LoginUserDetail loginUserDetail,
+            @PathVariable("questionId") long questionId
+    ) {
+        CategoryViewer.setCategoriesView(model, categoryService, positionService);
+        QuestionForm question = questionRepositoryForView.findQuestionForm(questionId, loginUserDetail.getId());
+        model.addAttribute("question", question);
+        model.addAttribute("headerActiveTap", "interview-question");
+        return "/question/form";
+    }
 }

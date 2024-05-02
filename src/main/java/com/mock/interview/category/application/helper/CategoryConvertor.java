@@ -34,4 +34,11 @@ public final class CategoryConvertor {
                 users.getPosition() == null ? null : users.getPosition().getId()
         );
     }
+
+    public static JobCategorySelectedIds convertSelectedJobCategoryView(JobCategory category, JobPosition position) {
+        return new JobCategorySelectedIds(
+                category == null ? null : category.getId(),
+                position == null ? null : position.getId()
+        );
+    }
 }
