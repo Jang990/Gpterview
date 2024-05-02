@@ -36,6 +36,18 @@ public interface InterviewQuestionRepository extends JpaRepository<InterviewQues
             """)
     Optional<InterviewQuestion> findUserQuestion(@Param("userId") long userId, @Param("questionId") long questionId);
 
+    @Query("""
+            SELECT iq
+            FROM InterviewQuestion iq
+            LEFT JOIN FETCH iq.category
+            LEFT JOIN FETCH iq.position
+            LEFT JOIN FETCH iq.experience
+            LEFT JOIN FETCH iq.techLink
+            LEFT JOIN FETCH iq.techLink.technicalSubjects
+            WHERE iq.id = :questionId AND iq.owner.id = :ownerId
+            """)
+    Optional<InterviewQuestion> findUserQuestionWithAll(@Param("ownerId") long ownerId, @Param("questionId") long questionId);
+
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("DELETE FROM InterviewQuestion iq WHERE iq.experience.id = :experienceId")
     int deleteByExperienceId(@Param("experienceId") long experienceId);

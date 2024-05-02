@@ -12,19 +12,16 @@ public class JobConnectionHelper {
             JobCategoryRepository categoryRepository, JobPositionRepository positionRepository,
             InterviewQuestion question, Long categoryId, Long positionId
     ) {
-        if (categoryId == null)
-            throw new IllegalArgumentException("categoryId는 필수");
-
-        if (positionId == null) {
-            JobCategory category = categoryRepository.findById(categoryId)
-                    .orElseThrow(JobCategoryNotFoundException::new);
-            question.linkCategory(category);
+        if(categoryId == null)
             return;
-        }
+        JobCategory category = categoryRepository.findById(categoryId)
+                .orElseThrow(JobCategoryNotFoundException::new);
+        question.linkCategory(category);
 
+        if (positionId == null)
+            return;
         JobPosition position = positionRepository.findById(positionId)
                 .orElseThrow(JobCategoryNotFoundException::new);
-        JobCategory category = position.getCategory();
-        question.linkJob(category, position);
+        question.linkPosition(position);
     }
 }

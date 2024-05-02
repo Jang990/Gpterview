@@ -4,6 +4,7 @@ import com.mock.interview.category.presentation.CategoryValidator;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
 import com.mock.interview.interviewquestion.application.QuestionDeleteService;
 import com.mock.interview.interviewquestion.application.QuestionSavingService;
+import com.mock.interview.interviewquestion.application.QuestionUpdatingService;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class InterviewQuestionWebPostController {
     private final QuestionSavingService questionSavingService;
     private final QuestionDeleteService questionDeleteService;
+    private final QuestionUpdatingService questionUpdatingService;
 
     @PostMapping("question")
     public String save(
@@ -42,10 +44,12 @@ public class InterviewQuestionWebPostController {
     @PostMapping("question/{questionId}/edit")
     public String edit(
             @AuthenticationPrincipal(expression = "id") Long loginId,
-            @PathVariable("questionId") long questionId
-    ) {
-        // TODO: 수정 로직 작성
-        return "redirect:/question";
+            @PathVariable("questionId") long questionId,
+            QuestionForm form, BindingResult bindingResult
+    ) throws BindException {
+        CategoryValidator.validate(bindingResult, new JobCategorySelectedIds(form.getCategoryId(), form.getPositionId()));
+        questionUpdatingService.update(loginId, questionId, form);
+        return "redirect:/question/"+questionId;
     }
 
     @PostMapping("question/{parentQuestionId}/child")

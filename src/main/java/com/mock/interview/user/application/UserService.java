@@ -2,6 +2,7 @@ package com.mock.interview.user.application;
 
 import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.infra.JobPositionRepository;
+import com.mock.interview.tech.application.helper.TechConnectHelper;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.user.application.helper.UserUpdateHelper;
@@ -44,21 +45,10 @@ public class UserService {
         Users users = repository.findWithTech(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        List<Long> existsTechIds = users.getTechLink().stream()
-                .map(UsersTechLink::getTechnicalSubjects)
-                .map(TechnicalSubjects::getId).toList();
-
-        List<Long> newTechIds = techRequest.stream()
-                .filter(newId -> !existsTechIds.contains(newId)).toList();
-        if (!newTechIds.isEmpty()) {
-            List<TechnicalSubjects> newTechList = technicalSubjectsRepository
-                    .findAllById(newTechIds);
-            users.linkTech(newTechList);
-        }
-
-        List<Long> techIdsToDelete = existsTechIds.stream()
-                .filter((existsId) -> !techRequest.contains(existsId)).toList();
-        if(!techIdsToDelete.isEmpty())
-            usersTechLinkRepository.deleteUserTech(userId, techIdsToDelete);
+        TechConnectHelper.replaceUserTech(
+                technicalSubjectsRepository,
+                usersTechLinkRepository,
+                users, techRequest
+        );
     }
 }
