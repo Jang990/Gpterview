@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="row justify-content-md-center" th:fragment="fragment-question-list-nav(currentUri, searchCond, isFirst, isLast, currentPageNumber,totalPages)">
+    <ul class="pagination pagination-sm pagination-circle justify-content-center mb-0">
+        <li class="page-item" th:class="${isFirst ? 'disabled' : ''}">
+            <a class="page-link has-icon" th:if="${not isFirst}" th:href="@{${currentUri}(page=${0}, keywordCond=${searchCond.keywordCond}, typeCond=${searchCond.typeCond})}">
+                <i class="material-icons"> << </i>
+            </a>
+        </li>
+        <li class="page-item" th:class="${isFirst ? 'disabled' : ''}">
+            <a class="page-link has-icon" th:if="${not isFirst}" th:href="@{${currentUri}(page=${currentPageNumber - 1}, keywordCond=${searchCond.keywordCond}, typeCond=${searchCond.typeCond})}">
+                <i class="material-icons">이전</i>
+            </a>
+            <span class="page-link has-icon" th:if="${isFirst}"><i class="material-icons">이전</i></span>
+        </li>
+
+        <li class="page-item" th:each="pageNumber : ${#numbers.sequence(
+                                        (currentPageNumber - 3) > 0 ? currentPageNumber - 3 : 0,
+                                        (currentPageNumber + 3 < totalPages) ? currentPageNumber + 3 : ((totalPages -1) == -1 ? 0 : totalPages - 1)
+                                    )}"
+            th:class="${pageNumber == currentPageNumber} ? 'active' : ''">
+            <a class="page-link" th:if="${pageNumber != currentPageNumber}" th:href="@{${currentUri}(page=${pageNumber}, keywordCond=${searchCond.keywordCond}, typeCond=${searchCond.typeCond})}" th:text="${pageNumber + 1}"></a>
+            <span class="page-link" th:if="${pageNumber == currentPageNumber}" th:text="${pageNumber + 1}"></span>
+        </li>
+
+        <li class="page-item" th:class="${isLast ? 'disabled' : ''}">
+            <a class="page-link has-icon" th:if="${not isLast}" th:href="@{${currentUri}(page=${currentPageNumber + 1}, keywordCond=${searchCond.keywordCond}, typeCond=${searchCond.typeCond})}">
+                <i class="material-icons">다음</i>
+            </a>
+            <span class="page-link has-icon" th:if="${isLast}"><i class="material-icons">다음</i></span>
+        </li>
+        <li class="page-item" th:class="${isLast ? 'disabled' : ''}">
+            <a class="page-link has-icon" th:if="${not isLast}" th:href="@{${currentUri}(page=${totalPages - 1}, keywordCond=${searchCond.keywordCond}, typeCond=${searchCond.typeCond})}">
+                <i class="material-icons"> >> </i>
+            </a>
+        </li>
+    </ul>
+</div>
+</html>

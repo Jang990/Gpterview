@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div th:replace="~{fragments/page-nav :: fragment-page-nav(
+            <div th:replace="~{fragments/interview-list-nav :: fragment-interview-list-nav(
                                 isFirst=${interviewPage.first}, isLast=${interviewPage.last},
                                 currentPageNumber=${interviewPage.number}, totalPages=${interviewPage.totalPages})}">페이징 컨트롤 네비게이션 공간</div>
         </div>

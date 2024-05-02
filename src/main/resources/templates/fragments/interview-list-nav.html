@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="row justify-content-md-center" th:fragment="fragment-page-nav(isFirst, isLast, currentPageNumber,totalPages)">
+<div class="row justify-content-md-center" th:fragment="fragment-interview-list-nav(isFirst, isLast, currentPageNumber,totalPages)">
     <ul class="pagination pagination-sm pagination-circle justify-content-center mb-0">
         <li class="page-item" th:class="${isFirst ? 'disabled' : ''}">
             <a class="page-link has-icon" th:if="${not isFirst}" th:href="@{${currentUri}(page=${0})}">

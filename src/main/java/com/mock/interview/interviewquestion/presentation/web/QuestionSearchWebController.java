@@ -41,10 +41,8 @@ public class QuestionSearchWebController {
             @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
-        System.out.println("====>시작");
         Page<QuestionOverview> overviewPage = interviewQuestionRepositoryForView.findOverviewList(interviewId, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, new QuestionSearchCond(/* 임시코드 */), request);
-        System.out.println("====>끝");
         return "/interview/question";
     }
 
