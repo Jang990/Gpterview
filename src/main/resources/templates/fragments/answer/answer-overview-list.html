@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="fragment-answer-overview-list(questionId, answerList)">
+    <table class="table mb-0 table-hover">
+        <tbody>
+            <tr class="align-middle" th:each="answer: ${answerList}" th:onclick="@{location.href='/question/{questionId}/answer/{answerId}'(questionId=${questionId}, answerId=${answer.id})}" style="cursor: pointer;">
+                <td th:text="${answer.createdBy}">작성자</td>
+                <td th:text="${answer.content}">답변 내용</td>
+                <td th:text="${answer.likes}">
+                    <button sec:authorize="isAnonymous()">
+                        <i class="fas fa-thumbs-up me-1" th:text="| ${question.like} Likes |"></i>
+                    </button>
+                    <button sec:authorize="isAuthenticated()" th:onclick="|likeAnswer(${answer.id}, ${#authentication.principal.id})|">
+                        <i class="fas fa-thumbs-up me-1" th:text="| ${question.like} Likes |"></i>
+                    </button>
+                </td>
+                <td th:text="|${#temporals.format(answer.createdAt, 'MM-dd HH:mm')} 생성|">생성일</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

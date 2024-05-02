@@ -1,7 +1,7 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
 import com.mock.interview.global.security.dto.LoginUserDetail;
-import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForView;
+import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForListView;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionDetailWebController {
     private final QuestionRepositoryForView questionRepositoryForView;
-    private final InterviewAnswerRepositoryForView answerRepositoryForView;
+    private final InterviewAnswerRepositoryForListView answerRepositoryForView;
 
     @GetMapping("/question/{questionId}/unauthorized")
     public String unauthorizedPage(Model model, @PathVariable(name = "questionId") long questionId) {

@@ -3,26 +3,29 @@ package com.mock.interview.interviewanswer.infra;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.mock.interview.interviewanswer.domain.model.QInterviewAnswer.*;
+import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.interviewQuestion;
 import static com.mock.interview.user.domain.model.QUsers.*;
 
 @Repository
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class InterviewAnswerRepositoryForView {
+public class InterviewAnswerRepositoryForListView {
     private final JPAQueryFactory query;
     private final int TOP_3 = 3;
 
-    public List<AnswerForView> findAnswerTop3Likes(Long questionIdCond) {
-        verifyIdCond(questionIdCond);
-
+    public List<AnswerForView> findAnswerTop3Likes(long questionIdCond) {
         return query.select(
                 Projections.constructor(AnswerForView.class,
                         interviewAnswer.id, interviewAnswer.users.username,
@@ -35,10 +38,7 @@ public class InterviewAnswerRepositoryForView {
                 .fetch();
     }
 
-    public List<AnswerForView> findMyAnswer(Long loginIdCond, Long questionIdCond) {
-        verifyIdCond(loginIdCond);
-        verifyIdCond(questionIdCond);
-
+    public List<AnswerForView> findMyAnswer(long loginIdCond, long questionIdCond) {
         return query.select(
                     Projections.constructor(AnswerForView.class,
                             interviewAnswer.id, interviewAnswer.users.username,
@@ -51,9 +51,27 @@ public class InterviewAnswerRepositoryForView {
                 .fetch();
     }
 
-    private static void verifyIdCond(Long id) {
-        if(id == null)
-            throw new IllegalArgumentException();
+    public Page<AnswerForView> findQuestionAnswerPage(long questionId, Pageable pageable) {
+        List<AnswerForView> content = query.select(
+                        Projections.constructor(AnswerForView.class,
+                                interviewAnswer.id, interviewAnswer.users.username,
+                                interviewAnswer.createdAt, interviewAnswer.answer, interviewAnswer.likes)
+                )
+                .from(interviewAnswer)
+                .innerJoin(interviewAnswer.users, users)
+                .where(questionIdEq(questionId))
+                .orderBy(interviewAnswer.likes.desc(), interviewAnswer.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
+                .from(interviewAnswer)
+                .innerJoin(interviewAnswer.users, users)
+                .where(questionIdEq(questionId));
+
+        // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
     private static BooleanExpression questionIdEq(long questionIdCond) {

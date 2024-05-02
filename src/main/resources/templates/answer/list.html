@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title>면접 질문</title>
+</head>
+<body>
+    <section>
+        <div class="inner-main-header my-3">
+            <div class="ms-3 my-3">
+                <h3 class="ps-3 pt-3">대답목록</h3>
+            </div>
+        </div>
+        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+            <div th:replace="~{fragments/answer/answer-overview-list :: fragment-answer-overview-list(questionId=${questionId},answerList=${answerPage.content})}"></div>
+            <div>
+                <div class="my-3 d-flex justify-content-end align-items-center">
+                    <div class="me-2"><span>검색된 결과 수 : </span><span class="mx-1" th:text="${answerPage.totalElements}"></span></div>
+                    <div><a th:href="@{/answer/form}" class="btn btn-sm btn-primary">대답 등록</a></div>
+                </div>
+            </div>
+
+            <div th:replace="~{fragments/interview-list-nav :: fragment-interview-list-nav(
+                                isFirst=${answerPage.first}, isLast=${answerPage.last},
+                                currentPageNumber=${answerPage.number}, totalPages=${answerPage.totalPages})}">페이징 컨트롤 네비게이션 공간</div>
+        </div>
+    </section>
+</body>
+</html>
