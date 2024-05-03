@@ -1,6 +1,6 @@
 package com.mock.interview.interviewanswer.infra;
 
-import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
+import com.mock.interview.interviewanswer.presentation.dto.AnswerDetailDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -25,9 +25,9 @@ public class InterviewAnswerRepositoryForListView {
     private final JPAQueryFactory query;
     private final int TOP_3 = 3;
 
-    public List<AnswerForView> findAnswerTop3Likes(long questionIdCond) {
+    public List<AnswerDetailDto> findAnswerTop3Likes(long questionIdCond) {
         return query.select(
-                Projections.constructor(AnswerForView.class,
+                Projections.constructor(AnswerDetailDto.class,
                         interviewAnswer.id, interviewAnswer.users.username,
                         interviewAnswer.createdAt, interviewAnswer.answer, interviewAnswer.likes))
                 .from(interviewAnswer)
@@ -38,9 +38,9 @@ public class InterviewAnswerRepositoryForListView {
                 .fetch();
     }
 
-    public List<AnswerForView> findMyAnswer(long loginIdCond, long questionIdCond) {
+    public List<AnswerDetailDto> findMyAnswer(long loginIdCond, long questionIdCond) {
         return query.select(
-                    Projections.constructor(AnswerForView.class,
+                    Projections.constructor(AnswerDetailDto.class,
                             interviewAnswer.id, interviewAnswer.users.username,
                             interviewAnswer.createdAt, interviewAnswer.answer, interviewAnswer.likes)
                 )
@@ -51,9 +51,9 @@ public class InterviewAnswerRepositoryForListView {
                 .fetch();
     }
 
-    public Page<AnswerForView> findQuestionAnswerPage(long questionId, Pageable pageable) {
-        List<AnswerForView> content = query.select(
-                        Projections.constructor(AnswerForView.class,
+    public Page<AnswerDetailDto> findQuestionAnswerPage(long questionId, Pageable pageable) {
+        List<AnswerDetailDto> content = query.select(
+                        Projections.constructor(AnswerDetailDto.class,
                                 interviewAnswer.id, interviewAnswer.users.username,
                                 interviewAnswer.createdAt, interviewAnswer.answer, interviewAnswer.likes)
                 )

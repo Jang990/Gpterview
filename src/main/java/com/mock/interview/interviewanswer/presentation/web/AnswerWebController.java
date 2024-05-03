@@ -1,7 +1,7 @@
 package com.mock.interview.interviewanswer.presentation.web;
 
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForListView;
-import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
+import com.mock.interview.interviewanswer.presentation.dto.AnswerDetailDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,8 +23,18 @@ public class AnswerWebController {
             @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
-        Page<AnswerForView> answerPage = interviewAnswerRepositoryForListView.findQuestionAnswerPage(questionId, pageable);
+        Page<AnswerDetailDto> answerPage = interviewAnswerRepositoryForListView.findQuestionAnswerPage(questionId, pageable);
         AnswerPageInitializer.initListPage(model, questionId, answerPage, request);
+        return "/answer/list";
+    }
+
+    @GetMapping("/question/{questionId}/answer/{answerId}")
+    public String questionAnswerPage(
+            Model model,
+            @PathVariable("questionId") long questionId,
+            @PathVariable("answerId") long answerId
+    ) {
+        AnswerPageInitializer.initAnswerPageHeaderSelected(model);
         return "/answer/list";
     }
 }

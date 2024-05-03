@@ -2,7 +2,7 @@ package com.mock.interview.interviewquestion.presentation.web;
 
 import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForListView;
-import com.mock.interview.interviewanswer.presentation.dto.AnswerForView;
+import com.mock.interview.interviewanswer.presentation.dto.AnswerDetailDto;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
@@ -42,7 +42,7 @@ public class QuestionDetailWebController {
             return "redirect:/question/"+questionId+"/unauthorized";
         }
 
-        List<AnswerForView> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
+        List<AnswerDetailDto> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
         List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForView.findChildQuestionTop3Likes(questionId);
 
         model.addAttribute("question", question);

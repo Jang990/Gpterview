@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnswerForView {
+public class AnswerDetailDto {
     private Long id;
     private String createdBy;
     private LocalDateTime createdAt;
