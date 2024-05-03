@@ -1,12 +1,14 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
 import com.mock.interview.global.security.dto.LoginUserDetail;
-import com.mock.interview.interviewquestion.presentation.dto.ParentQuestionSummaryDto;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
+import com.mock.interview.interviewanswer.presentation.dto.AnswerDetailDto;
+import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
+import com.mock.interview.interviewquestion.presentation.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
+
+import java.util.List;
 
 public class QuestionPageInitializer {
     public static void initListPage(Model model, Page<QuestionOverview> overviewPage, QuestionSearchCond searchCond, HttpServletRequest request) {
@@ -20,8 +22,19 @@ public class QuestionPageInitializer {
         model.addAttribute("questionSearchCond", searchCond);
     }
 
-    public static void initQuestionDetail(Model model, QuestionOverview question) {
-        model.addAttribute("question", question);
+    public static void initQuestionDetail(
+            Model model, QuestionDetailDto questionDetail,
+            List<AnswerDetailDto> answerTop3,
+            List<ChildQuestionOverview> childQuestionTop3
+    ) {
+        questionDetail.setAnswerTop3(answerTop3);
+        questionDetail.setChildQuestionTop3(childQuestionTop3);
+        model.addAttribute("questionDetailPage", questionDetail);
+        model.addAttribute("answer", new AnswerForm());
+    }
+
+    public static void initQuestionOverview(Model model, QuestionOverview questionOverview) {
+        model.addAttribute("question", questionOverview);
     }
 
     public static void initEmptyQuestionSearchForm(Model model) {

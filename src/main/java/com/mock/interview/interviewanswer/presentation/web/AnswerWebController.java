@@ -43,9 +43,9 @@ public class AnswerWebController {
         if(answer == null)
             throw new InterviewAnswerNotFoundException();
 
-        QuestionOverview question = questionRepositoryForView.findQuestion(questionId);
+        QuestionOverview question = questionRepositoryForView.findQuestionOverview(questionId);
 
-        QuestionPageInitializer.initQuestionDetail(model, question);
+        QuestionPageInitializer.initQuestionOverview(model, question);
         AnswerPageInitializer.initAnswerDetail(model, answer);
         AnswerPageInitializer.initAnswerPageHeaderSelected(model);
         return "/answer/detail";

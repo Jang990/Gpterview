@@ -7,6 +7,7 @@ import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForListView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionDetailDto;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.user.presentation.dto.UnauthorizedPageInfo;
 import lombok.RequiredArgsConstructor;
@@ -39,18 +40,14 @@ public class QuestionDetailWebController {
             @PathVariable(name = "questionId") long questionId
     ) {
         model.addAttribute("headerActiveTap", "interview-question");
-        QuestionOverview question = questionRepositoryForView.findQuestion(questionId);
-        if (QuestionPageInitializer.isUnauthorized(users, question)) {
+        QuestionDetailDto question = questionRepositoryForView.findQuestionDetail(questionId);
+        if (QuestionPageInitializer.isUnauthorized(users, question.getQuestion())) {
             return "redirect:/question/"+questionId+"/unauthorized";
         }
 
         List<AnswerDetailDto> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
         List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForListView.findChildQuestionTop3Likes(questionId);
-
-        QuestionPageInitializer.initQuestionDetail(model, question);
-        model.addAttribute("answerTop3", answerTop3);
-        model.addAttribute("childQuestion", childQuestionTop3);
-        model.addAttribute("answer", new AnswerForm());
+        QuestionPageInitializer.initQuestionDetail(model, question, answerTop3, childQuestionTop3);
         return "/question/detail";
     }
 }

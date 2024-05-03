@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.mock.interview.category.domain.model.QJobCategory.*;
 import static com.mock.interview.category.domain.model.QJobPosition.*;
+import static com.mock.interview.experience.domain.QExperience.*;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.*;
 
 @Repository
@@ -59,12 +60,10 @@ public class QuestionRepositoryForView {
     }
 
     /** isHidden여부와 상관없이 가져오므로 권한에 따라 redirect 필요 */
-    public QuestionOverview findQuestion(Long questionIdCond) {
-        QInterviewQuestion parent = new QInterviewQuestion("parent");
+    public QuestionOverview findQuestionOverview(Long questionIdCond) {
         InterviewQuestion question = query.selectFrom(interviewQuestion)
                 .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
                 .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
-                .leftJoin(interviewQuestion.parentQuestion, parent).fetchJoin()
                 .where(questionIdEq(questionIdCond))
                 .fetchOne();
 
@@ -72,6 +71,22 @@ public class QuestionRepositoryForView {
             throw new InterviewQuestionNotFoundException();
 
         return QuestionConvertor.convert(question);
+    }
+
+    public QuestionDetailDto findQuestionDetail(Long questionIdCond) {
+        QInterviewQuestion parent = new QInterviewQuestion("parent");
+        InterviewQuestion question = query.selectFrom(interviewQuestion)
+                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
+                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
+                .leftJoin(interviewQuestion.parentQuestion, parent).fetchJoin()
+                .leftJoin(interviewQuestion.experience, experience).fetchJoin()
+                .where(questionIdEq(questionIdCond))
+                .fetchOne();
+
+        if(question == null)
+            throw new InterviewQuestionNotFoundException();
+
+        return QuestionConvertor.convertDetail(question);
     }
 
 

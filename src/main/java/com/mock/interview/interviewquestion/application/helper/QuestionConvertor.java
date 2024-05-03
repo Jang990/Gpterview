@@ -2,12 +2,14 @@ package com.mock.interview.interviewquestion.application.helper;
 
 import com.mock.interview.category.application.helper.CategoryConvertor;
 import com.mock.interview.category.presentation.dto.JobCategorySelectedIds;
+import com.mock.interview.experience.application.helper.ExperienceConvertor;
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.presentation.dto.InterviewRole;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.domain.model.QuestionTechLink;
 import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionDetailDto;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionForm;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
@@ -50,6 +52,14 @@ public class QuestionConvertor {
                 TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
                 question.getQuestion(), convert(question.getQuestionType()), question.getCreatedAt(),
                 question.getOwner().getId(), question.getLikes(), question.isHidden()
+        );
+    }
+
+    public static QuestionDetailDto convertDetail(InterviewQuestion question) {
+        return new QuestionDetailDto(
+                convert(question),
+                question.getParentQuestion() == null ? null : convert(question.getParentQuestion()),
+                question.getExperience() == null ? null : ExperienceConvertor.convertView(question.getExperience())
         );
     }
 

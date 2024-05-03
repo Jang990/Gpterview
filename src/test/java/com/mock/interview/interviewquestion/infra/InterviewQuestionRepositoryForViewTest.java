@@ -15,14 +15,14 @@ class InterviewQuestionRepositoryForViewTest {
 
 //    @Test
     void test0() {
-        QuestionOverview question = repositoryForView.findQuestion(803L);
+        QuestionOverview question = repositoryForView.findQuestionOverview(803L);
         System.out.println(question);
     }
 
 //    @Test
     void test1() {
         Assertions.assertThrows(InterviewQuestionNotFoundException.class,
-                () -> repositoryForView.findQuestion(0L));
+                () -> repositoryForView.findQuestionOverview(0L));
     }
 
 //    @Test

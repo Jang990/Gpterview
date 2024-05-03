@@ -45,7 +45,7 @@ public class AnswerFormWebController {
             @PathVariable("answerId") long answerId,
             @AuthenticationPrincipal LoginUserDetail loginUserDetail
     ) {
-        QuestionOverview question = questionRepositoryForView.findQuestion(questionId);
+        QuestionOverview question = questionRepositoryForView.findQuestionOverview(questionId);
         if(QuestionPageInitializer.isUnauthorized(loginUserDetail, question))
             return "redirect:/question/"+questionId+"/unauthorized";
         model.addAttribute("question", question);
