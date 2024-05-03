@@ -20,6 +20,10 @@ public class QuestionPageInitializer {
         model.addAttribute("questionSearchCond", searchCond);
     }
 
+    public static void initQuestionDetail(Model model, QuestionOverview question) {
+        model.addAttribute("question", question);
+    }
+
     public static void initEmptyQuestionSearchForm(Model model) {
         model.addAttribute("questionSearchCond", new QuestionSearchCond());
     }

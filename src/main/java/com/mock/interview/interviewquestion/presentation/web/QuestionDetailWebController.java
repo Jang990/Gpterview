@@ -45,7 +45,7 @@ public class QuestionDetailWebController {
         List<AnswerDetailDto> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
         List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForView.findChildQuestionTop3Likes(questionId);
 
-        model.addAttribute("question", question);
+        QuestionPageInitializer.initQuestionDetail(model, question);
         model.addAttribute("answerTop3", answerTop3);
         model.addAttribute("childQuestion", childQuestionTop3);
         model.addAttribute("answer", new AnswerForm());

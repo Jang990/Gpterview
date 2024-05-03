@@ -1,7 +1,11 @@
 package com.mock.interview.interviewanswer.presentation.web;
 
+import com.mock.interview.interviewanswer.domain.exception.InterviewAnswerNotFoundException;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForListView;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerDetailDto;
+import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
+import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import com.mock.interview.interviewquestion.presentation.web.QuestionPageInitializer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class AnswerWebController {
     private final InterviewAnswerRepositoryForListView interviewAnswerRepositoryForListView;
+    private final QuestionRepositoryForView questionRepositoryForView;
     @GetMapping("/question/{questionId}/answer")
     public String questionAnswerPage(
             Model model,
@@ -29,12 +34,20 @@ public class AnswerWebController {
     }
 
     @GetMapping("/question/{questionId}/answer/{answerId}")
-    public String questionAnswerPage(
+    public String answerDetailPage(
             Model model,
             @PathVariable("questionId") long questionId,
             @PathVariable("answerId") long answerId
     ) {
+        AnswerDetailDto answer = interviewAnswerRepositoryForListView.findAnswer(answerId, questionId);
+        if(answer == null)
+            throw new InterviewAnswerNotFoundException();
+
+        QuestionOverview question = questionRepositoryForView.findQuestion(questionId);
+
+        QuestionPageInitializer.initQuestionDetail(model, question);
+        AnswerPageInitializer.initAnswerDetail(model, answer);
         AnswerPageInitializer.initAnswerPageHeaderSelected(model);
-        return "/answer/list";
+        return "/answer/detail";
     }
 }

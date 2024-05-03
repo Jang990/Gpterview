@@ -15,6 +15,10 @@ public final class AnswerPageInitializer {
         model.addAttribute("currentUri", request.getRequestURI());
     }
 
+    public static void initAnswerDetail(Model model, AnswerDetailDto answerDetail) {
+        model.addAttribute("answer", answerDetail);
+    }
+
     public static void initAnswerPageHeaderSelected(Model model) {
         model.addAttribute("headerActiveTap", "interview-question");
     }

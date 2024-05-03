@@ -74,8 +74,25 @@ public class InterviewAnswerRepositoryForListView {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private static BooleanExpression questionIdEq(long questionIdCond) {
-        return interviewAnswer.question.id.eq(questionIdCond);
+    public AnswerDetailDto findAnswer(long answerId, long questionId) {
+        return query.select(
+                        Projections.constructor(AnswerDetailDto.class,
+                                interviewAnswer.id, interviewAnswer.users.username,
+                                interviewAnswer.createdAt, interviewAnswer.answer, interviewAnswer.likes
+                        )
+                )
+                .from(interviewAnswer)
+                .innerJoin(interviewAnswer.users, users)
+                .where(answerIdEq(answerId), questionIdEq(questionId))
+                .fetchOne();
+    }
+
+    private static BooleanExpression answerIdEq(Long answerId) {
+        return answerId == null ? null : interviewAnswer.id.eq(answerId);
+    }
+
+    private static BooleanExpression questionIdEq(Long questionIdCond) {
+        return questionIdCond == null ? null : interviewAnswer.question.id.eq(questionIdCond);
     }
 
     private static BooleanExpression userIdEq(long loginIdCond) {

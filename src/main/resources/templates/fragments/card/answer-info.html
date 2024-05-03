@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
+<div th:fragment="fragment-answer-info(answer)">
+    <!--<a class="btn btn-secondary btn-sm" th:href="@{/skill/{skillId}(skillId=${skill.id})}" th:text="${skill.username}"></a>-->
+    <div class="d-flex flex-start align-items-center" >
+        <img th:src="@{/image/normal-user-thumbnail.png}" class="mr-3 rounded-circle" width="50" alt="User"/>
+        <div class="ms-1">
+            <h6 class="fw-bold text-primary mb-1">
+                <span th:text="${answer.createdBy}">작성자</span>
+            </h6>
+        </div>
+    </div>
+
+    <div class="my-4 pb-2">
+        <p class="btn-lg w-100 fs-5 text-center" th:text="${answer.content}"></p>
+    </div>
+
+    <div class="small d-flex justify-content-between py-1">
+        <div class="small d-flex justify-content-start">
+            <div>
+                <a href="#">
+                    <i class="fas fa-thumbs-up me-1" th:text="| ${answer.likes} Likes |"></i>
+                </a>
+
+                <!--<span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> <span th:text="${answer.like}">(미구현)조회수</span></span>-->
+                <!--<span><i class="far fa-comment ml-2"></i> <span th:text="${answer.commentCnt}">댓글수</span></span>-->
+            </div>
+        </div>
+        <div>
+            <div class="text-muted small mb-0"
+                 th:text="${#temporals.format(answer.createdAt, 'yyyy-MM-dd HH:mm ')}">
+                생성일
+            </div>
+        </div>
+    </div>
+</div>
