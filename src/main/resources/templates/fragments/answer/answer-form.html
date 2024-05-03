@@ -3,10 +3,10 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:fragment="fragment-answer-form(questionId, answer)">
     <div class="mx-2 mb-3">
-        <h4 th:if="${existsAnswerId == null}"> 대답등록 </h4>
-        <h4 th:unless="${existsAnswerId == null}"> 대답수정 </h4>
+        <h4 th:if="${answer.id == null}"> 대답등록 </h4>
+        <h4 th:unless="${answer.id == null}"> 대답수정 </h4>
     </div>
-    <form th:action="${existsAnswerId == null} ? @{/question/{questionId}/answer(questionId=${questionId})} : @{/question/{questionId}/answer/{answerId}/edit(questionId=${questionId},answerId=${existsAnswerId})}" method="post">
+    <form th:action="${answer.id == null} ? @{/question/{questionId}/answer(questionId=${questionId})} : @{/question/{questionId}/answer/{answerId}/edit(questionId=${questionId},answerId=${answer.id})}" method="post">
         <div class="my-3">
             <textarea class="form-control" placeholder="대답 내용을 적어주세요." th:field="${answer.content}" style="height: 100px"></textarea>
         </div>

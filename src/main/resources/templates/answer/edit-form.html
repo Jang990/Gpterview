@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title>면접 질문</title>
+</head>
+<!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
+<body>
+    <section>
+        <div class="my-3">
+            <div class="p-2 p-sm-3 collapse forum-content show">
+                <div class="card">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="card-body">
+                                <div class="mb-3 d-flex justify-content-between">
+                                    <div class="d-flex justify-content-start">
+                                        <div class="mx-2"><h4> 질문 정보 </h4></div>
+                                    </div>
+                                </div>
+                                <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=false)}">질문 정보</div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="card-body">
+                                <div th:replace="~{fragments/answer/answer-form :: fragment-answer-form(questionId=${question.id},answer=${answer})}">대답 등록 폼</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -1,7 +1,5 @@
 package com.mock.interview.interviewanswer.domain.model;
 
-import com.mock.interview.global.Events;
-import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.user.domain.model.Users;
@@ -39,5 +37,11 @@ public class InterviewAnswer extends BaseTimeEntity {
         interviewAnswer.users = users;
         interviewAnswer.likes = 0L;
         return interviewAnswer;
+    }
+
+    public void updateAnswer(String content) {
+        if(content == null)
+            throw new IllegalArgumentException("대답은 필수");
+        this.answer = content;
     }
 }

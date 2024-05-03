@@ -1,6 +1,7 @@
 package com.mock.interview.interviewanswer.application;
 
 import com.mock.interview.interviewanswer.domain.InterviewAnswerService;
+import com.mock.interview.interviewanswer.domain.exception.InterviewAnswerNotFoundException;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
@@ -30,5 +31,15 @@ public class AnswerService {
                 .orElseThrow(UserNotFoundException::new);
         InterviewAnswer answer = answerDomainService.createAnswer(question, users, form.getContent());
         return repository.save(answer).getId();
+    }
+
+    public void delete(long answerId, long questionId, long loginId) {
+        repository.deleteUserAnswer(answerId, questionId, loginId);
+    }
+
+    public void update(long answerId, long questionId, long loginId, AnswerForm answerForm) {
+        InterviewAnswer answer = repository.findUserAnswer(answerId, questionId, loginId)
+                .orElseThrow(InterviewAnswerNotFoundException::new);
+        answer.updateAnswer(answerForm.getContent());
     }
 }
