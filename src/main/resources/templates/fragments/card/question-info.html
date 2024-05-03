@@ -35,10 +35,10 @@
         <span class="btn-lg w-100 fs-5" th:unless="${enableLink}" th:text="${question.content}"></span>
     </div>
 
-    <div class="my-2 d-flex justify-content-end" th:if="${question.techList != null}">
+    <div class="my-2 d-flex justify-content-end" th:if="${question.techList != null || not #lists.isEmpty(question.techList)}">
         <th:block th:each="tech : ${question.techList}">
             <a th:href="@{/question/tech/{techId}(techId=${tech.id})}"
-               class="btn btn-sm btn-secondary me-1" th:text="${tech.value}">관련 기술</a>
+               class="btn btn-sm btn-secondary ms-1" th:text="${tech.value}">관련 기술</a>
         </th:block>
     </div>
 
