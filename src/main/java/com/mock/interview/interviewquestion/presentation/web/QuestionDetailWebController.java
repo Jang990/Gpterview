@@ -4,6 +4,7 @@ import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepositoryForListView;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerDetailDto;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
+import com.mock.interview.interviewquestion.infra.QuestionRepositoryForListView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionDetailWebController {
     private final QuestionRepositoryForView questionRepositoryForView;
+    private final QuestionRepositoryForListView questionRepositoryForListView;
     private final InterviewAnswerRepositoryForListView answerRepositoryForView;
 
     @GetMapping("/question/{questionId}/unauthorized")
@@ -43,7 +45,7 @@ public class QuestionDetailWebController {
         }
 
         List<AnswerDetailDto> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
-        List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForView.findChildQuestionTop3Likes(questionId);
+        List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForListView.findChildQuestionTop3Likes(questionId);
 
         QuestionPageInitializer.initQuestionDetail(model, question);
         model.addAttribute("answerTop3", answerTop3);

@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
 import com.mock.interview.interview.infra.InterviewQuestionRepositoryForView;
+import com.mock.interview.interviewquestion.infra.QuestionRepositoryForListView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class QuestionSearchWebController {
     private final QuestionRepositoryForView questionRepositoryForView;
+    private final QuestionRepositoryForListView questionRepositoryForListView;
     private final InterviewQuestionRepositoryForView interviewQuestionRepositoryForView;
 
     @GetMapping("question")
@@ -29,7 +31,7 @@ public class QuestionSearchWebController {
             HttpServletRequest request
     ) {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder().searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "/question/list";
     }
@@ -56,7 +58,7 @@ public class QuestionSearchWebController {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
                 .categoryIdCond(categoryId)
                 .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "/question/list";
     }
@@ -71,7 +73,7 @@ public class QuestionSearchWebController {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
                 .positionIdCond(positionId)
                 .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "/question/list";
     }
@@ -87,7 +89,7 @@ public class QuestionSearchWebController {
         QuestionSearchOptionsDto searchOptionsDto = QuestionSearchOptionsDto.builder()
                 .parentQuestionIdCond(questionId)
                 .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptionsDto, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptionsDto, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "/question/list";
     }

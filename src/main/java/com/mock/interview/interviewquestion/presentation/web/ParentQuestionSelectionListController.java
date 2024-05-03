@@ -1,8 +1,7 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
-import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interviewquestion.application.QuestionUpdatingService;
-import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
+import com.mock.interview.interviewquestion.infra.QuestionRepositoryForListView;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
@@ -24,7 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 public class ParentQuestionSelectionListController {
-    private final QuestionRepositoryForView questionRepositoryForView;
+    private final QuestionRepositoryForListView questionRepositoryForListView;
     private final QuestionUpdatingService questionUpdatingService;
 
     @GetMapping("/question/{childQuestionId}/parent/select")
@@ -36,7 +35,7 @@ public class ParentQuestionSelectionListController {
             HttpServletRequest request
     ) {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder().searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForView.findOverviewList(searchOptions, pageable);
+        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         model.addAttribute("childQuestionId", childQuestionId);
         return "/question/list-select";
