@@ -3,32 +3,43 @@
 <!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
 <div th:fragment="fragment-question-info(question, enableLink)">
     <!--<a class="btn btn-secondary btn-sm" th:href="@{/skill/{skillId}(skillId=${skill.id})}" th:text="${skill.username}"></a>-->
-    <div class="d-flex flex-start align-items-center" >
-        <img th:src="@{/image/normal-user-thumbnail.png}" class="mr-3 rounded-circle" width="50" alt="User"/>
-        <div class="ms-1">
-            <h6 class="fw-bold text-primary mb-1">
-                <span th:text="${question.createdBy}">작성자</span>
-            </h6>
-            <p class="text-muted small mb-0">
-                <th:block th:if="${not #strings.isEmpty(question.category)}">
-                    <a th:href="@{/question/category/{categoryId}(categoryId=${question.category.id})}" class="text-body"> <span th:text="${question.category.name}">분야</span></a>
-                    <th:block th:if="${not #strings.isEmpty(question.position)}">
-                        &nbsp;-&nbsp;<a th:href="@{/question/position/{positionId}(positionId=${question.position.id})}" class="text-body"><span th:text="${question.position.name}">영역</span></a>
+    <div class="d-flex justify-content-between">
+        <div class="d-flex flex-start align-items-center pb-1">
+            <img th:src="@{/image/normal-user-thumbnail.png}" class="mr-3 rounded-circle" width="50" alt="User"/>
+            <div class="ms-1">
+                <h6 class="fw-bold text-primary mb-1">
+                    <span th:text="${question.createdBy}">작성자</span>
+                </h6>
+                <p class="text-muted small mb-0">
+                    <th:block th:if="${not #strings.isEmpty(question.category)}">
+                        <a th:href="@{/question/category/{categoryId}(categoryId=${question.category.id})}" class="text-body"> <span th:text="${question.category.name}">분야</span></a>
+                        <th:block th:if="${not #strings.isEmpty(question.position)}">
+                            &nbsp;-&nbsp;<a th:href="@{/question/position/{positionId}(positionId=${question.position.id})}" class="text-body"><span th:text="${question.position.name}">영역</span></a>
+                        </th:block>
                     </th:block>
-                </th:block>
-            </p>
+                </p>
+            </div>
         </div>
-        <div class="ms-3">
-            <th:block th:each="tech : ${question.techList}">
-                <a th:href="@{/question/tech/{techId}(techId=${tech.id})}"
-                   class="btn btn-sm btn-secondary me-1" th:text="${tech.value}">관련 기술</a>
-            </th:block>
+        <div class="d-flex flex-column align-items-end">
+            <div class="small">
+                <span th:text="|${question.id}번 질문|"></span>
+            </div>
+            <div class="small">
+                <i class="fa ps-2" th:classappend="${question.type.iconImageClass}"></i> <span th:text="|${question.type.name}질문|"></span>
+            </div>
         </div>
     </div>
 
-    <div class="my-4 pb-2">
+    <div class="mt-4 mb-2 pb-2">
         <a class="btn btn-light btn-lg btn-block w-100" th:if="${enableLink}" th:href="@{/question/{questionId}(questionId=${question.id})}" th:text="${question.content}">질문 내용</a>
         <span class="btn-lg w-100 fs-5" th:unless="${enableLink}" th:text="${question.content}"></span>
+    </div>
+
+    <div class="my-2 d-flex justify-content-end" th:if="${question.techList != null}">
+        <th:block th:each="tech : ${question.techList}">
+            <a th:href="@{/question/tech/{techId}(techId=${tech.id})}"
+               class="btn btn-sm btn-secondary me-1" th:text="${tech.value}">관련 기술</a>
+        </th:block>
     </div>
 
     <div class="small d-flex justify-content-between py-1">

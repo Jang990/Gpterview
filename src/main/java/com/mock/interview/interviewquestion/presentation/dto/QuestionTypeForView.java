@@ -4,10 +4,15 @@ import lombok.Getter;
 
 @Getter
 public enum QuestionTypeForView {
-    TECHNICAL("기술"), PERSONALITY("인성"), EXPERIENCE("경험");
-    private final String name;
+    TECHNICAL("기술", "fa-wrench"),
+    PERSONALITY("인성", "fa-users"),
+    EXPERIENCE("경험", "fa-book");
 
-    QuestionTypeForView(String name) {
+    private final String name;
+    private final String iconImageClass;
+
+    QuestionTypeForView(String name, String iconImageClass) {
         this.name = name;
+        this.iconImageClass = iconImageClass;
     }
 }
