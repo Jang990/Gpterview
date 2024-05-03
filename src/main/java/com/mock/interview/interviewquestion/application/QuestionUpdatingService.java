@@ -52,4 +52,12 @@ public class QuestionUpdatingService {
         );
     }
 
+    public void selectParentQuestion(long childQuestionId, long loginId, long parentQuestionId) {
+        InterviewQuestion childQuestion = interviewQuestionRepository.findUserQuestion(loginId, childQuestionId)
+                .orElseThrow(InterviewQuestionNotFoundException::new);
+        InterviewQuestion parentQuestion = interviewQuestionRepository.findById(parentQuestionId)
+                .orElseThrow(InterviewQuestionNotFoundException::new);
+        childQuestion.linkParent(parentQuestion);
+    }
+
 }

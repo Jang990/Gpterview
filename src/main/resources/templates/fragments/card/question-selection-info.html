@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
+<div th:fragment="fragment-question-selection-info(childQuestionId, question)">
+    <!--<a class="btn btn-secondary btn-sm" th:href="@{/skill/{skillId}(skillId=${skill.id})}" th:text="${skill.username}"></a>-->
+    <div class="d-flex flex-start align-items-center" >
+        <img th:src="@{/image/normal-user-thumbnail.png}" class="mr-3 rounded-circle" width="50" alt="User"/>
+        <div class="ms-1">
+            <h6 class="fw-bold text-primary mb-1">
+                <span th:text="${question.createdBy}">작성자</span>
+            </h6>
+            <p class="text-muted small mb-0">
+                <th:block th:if="${not #strings.isEmpty(question.category)}">
+                    <a href="#" class="text-body"> <span th:text="${question.category.name}">분야</span></a>
+                    <th:block th:if="${not #strings.isEmpty(question.position)}">
+                        &nbsp;-&nbsp;<a href="#" class="text-body"><span th:text="${question.position.name}">영역</span></a>
+                    </th:block>
+                </th:block>
+            </p>
+        </div>
+        <div class="ms-3">
+            <th:block th:each="tech : ${question.techList}">
+                <a href="#" class="btn btn-sm btn-secondary me-1" th:text="${tech.value}">관련 기술</a>
+            </th:block>
+        </div>
+    </div>
+
+    <div class="my-4 pb-2">
+        <form th:action="@{/question/{childQuestionId}/parent(childQuestionId=${childQuestionId})}" method="post">
+            <button class="btn btn-light btn-lg btn-block w-100" th:text="${question.content}">질문 내용</button>
+            <input type="hidden" name="parentQuestionId" th:value="${question.id}">
+        </form>
+    </div>
+
+    <div class="small d-flex justify-content-between py-1">
+        <div class="small d-flex justify-content-start">
+            <div>
+                <a href="#">
+                    <i class="fas fa-thumbs-up me-1" th:text="| ${question.like} Likes |"></i>
+                </a>
+
+                <!--<span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> <span th:text="${question.like}">(미구현)조회수</span></span>-->
+                <!--<span><i class="far fa-comment ml-2"></i> <span th:text="${question.commentCnt}">댓글수</span></span>-->
+            </div>
+        </div>
+        <div>
+            <div class="text-muted small mb-0"
+                 th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm ')}">
+                생성일
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{fragments/base-layout :: base-layout (~{::title},~{::link},~{::section})}">
+<head>
+  <title>면접 질문</title>
+</head>
+<!--/* 출처: https://www.bootdey.com/snippets/view/bs4-forum | https://mdbootstrap.com/docs/standard/extended/comments/#section-3 */-->
+<body>
+    <section>
+        <div class="inner-main-header my-3">
+            <div class="ms-3 my-3">
+                <h3 class="ps-3 py-3">질문목록</h3>
+            </div>
+            <div th:replace="~{fragments/form/search/question-search :: fragment-question-search(base=null,searchCond=${questionSearchCond})}">질문 검색 폼</div>
+        </div>
+        <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+            <div class="card mb-2" th:each="question : ${questionPage.content}">
+                <div class="card">
+                    <div class="card-body">
+                        <div th:replace="~{fragments/card/question-selection-info :: fragment-question-selection-info(childQuestionId=${childQuestionId},question=${question})}">선택 정보</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="my-3 d-flex justify-content-end align-items-center">
+                    <div class="me-2"><span>검색된 결과 수 : </span><span class="mx-1" th:text="${questionPage.totalElements}"></span></div>
+                    <div><a th:href="@{/question/form}" class="btn btn-sm btn-primary">질문 추가</a></div>
+                </div>
+            </div>
+
+            <div th:replace="~{fragments/question-list-nav :: fragment-question-list-nav(
+                                currentUri=${currentUri}, searchCond=${questionSearchCond},
+                                isFirst=${questionPage.first}, isLast=${questionPage.last},
+                                currentPageNumber=${questionPage.number}, totalPages=${questionPage.totalPages})}">페이징 컨트롤 네비게이션 공간</div>
+        </div>
+    </section>
+</body>
+</html>

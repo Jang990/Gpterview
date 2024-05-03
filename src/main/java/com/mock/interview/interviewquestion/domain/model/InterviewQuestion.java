@@ -144,6 +144,8 @@ public class InterviewQuestion extends BaseEntity {
     public void linkParent(InterviewQuestion parent) {
         if(parent.getId().equals(this.id))
             throw new IllegalArgumentException("자기 자신을 부모 질문으로 설정할 수 없음");
+        if(parent.isHidden() && parent.getOwner() != this.owner)
+            throw new IllegalStateException("비밀 질문입니다.");
         this.parentQuestion = parent;
     }
 

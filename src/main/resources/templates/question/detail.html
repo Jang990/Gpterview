@@ -17,6 +17,11 @@
                                 <div class="mb-3 d-flex justify-content-between">
                                     <div class="d-flex justify-content-start">
                                         <div class="mx-2"><h4> 질문 정보 </h4></div>
+                                        <th:block th:if="${question.parentQuestionId == null}">
+                                            <div class="me-2" sec:authorize="isAuthenticated()">
+                                                <a th:if="${#authentication.principal.id == question.ownerId}" th:href="@{/question/{questionId}/parent/select(questionId=${question.id})}" class="btn btn-gray btn-sm">상위질문 선택</a>
+                                            </div>
+                                        </th:block>
                                         <th:block th:if="${question.parentQuestionId != null}">
                                             <div class="me-2">
                                                 <a th:href="@{/question/{questionId}(questionId=${question.parentQuestionId})}" class="btn btn-gray btn-sm">상위질문</a>
