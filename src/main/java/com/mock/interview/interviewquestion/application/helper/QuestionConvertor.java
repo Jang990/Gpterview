@@ -48,9 +48,8 @@ public class QuestionConvertor {
                 CategoryConvertor.convertView(question.getCategory()),
                 CategoryConvertor.convertView(question.getPosition()),
                 TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
-                question.getQuestion(), question.getCreatedAt(),
-                getParentId(question.getParentQuestion()), question.getOwner().getId(),
-                question.getLikes(), question.isHidden()
+                question.getQuestion(), convert(question.getQuestionType()), question.getCreatedAt(),
+                question.getOwner().getId(), question.getLikes(), question.isHidden()
         );
     }
 
