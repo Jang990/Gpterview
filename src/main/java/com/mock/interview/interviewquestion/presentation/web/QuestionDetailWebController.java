@@ -36,18 +36,18 @@ public class QuestionDetailWebController {
     @GetMapping("/question/{questionId}")
     public String questionDetailPage(
             Model model,
-            @AuthenticationPrincipal LoginUserDetail users,
+            @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable(name = "questionId") long questionId
     ) {
         model.addAttribute("headerActiveTap", "interview-question");
         QuestionDetailDto question = questionRepositoryForView.findQuestionDetail(questionId);
-        if (QuestionPageInitializer.isUnauthorized(users, question.getQuestion())) {
+        if (QuestionPageInitializer.isUnauthorized(loginUserDetail, question.getQuestion())) {
             return "redirect:/question/"+questionId+"/unauthorized";
         }
 
         List<AnswerDetailDto> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
         List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForListView.findChildQuestionTop3Likes(questionId);
-        QuestionPageInitializer.initQuestionDetail(model, question, answerTop3, childQuestionTop3);
+        QuestionPageInitializer.initQuestionDetail(model, question, answerTop3, childQuestionTop3,loginUserDetail);
         return "/question/detail";
     }
 }

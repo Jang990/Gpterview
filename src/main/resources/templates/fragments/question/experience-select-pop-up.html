@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="fragment-experience-select-pop-up(experienceList)" class="modal fade" id="experienceSelectPopUp" tabindex="-1" aria-labelledby="experienceSelectPopUpLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="experienceSelectPopUpLabel">경험 선택</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>경험을 선택해주세요. <button class="btn btn-sm btn-light text-danger" data-bs-dismiss="modal" onclick="clearAllSelectedExperience()">초기화</button></div>
+          <hr>
+          <table class="table mb-0 table-hover">
+            <tbody>
+              <tr class="align-middle" th:each="experience : ${experienceList}" data-bs-dismiss="modal" th:onclick="|changeExperience(${experienceStat.index}, ${experience.id})|" style="cursor: pointer;" th:id="|experience${experienceStat.index}|">
+                <td th:text="${experience.content}">경험 내용</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function clearAllSelectedExperience() {
+        $('#experienceId').val('');
+        $('#experienceSelectPopUp .bg-primary').removeClass('bg-primary text-white');
+        $('#experienceSelectBtn').removeClass("btn-primary").addClass("btn-light");
+        $('#experienceSelectBtn').text("경험 선택");
+      }
+      function changeExperience(index, experienceId) {
+        clearAllSelectedExperience();
+        $('#experienceId').val(experienceId);
+        $('#experienceSelectBtn').text(experienceId + "번 선택");
+        $('#experience'+index).addClass('bg-primary').addClass('text-white');
+      }
+    </script>
+  </div>
+</html>

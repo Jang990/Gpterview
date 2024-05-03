@@ -39,6 +39,9 @@ public class QuestionUpdatingService {
                     .orElseThrow(ExperienceNotFoundException::new);
             question.changeExperience(experience);
         }
+        if (form.getExperienceId() == null && question.getExperience() != null) {
+            question.removeExperience();
+        }
 
         JobConnectionHelper.connect(
                 jobCategoryRepository, jobPositionRepository,

@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.presentation.web;
 import com.mock.interview.category.application.JobCategoryService;
 import com.mock.interview.category.application.JobPositionService;
 import com.mock.interview.category.presentation.CategoryViewer;
+import com.mock.interview.experience.infra.ExperienceRepositoryView;
 import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ParentQuestionSummaryDto;
@@ -22,11 +23,12 @@ public class QuestionFormWebController {
     private final QuestionRepositoryForView questionRepositoryForView;
     private final JobCategoryService categoryService;
     private final JobPositionService positionService;
+    private final ExperienceRepositoryView experienceRepositoryView;
 
     @GetMapping("question/form")
-    public String questionSavePage(Model model) {
+    public String questionSavePage(Model model, @AuthenticationPrincipal LoginUserDetail loginUserDetail) {
         CategoryViewer.setCategoriesView(model, categoryService, positionService);
-        model.addAttribute("question", new QuestionForm());
+        QuestionPageInitializer.initQuestionForm(model, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");
         return "/question/form";
     }
@@ -42,7 +44,7 @@ public class QuestionFormWebController {
             return "redirect:/question/"+parentQuestionId+"/unauthorized";
 
         CategoryViewer.setCategoriesView(model, categoryService, positionService);
-        model.addAttribute("question", new QuestionForm());
+        QuestionPageInitializer.initQuestionForm(model, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");
 
         model.addAttribute("parentQuestion", parentQuestionSummary);
@@ -56,8 +58,8 @@ public class QuestionFormWebController {
             @PathVariable("questionId") long questionId
     ) {
         CategoryViewer.setCategoriesView(model, categoryService, positionService);
-        QuestionForm question = questionRepositoryForView.findQuestionForm(questionId, loginUserDetail.getId());
-        model.addAttribute("question", question);
+        QuestionForm questionForm = questionRepositoryForView.findQuestionForm(questionId, loginUserDetail.getId());
+        QuestionPageInitializer.initEditQuestionForm(model, questionForm, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("existsQuestionId", questionId);
         return "/question/form";

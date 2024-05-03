@@ -3,6 +3,9 @@ package com.mock.interview.interviewquestion.application;
 import com.mock.interview.category.application.helper.JobConnectionHelper;
 import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.infra.JobPositionRepository;
+import com.mock.interview.experience.domain.Experience;
+import com.mock.interview.experience.domain.exception.ExperienceNotFoundException;
+import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
@@ -28,6 +31,7 @@ public class QuestionSavingService {
     private final JobPositionRepository jobPositionRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final UserRepository userRepository;
+    private final ExperienceRepository experienceRepository;
     public long save(long loginId, QuestionForm form) {
         InterviewQuestion question = saveQuestion(loginId, form);
         return question.getId();
@@ -48,6 +52,13 @@ public class QuestionSavingService {
                 interviewQuestionRepository, form.getContent(), users,
                 QuestionConvertor.convert(form.getQuestionType()), users.getUsername()
         );
+
+        if (form.getExperienceId() != null) {
+            Experience experience = experienceRepository.findByIdAndUserId(form.getExperienceId(), loginId)
+                    .orElseThrow(ExperienceNotFoundException::new);
+            question.changeExperience(experience);
+        }
+        
         JobConnectionHelper.connect(jobCategoryRepository, jobPositionRepository, question, form.getCategoryId(), form.getPositionId());
         question.linkTech(techList);
         return question;

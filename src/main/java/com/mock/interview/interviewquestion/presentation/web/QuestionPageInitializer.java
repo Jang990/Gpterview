@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.presentation.web;
 
+import com.mock.interview.experience.infra.ExperienceRepositoryView;
 import com.mock.interview.global.security.dto.LoginUserDetail;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerDetailDto;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
@@ -25,8 +26,10 @@ public class QuestionPageInitializer {
     public static void initQuestionDetail(
             Model model, QuestionDetailDto questionDetail,
             List<AnswerDetailDto> answerTop3,
-            List<ChildQuestionOverview> childQuestionTop3
+            List<ChildQuestionOverview> childQuestionTop3,
+            LoginUserDetail loginUserDetail
     ) {
+        questionDetail.verifyExperience(loginUserDetail.getId());
         questionDetail.setAnswerTop3(answerTop3);
         questionDetail.setChildQuestionTop3(childQuestionTop3);
         model.addAttribute("questionDetailPage", questionDetail);
@@ -53,5 +56,15 @@ public class QuestionPageInitializer {
             return false;
 
         return users == null || !users.getId().equals(question.getOwnerId());
+    }
+
+    public static void initQuestionForm(Model model, ExperienceRepositoryView experienceRepositoryView, LoginUserDetail loginUserDetail) {
+        model.addAttribute("question", new QuestionForm());
+        model.addAttribute("experienceList", experienceRepositoryView.findExperienceList(loginUserDetail.getId()));
+    }
+
+    public static void initEditQuestionForm(Model model, QuestionForm form, ExperienceRepositoryView experienceRepositoryView, LoginUserDetail loginUserDetail) {
+        model.addAttribute("question", form);
+        model.addAttribute("experienceList", experienceRepositoryView.findExperienceList(loginUserDetail.getId()));
     }
 }

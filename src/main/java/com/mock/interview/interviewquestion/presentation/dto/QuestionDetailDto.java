@@ -24,4 +24,12 @@ public class QuestionDetailDto {
         this.parentQuestion = parentQuestion;
         this.experience = experience;
     }
+
+    public void verifyExperience(long loginId) {
+        if(!question.isHidden())
+            return;
+        if(question.getOwnerId().equals(loginId))
+            return;
+        experience = null;
+    }
 }

@@ -164,6 +164,8 @@ public class InterviewQuestion extends BaseEntity {
     public void changeExperience(Experience experience) {
         if(experience == null)
             throw new IllegalStateException();
+        if(experience.getUsers() != this.getOwner())
+            throw new IllegalStateException("본인의 경험만 등록 가능");
         this.experience = experience;
     }
 
