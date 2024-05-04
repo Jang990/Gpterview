@@ -50,7 +50,7 @@ public class QuestionSavingService {
         List<TechnicalSubjects> techList = technicalSubjectsRepository.findAllById(form.getTechIds());
         InterviewQuestion question = InterviewQuestion.create(
                 interviewQuestionRepository, form.getContent(), users,
-                QuestionConvertor.convert(form.getQuestionType()), users.getUsername()
+                QuestionConvertor.convert(form.getQuestionType()), false
         );
 
         if (form.getExperienceId() != null) {

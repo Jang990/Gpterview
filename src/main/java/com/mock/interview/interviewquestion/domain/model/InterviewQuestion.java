@@ -4,9 +4,9 @@ import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;
+import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interviewquestion.domain.event.QuestionCreatedEvent;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
-import com.mock.interview.global.auditing.BaseEntity;
 import com.mock.interview.questiontoken.domain.QuestionTokenization;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
@@ -23,13 +23,12 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class InterviewQuestion extends BaseEntity {
+public class InterviewQuestion extends BaseTimeEntity {
     @Id
     @Column(name = "interview_question_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** GPT가 질문을 생성할 수도 있기 떄문에 Owner와 createdBy는 다를 수 있음. */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
     private Users owner;
@@ -69,15 +68,17 @@ public class InterviewQuestion extends BaseEntity {
 
     private boolean isHidden;
 
+    private boolean isCreatedByAi;
+
     public static InterviewQuestion create(
-            InterviewQuestionRepository repository, String content, Users users,
-            QuestionType questionType, String createdBy
+            InterviewQuestionRepository repository, String content,
+            Users users, QuestionType questionType, boolean isCreatedByAi
     ) {
         InterviewQuestion question = new InterviewQuestion();
         question.question = content;
         question.owner = users;
         question.questionType = questionType;
-        question.createdBy = createdBy;
+        question.isCreatedByAi = isCreatedByAi;
         question.likes = 0;
         question.reveal();
 

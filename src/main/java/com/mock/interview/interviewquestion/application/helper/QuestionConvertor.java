@@ -15,6 +15,7 @@ import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionTypeForView;
 import com.mock.interview.interviewquestion.presentation.dto.response.InterviewQuestionResponse;
 import com.mock.interview.tech.application.helper.TechConvertHelper;
+import com.mock.interview.user.domain.model.Users;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 
@@ -46,12 +47,13 @@ public class QuestionConvertor {
     }
 
     public static QuestionOverview convert(InterviewQuestion question) {
-        return new QuestionOverview(question.getId(), question.getCreatedBy(),
+        Users owner = question.getOwner();
+        return new QuestionOverview(question.getId(), owner.getUsername(),
                 CategoryConvertor.convertView(question.getCategory()),
                 CategoryConvertor.convertView(question.getPosition()),
                 TechConvertHelper.convertView(question.getTechLink().stream().map(QuestionTechLink::getTechnicalSubjects).toList()),
                 question.getQuestion(), convert(question.getQuestionType()), question.getCreatedAt(),
-                question.getOwner().getId(), question.getLikes(), question.isHidden()
+                owner.getId(), question.getLikes(), question.isHidden(), question.isCreatedByAi()
         );
     }
 

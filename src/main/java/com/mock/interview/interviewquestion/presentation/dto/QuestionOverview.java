@@ -22,8 +22,8 @@ public class QuestionOverview {
     private Long ownerId;
     private long like; // 32
     private boolean isHidden;
+    private boolean isCreatedByAi;
 //    private long hits; // 조회수
 //    private long commentCnt; 댓글 수
     // TODO: 조회수, 댓글수 미구현
-
 }

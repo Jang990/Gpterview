@@ -1,9 +1,7 @@
 package com.mock.interview.interviewquestion.infra;
 
 import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
-import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
-import com.mock.interview.interviewquestion.domain.model.QInterviewQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -21,6 +19,7 @@ import java.util.List;
 import static com.mock.interview.category.domain.model.QJobCategory.jobCategory;
 import static com.mock.interview.category.domain.model.QJobPosition.jobPosition;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.interviewQuestion;
+import static com.mock.interview.user.domain.model.QUsers.*;
 
 @Repository
 @Transactional(readOnly = true)
@@ -32,10 +31,11 @@ public class QuestionRepositoryForListView {
     public List<ChildQuestionOverview> findChildQuestionTop3Likes(Long questionIdCond) {
         return query.select(
                         Projections.constructor(ChildQuestionOverview.class,
-                                interviewQuestion.id, interviewQuestion.createdBy, interviewQuestion.createdAt,
+                                interviewQuestion.id, users.username, interviewQuestion.createdAt,
                                 interviewQuestion.question, interviewQuestion.likes)
                 )
                 .from(interviewQuestion)
+                .innerJoin(interviewQuestion.owner, users)
                 .where(findChildQuestion(questionIdCond), isVisible())
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .limit(TOP_3)
@@ -57,7 +57,7 @@ public class QuestionRepositoryForListView {
                 .where(
                         findChildQuestion(searchOptions.getParentQuestionIdCond()),
                         categoryIdEq(searchOptions.getCategoryIdCond()),
-                        positionIdEq(searchOptions.getPositionIdCond()), createdByEq(searchOptions.getCreatedByCond()),
+                        positionIdEq(searchOptions.getPositionIdCond()), ownerIdEq(searchOptions.getOwnerIdCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
                         keywordContains(searchOptions.getSearchCond().getKeywordCond()),
                         isVisible()
@@ -74,7 +74,7 @@ public class QuestionRepositoryForListView {
                         findChildQuestion(searchOptions.getParentQuestionIdCond()),
                         categoryIdEq(searchOptions.getCategoryIdCond()),
                         positionIdEq(searchOptions.getPositionIdCond()),
-                        createdByEq(searchOptions.getCreatedByCond()),
+                        ownerIdEq(searchOptions.getOwnerIdCond()),
                         questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
                         keywordContains(searchOptions.getSearchCond().getKeywordCond()),
                         isVisible()
@@ -107,8 +107,8 @@ public class QuestionRepositoryForListView {
         return jobPositionIdCond == null ? null : interviewQuestion.position.id.eq(jobPositionIdCond);
     }
 
-    private BooleanExpression createdByEq(String createdBy) {
-        return createdBy == null ? null : interviewQuestion.createdBy.eq(createdBy);
+    private BooleanExpression ownerIdEq(Long ownerIdCond) {
+        return ownerIdCond == null ? null : interviewQuestion.owner.id.eq(ownerIdCond);
     }
 
     private BooleanExpression isVisible() {

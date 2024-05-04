@@ -15,5 +15,5 @@ public class QuestionSearchOptionsDto {
     private Long parentQuestionIdCond;
     private Long categoryIdCond;
     private Long positionIdCond;
-    private String createdByCond;
+    private Long ownerIdCond;
 }

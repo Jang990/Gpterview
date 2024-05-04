@@ -61,7 +61,7 @@ public class AiQuestionCreatorImpl implements AiQuestionCreator {
 
         InterviewQuestion question = InterviewQuestion.create(
                 questionRepository, aiQuestion, users,
-                type, requester.getSignature()
+                type, true
         );
         question.linkCategory(interview.getCategory());
         question.linkPosition(interview.getPosition());
