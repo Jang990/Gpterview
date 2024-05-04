@@ -1,7 +1,7 @@
 package com.mock.interview.questionlike.domain;
 
 import com.mock.interview.global.Events;
-import com.mock.interview.global.auditing.BaseEntity;
+import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.questionlike.domain.event.QuestionLikeCanceledEvent;
 import com.mock.interview.questionlike.domain.event.QuestionLikedEvent;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class QuestionLike extends BaseEntity {
+public class QuestionLike extends BaseTimeEntity {
     @Id
     @Column(name = "question_likes_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
