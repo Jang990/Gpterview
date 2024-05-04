@@ -29,11 +29,20 @@ public class QuestionPageInitializer {
             List<ChildQuestionOverview> childQuestionTop3,
             LoginUserDetail loginUserDetail
     ) {
-        questionDetail.verifyExperience(loginUserDetail.getId());
+        if(questionDetail.getExperience() != null
+                && isInaccessibleExperience(questionDetail, loginUserDetail))
+            questionDetail.removeExperience();
         questionDetail.setAnswerTop3(answerTop3);
         questionDetail.setChildQuestionTop3(childQuestionTop3);
         model.addAttribute("questionDetailPage", questionDetail);
         model.addAttribute("answer", new AnswerForm());
+    }
+
+    private static boolean isInaccessibleExperience(QuestionDetailDto questionDetail, LoginUserDetail loginUserDetail) {
+        QuestionOverview question = questionDetail.getQuestion();
+        if(!question.isHidden())
+            return false;
+        return loginUserDetail == null || !question.getOwnerId().equals(loginUserDetail.getId());
     }
 
     public static void initQuestionOverview(Model model, QuestionOverview questionOverview) {

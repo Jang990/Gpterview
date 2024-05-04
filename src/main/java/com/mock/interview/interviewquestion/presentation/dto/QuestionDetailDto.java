@@ -14,7 +14,6 @@ public class QuestionDetailDto {
     private QuestionOverview question;
     @Setter(AccessLevel.PRIVATE)
     private QuestionOverview parentQuestion;
-    @Setter(AccessLevel.PRIVATE)
     private ExperienceDto experience;
     private List<AnswerDetailDto> answerTop3;
     private List<ChildQuestionOverview> childQuestionTop3;
@@ -25,11 +24,7 @@ public class QuestionDetailDto {
         this.experience = experience;
     }
 
-    public void verifyExperience(long loginId) {
-        if(!question.isHidden())
-            return;
-        if(question.getOwnerId().equals(loginId))
-            return;
+    public void removeExperience() {
         experience = null;
     }
 }
