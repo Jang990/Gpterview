@@ -87,6 +87,9 @@ public class InterviewProgressTimeBasedTracker {
 
     /** base - target (Second 단위) */
     private long getSecondDifference(LocalDateTime base, LocalDateTime target) {
-        return TimeDifferenceCalculator.calculate(ChronoUnit.SECONDS, base, target);
+        long diffSecond = TimeDifferenceCalculator.calculate(ChronoUnit.SECONDS, base, target);
+        if(diffSecond < 0)
+            throw new IllegalArgumentException("base < target");
+        return diffSecond;
     }
 }

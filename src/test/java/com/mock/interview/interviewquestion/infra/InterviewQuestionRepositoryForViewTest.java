@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 class InterviewQuestionRepositoryForViewTest {
     @Autowired
     QuestionRepositoryForView repositoryForView;
+    @Autowired
+    QuestionRepositoryForListView questionRepositoryForListView;
 
 //    @Test
     void test0() {
@@ -28,7 +30,7 @@ class InterviewQuestionRepositoryForViewTest {
 //    @Test
     void test2() {
         QuestionSearchOptionsDto searchCond = QuestionSearchOptionsDto.builder().categoryIdCond(1L).build();
-        Page<QuestionOverview> result = repositoryForView.findOverviewList(searchCond, PageRequest.of(0, 30));
+        Page<QuestionOverview> result = questionRepositoryForListView.findOverviewList(searchCond, PageRequest.of(0, 30));
         System.out.println(result.getTotalElements()); // 전체 요소 수 90
         System.out.println(result.getTotalPages()); // 전체 페이지 수 3 (2까지 가능)
         System.out.println(result.getNumber()); // 현재 페이지 넘버 0

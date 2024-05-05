@@ -19,9 +19,6 @@ public final class TimeDifferenceCalculator {
     }
 
     public static long calculate(final ChronoUnit unit, final LocalDateTime start, final LocalDateTime end) {
-        long result = unit.between(start, end);
-        if(result < 0)
-            throw new IllegalArgumentException("base < target");
-        return result;
+        return unit.between(start, end);
     }
 }
