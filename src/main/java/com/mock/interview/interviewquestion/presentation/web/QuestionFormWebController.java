@@ -30,7 +30,7 @@ public class QuestionFormWebController {
         CategoryViewer.setCategoriesView(model, categoryService, positionService);
         QuestionPageInitializer.initQuestionForm(model, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");
-        return "/question/form";
+        return "question/form";
     }
 
     @GetMapping("/question/{parentQuestionId}/child/form")
@@ -48,7 +48,7 @@ public class QuestionFormWebController {
         model.addAttribute("headerActiveTap", "interview-question");
 
         model.addAttribute("parentQuestion", parentQuestionSummary);
-        return "/question/child-form";
+        return "question/child-form";
     }
 
     @GetMapping("/question/{questionId}/edit/form")
@@ -62,6 +62,6 @@ public class QuestionFormWebController {
         QuestionPageInitializer.initEditQuestionForm(model, questionForm, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");
         model.addAttribute("existsQuestionId", questionId);
-        return "/question/form";
+        return "question/form";
     }
 }

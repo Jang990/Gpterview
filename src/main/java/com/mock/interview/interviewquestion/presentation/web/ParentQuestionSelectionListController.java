@@ -38,7 +38,7 @@ public class ParentQuestionSelectionListController {
         Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         model.addAttribute("childQuestionId", childQuestionId);
-        return "/question/list-select";
+        return "question/list-select";
     }
 
     @PostMapping("/question/{childQuestionId}/parent")

@@ -35,7 +35,7 @@ public class AnswerFormWebController {
             return "redirect:/question/"+questionId+"/unauthorized";
         model.addAttribute("question", questionSummary);
         model.addAttribute("answer", new AnswerForm());
-        return "/answer/form";
+        return "answer/form";
     }
 
     @GetMapping("/question/{questionId}/answer/{answerId}/edit/form")
@@ -53,7 +53,7 @@ public class AnswerFormWebController {
 
         AnswerForm answerEditForm = interviewAnswerRepositoryForListView.findAnswerEditForm(answerId, loginUserDetail.getId());
         model.addAttribute("answer", answerEditForm);
-        return "/answer/edit-form";
+        return "answer/edit-form";
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -30,7 +30,7 @@ public class AnswerWebController {
     ) {
         Page<AnswerDetailDto> answerPage = interviewAnswerRepositoryForListView.findQuestionAnswerPage(questionId, pageable);
         AnswerPageInitializer.initListPage(model, questionId, answerPage, request);
-        return "/answer/list";
+        return "answer/list";
     }
 
     @GetMapping("/question/{questionId}/answer/{answerId}")
@@ -48,6 +48,6 @@ public class AnswerWebController {
         QuestionPageInitializer.initQuestionOverview(model, question);
         AnswerPageInitializer.initAnswerDetail(model, answer);
         AnswerPageInitializer.initAnswerPageHeaderSelected(model);
-        return "/answer/detail";
+        return "answer/detail";
     }
 }

@@ -87,7 +87,7 @@ public class InterviewController {
 
         Page<InterviewOverview> overviewPage = interviewRepositoryForView.findInterviewList(loginUserDetail.getId(), pageable);
         InterviewPageInitializer.initListPage(model, overviewPage, request);
-        return "/interview/list";
+        return "interview/list";
     }
 
 }

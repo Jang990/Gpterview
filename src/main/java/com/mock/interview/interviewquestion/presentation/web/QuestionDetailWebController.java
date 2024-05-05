@@ -29,7 +29,7 @@ public class QuestionDetailWebController {
     @GetMapping("/question/{questionId}/unauthorized")
     public String unauthorizedPage(Model model, @PathVariable(name = "questionId") long questionId) {
         model.addAttribute("info", new UnauthorizedPageInfo("접근 권한 없음", String.valueOf(questionId), "/question"));
-        return "/question/unauthorized";
+        return "question/unauthorized";
     }
 
 
@@ -48,6 +48,6 @@ public class QuestionDetailWebController {
         List<AnswerDetailDto> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
         List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForListView.findChildQuestionTop3Likes(questionId);
         QuestionPageInitializer.initQuestionDetail(model, question, answerTop3, childQuestionTop3,loginUserDetail);
-        return "/question/detail";
+        return "question/detail";
     }
 }

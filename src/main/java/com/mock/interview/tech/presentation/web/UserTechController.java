@@ -32,7 +32,7 @@ public class UserTechController {
         List<TechViewDto> techList = userRepositoryForView.findUserTech(userId);
         model.addAttribute("userId", userId);
         model.addAttribute("tech", new TechListForm(techList));
-        return "/users/tech/tech-form";
+        return "users/tech/tech-form";
     }
 
     @PostMapping("/users/{userId}/tech")

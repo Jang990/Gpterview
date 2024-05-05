@@ -25,7 +25,7 @@ public class InterviewPostResultController {
                 "/users/"+ loginId+"/interview"
         );
 
-        return "/info/info";
+        return "info/info";
     }
 
     @GetMapping("/interview/delete/result")
@@ -40,6 +40,6 @@ public class InterviewPostResultController {
                 "/users/"+ loginUserDetail.getId()+"/interview"
         );
 
-        return "/info/info";
+        return "info/info";
     }
 }

@@ -33,7 +33,7 @@ public class QuestionSearchWebController {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder().searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
-        return "/question/list";
+        return "question/list";
     }
 
     @GetMapping("/interview/{interviewId}/question")
@@ -45,7 +45,7 @@ public class QuestionSearchWebController {
     ) {
         Page<QuestionOverview> overviewPage = interviewQuestionRepositoryForView.findOverviewList(interviewId, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, new QuestionSearchCond(/* 임시코드 */), request);
-        return "/interview/question";
+        return "interview/question";
     }
 
     @GetMapping("question/category/{categoryId}")
@@ -60,7 +60,7 @@ public class QuestionSearchWebController {
                 .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
-        return "/question/list";
+        return "question/list";
     }
 
     @GetMapping("question/position/{positionId}")
@@ -75,7 +75,7 @@ public class QuestionSearchWebController {
                 .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
-        return "/question/list";
+        return "question/list";
     }
 
     @GetMapping("question/{questionId}/child")
@@ -91,6 +91,6 @@ public class QuestionSearchWebController {
                 .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptionsDto, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
-        return "/question/list";
+        return "question/list";
     }
 }

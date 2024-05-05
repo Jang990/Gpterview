@@ -38,7 +38,7 @@ public class UserFormController {
         AccountUpdateForm form = repositoryForView.findUserUpdateForm(userId);
         CategoryViewer.initInterviewFormPage(model, form.getCategoryId(), categoryService, positionService);
         model.addAttribute("account", form);
-        return "/users/form";
+        return "users/form";
     }
 
     @PostMapping("/users/{userId}")

@@ -33,7 +33,7 @@ public class ExperiencePageController {
         model.addAttribute("userId", userId);
         model.addAttribute("experienceList", repositoryView.findExperienceList(userId));
         model.addAttribute("deleteOptions", new ExperienceDeleteOptions());
-        return "/users/experience/experience-list";
+        return "users/experience/experience-list";
     }
 
     @GetMapping("/users/{userId}/experience/form")
@@ -46,7 +46,7 @@ public class ExperiencePageController {
             return "redirect:/users/"+userId+"/unauthorized";
 
         model.addAttribute("experienceForm", new ExperienceForm());
-        return "/users/experience/experience-form";
+        return "users/experience/experience-form";
     }
 
     @GetMapping("/users/{userId}/experience/{experienceId}/edit")
@@ -61,6 +61,6 @@ public class ExperiencePageController {
 
         model.addAttribute("experienceId", experienceId);
         model.addAttribute("experienceEditForm", experienceViewService.findExperience(experienceId, loginUserDetail.getId()));
-        return "/users/experience/experience-edit-form";
+        return "users/experience/experience-edit-form";
     }
 }

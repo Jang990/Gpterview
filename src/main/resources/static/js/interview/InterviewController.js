@@ -1,5 +1,5 @@
 function createConversationPairUriPrefix() {
-    return "/api/interview/" + getInterviewId() + "/conversation/pair/" + getConversationPairId();
+    return "api/interview/" + getInterviewId() + "/conversation/pair/" + getConversationPairId();
 }
 
 const loadingTime = 1500;
