@@ -1,0 +1,5 @@
+openai:
+  model: gpt-3.5-turbo
+  api:
+    url: https://test.url
+    key: only-test-key

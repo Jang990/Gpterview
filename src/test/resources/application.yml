@@ -1,0 +1,27 @@
+spring:
+  session:
+    store-type: redis
+    redis:
+      namespace: spring:session
+  profiles:
+    include:
+      - "openai"
+      - "oauth"
+      - "interview"
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+  messages:
+    basename: errors
+  datasource :
+    url: jdbc:h2:mem:test
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
