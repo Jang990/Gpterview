@@ -10,6 +10,7 @@ env:
   AWS_S3_BUCKET: gpterviewbucket
   AWS_CODE_DEPLOY_APPLICATION: Gpterview-CD
   AWS_CODE_DEPLOY_GROUP: Gpterview-CD-Group
+  AWS_S3_OBJECT_NAME: Gpterview-Deploy
 
 jobs:
   build-with-gradle:
@@ -35,7 +36,7 @@ jobs:
         aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
     - name: S3 업로드
-      run: aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files --s3-location s3://$AWS_S3_BUCKET/cicdtest/$GITHUB_SHA.zip --source .
+      run: aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files --s3-location s3://$AWS_S3_BUCKET/$AWS_S3_OBJECT_NAME/$GITHUB_SHA.zip --source .
     - name: EC2 배포
       run: aws deploy create-deployment --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} --s3-location bucket=$AWS_S3_BUCKET,key=cicdtest/$GITHUB_SHA.zip,bundleType=zip
     
