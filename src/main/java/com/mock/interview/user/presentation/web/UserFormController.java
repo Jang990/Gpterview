@@ -36,7 +36,7 @@ public class UserFormController {
             return "redirect:/users/"+userId+"/unauthorized";
 
         AccountUpdateForm form = repositoryForView.findUserUpdateForm(userId);
-        CategoryViewer.initInterviewFormPage(model, form.getCategoryId(), categoryService, positionService);
+        CategoryViewer.showCategoriesView(model, form.getCategoryId(), categoryService, positionService);
         model.addAttribute("account", form);
         return "users/form";
     }

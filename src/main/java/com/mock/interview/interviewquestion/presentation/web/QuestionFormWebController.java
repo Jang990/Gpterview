@@ -27,7 +27,7 @@ public class QuestionFormWebController {
 
     @GetMapping("question/form")
     public String questionSavePage(Model model, @AuthenticationPrincipal LoginUserDetail loginUserDetail) {
-        CategoryViewer.setCategoriesView(model, categoryService, positionService);
+        CategoryViewer.showCategoriesView(model, null, categoryService, positionService);
         QuestionPageInitializer.initQuestionForm(model, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");
         return "question/form";
@@ -43,7 +43,7 @@ public class QuestionFormWebController {
         if(QuestionPageInitializer.isUnauthorized(loginUserDetail, parentQuestionSummary))
             return "redirect:/question/"+parentQuestionId+"/unauthorized";
 
-        CategoryViewer.setCategoriesView(model, categoryService, positionService);
+        CategoryViewer.showCategoriesView(model, null, categoryService, positionService);
         QuestionPageInitializer.initQuestionForm(model, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");
 
@@ -57,7 +57,7 @@ public class QuestionFormWebController {
             @AuthenticationPrincipal LoginUserDetail loginUserDetail,
             @PathVariable("questionId") long questionId
     ) {
-        CategoryViewer.setCategoriesView(model, categoryService, positionService);
+        CategoryViewer.showCategoriesView(model, null, categoryService, positionService);
         QuestionForm questionForm = questionRepositoryForView.findQuestionForm(questionId, loginUserDetail.getId());
         QuestionPageInitializer.initEditQuestionForm(model, questionForm, experienceRepositoryView, loginUserDetail);
         model.addAttribute("headerActiveTap", "interview-question");

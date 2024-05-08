@@ -71,7 +71,7 @@ public class InterviewController {
         InterviewAccountForm accountForm = userRepositoryForView.findUserInterviewForm(loginId);
         model.addAttribute("configForm", new InterviewConfigForm());
         model.addAttribute("accountForm", accountForm);
-        CategoryViewer.initInterviewFormPage(model, accountForm.getCategoryId(), categoryService, positionService);
+        CategoryViewer.showCategoriesView(model, accountForm.getCategoryId(), categoryService, positionService);
         return "interview/form";
     }
 
