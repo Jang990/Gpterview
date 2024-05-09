@@ -32,19 +32,10 @@ jobs:
 
     - name: before-deploy 디렉토리 생성
       run: |
-        mkdir before-deploy
-        cp build/libs/*.jar before-deploy/
-        cp script/*.sh before-deploy/
-        cp appspec.yml before-deploy/ 
-    - name: before-deploy 파일 압축
-      run: cd before-deploy && zip -r before-deploy * 
-
-    - name: deploy 디렉토리 생성
-      run: mkdir -p deploy
-    - name: deploy 폴더로 zip 파일 이동
-      run: mv before-deploy/before-deploy.zip deploy/gpterview-webservice.zip    
-      
-      
+        mkdir deploy/ 
+        cp build/libs/*.jar deploy/ 
+        cp script/*.sh deploy/ 
+        cp appspec.yml deploy/ 
       
     - name: AWS credential 설정
       uses: aws-actions/configure-aws-credentials@v1
