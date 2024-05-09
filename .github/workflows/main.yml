@@ -38,13 +38,9 @@ jobs:
         cp appspec.yml before-deploy/ 
     - name: before-deploy 파일 압축
       run: cd before-deploy && zip -r before-deploy * 
-    - name: 출력1
-      run: ls
-    - name: 출력2
-      run: ls ..
 
     - name: deploy 디렉토리 생성
-      run: cd ../ && mkdir -p deploy
+      run: mkdir -p deploy
     - name: deploy 폴더로 zip 파일 이동
       run: mv before-deploy/before-deploy.zip deploy/gpterview-webservice.zip    
       
