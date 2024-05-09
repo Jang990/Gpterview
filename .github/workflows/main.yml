@@ -30,7 +30,7 @@ jobs:
     - name: 프로젝트 빌드
       run: ./gradlew clean build -x test
 
-    - name: before-deploy 디렉토리 생성
+    - name: deploy 디렉토리 생성
       run: |
         mkdir deploy/ 
         cp build/libs/*.jar deploy/ 
@@ -43,7 +43,7 @@ jobs:
         aws-region: ${{ env.AWS_REGION }}
         aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
-    - name: S3 업로드
+    - name: deploy 디렉토리를 S3 업로드
       run: |
         aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files \
         --s3-location s3://$AWS_S3_BUCKET/$AWS_S3_OBJECT_NAME/$GITHUB_SHA.zip \

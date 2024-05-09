@@ -2,5 +2,10 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/app/project/zip/
+    destination: /home/ec2-user/app/project/zip
     overwrite: yes
+
+hooks:
+  ApplicationStart:
+    - location: deploy.sh
+      timeout: 60
