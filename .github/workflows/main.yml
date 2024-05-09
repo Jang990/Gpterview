@@ -31,15 +31,13 @@ jobs:
       run: ./gradlew clean build -x test
 
     - name: before-deploy 디렉토리 생성
-      run: mkdir before-deploy
-    - name: JAR 파일 복사
-      run: cp build/libs/*.jar before-deploy/
-    - name: 스크립트 파일복사
-      run: cp script/*.sh before-deploy/
-    - name: appspec.yml 파일 복사
-      run: cp appspec.yml before-deploy/      
-    - name: before-deploy 파일 압축
-      run: cd before-deploy && zip -r before-deploy *
+      run: |
+        mkdir before-deploy
+        cp build/libs/*.jar before-deploy/
+        cp script/*.sh before-deploy/
+        cp appspec.yml before-deploy/ 
+        cd before-deploy && zip -r before-deploy * 
+        ll
 
     - name: deploy 디렉토리 생성
       run: cd ../ && mkdir -p deploy
