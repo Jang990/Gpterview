@@ -56,7 +56,7 @@ jobs:
       run: |
         aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files \
         --s3-location s3://$AWS_S3_BUCKET/$AWS_S3_OBJECT_NAME/$GITHUB_SHA.zip \
-        --source /deploy
+        --source deploy
     - name: EC2 배포
       run: |
         aws deploy create-deployment --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} \
