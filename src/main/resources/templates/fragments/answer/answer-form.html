@@ -8,7 +8,7 @@
     </div>
     <form th:action="${answer.id == null} ? @{/question/{questionId}/answer(questionId=${questionId})} : @{/question/{questionId}/answer/{answerId}/edit(questionId=${questionId},answerId=${answer.id})}" method="post">
         <div class="my-3">
-            <textarea class="form-control my-answer-textarea" placeholder="대답 내용을 적어주세요." th:field="${answer.content}" style="height: 100px"></textarea>
+            <textarea class="form-control my-answer-textarea" rows="5" placeholder="대답 내용을 적어주세요." th:field="${answer.content}"></textarea>
         </div>
 
         <div class="d-flex justify-content-end">
