@@ -6,7 +6,7 @@ const loadingTime = 1500;
 const sendBtn = $('.sendBtn');
 const errorMessageField = $('#errorMessageField');
 const contentMinLength = 3;
-const contentMaxLength = 200;
+const contentMaxLength = 400;
 let chattingErrorToast = new bootstrap.Toast(document.getElementById('chattingErrorToast'));
 
 let remainingTime = loadingTime;
