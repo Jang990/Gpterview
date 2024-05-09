@@ -28,4 +28,4 @@ echo "JAR 실행 권한 부여"
 chmod +x $REPOSITORY/*.jar
 
 echo "$JAR_NAME 실행"
-nohup java -jar -Dspring.config.location=classpath:/application-interview.yml,/home/ec2-user/app/application-prod.yml,/home/ec2-user/app/application-openai.yml,/home/ec2-user/app/application-oauth.yml -Dspring.profiles.active=prod $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
+nohup java -jar -Dspring.config.location=classpath:/application-interview.yml,/home/ec2-user/app/application-prod.yml,/home/ec2-user/app/application-openai.yml,/home/ec2-user/app/application-oauth.yml -Dspring.profiles.active=prod $REPOSITORY/$JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
