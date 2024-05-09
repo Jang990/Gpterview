@@ -36,8 +36,12 @@ jobs:
         cp build/libs/*.jar before-deploy/
         cp script/*.sh before-deploy/
         cp appspec.yml before-deploy/ 
-        cd before-deploy && zip -r before-deploy * 
-        ll
+    - name: before-deploy 파일 압축
+      run: cd before-deploy && zip -r before-deploy * 
+    - name: 출력1
+      run: ls
+    - name: 출력2
+      run: ls ..
 
     - name: deploy 디렉토리 생성
       run: cd ../ && mkdir -p deploy
