@@ -29,6 +29,25 @@ jobs:
       run: chmod +x ./gradlew
     - name: 프로젝트 빌드
       run: ./gradlew clean build -x test
+
+    - name: before-deploy 디렉토리 생성
+      run: mkdir before-deploy
+    - name: JAR 파일 복사
+      run: cp build/libs/*.jar before-deploy/
+    - name: 스크립트 파일복사
+      run: cp script/*.sh before-deploy/
+    - name: appspec.yml 파일 복사
+      run: cp appspec.yml before-deploy/      
+    - name: before-deploy 파일 압축
+      run: cd before-deploy && zip -r before-deploy *
+
+    - name: deploy 디렉토리 생성
+      run: cd ../ && mkdir -p deploy
+    - name: deploy 폴더로 zip 파일 이동
+      run: mv before-deploy/before-deploy.zip deploy/gpterview-webservice.zip    
+      
+      
+      
     - name: AWS credential 설정
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -36,7 +55,13 @@ jobs:
         aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY }}
         aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
     - name: S3 업로드
-      run: aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files --s3-location s3://$AWS_S3_BUCKET/$AWS_S3_OBJECT_NAME/$GITHUB_SHA.zip --source .
+      run: |
+        aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files \
+        --s3-location s3://$AWS_S3_BUCKET/$AWS_S3_OBJECT_NAME/$GITHUB_SHA.zip \
+        --source /deploy
     - name: EC2 배포
-      run: aws deploy create-deployment --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} --s3-location bucket=$AWS_S3_BUCKET,key=$AWS_S3_OBJECT_NAME/$GITHUB_SHA.zip,bundleType=zip
+      run: |
+        aws deploy create-deployment --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} \
+        --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} \
+        --s3-location bucket=$AWS_S3_BUCKET,key=$AWS_S3_OBJECT_NAME/$GITHUB_SHA.zip,bundleType=zip
     
