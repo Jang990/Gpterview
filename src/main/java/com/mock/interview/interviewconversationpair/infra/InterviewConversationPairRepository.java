@@ -70,6 +70,14 @@ public interface InterviewConversationPairRepository extends JpaRepository<Inter
 
     @Query("""
             UPDATE InterviewConversationPair icp
+            SET icp.answer = null
+            WHERE icp.answer.id = :answerId
+            """)
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    void removeAnswer(@Param("answerId") long answerId);
+
+    @Query("""
+            UPDATE InterviewConversationPair icp
             SET icp.interview = null
             WHERE icp.interview.id = :interviewId
             """)

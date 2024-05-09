@@ -1,10 +1,13 @@
 package com.mock.interview.interviewanswer.application;
 
+import com.mock.interview.interviewanswer.application.helper.AnswerVerifyHelper;
 import com.mock.interview.interviewanswer.domain.InterviewAnswerService;
 import com.mock.interview.interviewanswer.domain.exception.InterviewAnswerNotFoundException;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
+import com.mock.interview.interviewanswer.infra.AnswerExistsRepository;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
 import com.mock.interview.interviewanswer.presentation.dto.AnswerForm;
+import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
@@ -19,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class AnswerService {
+    private final AnswerExistsRepository answerExistsRepository;
+    private final InterviewConversationPairRepository conversationPairRepository;
     private final InterviewQuestionRepository questionRepository;
     private final UserRepository userRepository;
     private final InterviewAnswerRepository repository;
@@ -34,7 +39,9 @@ public class AnswerService {
     }
 
     public void delete(long answerId, long questionId, long loginId) {
-        repository.deleteUserAnswer(answerId, questionId, loginId);
+        AnswerVerifyHelper.verify(answerExistsRepository, answerId, questionId, loginId);
+        conversationPairRepository.removeAnswer(answerId);
+        repository.deleteUserAnswer(answerId, loginId);
     }
 
     public void update(long answerId, long questionId, long loginId, AnswerForm answerForm) {
