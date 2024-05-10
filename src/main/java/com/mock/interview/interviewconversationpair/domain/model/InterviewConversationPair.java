@@ -79,12 +79,13 @@ public class InterviewConversationPair extends BaseTimeEntity {
         Events.raise(new ConversationStartedEvent(interview.getId(), this.id, appearedQuestionIds));
     }
 
-    public void connectQuestion(InterviewQuestion question) {
+    public void connectQuestion(InterviewQuestion question, AppearedQuestionIdManager appearedQuestionIdManager) {
         if(status != PairStatus.WAITING_QUESTION)
             throw new IllegalStateException();
 
         this.question = question;
         status = PairStatus.WAITING_ANSWER;
+        appearedQuestionIdManager.appear(interview.getId(), question.getId());
         Events.raise(new QuestionConnectedEvent(interview.getId(), this.id, question.getId()));
     }
 

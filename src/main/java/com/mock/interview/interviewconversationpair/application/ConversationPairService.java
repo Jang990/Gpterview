@@ -2,6 +2,7 @@ package com.mock.interview.interviewconversationpair.application;
 
 import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewConversationIds;
+import com.mock.interview.interviewconversationpair.domain.AppearedQuestionIdManager;
 import com.mock.interview.interviewconversationpair.domain.ConversationRestarter;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -20,6 +21,7 @@ public class ConversationPairService {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final InterviewQuestionRepository questionRepository;
     private final ConversationRestarter conversationRestarter;
+    private final AppearedQuestionIdManager appearedQuestionIdManager;
 
     @InterviewProgressLock
     public void connectQuestion(InterviewConversationIds lockDto, long questionId) {
@@ -29,7 +31,7 @@ public class ConversationPairService {
         InterviewQuestion question = questionRepository.findOpenQuestion(questionId)
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        conversationPair.connectQuestion(question);
+        conversationPair.connectQuestion(question, appearedQuestionIdManager);
     }
 
     @InterviewProgressLock

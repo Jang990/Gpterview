@@ -4,6 +4,7 @@ import com.mock.interview.interviewanswer.domain.event.ConversationAnsweredEvent
 import com.mock.interview.interviewanswer.domain.exception.InterviewAnswerNotFoundException;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
 import com.mock.interview.interviewanswer.infra.InterviewAnswerRepository;
+import com.mock.interview.interviewconversationpair.domain.AppearedQuestionIdManager;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
@@ -21,6 +22,7 @@ public class CustomInterviewQuestionHandler {
     private final InterviewConversationPairRepository interviewConversationPairRepository;
     private final InterviewQuestionRepository interviewQuestionRepository;
     private final InterviewAnswerRepository answerRepository;
+    private final AppearedQuestionIdManager appearedQuestionIdManager;
 
     @EventListener(ConversationQuestionCreatedEvent.class)
     public void handle(ConversationQuestionCreatedEvent event) {
@@ -29,7 +31,7 @@ public class CustomInterviewQuestionHandler {
         InterviewQuestion question = interviewQuestionRepository.findById(event.questionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
-        conversationPair.connectQuestion(question);
+        conversationPair.connectQuestion(question, appearedQuestionIdManager);
     }
 
     @EventListener(ConversationAnsweredEvent.class)
