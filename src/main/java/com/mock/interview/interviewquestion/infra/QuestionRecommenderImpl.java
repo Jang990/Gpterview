@@ -3,12 +3,9 @@ package com.mock.interview.interviewquestion.infra;
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
-import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.exception.InterviewQuestionNotFoundException;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
-import com.mock.interview.interviewquestion.domain.model.QuestionType;
 import com.mock.interview.interviewquestion.infra.recommend.CurrentConversationConvertor;
-import com.mock.interview.interviewquestion.infra.recommend.QuestionMetaDataConvertor;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import com.mock.interview.interviewquestion.domain.QuestionRecommender;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.Top3Question;
@@ -36,10 +33,9 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class QuestionRecommenderImpl implements QuestionRecommender {
-
     private final InterviewCacheRepository interviewCache;
     private final InterviewQuestionRepository questionRepository;
-    private final RandomQuestionRepository randomQuestionRepository;
+    private final RelatedQuestionRepository relatedQuestionRepository;
     private final InterviewConversationPairRepository conversationPairRepository;
     private final QuestionRankingService recommender;
     private final KoreaStringAnalyzer stringAnalyzer;
@@ -55,30 +51,28 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     ) throws NotEnoughQuestion {
         InterviewInfo interview = interviewCache.findProgressingInterviewInfo(target.interviewId());
         InterviewProgress interviewInterviewProgress = interviewProgressTraceService.trace(interview);
-        List<InterviewQuestion> relatedQuestions = findRelatedRandomQuestions(
+        List<QuestionMetaData> relatedQuestions = findRelatedQuestions(
                 interview.profile().category(), interviewInterviewProgress,
                 appearedQuestionIds, RECOMMENDED_QUESTION_SIZE
         );
-        List<QuestionMetaData> questionForRecommend = QuestionMetaDataConvertor.convert(relatedQuestions);
 
         CurrentConversation currentConversation = CurrentConversationConvertor
                 .create(conversationPairRepository, stringAnalyzer,
                         target.interviewId(), interview, interviewInterviewProgress.getTopicContent());
         List<Long> result = recommender
-                .recommendTechQuestion(recommendationSize, currentConversation, questionForRecommend);
+                .recommendTechQuestion(recommendationSize, currentConversation, relatedQuestions);
         return result.stream().map(questionRepository::findById).map(op -> op.orElseThrow(InterviewQuestionNotFoundException::new)).toList();
     }
 
-    private List<InterviewQuestion> findRelatedRandomQuestions(
+    private List<QuestionMetaData> findRelatedQuestions(
             CategoryResponse category, InterviewProgress interviewProgress,
             List<Long> appearedQuestionIds, int size
     ) {
         final PageRequest pageable = PageRequest.of(0, size);
-        QuestionType type = QuestionConvertor.convert(interviewProgress.phase());
         return switch (interviewProgress.phase()) {
-            case TECHNICAL -> randomQuestionRepository.findTechQuestion(type, category.getId(), interviewProgress.getTopicId(), appearedQuestionIds, pageable);
-            case EXPERIENCE -> randomQuestionRepository.findExperienceQuestion(type, interviewProgress.getTopicId(), appearedQuestionIds, pageable);
-            case PERSONAL -> randomQuestionRepository.findPersonalQuestion(type, appearedQuestionIds, pageable);
+            case TECHNICAL -> relatedQuestionRepository.findTechQuestion(category.getId(), interviewProgress.getTopicId(), appearedQuestionIds, pageable);
+            case EXPERIENCE -> relatedQuestionRepository.findExperienceQuestion(interviewProgress.getTopicId(), appearedQuestionIds, pageable);
+            case PERSONAL -> relatedQuestionRepository.findPersonalQuestion(appearedQuestionIds, pageable);
         };
     }
 
