@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 //@SpringBootTest
 class InterviewConversationPairRepositoryTest {
 
@@ -30,5 +32,11 @@ class InterviewConversationPairRepositoryTest {
 //    @Test
     void test4() {
         System.out.println(repository.findLastCompletedConversation(7, 125, LAST).get(0).getId());
+    }
+
+//    @Test
+    void test5() {
+        List<Long> ids = repository.findAppearedQuestionIds(171L);
+        System.out.println(ids);
     }
 }

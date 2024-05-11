@@ -1,4 +1,6 @@
 package com.mock.interview.interviewconversationpair.domain.event;
 
-public record ConversationStartedEvent(long interviewId, long pairId) {
+import java.util.List;
+
+public record ConversationStartedEvent(long interviewId, long pairId, List<Long> appearedQuestionIds) {
 }
