@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -41,14 +42,23 @@ public class AppearedQuestionIdManagerImpl implements AppearedQuestionIdManager 
     public List<Long> find(long interviewId) {
         String key = createKey(interviewId);
         AppearedQuestionIds cacheIds = appearedQuestionRedisTemplate.opsForValue().get(key);
+        System.out.println(cacheIds);
         if (cacheIds != null)
             return cacheIds.getIds();
 
-        List<Long> ids = interviewConversationPairRepository
-                .findAppearedQuestionIds(interviewId);
+        List<Long> ids = findAppearedQuestionIds(interviewId);
+
         Interview interview = interviewRepository.findById(interviewId)
                 .orElseThrow(InterviewNotFoundException::new);
         save(interview, key, ids);
+        return ids;
+    }
+
+    private List<Long> findAppearedQuestionIds(long interviewId) {
+        List<Long> ids = interviewConversationPairRepository
+                .findAppearedQuestionIds(interviewId);
+        if(ids.isEmpty() || (ids.size() == 1 && ids.get(0) == null))
+            return new LinkedList<>();
         return ids;
     }
 
