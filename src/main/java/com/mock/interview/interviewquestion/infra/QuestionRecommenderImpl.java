@@ -1,5 +1,6 @@
 package com.mock.interview.interviewquestion.infra;
 
+import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
 import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
@@ -48,44 +49,52 @@ public class QuestionRecommenderImpl implements QuestionRecommender {
     private final int TOP_3 = 3;
 
     @Override
-    public List<InterviewQuestion> recommend(int recommendationSize, RecommendationTarget target) {
+    public List<InterviewQuestion> recommend(
+            int recommendationSize, RecommendationTarget target,
+            List<Long> appearedQuestionIds
+    ) throws NotEnoughQuestion {
         InterviewInfo interview = interviewCache.findProgressingInterviewInfo(target.interviewId());
         InterviewProgress interviewInterviewProgress = interviewProgressTraceService.trace(interview);
-        List<InterviewQuestion> relatedQuestions = findRelatedRandomQuestions(interviewInterviewProgress, RECOMMENDED_QUESTION_SIZE);
+        List<InterviewQuestion> relatedQuestions = findRelatedRandomQuestions(
+                interview.profile().category(), interviewInterviewProgress,
+                appearedQuestionIds, RECOMMENDED_QUESTION_SIZE
+        );
         List<QuestionMetaData> questionForRecommend = QuestionMetaDataConvertor.convert(relatedQuestions);
 
-        try {
-            CurrentConversation currentConversation = CurrentConversationConvertor
-                    .create(conversationPairRepository, stringAnalyzer,
-                            target.interviewId(), interview, interviewInterviewProgress.getTopicContent());
-            List<Long> result = recommender
-                    .recommendTechQuestion(recommendationSize, currentConversation, questionForRecommend);
-            return result.stream().map(questionRepository::findById).map(op -> op.orElseThrow(InterviewQuestionNotFoundException::new)).toList();
-        } catch (NotEnoughQuestion e) {
-            log.warn("추천 기능 예외 발생", e);
-            throw new IllegalArgumentException(e);
-        }
+        CurrentConversation currentConversation = CurrentConversationConvertor
+                .create(conversationPairRepository, stringAnalyzer,
+                        target.interviewId(), interview, interviewInterviewProgress.getTopicContent());
+        List<Long> result = recommender
+                .recommendTechQuestion(recommendationSize, currentConversation, questionForRecommend);
+        return result.stream().map(questionRepository::findById).map(op -> op.orElseThrow(InterviewQuestionNotFoundException::new)).toList();
     }
 
-    private List<InterviewQuestion> findRelatedRandomQuestions(InterviewProgress interviewProgress, int size) {
+    private List<InterviewQuestion> findRelatedRandomQuestions(
+            CategoryResponse category, InterviewProgress interviewProgress,
+            List<Long> appearedQuestionIds, int size
+    ) {
         final PageRequest pageable = PageRequest.of(0, size);
         QuestionType type = QuestionConvertor.convert(interviewProgress.phase());
         return switch (interviewProgress.phase()) {
-            case TECHNICAL -> randomQuestionRepository.findTechQuestion(type, interviewProgress.getTopicId(), pageable);
-            case EXPERIENCE -> randomQuestionRepository.findExperienceQuestion(type, interviewProgress.getTopicId(), pageable);
-            case PERSONAL -> randomQuestionRepository.findPersonalQuestion(type, pageable);
+            case TECHNICAL -> randomQuestionRepository.findTechQuestion(type, category.getId(), interviewProgress.getTopicId(), appearedQuestionIds, pageable);
+            case EXPERIENCE -> randomQuestionRepository.findExperienceQuestion(type, interviewProgress.getTopicId(), appearedQuestionIds, pageable);
+            case PERSONAL -> randomQuestionRepository.findPersonalQuestion(type, appearedQuestionIds, pageable);
         };
     }
 
     @Override
-    public Top3Question recommendTop3(RecommendationTarget target) {
-        List<InterviewQuestion> recommended = recommend(TOP_3, target);
+    public Top3Question recommendTop3(
+            RecommendationTarget target, List<Long> appearedQuestionIds
+    ) throws NotEnoughQuestion {
+        List<InterviewQuestion> recommended = recommend(TOP_3, target, appearedQuestionIds);
         return new Top3Question(recommended.stream().map(InterviewQuestion::getId).toList());
     }
 
     @Override
-    public Top3Question retryRecommendation(RecommendationTarget target) {
+    public Top3Question retryRecommendation(
+            RecommendationTarget target, List<Long> appearedQuestionIds
+    ) throws NotEnoughQuestion {
         // 현재 저장된 캐시를 만료하고 새롭게 저장 - AOP 처리
-        return recommendTop3(target);
+        return recommendTop3(target, appearedQuestionIds);
     }
 }

@@ -20,27 +20,30 @@ public interface RandomQuestionRepository extends JpaRepository<InterviewQuestio
     String COMMON_RANDOM_QUERY = """
             SELECT iq
             FROM InterviewQuestion iq
-                JOIN (
-                    SELECT CEIL( RAND() * (SELECT MAX(iq2.id) FROM InterviewQuestion iq2) ) as id
-                ) random
             INNER JOIN FETCH iq.questionToken qt
-            WHERE iq.id >= CAST(random.id as long) AND iq.questionType = :type
             """;
 
     @Query(value = COMMON_RANDOM_QUERY + """
+            INNER JOIN iq.techLink link ON link.technicalSubjects.id = :techId
+            WHERE iq.id NOT IN (:appearedQuestionIds)
+                AND iq.questionType = :type
                 AND iq.category.id = :categoryId
                 AND iq.isHidden = FALSE
             """)
-    List<InterviewQuestion> findTechQuestion(@Param("type") QuestionType type, @Param("categoryId") long categoryId, Pageable pageable);
+    List<InterviewQuestion> findTechQuestion(@Param("type") QuestionType type, @Param("categoryId") long categoryId, @Param("techId") long techId, @Param("appearedQuestionIds") List<Long> appearedQuestionIds, Pageable pageable);
 
     @Query(value = COMMON_RANDOM_QUERY + """
+            WHERE iq.id NOT IN (:appearedQuestionIds)
+                AND iq.questionType = :type
                 AND iq.experience.id = :experienceId
                 AND iq.isHidden = FALSE
             """)
-    List<InterviewQuestion> findExperienceQuestion(@Param("type") QuestionType type, @Param("experienceId") long experienceId , Pageable pageable);
+    List<InterviewQuestion> findExperienceQuestion(@Param("type") QuestionType type, @Param("experienceId") long experienceId , @Param("appearedQuestionIds") List<Long> appearedQuestionIds, Pageable pageable);
 
     @Query(value = COMMON_RANDOM_QUERY + """
+            WHERE iq.id NOT IN (:appearedQuestionIds)
+                AND iq.questionType = :type
                 AND iq.isHidden = FALSE
             """)
-    List<InterviewQuestion> findPersonalQuestion(@Param("type") QuestionType type, Pageable pageable);
+    List<InterviewQuestion> findPersonalQuestion(@Param("type") QuestionType type, @Param("appearedQuestionIds") List<Long> appearedQuestionIds, Pageable pageable);
 }
