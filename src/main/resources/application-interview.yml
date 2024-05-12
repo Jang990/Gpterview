@@ -1,4 +1,5 @@
 interview:
+  ############ 모의 면접에 사용할 상수 ############
   role: # fommater에서 변환할 수 있는 role 키
     system: system
     user: user
@@ -7,6 +8,9 @@ interview:
     category: category
     field: field
     topic: topic
+  additional:
+    info:
+      prefix: "지원자 정보 : "
   format:
     prefix: $_
     suffix: _
@@ -18,7 +22,9 @@ interview:
       category: ${interview.format.prefix}${interview.profile.category}${interview.format.suffix}
       field: ${interview.format.prefix}${interview.profile.field}${interview.format.suffix}
       topic: ${interview.format.prefix}${interview.profile.topic}${interview.format.suffix}
+  ##############################################
 
+  # 지원자 정보를 변환할 템플릿
   template:
     common:
       rule: |
