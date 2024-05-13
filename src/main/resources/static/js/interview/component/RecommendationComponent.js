@@ -64,10 +64,12 @@ function retryRecommendation() {
     sendRequest(apiUri, null);
 }
 
+
 // AI 응답으로 변경
-function requestAi() {
+function retryWithAi() {
     const apiUri = createConversationPairUriPrefix() + "/recommendation/ai";
-    removeRecommendationComponent();
+//    removeRecommendationComponent();
+    removeLastChatting();
     waitAiResponse();
     sendPatchRequest(apiUri, null);
 }

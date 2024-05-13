@@ -7,6 +7,24 @@
 </head>
 <body>
     <section>
+        <script>
+            $(document).ready(function(){
+              showConfig($('#interviewType').val());
+
+              $('#interviewType').change(function(){
+                showConfig($(this).val());
+              });
+            });
+
+            function showConfig(selectedValue) {
+                // 모든 interviewForm 숨기기
+                $('[id^=divInterviewForm]').hide();
+
+                // 선택된 interviewForm 보여주기
+                $('#divInterviewForm' + selectedValue).show();
+            }
+        </script>
+
         <div style="width=400px;">
             <div class="d-flex flex-column">
                 <div class="ms-3 my-3">
@@ -25,17 +43,21 @@
                         </div>
                         <div class="m-3"></div>
 
-                        <div th:replace="~{fragments/form/tech :: fragment-tech(tech=${accountForm.tech})}">
-                            관련기술 영역
+                        <div th:id="|divInterviewForm${T(com.mock.interview.interview.presentation.dto.InterviewType).TECHNICAL}|">
+                            <div th:replace="~{fragments/form/tech :: fragment-tech(tech=${accountForm.tech})}">
+                                관련기술 영역
+                            </div>
                         </div>
                         <div class="m-3"></div>
 
-                        <div class="d-flex justify-content-start align-items-center">
-                            <div class="list-group" th:object="${accountForm}">
-                                <label class="list-group-item" th:each="experience, stat : *{experienceList}">
-                                    <input class="form-check-input me-1" type="checkbox"
-                                           th:field="*{experienceList[__${stat.index}__].id}" th:value="${experience.id}" th:text="${experience.content}">
-                                </label>
+                        <div th:id="|divInterviewForm${T(com.mock.interview.interview.presentation.dto.InterviewType).EXPERIENCE}|">
+                            <div class="d-flex justify-content-start align-items-center">
+                                <div class="list-group" th:object="${accountForm}">
+                                    <label class="list-group-item" th:each="experience, stat : *{experienceList}">
+                                        <input class="form-check-input me-1" type="checkbox"
+                                               th:field="*{experienceList[__${stat.index}__].id}" th:value="${experience.id}" th:text="${experience.content}">
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="m-3"></div>
