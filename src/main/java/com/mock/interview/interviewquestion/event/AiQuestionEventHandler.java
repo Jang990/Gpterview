@@ -26,7 +26,7 @@ public class AiQuestionEventHandler {
             phase = TransactionPhase.AFTER_COMMIT
     )
     public void handle(AiQuestionRecommendedEvent event) {
-        InterviewConversationPair conversationPair = conversationPairRepository.findConversation(event.interviewId(), event.pairId())
+        InterviewConversationPair conversationPair = conversationPairRepository.findById(event.pairId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
         conversationQuestionService.createAiOnly(conversationPair.getInterview().getId(),conversationPair);
     }
