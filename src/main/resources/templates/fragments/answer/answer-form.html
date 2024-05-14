@@ -8,11 +8,13 @@
     </div>
     <form th:action="${answer.id == null} ? @{/question/{questionId}/answer(questionId=${questionId})} : @{/question/{questionId}/answer/{answerId}/edit(questionId=${questionId},answerId=${answer.id})}" method="post">
         <div class="my-3">
-            <textarea class="form-control" placeholder="대답 내용을 적어주세요." th:field="${answer.content}" style="height: 100px"></textarea>
+            <textarea class="form-control my-answer-textarea" rows="5" placeholder="대답 내용을 적어주세요." th:field="${answer.content}"></textarea>
         </div>
 
         <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-success btn-sm sendBtn me-2" id="speckBtn" onclick="startRecognition()">말하기</button>
             <input type="submit" class="btn btn-primary btn-sm px-3" th:value="${existsAnswerId == null} ? 저장 : 수정">
         </div>
     </form>
+    <script th:src="@{/js/SpeakContent.js}" href="../js/SpeakContent.js"></script>
 </div>

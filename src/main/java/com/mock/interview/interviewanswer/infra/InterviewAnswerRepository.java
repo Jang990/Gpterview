@@ -25,6 +25,6 @@ public interface InterviewAnswerRepository extends JpaRepository<InterviewAnswer
     Optional<InterviewAnswer> findUserAnswer(@Param("answerId") long answerId, @Param("questionId") long questionId, @Param("userId") long userId);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("DELETE FROM InterviewAnswer ia WHERE ia.id = :answerId AND ia.question.id = :questionId AND ia.users.id = :userId")
-    int deleteUserAnswer(@Param("answerId") long answerId, @Param("questionId") long questionId, @Param("userId") long userId);
+    @Query("DELETE FROM InterviewAnswer ia WHERE ia.id = :answerId AND ia.users.id = :userId")
+    int deleteUserAnswer(@Param("answerId") long answerId, @Param("userId") long userId);
 }

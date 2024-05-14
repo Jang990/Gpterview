@@ -4,41 +4,46 @@ import com.mock.interview.global.Events;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewquestion.domain.event.ConversationQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
-@Service
+
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class ConversationQuestionService {
-    private final int MIN_RECOMMENDED_SIZE = 50;
-    private final int SINGLE = 1;
-    private final int FIRST_IDX = 0;
-    public void chooseMethod(
-            AiQuestionCreator aiCreator, QuestionRecommender recommender,
-            long relatedCategoryQuestionSize, long interviewId, InterviewConversationPair pair
+    private final AiQuestionCreator aiCreator;
+    private final QuestionRecommender recommender;
+
+    private final int SINGLE = 1, FIRST_IDX = 0;
+
+    public void chooseQuestion(
+            long interviewId, InterviewConversationPair pair,
+            List<Long> appearedQuestionIds
     ) {
-        if (hasEnoughQuestion(relatedCategoryQuestionSize)) {
-            recommendOnly(recommender, interviewId, pair);
-            return;
-        }
-
-        createAiOnly(aiCreator, interviewId, pair);
-    }
-
-    public void recommendOnly(QuestionRecommender recommender, long interviewId, InterviewConversationPair pair) {
         try {
-            RecommendationTarget target = new RecommendationTarget(interviewId, pair.getId());
-            InterviewQuestion question = recommender.recommend(SINGLE, target).get(FIRST_IDX);
-            Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
+            recommendOnly(interviewId, pair, appearedQuestionIds);
+        } catch (NotEnoughQuestion e) { // 추천할 질문이 부족한 경우 AI 질문 생성
+            log.info("질문 추천 중 추천할 질문 부족 발생", e);
+            createAiOnly(interviewId, pair);
         } catch (Throwable throwable) {
             ConversationQuestionExceptionHandlingHelper.handle(throwable, interviewId, pair.getId());
             throw throwable;
         }
     }
 
-    public void createAiOnly(AiQuestionCreator aiCreator, long interviewId, InterviewConversationPair pair) {
+    public void recommendOnly(long interviewId, InterviewConversationPair pair, List<Long> appearedQuestionIds) throws NotEnoughQuestion {
+        RecommendationTarget target = new RecommendationTarget(interviewId, pair.getId());
+        InterviewQuestion question = recommender.recommend(SINGLE, target, appearedQuestionIds).get(FIRST_IDX);
+        Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
+    }
+
+    public void createAiOnly(long interviewId, InterviewConversationPair pair) {
         try {
             InterviewQuestion question = aiCreator.create(interviewId, AiQuestionCreator.selectCreationOption(pair));
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
@@ -46,9 +51,5 @@ public class ConversationQuestionService {
             ConversationQuestionExceptionHandlingHelper.handle(throwable, interviewId, pair.getId());
             throw throwable;
         }
-    }
-
-    private boolean hasEnoughQuestion(long relatedCategoryQuestionSize) {
-        return relatedCategoryQuestionSize >= MIN_RECOMMENDED_SIZE;
     }
 }

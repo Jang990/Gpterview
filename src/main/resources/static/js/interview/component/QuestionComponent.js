@@ -14,10 +14,16 @@ function createGptMessage(msg) {
                         <input type="hidden" name="role" class="role" value="INTERVIEWER">
                         <p class="small mb-0 content" name="content">${msg}</p>
                     </div>
+
                     <div class="d-flex align-items-end col-2 ps-2" style="min-width:0px;" id="retryBtnDiv">
-                        <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryRecommendation()">
-                            <p class="small mb-0">다른 질문</p>
-                        </button>
+                        <div class="d-flex flex-column" style="min-width:0px;">
+                            <button id="withAiBtn" class="btn btn-primary btn-sm mb-1" onclick="retryWithAi()">
+                                <p class="small mb-0">AI 질문</p>
+                            </button>
+                            <button id="retryBtn" class="btn btn-primary btn-sm" onclick="retryRecommendation()">
+                                <p class="small mb-0">다른 질문</p>
+                            </button>
+                        </div>
                     </div>
                     <div class="d-flex align-items-end col-2" style="min-width:0px;" id="reviewBtnDiv">
                         <button id="reviewBtn" class="btn btn-link btn-sm">

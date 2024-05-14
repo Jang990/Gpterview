@@ -61,12 +61,27 @@ public interface InterviewConversationPairRepository extends JpaRepository<Inter
     Slice<InterviewConversationPair> findCurrentConversationHistory(@Param("interviewId") long interviewId, Pageable pageable);
 
     @Query("""
+            SELECT icp.question.id
+            FROM InterviewConversationPair icp
+            WHERE icp.interview.id = :interviewId
+            """)
+    List<Long> findAppearedQuestionIds(@Param("interviewId") long interviewId);
+
+    @Query("""
             UPDATE InterviewConversationPair icp
             SET icp.question = null
             WHERE icp.question.id = :questionId
             """)
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     void removeQuestion(@Param("questionId") long questionId);
+
+    @Query("""
+            UPDATE InterviewConversationPair icp
+            SET icp.answer = null
+            WHERE icp.answer.id = :answerId
+            """)
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    void removeAnswer(@Param("answerId") long answerId);
 
     @Query("""
             UPDATE InterviewConversationPair icp

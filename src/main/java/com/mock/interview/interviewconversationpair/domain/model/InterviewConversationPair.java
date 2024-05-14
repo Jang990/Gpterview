@@ -4,12 +4,15 @@ import com.mock.interview.global.Events;
 import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewanswer.domain.model.InterviewAnswer;
+import com.mock.interview.interviewconversationpair.domain.AppearedQuestionIdManager;
 import com.mock.interview.interviewconversationpair.domain.event.*;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -49,33 +52,40 @@ public class InterviewConversationPair extends BaseTimeEntity {
         status = PairStatus.WAITING_QUESTION;
     }
 
-    public void startConversation() {
+    public void startConversation(AppearedQuestionIdManager appearedQuestionIdManager) {
         if(status != PairStatus.START)
             throw new IllegalStateException();
 
         waitQuestion();
-        Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
+
+        List<Long> appearedQuestionIds = appearedQuestionIdManager.find(interview.getId());
+        Events.raise(new ConversationStartedEvent(interview.getId(), this.id, appearedQuestionIds));
     }
 
     // TODO: 수정필요. Question과 결합을 갖게 된다...
-    public void restartConversationWithAi() {
+    public void restartConversationWithAi(AppearedQuestionIdManager appearedQuestionIdManager) {
         verifyRestartableStatus();
         waitQuestion();
-        Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id));
+
+        List<Long> appearedQuestionIds = appearedQuestionIdManager.find(interview.getId());
+        Events.raise(new AiQuestionRecommendedEvent(interview.getId(), this.id, appearedQuestionIds));
     }
 
-    public void restartConversation() {
+    public void restartConversation(AppearedQuestionIdManager appearedQuestionIdManager) {
         verifyRestartableStatus();
         waitQuestion();
-        Events.raise(new ConversationStartedEvent(interview.getId(), this.id));
+
+        List<Long> appearedQuestionIds = appearedQuestionIdManager.find(interview.getId());
+        Events.raise(new ConversationStartedEvent(interview.getId(), this.id, appearedQuestionIds));
     }
 
-    public void connectQuestion(InterviewQuestion question) {
+    public void connectQuestion(InterviewQuestion question, AppearedQuestionIdManager appearedQuestionIdManager) {
         if(status != PairStatus.WAITING_QUESTION)
             throw new IllegalStateException();
 
         this.question = question;
         status = PairStatus.WAITING_ANSWER;
+        appearedQuestionIdManager.appear(interview.getId(), question.getId());
         Events.raise(new QuestionConnectedEvent(interview.getId(), this.id, question.getId()));
     }
 

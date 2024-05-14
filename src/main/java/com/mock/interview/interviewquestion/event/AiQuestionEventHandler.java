@@ -4,7 +4,6 @@ import com.mock.interview.interviewconversationpair.domain.event.AiQuestionRecom
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
-import com.mock.interview.interviewquestion.domain.AiQuestionCreator;
 import com.mock.interview.interviewquestion.domain.ConversationQuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -18,9 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class AiQuestionEventHandler {
     private final InterviewConversationPairRepository conversationPairRepository;
-
     private final ConversationQuestionService conversationQuestionService;
-    private final AiQuestionCreator aiQuestionCreator;
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -29,8 +26,8 @@ public class AiQuestionEventHandler {
             phase = TransactionPhase.AFTER_COMMIT
     )
     public void handle(AiQuestionRecommendedEvent event) {
-        InterviewConversationPair conversationPair = conversationPairRepository.findConversation(event.interviewId(), event.pairId())
+        InterviewConversationPair conversationPair = conversationPairRepository.findById(event.pairId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
-        conversationQuestionService.createAiOnly(aiQuestionCreator, conversationPair.getInterview().getId(),conversationPair);
+        conversationQuestionService.createAiOnly(conversationPair.getInterview().getId(),conversationPair);
     }
 }

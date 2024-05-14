@@ -52,9 +52,9 @@ public class AnswerModifiedController {
         InfoPageInitializer.initInterviewInfoPage(model,
                 "대답 제거 성공",
                 "대답을 성공적으로 제거했습니다.",
-                "/question"+ questionId
+                "/question/"+ questionId
         );
-        return "redirect:/info/info";
+        return "info/info";
     }
 
 }
