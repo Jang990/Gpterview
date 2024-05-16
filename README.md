@@ -26,7 +26,8 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 
 ## 📃 Database Schema
 
-![image](https://github.com/Jang990/Gpterview/assets/88225377/b59ec8bf-cf72-4e1d-a679-da02ef0e9045)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/681a4741-04c8-4b80-a373-f128b9ce7b69)
+
 
 
 
