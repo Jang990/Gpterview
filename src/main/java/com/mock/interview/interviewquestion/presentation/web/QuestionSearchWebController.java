@@ -107,6 +107,7 @@ public class QuestionSearchWebController {
                 .searchCond(searchCond).build();
         Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptionsDto, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
+        model.addAttribute("headerActiveTap", "user-question");
         return "question/list";
     }
 }
