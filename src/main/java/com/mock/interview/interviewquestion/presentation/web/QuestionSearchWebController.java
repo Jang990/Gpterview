@@ -93,4 +93,20 @@ public class QuestionSearchWebController {
         QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
         return "question/list";
     }
+
+    @GetMapping("users/{userId}/question")
+    public String userQuestionListPage(
+            Model model,
+            @PathVariable(name = "userId") long userId,
+            QuestionSearchCond searchCond,
+            @PageableDefault Pageable pageable,
+            HttpServletRequest request
+    ) {
+        QuestionSearchOptionsDto searchOptionsDto = QuestionSearchOptionsDto.builder()
+                .ownerIdCond(userId)
+                .searchCond(searchCond).build();
+        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptionsDto, pageable);
+        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
+        return "question/list";
+    }
 }
