@@ -6,6 +6,7 @@ import com.mock.interview.interviewconversationpair.domain.event.AiQuestionRecom
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewconversationpair.infra.InterviewConversationPairRepository;
+import com.mock.interview.interviewquestion.domain.ConversationQuestionExceptionHandlingService;
 import com.mock.interview.interviewquestion.domain.ConversationQuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -21,6 +22,7 @@ public class AiQuestionEventHandler {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final ConversationQuestionService conversationQuestionService;
     private final InterviewCacheRepository interviewCacheRepository;
+    private final ConversationQuestionExceptionHandlingService exceptionHandlingService;
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -33,6 +35,10 @@ public class AiQuestionEventHandler {
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
         InterviewInfo interviewInfo = interviewCacheRepository.findProgressingInterviewInfo(event.interviewId());
 
-        conversationQuestionService.createAiOnly(interviewInfo, conversationPair);
+        try {
+            conversationQuestionService.createAiOnly(interviewInfo, conversationPair);
+        } catch (Throwable throwable) {
+            exceptionHandlingService.handle(throwable, interviewInfo.interviewId(), conversationPair.getId());
+        }
     }
 }

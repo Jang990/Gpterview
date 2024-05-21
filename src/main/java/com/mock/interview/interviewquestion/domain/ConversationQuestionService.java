@@ -20,7 +20,6 @@ import java.util.List;
 public class ConversationQuestionService {
     private final AiQuestionCreator aiCreator;
     private final QuestionRecommender recommender;
-    private final ConversationQuestionExceptionHandlingService exceptionHandlingService;
 
     private final int SINGLE = 1, FIRST_IDX = 0;
 
@@ -31,12 +30,7 @@ public class ConversationQuestionService {
     }
 
     public void createAiOnly(InterviewInfo interviewInfo, InterviewConversationPair pair) {
-        try {
-            InterviewQuestion question = aiCreator.create(interviewInfo.interviewId(), AiQuestionCreator.selectCreationOption(pair));
-            Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
-        } catch (Throwable throwable) {
-            exceptionHandlingService.handle(throwable, interviewInfo.interviewId(), pair.getId());
-            throw throwable;
-        }
+        InterviewQuestion question = aiCreator.create(interviewInfo.interviewId(), AiQuestionCreator.selectCreationOption(pair));
+        Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
     }
 }
