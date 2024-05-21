@@ -15,10 +15,10 @@ public final class CurrentConversationConvertor {
     public static CurrentConversation create(
             InterviewConversationPairRepository conversationPairRepository,
             KoreaStringAnalyzer stringAnalyzer,
-            long interviewId, InterviewInfo interview, String currentTopic
+            InterviewInfo interview, String currentTopic
     ) {
         Optional<InterviewConversationPair> optCurrentConversation = LastConversationHelper
-                .findCurrentCompletedConversation(conversationPairRepository, interviewId);
+                .findCurrentCompletedConversation(conversationPairRepository, interview.interviewId());
 
         if(optCurrentConversation.isEmpty())
             return createEmpty(interview, currentTopic);

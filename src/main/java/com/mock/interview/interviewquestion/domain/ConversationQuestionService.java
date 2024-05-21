@@ -5,6 +5,8 @@ import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
 import com.mock.interview.interviewquestion.domain.event.ConversationQuestionCreatedEvent;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
+import com.mock.interview.interviewquestion.infra.recommend.dto.CurrentConversation;
+import com.mock.interview.interviewquestion.infra.recommend.dto.QuestionMetaData;
 import com.mock.interview.interviewquestion.infra.recommend.exception.NotEnoughQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.recommendation.RecommendationTarget;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +25,13 @@ public class ConversationQuestionService {
 
     private final int SINGLE = 1, FIRST_IDX = 0;
 
-    public void recommendOnly(InterviewInfo interviewInfo, InterviewConversationPair pair, List<Long> appearedQuestionIds) throws NotEnoughQuestion {
-        RecommendationTarget target = new RecommendationTarget(interviewInfo.interviewId(), pair.getId());
-        InterviewQuestion question = recommender.recommend(SINGLE, target, appearedQuestionIds).get(FIRST_IDX);
-        Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
+    public void recommendOnly(
+            InterviewConversationPair pair,
+            CurrentConversation currentConversation,
+            List<QuestionMetaData> relatedQuestions
+    ) throws NotEnoughQuestion {
+        long recommendedQuestionId = recommender.recommend(SINGLE, currentConversation, relatedQuestions).get(FIRST_IDX);
+        Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), recommendedQuestionId));
     }
 
     public void createAiOnly(InterviewInfo interviewInfo, InterviewConversationPair pair) {
