@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.event;
 
 import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
+import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewconversationpair.domain.event.ConversationStartedEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -28,17 +29,17 @@ public class ConversationStartedEventHandler {
             phase = TransactionPhase.AFTER_COMMIT
     )
     public void handle(ConversationStartedEvent event) {
+        InterviewInfo interviewInfo = interviewCacheRepository.findProgressingInterviewInfo(event.interviewId());
         InterviewConversationPair conversationPair = conversationPairRepository.findById(event.pairId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
 
         try {
             conversationQuestionService.chooseQuestion(
-                    event.interviewId(), conversationPair,
+                    interviewInfo, conversationPair,
                     event.appearedQuestionIds()
             );
         } catch (Throwable throwable) {
             interviewCacheRepository.expireInterviewInfo(event.interviewId());
-
         }
     }
 }

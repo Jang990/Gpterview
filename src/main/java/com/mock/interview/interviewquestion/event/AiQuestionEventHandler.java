@@ -1,5 +1,7 @@
 package com.mock.interview.interviewquestion.event;
 
+import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
+import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interviewconversationpair.domain.event.AiQuestionRecommendedEvent;
 import com.mock.interview.interviewconversationpair.domain.exception.InterviewConversationPairNotFoundException;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -18,6 +20,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class AiQuestionEventHandler {
     private final InterviewConversationPairRepository conversationPairRepository;
     private final ConversationQuestionService conversationQuestionService;
+    private final InterviewCacheRepository interviewCacheRepository;
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -28,6 +31,8 @@ public class AiQuestionEventHandler {
     public void handle(AiQuestionRecommendedEvent event) {
         InterviewConversationPair conversationPair = conversationPairRepository.findConversation(event.interviewId(), event.pairId())
                 .orElseThrow(InterviewConversationPairNotFoundException::new);
-        conversationQuestionService.createAiOnly(conversationPair.getInterview().getId(),conversationPair);
+        InterviewInfo interviewInfo = interviewCacheRepository.findProgressingInterviewInfo(event.interviewId());
+
+        conversationQuestionService.createAiOnly(interviewInfo, conversationPair);
     }
 }
