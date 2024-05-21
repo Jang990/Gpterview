@@ -20,23 +20,9 @@ import java.util.List;
 public class ConversationQuestionService {
     private final AiQuestionCreator aiCreator;
     private final QuestionRecommender recommender;
+    private final ConversationQuestionExceptionHandlingService exceptionHandlingService;
 
     private final int SINGLE = 1, FIRST_IDX = 0;
-
-    public void chooseQuestion(
-            InterviewInfo interviewInfo, InterviewConversationPair pair,
-            List<Long> appearedQuestionIds
-    ) {
-        try {
-            recommendOnly(interviewInfo, pair, appearedQuestionIds);
-        } catch (NotEnoughQuestion e) { // 추천할 질문이 부족한 경우 AI 질문 생성
-            log.info("질문 추천 중 추천할 질문 부족 발생", e);
-            createAiOnly(interviewInfo, pair);
-        } catch (Throwable throwable) {
-            ConversationQuestionExceptionHandlingHelper.handle(throwable, interviewInfo.interviewId(), pair.getId());
-            throw throwable;
-        }
-    }
 
     public void recommendOnly(InterviewInfo interviewInfo, InterviewConversationPair pair, List<Long> appearedQuestionIds) throws NotEnoughQuestion {
         RecommendationTarget target = new RecommendationTarget(interviewInfo.interviewId(), pair.getId());
@@ -49,7 +35,7 @@ public class ConversationQuestionService {
             InterviewQuestion question = aiCreator.create(interviewInfo.interviewId(), AiQuestionCreator.selectCreationOption(pair));
             Events.raise(new ConversationQuestionCreatedEvent(pair.getId(), question.getId()));
         } catch (Throwable throwable) {
-            ConversationQuestionExceptionHandlingHelper.handle(throwable, interviewInfo.interviewId(), pair.getId());
+            exceptionHandlingService.handle(throwable, interviewInfo.interviewId(), pair.getId());
             throw throwable;
         }
     }
