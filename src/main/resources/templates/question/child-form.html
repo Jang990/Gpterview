@@ -48,11 +48,8 @@
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <div class="me-3 d-flex flex-column">
-                                                    <label class="form-label">관련경험</label>
-                                                    <input type="hidden" th:field="${question.experienceId}">
-                                                    <a class="btn btn-light" th:if="${question.experienceId == null}">경험 선택</a>
-                                                    <a class="btn btn-light" th:unless="${question.experienceId == null}" th:text="|${question.experienceId}번 선택|"></a>
+                                                <div class="me-3">
+                                                    <div th:replace="~{fragments/question/question-experience-form :: fragment-question-experience-form(question=${question},experienceList=${experienceList})}">경험 선택창</div>
                                                 </div>
                                             </div>
                                         </div>

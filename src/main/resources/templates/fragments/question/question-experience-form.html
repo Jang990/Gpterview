@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="fragment-question-experience-form(question, experienceList)" class="d-flex flex-column">
+    <label class="form-label">관련경험</label>
+    <input type="hidden" th:field="${question.experienceId}">
+    <button type="button" id="experienceSelectBtn" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#experienceSelectPopUp" th:if="${question.experienceId == null}">경험 선택</button>
+    <button type="button" id="experienceSelectBtn" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#experienceSelectPopUp" th:unless="${question.experienceId == null}" th:text="|${question.experienceId}번 선택|">경험 선택</button>
+
+    <div th:replace="~{fragments/question/experience-select-pop-up :: fragment-experience-select-pop-up(experienceList=${experienceList})}">경험 선택창</div>
+  </div>
+</html>

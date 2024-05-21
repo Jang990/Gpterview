@@ -15,18 +15,18 @@
             <div th:replace="~{fragments/form/search/question-search :: fragment-question-search(base=null,searchCond=${questionSearchCond})}">질문 검색 폼</div>
         </div>
         <div class="inner-main-body p-2 p-sm-3 collapse forum-content show">
+            <div>
+                <div class="mb-3 d-flex justify-content-end align-items-center">
+                    <div class="me-2"><span>검색된 결과 수 : </span><span class="mx-1" th:text="${questionPage.totalElements}"></span></div>
+                    <div><a th:href="@{/question/form}" class="btn btn-sm btn-primary">질문 추가</a></div>
+                </div>
+            </div>
+
             <div class="card mb-2" th:each="question : ${questionPage.content}">
                 <div class="card">
                     <div class="card-body">
                         <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=true)}">질문 정보</div>
                     </div>
-                </div>
-            </div>
-
-            <div>
-                <div class="my-3 d-flex justify-content-end align-items-center">
-                    <div class="me-2"><span>검색된 결과 수 : </span><span class="mx-1" th:text="${questionPage.totalElements}"></span></div>
-                    <div><a th:href="@{/question/form}" class="btn btn-sm btn-primary">질문 추가</a></div>
                 </div>
             </div>
 
