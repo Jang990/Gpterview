@@ -13,9 +13,11 @@ import org.springframework.stereotype.Component;
  * 다음 클래스를 캐싱하는 클래스
  * @see com.mock.interview.interviewquestion.infra.QuestionRecommenderImpl
  */
+// TODO: 캐싱 방법을 다시 생각해볼 것.
+@Deprecated
 @Slf4j
 @Aspect
-@Component
+//@Component
 @RequiredArgsConstructor
 public class RecommendationCacheAspect {
     private final RecommendedQuestionCacheRepository cacheRepository;
