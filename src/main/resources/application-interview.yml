@@ -1,4 +1,5 @@
 interview:
+  ############ 모의 면접에 사용할 상수 ############
   role: # fommater에서 변환할 수 있는 role 키
     system: system
     user: user
@@ -7,6 +8,9 @@ interview:
     category: category
     field: field
     topic: topic
+  additional:
+    info:
+      prefix: "지원자 정보 : "
   format:
     prefix: $_
     suffix: _
@@ -18,16 +22,18 @@ interview:
       category: ${interview.format.prefix}${interview.profile.category}${interview.format.suffix}
       field: ${interview.format.prefix}${interview.profile.field}${interview.format.suffix}
       topic: ${interview.format.prefix}${interview.profile.topic}${interview.format.suffix}
+  ##############################################
 
+  # 지원자 정보를 변환할 템플릿
   template:
     common:
       rule: |
-        너는 ${interview.format.profile.category} 분야 ${interview.format.profile.field} 포지션의 면접관.
-        면접을 계속 진행해. 이미 대화한 주제를 질문하지마.
-        항상 질문으로 끝내. 항상 3문장 이하로 응답. 
-        질문 설명은 자세히. 항상 단 하나의 질문만 해.
-      topic: ${interview.format.role.user}는 ${interview.format.profile.topic} 을 주제로 질문해.
-      skip: 마지막 대화의 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
+        너는 다음 규칙을 무조건 지키면서 면접을 진행해.
+        1. 너는 ${interview.format.profile.category} 분야 ${interview.format.profile.field} 포지션의 면접관.
+        2. 2문장 이내로 단 하나의 질문만 해. 
+        3. 이전에 대화주제의 꼬리 질문이나 새로운 주제를 질문해.
+      topic: ${interview.format.role.interviewer}는 ${interview.format.profile.topic} 을 주제로 질문해.
+      skip: 마지막으로 대화의 핵심 주제를 파악하고 핵심 주제를 바꿔서 다른 주제로 질문해.
     default: # 기본 인터뷰 전략
       personal: |
         ${interview.template.common.rule}
@@ -36,7 +42,7 @@ interview:
       experience: |
         ${interview.template.common.topic} 
         ${interview.template.common.rule}
-        지원자가 진행한 프로젝트를 진행하면서 경험한 일들에 대해서 질문해줘.
+        지원자가 경험한 일들에 대해서 질문해줘.
       technical: |
         ${interview.template.common.rule}
         ${interview.template.common.topic} 
@@ -47,12 +53,11 @@ interview:
         자기소개, 협업, 개발자 커리어 목표, 갈등, 장단점 등등 
         지원자의 사고방식에 대해 알 수 있는 질문에 집중해.
       experience: |
-        ${interview.template.common.topic}
+        ${interview.template.common.topic} 
         
+        지원자 정보 중 주제를 선정하고, 의도 또는 문제 접근 및 해결 방법 등을 질문해.
         ${interview.template.common.rule}
-        위의 경험을 기반으로 지원자의 직무 수행 능력을 검증해.
       technical: |
         ${interview.template.common.rule}
-        ${interview.format.profile.topic} 기술을 주제로 질문해줘. 
-        지원자의 수준을 파악해야해. 간단한 개념질문보다는 컴퓨터 전공자 수준의 응용질문을 해봐.
-        기술면접을 진행해.
+        4. ${interview.format.profile.topic} 기술을 주제로 기술면접을 진행 
+        개념질문부터 컴퓨터 전공자 수준의 응용질문까지 해봐.

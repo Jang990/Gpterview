@@ -23,4 +23,6 @@ public class TemplateConstGetter {
 
     @Value("${interview.template.common.skip}")
     private String changingTopicCommand;
+    @Value("${interview.additional.info.prefix}")
+    private String additionalInfoPrefix;
 }

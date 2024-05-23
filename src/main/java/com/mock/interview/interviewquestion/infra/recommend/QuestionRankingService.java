@@ -63,7 +63,7 @@ public class QuestionRankingService {
 
     /** TF-IDF 계산을 통한 코사인 유사도 설정 */
     private void initQuestionCosineSimilarity(CurrentConversation currentConversation, List<QuestionMetaData> categoryMatchedQuestions) {
-        List<String> base = currentConversation.beforeQuestionContent();
+        List<String> base = currentConversation.beforeAnswerContent();
         if(base == null)
             return;
         List<List<String>> allQuestions = categoryMatchedQuestions.stream()

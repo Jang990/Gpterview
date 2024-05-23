@@ -38,10 +38,8 @@ public class ChatGPTRequester implements AISpecification {
     private final int LIMIT_TOKEN = 4096;
 
     public String sendRequest(InterviewAIRequest request) {
-        final String prompt = request.getAiPrompt().getPrompt();
         final List<OpenAIMessage> history = convertHistory(request.getHistory());
-        ChatGptRequest openAIRequest = ChatGptRequest.create(model, history, prompt);
-
+        ChatGptRequest openAIRequest = ChatGptRequest.create(model, history, request.getAiPrompt());
         ChatGptResponse response = sendRequestToOpenAIServer(openAIRequest);
         String responseMessage = response.getResult();
 
