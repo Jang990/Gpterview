@@ -35,7 +35,7 @@ public class QuestionListWebController {
         return "question/list";
     }
 
-    @GetMapping("question/interview/{interviewId}")
+    /*@GetMapping("question/interview/{interviewId}")
     public String interviewQuestionListPage(
             Model model,
             @PathVariable("interviewId") long interviewId,
@@ -43,9 +43,9 @@ public class QuestionListWebController {
             HttpServletRequest request
     ) {
         Page<QuestionOverview> overviewPage = interviewQuestionRepositoryForView.findOverviewList(interviewId, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, new QuestionSearchCond(/* 임시코드 */), request);
+        QuestionPageInitializer.initListPage(model, overviewPage, new QuestionSearchCond(*//* 임시코드 *//*), request);
         return "interview/question";
-    }
+    }*/
 
     @GetMapping("question/{questionId}/child")
     public String childQuestionListPage(
