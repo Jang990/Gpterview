@@ -1,14 +1,11 @@
 package com.mock.interview.interviewquestion.presentation.web.list;
 
-import com.mock.interview.interview.infra.InterviewQuestionRepositoryForView;
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForListView;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
-import com.mock.interview.interviewquestion.presentation.web.QuestionPageInitializer;
+import com.mock.interview.interviewquestion.presentation.web.list.helper.QuestionSearchHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequiredArgsConstructor
 public class QuestionListWebController {
     private final QuestionRepositoryForListView questionRepositoryForListView;
-    private final InterviewQuestionRepositoryForView interviewQuestionRepositoryForView;
 
     @GetMapping("question")
     public String questionListPage(
@@ -30,8 +26,7 @@ public class QuestionListWebController {
             HttpServletRequest request
     ) {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder().searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
+        QuestionSearchHelper.search(questionRepositoryForListView, model, pageable, request, searchOptions);
         return "question/list";
     }
 
@@ -55,11 +50,10 @@ public class QuestionListWebController {
             @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
-        QuestionSearchOptionsDto searchOptionsDto = QuestionSearchOptionsDto.builder()
+        QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
                 .parentQuestionIdCond(questionId)
                 .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptionsDto, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
+        QuestionSearchHelper.search(questionRepositoryForListView, model, pageable, request, searchOptions);
         return "question/list";
     }
 
@@ -71,11 +65,10 @@ public class QuestionListWebController {
             @PageableDefault Pageable pageable,
             HttpServletRequest request
     ) {
-        QuestionSearchOptionsDto searchOptionsDto = QuestionSearchOptionsDto.builder()
+        QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
                 .ownerIdCond(userId)
                 .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptionsDto, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
+        QuestionSearchHelper.search(questionRepositoryForListView, model, pageable, request, searchOptions);
         model.addAttribute("headerActiveTap", "user-question");
         return "question/list";
     }

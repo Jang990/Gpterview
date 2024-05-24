@@ -1,13 +1,11 @@
 package com.mock.interview.interviewquestion.presentation.web.list;
 
 import com.mock.interview.interviewquestion.infra.QuestionRepositoryForListView;
-import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchCond;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionSearchOptionsDto;
-import com.mock.interview.interviewquestion.presentation.web.QuestionPageInitializer;
+import com.mock.interview.interviewquestion.presentation.web.list.helper.QuestionSearchHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -30,8 +28,7 @@ public class JobQuestionListWebController {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
                 .categoryIdCond(categoryId)
                 .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
+        QuestionSearchHelper.search(questionRepositoryForListView, model, pageable, request, searchOptions);
         return "question/list";
     }
 
@@ -45,8 +42,7 @@ public class JobQuestionListWebController {
         QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
                 .positionIdCond(positionId)
                 .searchCond(searchCond).build();
-        Page<QuestionOverview> overviewPage = questionRepositoryForListView.findOverviewList(searchOptions, pageable);
-        QuestionPageInitializer.initListPage(model, overviewPage, searchCond, request);
+        QuestionSearchHelper.search(questionRepositoryForListView, model, pageable, request, searchOptions);
         return "question/list";
     }
 }
