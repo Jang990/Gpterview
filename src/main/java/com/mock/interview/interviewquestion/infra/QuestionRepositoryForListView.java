@@ -19,6 +19,7 @@ import java.util.List;
 import static com.mock.interview.category.domain.model.QJobCategory.jobCategory;
 import static com.mock.interview.category.domain.model.QJobPosition.jobPosition;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.interviewQuestion;
+import static com.mock.interview.interviewquestion.domain.model.QQuestionTechLink.questionTechLink;
 import static com.mock.interview.user.domain.model.QUsers.*;
 
 @Repository
@@ -46,42 +47,42 @@ public class QuestionRepositoryForListView {
             QuestionSearchOptionsDto searchOptions,
             Pageable pageable
     ) {
+        JPAQuery<InterviewQuestion> query = this.query.selectFrom(interviewQuestion)
+                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
+                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
+                .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+        filterQuery(query, searchOptions);
+
+        List<InterviewQuestion> questions = query.fetch();
+        List<QuestionOverview> content = QuestionConvertor.convert(questions);
+        JPAQuery<Long> countQuery = this.query.select(interviewQuestion.count())
+                .from(interviewQuestion);
+        filterQuery(countQuery, searchOptions);
+
+        // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    private void filterQuery(JPAQuery<?> query, QuestionSearchOptionsDto searchOptions) {
         if(searchOptions == null)
             searchOptions = new QuestionSearchOptionsDto();
         if(searchOptions.getSearchCond() == null)
             searchOptions.setSearchCond(new QuestionSearchCond());
 
-        List<InterviewQuestion> questions = query.selectFrom(interviewQuestion)
-                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
-                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
-                .where(
-                        findChildQuestion(searchOptions.getParentQuestionIdCond()),
-                        categoryIdEq(searchOptions.getCategoryIdCond()),
-                        positionIdEq(searchOptions.getPositionIdCond()), ownerIdEq(searchOptions.getOwnerIdCond()),
-                        questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
-                        keywordContains(searchOptions.getSearchCond().getKeywordCond()),
-                        isVisible()
-                )
-                .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        if(searchOptions.getTechIdCond() != null)
+            query.innerJoin(interviewQuestion.techLink, questionTechLink)
+                    .on(questionTechLink.technicalSubjects.id.eq(searchOptions.getTechIdCond()));
 
-        List<QuestionOverview> content = QuestionConvertor.convert(questions);
-        JPAQuery<Long> countQuery = query.select(interviewQuestion.count())
-                .from(interviewQuestion)
-                .where(
-                        findChildQuestion(searchOptions.getParentQuestionIdCond()),
-                        categoryIdEq(searchOptions.getCategoryIdCond()),
-                        positionIdEq(searchOptions.getPositionIdCond()),
-                        ownerIdEq(searchOptions.getOwnerIdCond()),
-                        questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
-                        keywordContains(searchOptions.getSearchCond().getKeywordCond()),
-                        isVisible()
-                );
-
-        // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+        query.where(
+                findChildQuestion(searchOptions.getParentQuestionIdCond()),
+                categoryIdEq(searchOptions.getCategoryIdCond()),
+                positionIdEq(searchOptions.getPositionIdCond()), ownerIdEq(searchOptions.getOwnerIdCond()),
+                questionTypeEq(searchOptions.getSearchCond().getTypeCond()),
+                keywordContains(searchOptions.getSearchCond().getKeywordCond()),
+                isVisible()
+        );
     }
 
     private BooleanExpression keywordContains(String keywordCond) {

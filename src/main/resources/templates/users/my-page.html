@@ -63,13 +63,13 @@
                                     <hr class="mt-0 mb-4">
                                     <div class="row pt-1">
                                         <div class="col-6 mb-3">
-                                            <a class="btn btn-light" th:href="@{/users/{userId}/question(userId=*{userId})}">
+                                            <a class="btn btn-light" th:href="@{/question/users/{userId}(userId=*{userId})}">
                                                 <i class="fa fa-search pe-1"></i> 생성한 질문
                                             </a>
                                         </div>
                                         <div class="col-6 mb-3">
                                             <!--<h6>대답한 질문</h6>-->
-                                            <a class="btn btn-light" th:href="@{/users/{userId}/question(userId=*{userId})}">
+                                            <a class="btn btn-light" th:href="@{/question/users/{userId}(userId=*{userId})}">
                                                 <i class="fa fa-search pe-1"></i> 내가 대답한 질문
                                             </a>
                                         </div>
