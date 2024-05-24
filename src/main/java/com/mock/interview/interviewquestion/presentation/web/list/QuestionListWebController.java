@@ -35,7 +35,7 @@ public class QuestionListWebController {
         return "question/list";
     }
 
-    @GetMapping("/interview/{interviewId}/question")
+    @GetMapping("question/interview/{interviewId}")
     public String interviewQuestionListPage(
             Model model,
             @PathVariable("interviewId") long interviewId,
@@ -63,7 +63,7 @@ public class QuestionListWebController {
         return "question/list";
     }
 
-    @GetMapping("users/{userId}/question")
+    @GetMapping("question/users/{userId}")
     public String userQuestionListPage(
             Model model,
             @PathVariable(name = "userId") long userId,

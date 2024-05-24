@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class TechQuestionListWebController {
     private final QuestionRepositoryForListView questionRepositoryForListView;
 
-    @GetMapping("tech/{techId}/question")
+    @GetMapping("question/tech/{techId}")
     public String userQuestionListPage(
             Model model,
             @PathVariable(name = "techId") long techId,
