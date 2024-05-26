@@ -7,10 +7,14 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 <br>
 <img src="https://img.shields.io/badge/Gradle-02303A?style=plastic-square&logo=Gradle&logoColor=white"/> <img src="https://img.shields.io/badge/Session-000000?style=plastic-square&logo=Session&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=plastic-square&logo=MySQL&logoColor=white"> <img src="https://img.shields.io/badge/Redis-DC382D?style=plastic-square&logo=redis&logoColor=white">
 
-## 🧐 Process
+## 🧐 Structure
 
 ![image](https://github.com/Jang990/Gpterview/assets/88225377/cad62713-3031-4d94-89c4-e0e1e75fa8ca)
 
+<br>
+<br>
+
+![image](https://github.com/Jang990/Gpterview/assets/88225377/15508ae2-4248-4c68-b413-8bc0957ff115)
 
 
 ## 👀 Demo
