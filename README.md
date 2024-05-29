@@ -18,18 +18,19 @@ ChatGPT와 모의면접을 진행하고, 면접 질문들을 기록하며 개인
 
 
 ## 👀 Demo
-![image](https://github.com/Jang990/Gpterview/assets/88225377/845c0264-2d6e-4e7d-9838-1452e1564a33)
-
-
+![image](https://github.com/Jang990/Gpterview/assets/88225377/40ccf2f6-6ca1-4ee8-83f6-ee70a20dcb36)
 
 <br>
 
-![image](https://github.com/Jang990/Gpterview/assets/88225377/c14e79cb-6a21-478e-832f-e560cccbd42f)
-
+![image](https://github.com/Jang990/Gpterview/assets/88225377/9274d3ff-98d3-4999-b103-7e0cf4d3ecd1)
 
 <br>
 
-![image](https://github.com/Jang990/Gpterview/assets/88225377/e902da59-b0a3-4dc2-9659-4dad04e17823)
+![image](https://github.com/Jang990/Gpterview/assets/88225377/e13e1530-5b78-4c4e-ba41-db9d9108ae21)
+
+<br>
+
+![image](https://github.com/Jang990/Gpterview/assets/88225377/99ef0db9-e53f-46ad-a674-25945a81c11f)
 
 
 <br>
