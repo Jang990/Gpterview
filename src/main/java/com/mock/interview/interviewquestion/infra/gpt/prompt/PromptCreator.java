@@ -17,6 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class PromptCreator {
     private final TemplateConstGetter templateConstGetter;
+    private final int LARGE_TOPIC_LENGTH = 30;
 
     /**
      * @param aiSpec  getUserRole()은 "user", getInterviewerRole()은 "assistant" 일 때... (다른 필드들도 변환해줌)
@@ -24,14 +25,38 @@ public class PromptCreator {
      * @return user는 지원자. assistant는 면접관입니다. user의 기술은 Java, MySQL, Spring입니다.
      */
     public AiPrompt create(AISpecification aiSpec, PromptConfig promptConfig) {
-        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfig);
-        return new AiPrompt(StringFormatter.format(promptConfig.getPromptTemplate(), parameters));
+        final String promptTemplate = promptConfig.getPromptTemplate();
+        return createPrompt(promptTemplate, aiSpec, promptConfig);
     }
 
     public AiPrompt changeTopic(AISpecification aiSpec, PromptConfig promptConfig) {
-        Map<String, String> parameters = this.getFormatParameter(aiSpec, promptConfig);
-        String changeTopicPromptTemplate = promptConfig.getPromptTemplate().concat(templateConstGetter.getChangingTopicCommand());
-        return new AiPrompt(StringFormatter.format(changeTopicPromptTemplate, parameters));
+        final String changeTopicPromptTemplate = promptConfig.getPromptTemplate()
+                .concat(templateConstGetter.getChangingTopicCommand());
+        return createPrompt(changeTopicPromptTemplate, aiSpec, promptConfig);
+    }
+
+    private AiPrompt createPrompt(String promptTemplate, AISpecification aiSpec, PromptConfig promptConfig) {
+        Map<String, String> parameters = getFormatParameter(aiSpec, promptConfig);
+        if (isLargeTopic(promptConfig.getTopic())) {
+            parameters.put(templateConstGetter.getTopic(), "");
+            String prompt = createString(promptTemplate, parameters);
+            String additionalUserInfo = templateConstGetter.getAdditionalInfoPrefix()
+                    .concat(promptConfig.getTopic());
+            return new AiPrompt(prompt, additionalUserInfo);
+        }
+
+        String prompt = createString(promptTemplate, parameters);
+        return new AiPrompt(prompt);
+    }
+
+    private String createString(String template, Map<String, String> parameters) {
+        return StringFormatter.format(template, parameters);
+    }
+
+    /** OpenAI에서는 System 프롬프트가 길면 답변이 이상하게 나옴 */
+    private boolean isLargeTopic(String topic) {
+        // TODO: AISpec으로 이동하는게 좋아보임.
+        return topic != null && topic.length() > LARGE_TOPIC_LENGTH;
     }
 
 

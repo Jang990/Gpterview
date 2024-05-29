@@ -1,5 +1,6 @@
 package com.mock.interview.interview.infra.interview.setting;
 
+import com.mock.interview.interviewquestion.infra.gpt.prompt.AiPrompt;
 import com.mock.interview.interviewquestion.infra.gpt.prompt.PromptCreator;
 import com.mock.interview.interview.infra.MockAiSpecCreator;
 import com.mock.interview.interviewquestion.infra.gpt.prompt.config.PromptConfig;
@@ -28,6 +29,7 @@ class AiPromptCreatorTest {
         when(getter.getField()).thenReturn("field");
         when(getter.getCategory()).thenReturn("department");
         when(getter.getTopic()).thenReturn("topic");
+        when(getter.getAdditionalInfoPrefix()).thenReturn("지원자 정보:");
     }
 
     @Test
@@ -62,6 +64,17 @@ class AiPromptCreatorTest {
         assertThat(result).contains(info.getField());
         assertThat(result).contains(info.getTopic());
         assertThat(result).contains("null");
+    }
+
+    @Test
+    void successWithLargeTopic() {
+        AISpecification spec = MockAiSpecCreator.createMock();
+        PromptConfig info = createMockPromptConfig("$_system_ $_user_ $_interviewer_ $_department_ $_field_ $_topic_");
+        String largeTopic = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_SOMTHING";
+        when(info.getTopic()).thenReturn(largeTopic);
+
+        AiPrompt prompt = creator.create(spec, info);
+        assertThat(prompt.getAdditionalUserInfo()).contains(largeTopic);
     }
 
     private PromptConfig createMockPromptConfig(String promptTemplate) {

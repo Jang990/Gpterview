@@ -1,6 +1,7 @@
 package com.mock.interview.interviewquestion.infra.gpt.dto.openai;
 
 import com.mock.interview.interviewquestion.infra.gpt.ChatGPTRequester;
+import com.mock.interview.interviewquestion.infra.gpt.prompt.AiPrompt;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,13 +31,15 @@ public class ChatGptRequest {
     private String model;
     private List<OpenAIMessage> messages;
     private final int n = 1;
-    private final double temperature = 0.7;
+    private final double temperature = 0.5;
 
-    public static ChatGptRequest create(String model, List<OpenAIMessage> history, String orderPrompt) {
+    public static ChatGptRequest create(String model, List<OpenAIMessage> history, AiPrompt orderPrompt) {
         ChatGptRequest request = new ChatGptRequest();
         request.model = model;
         request.messages = history;
-        request.messages.add(new OpenAIMessage(ChatGPTRequester.SYSTEM_ROLE, orderPrompt));
+        if(orderPrompt.hasAdditionalUserInfo())
+            request.messages.add(new OpenAIMessage(ChatGPTRequester.SYSTEM_ROLE, orderPrompt.getAdditionalUserInfo()));
+        request.messages.add(new OpenAIMessage(ChatGPTRequester.SYSTEM_ROLE, orderPrompt.getPrompt()));
         return request;
     }
 }
