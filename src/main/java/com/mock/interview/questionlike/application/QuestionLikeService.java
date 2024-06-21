@@ -6,6 +6,7 @@ import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.questionlike.domain.QuestionLike;
 import com.mock.interview.questionlike.domain.QuestionLikesRepository;
 import com.mock.interview.questionlike.domain.exception.AlreadyLikeQuestionException;
+import com.mock.interview.questionlike.domain.exception.QuestionLikeNotFoundException;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
@@ -36,7 +37,7 @@ public class QuestionLikeService {
 
     public void cancel(long userId, long questionId) {
         QuestionLike questionLike = questionLikesRepository.findQuestionLike(userId, questionId)
-                .orElseThrow();
+                .orElseThrow(QuestionLikeNotFoundException::new);
         questionLike.delete();
         questionLikesRepository.delete(questionLike);
     }
