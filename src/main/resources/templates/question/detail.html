@@ -141,6 +141,8 @@
                 </div>
             </div>
         </div>
+
+        <th:block th:replace="~{fragments/question/question-like-pop-up :: fragment-question-like-pop-up}">like 팝업</th:block>
         <script>
             $('.nav-control').on('click', function() {
                 $(this).closest('li').siblings().removeClass('active-link');
