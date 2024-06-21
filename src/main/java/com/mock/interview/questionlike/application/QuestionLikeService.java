@@ -5,6 +5,7 @@ import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.infra.InterviewQuestionRepository;
 import com.mock.interview.questionlike.domain.QuestionLike;
 import com.mock.interview.questionlike.domain.QuestionLikesRepository;
+import com.mock.interview.questionlike.domain.exception.AlreadyLikeQuestionException;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
@@ -23,7 +24,7 @@ public class QuestionLikeService {
     // TODO: 동시성 문제 발생 처리.
     public void like(long userId, long questionId) {
         if(questionLikesRepository.findQuestionLike(userId, questionId).isPresent())
-            throw new RuntimeException();
+            throw new AlreadyLikeQuestionException();
 
         Users users = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
