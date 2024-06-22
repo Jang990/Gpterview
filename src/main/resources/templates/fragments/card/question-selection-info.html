@@ -35,7 +35,7 @@
     <div class="small d-flex justify-content-between py-1">
         <div class="small d-flex justify-content-start">
             <div>
-                <th:block th:replace="~{fragments/question/question-like :: fragment-question-like}">like 팝업</th:block>
+                <th:block th:replace="~{fragments/question/question-like :: fragment-question-like(isLike=${isLike})}">like 팝업</th:block>
 
                 <!--<span class="d-none d-sm-inline-block"><i class="far fa-eye"></i> <span th:text="${question.like}">(미구현)조회수</span></span>-->
                 <!--<span><i class="far fa-comment ml-2"></i> <span th:text="${question.commentCnt}">댓글수</span></span>-->
