@@ -17,8 +17,6 @@ public class LikeExistsRepository {
                 .where(questionLike.question.id.eq(questionId), questionLike.users.id.eq(userId))
                 .fetchFirst();
 
-        System.out.println("==========>"+exist);
-
         return exist != null;
     }
 }
