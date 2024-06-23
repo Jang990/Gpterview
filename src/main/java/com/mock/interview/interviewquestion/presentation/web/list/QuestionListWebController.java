@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -69,6 +71,26 @@ public class QuestionListWebController {
                 .ownerIdCond(userId)
                 .searchCond(searchCond).build();
         QuestionSearchHelper.search(questionRepositoryForListView, model, pageable, request, searchOptions);
+        model.addAttribute("headerActiveTap", "user-question");
+        return "question/list";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("question/users/{userId}/like")
+    public String userFavoriteQuestionListPage(
+            Model model,
+            @AuthenticationPrincipal(expression = "id") Long loginId,
+            @PathVariable(name = "userId") long userId,
+            QuestionSearchCond searchCond,
+            @PageableDefault Pageable pageable,
+            HttpServletRequest request
+    ) {
+        if (!loginId.equals(userId))
+            return "redirect:/users/"+userId+"/unauthorized";
+
+        QuestionSearchOptionsDto searchOptions = QuestionSearchOptionsDto.builder()
+                .searchCond(searchCond).build();
+        QuestionSearchHelper.searchFavoriteQuestion(questionRepositoryForListView, model, pageable, request, searchOptions, loginId);
         model.addAttribute("headerActiveTap", "user-question");
         return "question/list";
     }
