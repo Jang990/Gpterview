@@ -1,6 +1,7 @@
 package com.mock.interview.questionlike.presentation;
 
 import com.mock.interview.questionlike.application.QuestionLikeService;
+import com.mock.interview.questionlike.presentation.dto.QuestionLikeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class QuestionLikesController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "questionId") long questionId
     ) {
-        likeService.like(loginId, questionId);
+        likeService.like(new QuestionLikeDto(loginId, questionId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -31,7 +32,7 @@ public class QuestionLikesController {
             @AuthenticationPrincipal(expression = "id") Long loginId,
             @PathVariable(name = "questionId") long questionId
     ) {
-        likeService.cancel(loginId, questionId);
+        likeService.cancel(new QuestionLikeDto(loginId, questionId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

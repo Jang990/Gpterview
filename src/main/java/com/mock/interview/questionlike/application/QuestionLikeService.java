@@ -7,6 +7,9 @@ import com.mock.interview.questionlike.domain.QuestionLike;
 import com.mock.interview.questionlike.domain.QuestionLikesRepository;
 import com.mock.interview.questionlike.domain.exception.AlreadyLikeQuestionException;
 import com.mock.interview.questionlike.domain.exception.QuestionLikeNotFoundException;
+import com.mock.interview.questionlike.infra.lock.QuestionLikeLock;
+import com.mock.interview.questionlike.infra.lock.QuestionLikeLockable;
+import com.mock.interview.questionlike.presentation.dto.QuestionLikeDto;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
 import com.mock.interview.user.infrastructure.UserRepository;
@@ -22,21 +25,22 @@ public class QuestionLikeService {
     private final InterviewQuestionRepository questionRepository;
     private final UserRepository userRepository;
 
-    // TODO: 동시성 문제 발생 처리.
-    public void like(long userId, long questionId) {
-        if(questionLikesRepository.findQuestionLike(userId, questionId).isPresent())
+    @QuestionLikeLock
+    public void like(QuestionLikeDto questionLikeDto) {
+        if(questionLikesRepository.findQuestionLike(questionLikeDto.getUserId(), questionLikeDto.getQuestionId()).isPresent())
             throw new AlreadyLikeQuestionException();
 
-        Users users = userRepository.findById(userId)
+        Users users = userRepository.findById(questionLikeDto.getUserId())
                 .orElseThrow(UserNotFoundException::new);
-        InterviewQuestion question = questionRepository.findById(questionId)
+        InterviewQuestion question = questionRepository.findById(questionLikeDto.getQuestionId())
                 .orElseThrow(InterviewQuestionNotFoundException::new);
 
         QuestionLike.likeQuestion(questionLikesRepository, users, question);
     }
 
-    public void cancel(long userId, long questionId) {
-        QuestionLike questionLike = questionLikesRepository.findQuestionLike(userId, questionId)
+    @QuestionLikeLock
+    public void cancel(QuestionLikeDto questionLikeDto) {
+        QuestionLike questionLike = questionLikesRepository.findQuestionLike(questionLikeDto.getUserId(), questionLikeDto.getQuestionId())
                 .orElseThrow(QuestionLikeNotFoundException::new);
         questionLike.delete();
         questionLikesRepository.delete(questionLike);
