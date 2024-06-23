@@ -29,7 +29,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${questionDetailPage.question},enableLink=false)}">질문 정보</div>
+                                <div th:replace="~{fragments/card/question-detail :: fragment-question-detail(question=${questionDetailPage.question}, isLike=${isLike})}">질문 정보</div>
                             </div>
                         </li>
                         <div class="mx-3 d-flex justify-content-start navbar-container">
@@ -116,7 +116,7 @@
                                                 </div>
                                             </div>
                                             <th:block th:if="${questionDetailPage.parentQuestion != null}" >
-                                                <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${questionDetailPage.parentQuestion},enableLink=true)}">질문 정보</div>
+                                                <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${questionDetailPage.parentQuestion})}">질문 정보</div>
                                             </th:block>
                                             <div th:unless="${questionDetailPage.parentQuestion != null}">
                                                 <p class="text-center">상위 질문이 존재하지 않습니다.</p>
@@ -141,6 +141,8 @@
                 </div>
             </div>
         </div>
+
+        <th:block th:replace="~{fragments/question/question-like-pop-up :: fragment-question-like-pop-up}">like 팝업</th:block>
         <script>
             $('.nav-control').on('click', function() {
                 $(this).closest('li').siblings().removeClass('active-link');

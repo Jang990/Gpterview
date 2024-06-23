@@ -25,7 +25,7 @@
             <div class="card mb-2" th:each="question : ${questionPage.content}">
                 <div class="card">
                     <div class="card-body">
-                        <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question},enableLink=true)}">질문 정보</div>
+                        <div th:replace="~{fragments/card/question-info :: fragment-question-info(question=${question})}">질문 정보</div>
                     </div>
                 </div>
             </div>
@@ -35,6 +35,8 @@
                                 isFirst=${questionPage.first}, isLast=${questionPage.last},
                                 currentPageNumber=${questionPage.number}, totalPages=${questionPage.totalPages})}">페이징 컨트롤 네비게이션 공간</div>
         </div>
+
+        <th:block th:replace="~{fragments/question/question-like-pop-up :: fragment-question-like-pop-up}">like 팝업</th:block>
     </section>
 </body>
 </html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <th:block th:fragment="fragment-question-like-pop-up">
+    <div class="rounded my-5 p-2 toast-container position-fixed bottom-0 start-50 translate-middle-x bg-primary" id="likeErrorToast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="1500" style="display: none;">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="toast-body mx-1">
+          <span class="text-white" id="likeErrorMessageField">질문을 추천하려면 로그인이 필요합니다.</span>
+        </div>
+      </div>
+    </div>
+    <script th:src="@{/js/Like.js}" href="../js/Like.js"></script>
+  </th:block>
+</html>
