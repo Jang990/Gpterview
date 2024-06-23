@@ -24,7 +24,7 @@
               <div class="underline"></div>
             </li>*/-->
             <li sec:authorize="isAuthenticated()" class="nav-link" th:classappend="${headerActiveTap == 'user-question'} ? active-link : text-muted">
-              <a th:href="@{/users/{userId}/question(userId=${#authentication.principal.id})}" class="nav-link px-2 text-decoration-none">내 질문</a>
+              <a th:href="@{/question/users/{userId}(userId=${#authentication.principal.id})}" class="nav-link px-2 text-decoration-none">내 질문</a>
               <div class="underline"></div>
             </li>
           </ul>
