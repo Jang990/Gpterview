@@ -3,6 +3,7 @@ package com.mock.interview.interviewquestion.infra;
 import com.mock.interview.interviewquestion.application.helper.QuestionConvertor;
 import com.mock.interview.interviewquestion.domain.model.InterviewQuestion;
 import com.mock.interview.interviewquestion.presentation.dto.*;
+import com.mock.interview.questionlike.domain.QQuestionLike;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -20,6 +21,7 @@ import static com.mock.interview.category.domain.model.QJobCategory.jobCategory;
 import static com.mock.interview.category.domain.model.QJobPosition.jobPosition;
 import static com.mock.interview.interviewquestion.domain.model.QInterviewQuestion.interviewQuestion;
 import static com.mock.interview.interviewquestion.domain.model.QQuestionTechLink.questionTechLink;
+import static com.mock.interview.questionlike.domain.QQuestionLike.*;
 import static com.mock.interview.user.domain.model.QUsers.*;
 
 @Repository
@@ -59,6 +61,37 @@ public class QuestionRepositoryForListView {
         List<QuestionOverview> content = QuestionConvertor.convert(questions);
         JPAQuery<Long> countQuery = this.query.select(interviewQuestion.count())
                 .from(interviewQuestion);
+        filterQuery(countQuery, searchOptions);
+
+        // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+    }
+
+    public Page<QuestionOverview> findFavoriteQuestionOverviewList(
+            long userId,
+            QuestionSearchOptionsDto searchOptions,
+            Pageable pageable
+    ) {
+        JPAQuery<InterviewQuestion> query = this.query.selectFrom(interviewQuestion)
+                .join(questionLike).on(
+                        interviewQuestion.id.eq(questionLike.question.id)
+                                .and(questionLike.users.id.eq(userId))
+                )
+                .leftJoin(interviewQuestion.category, jobCategory).fetchJoin()
+                .leftJoin(interviewQuestion.position, jobPosition).fetchJoin()
+                .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+        filterQuery(query, searchOptions);
+
+        List<InterviewQuestion> questions = query.fetch();
+        List<QuestionOverview> content = QuestionConvertor.convert(questions);
+        JPAQuery<Long> countQuery = this.query.select(interviewQuestion.count())
+                .from(interviewQuestion)
+                .join(questionLike).on(
+                        interviewQuestion.id.eq(questionLike.question.id)
+                                .and(questionLike.users.id.eq(userId))
+                );
         filterQuery(countQuery, searchOptions);
 
         // 현재 페이지의 요소 수가 Limit보다 적으면 Count쿼리를 날리지 않아서 PageImpl보다 좋음

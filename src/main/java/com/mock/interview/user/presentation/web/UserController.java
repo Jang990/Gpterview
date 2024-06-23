@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/unauthorized")
-    public String unauthorizedPage(Model model, @PathVariable(value = "username") long userId) {
+    public String unauthorizedPage(Model model, @PathVariable(value = "userId") long userId) {
         model.addAttribute("info", new UnauthorizedPageInfo("접근 권한 없음", String.valueOf(userId), "/"));
         return "users/unauthorized";
     }

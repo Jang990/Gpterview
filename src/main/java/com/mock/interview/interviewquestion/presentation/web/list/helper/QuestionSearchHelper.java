@@ -20,4 +20,15 @@ public class QuestionSearchHelper {
         Page<QuestionOverview> overviewPage = repository.findOverviewList(searchOptions, pageable);
         QuestionPageInitializer.initListPage(model, overviewPage, searchOptions.getSearchCond(), request);
     }
+
+    public static void searchFavoriteQuestion(
+            QuestionRepositoryForListView repository,
+            Model model, Pageable pageable,
+            HttpServletRequest request,
+            QuestionSearchOptionsDto searchOptions,
+            long loginId
+    ) {
+        Page<QuestionOverview> overviewPage = repository.findFavoriteQuestionOverviewList(loginId, searchOptions, pageable);
+        QuestionPageInitializer.initListPage(model, overviewPage, searchOptions.getSearchCond(), request);
+    }
 }
