@@ -29,7 +29,6 @@ class AiPromptCreatorTest {
         when(getter.getField()).thenReturn("field");
         when(getter.getCategory()).thenReturn("department");
         when(getter.getTopic()).thenReturn("topic");
-        when(getter.getAdditionalInfoPrefix()).thenReturn("지원자 정보:");
     }
 
     @Test
@@ -68,6 +67,8 @@ class AiPromptCreatorTest {
 
     @Test
     void successWithLargeTopic() {
+        when(getter.getAdditionalInfoPrefix()).thenReturn("지원자 정보:");
+
         AISpecification spec = MockAiSpecCreator.createMock();
         PromptConfig info = createMockPromptConfig("$_system_ $_user_ $_interviewer_ $_department_ $_field_ $_topic_");
         String largeTopic = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA_SOMTHING";

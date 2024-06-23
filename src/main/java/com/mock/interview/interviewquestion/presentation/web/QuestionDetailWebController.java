@@ -9,6 +9,7 @@ import com.mock.interview.interviewquestion.infra.QuestionRepositoryForView;
 import com.mock.interview.interviewquestion.presentation.dto.ChildQuestionOverview;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionDetailDto;
 import com.mock.interview.interviewquestion.presentation.dto.QuestionOverview;
+import com.mock.interview.questionlike.domain.LikeExistsRepository;
 import com.mock.interview.user.presentation.dto.UnauthorizedPageInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +26,7 @@ public class QuestionDetailWebController {
     private final QuestionRepositoryForView questionRepositoryForView;
     private final QuestionRepositoryForListView questionRepositoryForListView;
     private final InterviewAnswerRepositoryForListView answerRepositoryForView;
+    private final LikeExistsRepository likeExistsRepository;
 
     @GetMapping("/question/{questionId}/unauthorized")
     public String unauthorizedPage(Model model, @PathVariable(name = "questionId") long questionId) {
@@ -47,7 +49,15 @@ public class QuestionDetailWebController {
 
         List<AnswerDetailDto> answerTop3 = answerRepositoryForView.findAnswerTop3Likes(questionId);
         List<ChildQuestionOverview> childQuestionTop3 = questionRepositoryForListView.findChildQuestionTop3Likes(questionId);
+
+        if(loginUserDetail == null)
+            model.addAttribute("isLike", null);
+        else if(likeExistsRepository.isExist(questionId, loginUserDetail.getId()))
+            model.addAttribute("isLike", true);
+        else
+            model.addAttribute("isLike", false);
         QuestionPageInitializer.initQuestionDetail(model, question, answerTop3, childQuestionTop3,loginUserDetail);
+
         return "question/detail";
     }
 }

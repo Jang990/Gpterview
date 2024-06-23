@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <th:block th:fragment="fragment-question-like(isLike)">
+    <button onclick="requiredLoginForLike()" class="btn btn-sm btn-link" th:if="${isLike == null}" >
+      <i class="fas fa-thumbs-up me-1" th:text="| ${question.like} Likes |"></i>
+    </button>
+    <button th:onclick="|cancelQuestionLike(${question.id}, this)|" class="btn btn-sm btn-link"
+            sec:authorize="isAuthenticated()" th:if="${isLike}">
+      <i class="fas fa-thumbs-up me-1" th:text="| ${question.like} Likes |"></i>
+    </button>
+    <button th:onclick="|likeQuestion(${question.id}, this)|" class="btn btn-sm btn-link"
+            sec:authorize="isAuthenticated()" th:unless="${isLike}">
+      <i class="far fa-thumbs-up me-1" th:text="| ${question.like} Likes |"></i>
+    </button>
+  </th:block>
+</html>
