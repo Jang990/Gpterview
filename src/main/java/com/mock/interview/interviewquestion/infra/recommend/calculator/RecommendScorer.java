@@ -11,10 +11,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecommendScorer {
     private final double TF_IDF_WEIGHT = 0.5,
-            FIELD_WEIGHT = 0.05,
-            TECH_WEIGHT = 0.15,
-            CHILD_WEIGHT = 0.15,
-            LIKE_WEIGHT = 0.15;
+            CHILD_WEIGHT = 0.3,
+            LIKE_WEIGHT = 0.2;
 
     private final int FULL_LIKES_COUNT = 20;
     private final int MAX_TECH_BOUND = 5;
@@ -23,8 +21,6 @@ public class RecommendScorer {
         double result = 0;
         result += calculateTFDIFScore(TF_IDF_WEIGHT, target.getCosineSimilarity());
         result += calculateLikesScore(LIKE_WEIGHT, target.getLikes());
-        result += calculateFieldMatchedScore(FIELD_WEIGHT, target.getField(), currentConversation.field());
-        result += calculateTechContainScore(TECH_WEIGHT, target.getTech(), currentConversation.tech());
         result += calculateChildQuestionScore(CHILD_WEIGHT, target.getParentQuestionId(), currentConversation.beforeQuestionId());
 //        print(currentQuestion, target, result);
         return result;
@@ -59,24 +55,5 @@ public class RecommendScorer {
     private double calculateChildQuestionScore(double weight, Long questionId, Long parentQuestionId) {
         boolean isMatch = questionId != null && questionId.equals(parentQuestionId);
         return isMatch ? weight : 0.0;
-    }
-
-    private double calculateTechContainScore(double weight, List<String> questionTech, String tech) {
-        if(questionTech == null || questionTech.isEmpty()
-                || tech == null || !questionTech.contains(tech))
-            return 0.0;
-
-        int numberOfRelationalTech = questionTech.size();
-        if (numberOfRelationalTech <= MAX_TECH_BOUND) {
-            return weight;
-        }
-
-        return 1.0 / numberOfRelationalTech * weight;
-    }
-
-    private double calculateFieldMatchedScore(double weight, String field, String questionField) {
-        if(field == null || questionField == null)
-            return 0.0;
-        return field.equals(questionField) ? weight : 0.0;
     }
 }
