@@ -33,10 +33,10 @@
         <a class="btn btn-light fw-bold btn-block w-100" th:href="@{/question/{questionId}(questionId=${question.id})}" th:text="${question.content}">질문 내용</a>
     </div>
 
-    <div class="my-2 d-flex justify-content-end" th:if="${question.techList != null || not #lists.isEmpty(question.techList)}">
+    <div class="my-2 d-flex justify-content-end flex-wrap" th:if="${question.techList != null || not #lists.isEmpty(question.techList)}">
         <th:block th:each="tech : ${question.techList}">
             <a th:href="@{/question/tech/{techId}(techId=${tech.id})}"
-               class="btn btn-sm btn-secondary ms-1" th:text="${tech.value}">관련 기술</a>
+               class="btn btn-sm btn-secondary ms-1 mb-1" th:text="${tech.value}">관련 기술</a>
         </th:block>
     </div>
 
