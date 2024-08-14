@@ -17,4 +17,7 @@ public class QuestionSearchOptionsDto {
     private Long positionIdCond;
     private Long ownerIdCond;
     private Long techIdCond;
+
+    private Long requestedUserId;
+    private Long experienceId;
 }
