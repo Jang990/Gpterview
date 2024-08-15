@@ -45,7 +45,7 @@ function createQuestionMessage(questionId, msg) {
                         <input type="hidden" name="role" class="role" value="INTERVIEWER">
                         <p class="small mb-0 content" name="content">${msg}</p>
                         <p class="small mb-0 content" name="content">
-                            <span>ChatGpt의 반복적인 질문 패턴 문제를 해결하기 위해 어떤 구체적인 DB 구조 변경을 진행했는지 자세히 설명해주세요.</span>
+                            <span>${msg}</span>
                             <a style="text-decoration: none;" class="text-muted small mb-0 ms-1" href=${questionUrl}>[질문으로]</a>
                         </p>
                     </div>
