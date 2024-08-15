@@ -31,11 +31,6 @@ function createErrorMessage(msg) {
                             </button>
                         </div>
                     </div>
-                    <div class="d-flex align-items-end col-2" style="min-width:0px;" id="reviewBtnDiv">
-                        <button id="reviewBtn" class="btn btn-link btn-sm">
-                            <img style="height: 2vh" th:onclick="|review(${msg.id})|" src="../image/review.png" alt="다시보기">
-                        </button>
-                    </div>
                 </div>
             </li>`;
 }
@@ -64,11 +59,6 @@ function createQuestionMessage(questionId, msg) {
                                 <p class="small mb-0">다른 질문</p>
                             </button>
                         </div>
-                    </div>
-                    <div class="d-flex align-items-end col-2" style="min-width:0px;" id="reviewBtnDiv">
-                        <button id="reviewBtn" class="btn btn-link btn-sm">
-                            <img style="height: 2vh" th:onclick="|review(${msg.id})|" src="../image/review.png" alt="다시보기">
-                        </button>
                     </div>
                 </div>
             </li>`;
