@@ -43,7 +43,6 @@ function createQuestionMessage(questionId, msg) {
                     <img src="../image/interviewer.png" alt="면접관 사진" style="width: 50px; height: 50px;">
                     <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2); min-width:0px;">
                         <input type="hidden" name="role" class="role" value="INTERVIEWER">
-                        <p class="small mb-0 content" name="content">${msg}</p>
                         <p class="small mb-0 content" name="content">
                             <span>${msg}</span>
                             <a style="text-decoration: none;" class="text-muted small mb-0 ms-1" href=${questionUrl} target="_blank">[질문으로]</a>
