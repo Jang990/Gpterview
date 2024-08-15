@@ -17,7 +17,7 @@ function initSocket(interviewId) {
                 removeWaitingPanel();
 
                 if(questions.length == 1) {
-                    displayResponse(pairId, question[0].id, questions[0].content);
+                    displayResponse(pairId, questions[0].id, questions[0].content);
                     enableSendBtn();
                 }
                 else if(questions.length > 1) {
