@@ -46,7 +46,7 @@ function createQuestionMessage(questionId, msg) {
                         <p class="small mb-0 content" name="content">${msg}</p>
                         <p class="small mb-0 content" name="content">
                             <span>${msg}</span>
-                            <a style="text-decoration: none;" class="text-muted small mb-0 ms-1" href=${questionUrl}>[질문으로]</a>
+                            <a style="text-decoration: none;" class="text-muted small mb-0 ms-1" href=${questionUrl} target="_blank">[질문으로]</a>
                         </p>
                     </div>
 

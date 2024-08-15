@@ -12,7 +12,7 @@
                         <th:block th:if="*{id == null}">삭제된 질문입니다.</th:block>
                         <th:block th:unless="*{id == null}">
                             <span th:text="*{content}">연결된 질문 내용</span>
-                            <a style="text-decoration: none;" class="text-muted small mb-0 ms-1" th:href="@{/question/{id}(id=*{id})}">[질문으로]</a>
+                            <a style="text-decoration: none;" class="text-muted small mb-0 ms-1" th:href="@{/question/{id}(id=*{id})}" target="_blank">[질문으로]</a>
                         </th:block>
                     </th:block>
                     <th:block th:if="${conversationStatus == T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).RESTART_RECOMMENDED}">
