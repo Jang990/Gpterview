@@ -67,10 +67,10 @@ function sendMethodRequest(requestURL, method, message) {
                 enableSendBtn();
                 return;
             }
-            if(error.status == 413) {
+            if(error.status == 410) {
                 disableSendBtn();
                 removeWaitingPanel();
-                displayResponse("수고하셨습니다. 면접이 종료되었습니다.");
+                displayResponse(null, "수고하셨습니다. 면접이 종료되었습니다.");
                 removeRetryingBtn();
                 return;
             }
