@@ -20,6 +20,7 @@ function request(interviewId, conversationId, retryCount) {
                 return;
             console.log(response);
             const pairId = response.pair.id;
+            const questionId = response.question.id;
             const questionContent = response.question.content;
 
             if(response.pair.status === "RESTART_RECOMMENDED") {
@@ -28,11 +29,11 @@ function request(interviewId, conversationId, retryCount) {
                 return;
             }
 
-            if(pairId === null || questionContent === null)
+            if(pairId === null || questionId == null || questionContent === null)
                 retryOrExit(interviewId, conversationId, retryCount);
 
             removeWaitingPanel();
-            displayResponse(pairId, questionContent);
+            displayResponse(pairId, questionId, questionContent);
             enableSendBtn();
             scroll();
         },

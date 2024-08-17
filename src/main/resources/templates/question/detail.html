@@ -34,9 +34,15 @@
                         </li>
                         <div class="mx-3 d-flex justify-content-start navbar-container">
                             <ul class="nav align-items-center mb-md-0">
+                                <li class="nav-link active-link">
+                                    <a class="nav-control accordion-button font-weight-bold text-decoration-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnswer" aria-expanded="false" aria-controls="collapseAnswer">
+                                        대답정보
+                                    </a>
+                                    <div class="underline"></div>
+                                </li>
                                 <th:block sec:authorize="isAuthenticated()">
-                                    <li class="nav-link active-link">
-                                        <a class="nav-control accordion-button font-weight-bold text-decoration-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnswerForm" aria-expanded="true" aria-controls="collapseAnswerForm">
+                                    <li class="nav-link">
+                                        <a class="nav-control accordion-button collapsed font-weight-bold text-decoration-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnswerForm" aria-expanded="true" aria-controls="collapseAnswerForm">
                                             대답등록
                                         </a>
                                         <div class="underline"></div>
@@ -49,7 +55,7 @@
                                     </li>
                                 </th:block>
                                 <th:block sec:authorize="isAnonymous()">
-                                    <li class="nav-link active-link">
+                                    <li class="nav-link">
                                         <a class="nav-control accordion-button collapsed font-weight-bold text-decoration-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRelatedQuestionList" aria-expanded="false" aria-controls="collapseRelatedQuestionList">
                                             하위질문
                                         </a>
@@ -62,20 +68,21 @@
                                     </a>
                                     <div class="underline"></div>
                                 </li>
-                                <li class="nav-link">
-                                    <a class="nav-control accordion-button collapsed font-weight-bold text-decoration-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAnswer" aria-expanded="false" aria-controls="collapseAnswer">
-                                        대답정보
-                                    </a>
-                                    <div class="underline"></div>
-                                </li>
                             </ul>
                         </div>
                         <div>
                             <!--/* TODO: 아코디언 close 후 show를 하도록 만들어야 함. 애니메이션이 자연스럽지 않음 */-->
                             <div class="accordion accordion-flush" id="questionControlAccordion">
+                                <div class="accordion-item border-0" style="border-top-width: 0px;">
+                                    <div id="collapseAnswer" class="accordion-collapse collapse show" aria-labelledby="headingThree" data-bs-parent="#questionControlAccordion">
+                                        <div class="accordion-body mb-3">
+                                            <div th:replace="~{fragments/overviewList/answer-top3 :: fragment-answer-overview-list(questionId=${questionDetailPage.question.id},dataList=${questionDetailPage.answerTop3})}">사용자 대답 top3</div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <th:block sec:authorize="isAuthenticated()">
                                     <div class="accordion-item border-0" style="border-top-width: 0px;" >
-                                        <div id="collapseAnswerForm" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#questionControlAccordion">
+                                        <div id="collapseAnswerForm" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#questionControlAccordion">
                                             <div class="accordion-body mb-3">
                                                 <div th:replace="~{fragments/answer/answer-form :: fragment-answer-form(questionId=${questionDetailPage.question.id},answer=${answer})}">대답 등록 폼</div>
                                             </div>
@@ -91,7 +98,7 @@
                                 </th:block>
                                 <th:block sec:authorize="isAnonymous()">
                                     <div class="accordion-item border-0" style="border-top-width: 0px;">
-                                        <div id="collapseRelatedQuestionList" class="accordion-collapse show" aria-labelledby="headingTwo" data-bs-parent="#questionControlAccordion">
+                                        <div id="collapseRelatedQuestionList" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#questionControlAccordion">
                                             <div class="accordion-body mb-3">
                                                 <div th:replace="~{fragments/overviewList/child-question :: fragment-child-question-overview-list(questionId=${questionDetailPage.question.id},dataList=${questionDetailPage.childQuestionTop3})}">꼬리 질문 top3</div>
                                             </div>
@@ -121,14 +128,6 @@
                                             <div th:unless="${questionDetailPage.parentQuestion != null}">
                                                 <p class="text-center">상위 질문이 존재하지 않습니다.</p>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="accordion-item border-0" style="border-top-width: 0px;">
-                                    <div id="collapseAnswer" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#questionControlAccordion">
-                                        <div class="accordion-body mb-3">
-                                            <div th:replace="~{fragments/overviewList/answer-top3 :: fragment-answer-overview-list(questionId=${questionDetailPage.question.id},dataList=${questionDetailPage.answerTop3})}">사용자 대답 top3</div>
                                         </div>
                                     </div>
                                 </div>

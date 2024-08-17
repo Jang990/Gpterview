@@ -1,5 +1,5 @@
 #hello: 안녕하세요
-domain: http://localhost:8080
+domain: http://127.0.0.1:8080
 
 spring:
   session:

@@ -10,12 +10,16 @@
                     <th:block th:if="${conversationStatus == T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).ONLY_QUESTION
                         OR conversationStatus == T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).COMPLETED}">
                         <th:block th:if="*{id == null}">삭제된 질문입니다.</th:block>
-                        <th:block th:unless="*{id == null}" th:text="*{content}">연결된 질문 내용</th:block>
+                        <th:block th:unless="*{id == null}">
+                            <span th:text="*{content}">연결된 질문 내용</span>
+                            <a style="text-decoration: none;" class="text-muted small mb-0 ms-1" th:href="@{/question/{id}(id=*{id})}" target="_blank">[질문으로]</a>
+                        </th:block>
                     </th:block>
                     <th:block th:if="${conversationStatus == T(com.mock.interview.interviewconversationpair.presentation.dto.PairStatusForView).RESTART_RECOMMENDED}">
                         오류가 발생했습니다. 잠시후 '다른 질문' 버튼을 통해 재시도해주세요.
                     </th:block>
                 </p>
+
             </div>
             <div th:if="${messageStat.last AND (message.answer == null OR message.answer.content == null) }" class="d-flex align-items-end col-2 ps-2" style="min-width:0px;" id="retryBtnDiv">
                 <div class="d-flex flex-column" style="min-width:0px;">
