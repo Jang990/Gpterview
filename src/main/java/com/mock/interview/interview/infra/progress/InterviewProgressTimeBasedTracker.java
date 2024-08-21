@@ -15,13 +15,13 @@ import java.time.temporal.ChronoUnit;
 @Getter
 public class InterviewProgressTimeBasedTracker {
 
-    public final InterviewPhase[] COMPOSITE_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE, InterviewPhase.PERSONAL};
-    private final InterviewPhase[] TECH_EX_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE};
-    private final InterviewPhase[] TECH_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.TECHNICAL};
-    private final InterviewPhase[] EXPERIENCE_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.EXPERIENCE};
-    private final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
+    private static final InterviewPhase[] COMPOSITE_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE, InterviewPhase.PERSONAL};
+    private static final InterviewPhase[] TECH_EX_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE};
+    private static final InterviewPhase[] TECH_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.TECHNICAL};
+    private static final InterviewPhase[] EXPERIENCE_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.EXPERIENCE};
+    private static final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
 
-    public InterviewPhase[] getPhaseOrder(InterviewType type) {
+    public static InterviewPhase[] getPhaseOrder(InterviewType type) {
         return getPhase(type).clone();
     }
 
@@ -71,7 +71,7 @@ public class InterviewProgressTimeBasedTracker {
         return interviewDurationSecond / numberOfPhase;
     }
 
-    private InterviewPhase[] getPhase(InterviewType type) {
+    private static InterviewPhase[] getPhase(InterviewType type) {
         return switch (type) {
             case TECHNICAL -> TECH_PHASE_ORDER;
             case PERSONALITY -> PERSONAL_PHASE_ORDER;
