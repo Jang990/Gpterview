@@ -28,15 +28,23 @@ public class InterviewProgressTimeBasedTracker {
     /** 현재 어떤 스테이지를 진행중인지 계산 */
     public InterviewPhase tracePhase(LocalDateTime now, InterviewConfig config) {
         if(isSinglePhase(phaseOrder(config)))
-            return phaseOrder(config)[0];
+            return firstPhase(config);
 
         long eachPhaseSecond = getEachPhaseSecond(config);
         long elapsedSecond = getSecondDifference(config.startTime(), now);
         int phaseIdx = (int) (elapsedSecond / eachPhaseSecond);
 
         if(phaseIdx < phaseOrderLength(config))
-            return phaseOrder(config)[phaseIdx];
-        return lastPhase(phaseOrder(config));
+            return selectPhase(config, phaseIdx);
+        return lastPhase(config);
+    }
+
+    private InterviewPhase selectPhase(InterviewConfig config, int phaseIdx) {
+        return phaseOrder(config)[phaseIdx];
+    }
+
+    private InterviewPhase firstPhase(InterviewConfig config) {
+        return selectPhase(config, 0);
     }
 
     private int phaseOrderLength(InterviewConfig config) {
@@ -84,8 +92,8 @@ public class InterviewProgressTimeBasedTracker {
         };
     }
 
-    private InterviewPhase lastPhase(InterviewPhase[] phaseOrders) {
-        return phaseOrders[phaseOrders.length - 1];
+    private InterviewPhase lastPhase(InterviewConfig config) {
+        return selectPhase(config, phaseOrderLength(config) - 1);
     }
 
     /** base - target (Second 단위) */
