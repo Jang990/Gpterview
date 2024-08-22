@@ -21,26 +21,26 @@ public class InterviewProgressTimeBasedTracker {
     private static final InterviewPhase[] EXPERIENCE_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.EXPERIENCE};
     private static final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
 
-    public static InterviewPhase[] phaseOrder(InterviewType type) {
-        return getPhase(type).clone();
+    public static InterviewPhase[] phaseOrder(InterviewConfig config) {
+        return getPhase(config.type()).clone();
     }
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
     public InterviewPhase tracePhase(LocalDateTime now, InterviewConfig config) {
-        if(isSinglePhase(phaseOrder(config.type())))
-            return phaseOrder(config.type())[0];
+        if(isSinglePhase(phaseOrder(config)))
+            return phaseOrder(config)[0];
 
         long eachPhaseSecond = getEachPhaseSecond(config);
         long elapsedSecond = getSecondDifference(config.startTime(), now);
         int phaseIdx = (int) (elapsedSecond / eachPhaseSecond);
 
-        if(phaseIdx < phaseOrderLength(config.type()))
-            return phaseOrder(config.type())[phaseIdx];
-        return lastPhase(phaseOrder(config.type()));
+        if(phaseIdx < phaseOrderLength(config))
+            return phaseOrder(config)[phaseIdx];
+        return lastPhase(phaseOrder(config));
     }
 
-    private int phaseOrderLength(InterviewType type) {
-        return phaseOrder(type).length;
+    private int phaseOrderLength(InterviewConfig config) {
+        return phaseOrder(config).length;
     }
 
     /** Phase 진행도 백분률 계산 */

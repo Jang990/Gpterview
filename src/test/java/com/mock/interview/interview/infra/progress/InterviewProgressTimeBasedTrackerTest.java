@@ -27,8 +27,8 @@ class InterviewProgressTimeBasedTrackerTest {
 
         List<InterviewPhase> traced = traceAllPhase(config);
 
-        assertAllPhasesIncluded(type, traced);
-        assertPhaseFrequency(type, traced);
+        assertAllPhasesIncluded(config, traced);
+        assertPhaseFrequency(config, traced);
     }
 
     @Test
@@ -39,8 +39,8 @@ class InterviewProgressTimeBasedTrackerTest {
 
         List<InterviewPhase> traced = traceAllPhase(config);
 
-        assertAllPhasesIncluded(type, traced);
-        assertPhaseFrequency(type, traced);
+        assertAllPhasesIncluded(config, traced);
+        assertPhaseFrequency(config, traced);
     }
 
     @Test
@@ -51,8 +51,8 @@ class InterviewProgressTimeBasedTrackerTest {
 
         List<InterviewPhase> traced = traceAllPhase(config);
 
-        assertAllPhasesIncluded(type, traced);
-        assertPhaseFrequency(type, traced);
+        assertAllPhasesIncluded(config, traced);
+        assertPhaseFrequency(config, traced);
     }
 
     private InterviewConfig config(InterviewType type) {
@@ -73,18 +73,18 @@ class InterviewProgressTimeBasedTrackerTest {
         return result;
     }
 
-    private void assertPhaseFrequency(InterviewType type, List<InterviewPhase> traced) {
-        int minimum = runningMinute / phaseLength(type);
-        for (InterviewPhase phase : phaseOrder(type))
+    private void assertPhaseFrequency(InterviewConfig config, List<InterviewPhase> traced) {
+        int minimum = runningMinute / phaseLength(config);
+        for (InterviewPhase phase : phaseOrder(config))
             assertThat(countFrequency(traced, phase)).isGreaterThanOrEqualTo(minimum);
     }
 
-    private int phaseLength(InterviewType type) {
-        return phaseOrder(type).length;
+    private int phaseLength(InterviewConfig config) {
+        return phaseOrder(config).length;
     }
 
-    private void assertAllPhasesIncluded(InterviewType type, List<InterviewPhase> traced) {
-        for (InterviewPhase phase : phaseOrder(type))
+    private void assertAllPhasesIncluded(InterviewConfig config, List<InterviewPhase> traced) {
+        for (InterviewPhase phase : phaseOrder(config))
             assertThat(traced.contains(phase)).isTrue();
     }
 
@@ -92,8 +92,8 @@ class InterviewProgressTimeBasedTrackerTest {
         return traced.stream().filter(p -> p.equals(phase)).count();
     }
 
-    private static InterviewPhase[] phaseOrder(InterviewType type) {
-        return InterviewProgressTimeBasedTracker.phaseOrder(type);
+    private static InterviewPhase[] phaseOrder(InterviewConfig config) {
+        return InterviewProgressTimeBasedTracker.phaseOrder(config);
     }
 
     @Test
@@ -104,7 +104,7 @@ class InterviewProgressTimeBasedTrackerTest {
 
         List<List<Double>> phaseProgress = traceAllProgress(config);
 
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
+        assertThat(phaseProgress.size()).isEqualTo(phaseLength(config));
         assertProgressIsIncreasing(phaseProgress);
         assertEndDifferenceLessThan(0.1, phaseProgress);
     }
@@ -117,7 +117,7 @@ class InterviewProgressTimeBasedTrackerTest {
 
         List<List<Double>> phaseProgress = traceAllProgress(config);
 
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
+        assertThat(phaseProgress.size()).isEqualTo(phaseLength(config));
         assertProgressIsIncreasing(phaseProgress);
         assertEndDifferenceLessThan(0.1, phaseProgress);
     }
@@ -130,7 +130,7 @@ class InterviewProgressTimeBasedTrackerTest {
 
         List<List<Double>> phaseProgress = traceAllProgress(config);
 
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
+        assertThat(phaseProgress.size()).isEqualTo(phaseLength(config));
         assertProgressIsIncreasing(phaseProgress);
         assertEndDifferenceLessThan(0.1, phaseProgress);
     }
@@ -174,7 +174,7 @@ class InterviewProgressTimeBasedTrackerTest {
 
     private List<List<Double>> emptyList(InterviewConfig config) {
         List<List<Double>> result = new LinkedList<>();
-        for (int i = 0; i < phaseLength(config.type()); i++) {
+        for (int i = 0; i < phaseLength(config); i++) {
             addEmptyList(result);
         }
         return result;
