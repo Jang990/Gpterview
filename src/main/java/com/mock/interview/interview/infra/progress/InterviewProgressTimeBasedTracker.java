@@ -27,17 +27,20 @@ public class InterviewProgressTimeBasedTracker {
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
     public InterviewPhase tracePhase(LocalDateTime now, InterviewConfig config) {
-        InterviewPhase[] phaseOrders = getPhase(config.interviewType());
-        if(isSinglePhase(phaseOrders))
-            return phaseOrders[0];
+        if(isSinglePhase(phaseOrder(config.interviewType())))
+            return phaseOrder(config.interviewType())[0];
 
         long eachPhaseSecond = getEachPhaseSecond(config);
         long elapsedSecond = getSecondDifference(config.startTime(), now);
         int phaseIdx = (int) (elapsedSecond / eachPhaseSecond);
 
-        if(phaseIdx < phaseOrders.length)
-            return phaseOrders[ phaseIdx];
-        return lastPhase(phaseOrders);
+        if(phaseIdx < phaseOrderLength(config.interviewType()))
+            return phaseOrder(config.interviewType())[phaseIdx];
+        return lastPhase(phaseOrder(config.interviewType()));
+    }
+
+    private int phaseOrderLength(InterviewType type) {
+        return phaseOrder(type).length;
     }
 
     /** Phase 진행도 백분률 계산 */
