@@ -23,7 +23,7 @@ class InterviewProgressTimeBasedTrackerTest {
     @DisplayName("기술 면접 페이즈 테스트")
     void testTechnicalPhase() {
         final InterviewType type = InterviewType.TECHNICAL;
-        final InterviewConfig config = config(type, runningMinute);
+        final InterviewConfig config = config(type);
 
         List<InterviewPhase> traced = traceAllPhase(config);
 
@@ -35,7 +35,7 @@ class InterviewProgressTimeBasedTrackerTest {
     @DisplayName("기술-경험 면접 페이즈 테스트")
     void testTechnicalExperiencePhase() {
         final InterviewType type = InterviewType.TECHNICAL_EXPERIENCE;
-        final InterviewConfig config = config(type, runningMinute);
+        final InterviewConfig config = config(type);
 
         List<InterviewPhase> traced = traceAllPhase(config);
 
@@ -47,7 +47,7 @@ class InterviewProgressTimeBasedTrackerTest {
     @DisplayName("복합{기술-경험-인성} 면접 페이즈 테스트")
     void testCompositePhase() {
         final InterviewType type = InterviewType.COMPOSITE;
-        final InterviewConfig config = config(type, runningMinute);
+        final InterviewConfig config = config(type);
 
         List<InterviewPhase> traced = traceAllPhase(config);
 
@@ -55,7 +55,7 @@ class InterviewProgressTimeBasedTrackerTest {
         assertPhaseFrequency(type, traced);
     }
 
-    private InterviewConfig config(InterviewType type, int runningMinute) {
+    private InterviewConfig config(InterviewType type) {
         return new InterviewConfig(
                 type, start, startAfter(runningMinute)
         );
@@ -93,14 +93,14 @@ class InterviewProgressTimeBasedTrackerTest {
     }
 
     private static InterviewPhase[] phaseOrder(InterviewType type) {
-        return InterviewProgressTimeBasedTracker.getPhaseOrder(type);
+        return InterviewProgressTimeBasedTracker.phaseOrder(type);
     }
 
     @Test
     @DisplayName("기술 면접 진행도 테스트")
     void testTechnicalProgress() {
         final InterviewType type = InterviewType.TECHNICAL;
-        final InterviewConfig config = config(type, runningMinute);
+        final InterviewConfig config = config(type);
 
         List<List<Double>> phaseProgress = traceAllProgress(config);
 
@@ -113,7 +113,7 @@ class InterviewProgressTimeBasedTrackerTest {
     @DisplayName("기술-경험 면접 진행도 테스트")
     void testTechnicalExperienceProgress() {
         final InterviewType type = InterviewType.TECHNICAL_EXPERIENCE;
-        final InterviewConfig config = config(type, runningMinute);
+        final InterviewConfig config = config(type);
 
         List<List<Double>> phaseProgress = traceAllProgress(config);
 
@@ -126,7 +126,7 @@ class InterviewProgressTimeBasedTrackerTest {
     @DisplayName("복합{기술-경험-인성} 면접 진행도 테스트")
     void testCompositeProgress() {
         final InterviewType type = InterviewType.COMPOSITE;
-        final InterviewConfig config = config(type, runningMinute);
+        final InterviewConfig config = config(type);
 
         List<List<Double>> phaseProgress = traceAllProgress(config);
 

@@ -21,7 +21,7 @@ public class InterviewProgressTimeBasedTracker {
     private static final InterviewPhase[] EXPERIENCE_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.EXPERIENCE};
     private static final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
 
-    public static InterviewPhase[] getPhaseOrder(InterviewType type) {
+    public static InterviewPhase[] phaseOrder(InterviewType type) {
         return getPhase(type).clone();
     }
 
