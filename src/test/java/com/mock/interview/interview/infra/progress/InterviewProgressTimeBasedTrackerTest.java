@@ -174,7 +174,7 @@ class InterviewProgressTimeBasedTrackerTest {
 
     private List<List<Double>> emptyList(InterviewConfig config) {
         List<List<Double>> result = new LinkedList<>();
-        for (int i = 0; i < phaseLength(config.interviewType()); i++) {
+        for (int i = 0; i < phaseLength(config.type()); i++) {
             addEmptyList(result);
         }
         return result;

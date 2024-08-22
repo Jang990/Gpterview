@@ -27,16 +27,16 @@ public class InterviewProgressTimeBasedTracker {
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
     public InterviewPhase tracePhase(LocalDateTime now, InterviewConfig config) {
-        if(isSinglePhase(phaseOrder(config.interviewType())))
-            return phaseOrder(config.interviewType())[0];
+        if(isSinglePhase(phaseOrder(config.type())))
+            return phaseOrder(config.type())[0];
 
         long eachPhaseSecond = getEachPhaseSecond(config);
         long elapsedSecond = getSecondDifference(config.startTime(), now);
         int phaseIdx = (int) (elapsedSecond / eachPhaseSecond);
 
-        if(phaseIdx < phaseOrderLength(config.interviewType()))
-            return phaseOrder(config.interviewType())[phaseIdx];
-        return lastPhase(phaseOrder(config.interviewType()));
+        if(phaseIdx < phaseOrderLength(config.type()))
+            return phaseOrder(config.type())[phaseIdx];
+        return lastPhase(phaseOrder(config.type()));
     }
 
     private int phaseOrderLength(InterviewType type) {
@@ -70,7 +70,7 @@ public class InterviewProgressTimeBasedTracker {
         if(interviewDurationSecond <= 0)
             throw new IllegalArgumentException("면접 시간이 0보다 작음"); // 비즈니스 로직상은 불가능 - DB 직접 변경 시 발생 가능
 
-        int numberOfPhase = getNumberOfPhase(config.interviewType());
+        int numberOfPhase = getNumberOfPhase(config.type());
         return interviewDurationSecond / numberOfPhase;
     }
 
