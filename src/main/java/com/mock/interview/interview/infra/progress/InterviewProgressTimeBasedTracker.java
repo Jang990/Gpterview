@@ -15,6 +15,8 @@ import java.time.temporal.ChronoUnit;
 @Getter
 public class InterviewProgressTimeBasedTracker {
 
+    private static final ChronoUnit BASE_TIME_UNIT = ChronoUnit.SECONDS;
+
     private static final InterviewPhase[] COMPOSITE_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE, InterviewPhase.PERSONAL};
     private static final InterviewPhase[] TECH_EX_PHASE_ORDER = {InterviewPhase.TECHNICAL, InterviewPhase.EXPERIENCE};
     private static final InterviewPhase[] TECH_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.TECHNICAL};
@@ -38,9 +40,9 @@ public class InterviewProgressTimeBasedTracker {
     }
 
     private int findPhaseIdx(LocalDateTime now, InterviewConfig config) {
-        long eachPhaseSecond = getEachPhaseSecond(config);
-        long elapsedSecond = getSecondDifference(config.startTime(), now);
-        return (int) (elapsedSecond / eachPhaseSecond);
+        long eachPhaseDuration = eachPhaseDuration(config);
+        long elapsedDuration = timeDifference(config.startTime(), now);
+        return (int) (elapsedDuration / eachPhaseDuration);
     }
 
     private InterviewPhase selectPhase(InterviewConfig config, int phaseIdx) {
@@ -57,10 +59,8 @@ public class InterviewProgressTimeBasedTracker {
 
     /** Phase 진행도 백분률 계산 */
     public double traceProgress(LocalDateTime now, InterviewConfig config) {
-        long eachPhaseSecond = getEachPhaseSecond(config);
-        long elapsedSecond = getSecondDifference(config.startTime(), now);
-        long aa = elapsedSecond % eachPhaseSecond;
-        return (double) aa / eachPhaseSecond;
+        long aa = timeDifference(config.startTime(), now) % eachPhaseDuration(config);
+        return (double) aa / eachPhaseDuration(config);
     }
 
     /** 해당 면접 타입에 몇 개의 스테이지가 있는지 */
@@ -77,8 +77,8 @@ public class InterviewProgressTimeBasedTracker {
     }
 
     /** 면접_총_시간 / 면접_페이즈_수 */
-    private long getEachPhaseSecond(InterviewConfig config) {
-        return interviewDurationSecond(config) / numberOfPhase(config.type());
+    private long eachPhaseDuration(InterviewConfig config) {
+        return interviewDuration(config) / numberOfPhase(config.type());
     }
 
     private static InterviewPhase[] getPhase(InterviewType type) {
@@ -95,15 +95,15 @@ public class InterviewProgressTimeBasedTracker {
         return selectPhase(config, phaseOrderLength(config) - 1);
     }
 
-    private long interviewDurationSecond(InterviewConfig config) {
-        return getSecondDifference(config.startTime(), config.expiredTime());
+    private long interviewDuration(InterviewConfig config) {
+        return timeDifference(config.startTime(), config.expiredTime());
     }
 
-    /** base - target (Second 단위) */
-    private long getSecondDifference(LocalDateTime base, LocalDateTime target) {
-        long diffSecond = TimeDifferenceCalculator.calculate(ChronoUnit.SECONDS, base, target);
-        if(diffSecond < 0)
+    /** base - target */
+    private long timeDifference(LocalDateTime base, LocalDateTime target) {
+        long result = TimeDifferenceCalculator.calculate(BASE_TIME_UNIT, base, target);
+        if(result < 0)
             throw new IllegalArgumentException("면접 시간이 0보다 작음");
-        return diffSecond;
+        return result;
     }
 }
