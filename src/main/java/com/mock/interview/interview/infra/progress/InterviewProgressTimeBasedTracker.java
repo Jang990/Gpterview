@@ -64,7 +64,7 @@ public class InterviewProgressTimeBasedTracker {
     }
 
     /** 해당 면접 타입에 몇 개의 스테이지가 있는지 */
-    private int getNumberOfPhase(InterviewType interviewType) {
+    private int numberOfPhase(InterviewType interviewType) {
         return switch (interviewType) {
             case TECHNICAL, PERSONALITY, EXPERIENCE -> 1;
             case TECHNICAL_EXPERIENCE -> 2;
@@ -78,12 +78,7 @@ public class InterviewProgressTimeBasedTracker {
 
     /** 면접_총_시간 / 면접_페이즈_수 */
     private long getEachPhaseSecond(InterviewConfig config) {
-        long interviewDurationSecond = getSecondDifference(config.startTime(), config.expiredTime());
-        if(interviewDurationSecond <= 0)
-            throw new IllegalArgumentException("면접 시간이 0보다 작음"); // 비즈니스 로직상은 불가능 - DB 직접 변경 시 발생 가능
-
-        int numberOfPhase = getNumberOfPhase(config.type());
-        return interviewDurationSecond / numberOfPhase;
+        return interviewDurationSecond(config) / numberOfPhase(config.type());
     }
 
     private static InterviewPhase[] getPhase(InterviewType type) {
@@ -100,11 +95,15 @@ public class InterviewProgressTimeBasedTracker {
         return selectPhase(config, phaseOrderLength(config) - 1);
     }
 
+    private long interviewDurationSecond(InterviewConfig config) {
+        return getSecondDifference(config.startTime(), config.expiredTime());
+    }
+
     /** base - target (Second 단위) */
     private long getSecondDifference(LocalDateTime base, LocalDateTime target) {
         long diffSecond = TimeDifferenceCalculator.calculate(ChronoUnit.SECONDS, base, target);
         if(diffSecond < 0)
-            throw new IllegalArgumentException("base < target");
+            throw new IllegalArgumentException("면접 시간이 0보다 작음");
         return diffSecond;
     }
 }
