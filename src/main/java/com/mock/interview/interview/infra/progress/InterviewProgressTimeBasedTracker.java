@@ -32,25 +32,23 @@ public class InterviewProgressTimeBasedTracker {
         if(isSinglePhase(phaseOrder(config)))
             return firstPhase(config);
 
-        int phaseIdx = findPhaseIdx(now, config);
-
-        if(phaseIdx < phaseOrderLength(config))
-            return selectPhase(config, phaseIdx);
+        if(findCurrentPhaseIdx(now, config) < phaseOrderLength(config))
+            return currentPhase(now, config);
         return lastPhase(config);
     }
 
-    private int findPhaseIdx(LocalDateTime now, InterviewConfig config) {
+    private int findCurrentPhaseIdx(LocalDateTime now, InterviewConfig config) {
         long eachPhaseDuration = eachPhaseDuration(config);
         long elapsedDuration = timeDifference(config.startTime(), now);
         return (int) (elapsedDuration / eachPhaseDuration);
     }
 
-    private InterviewPhase selectPhase(InterviewConfig config, int phaseIdx) {
-        return phaseOrder(config)[phaseIdx];
+    private InterviewPhase currentPhase(LocalDateTime now, InterviewConfig config) {
+        return phaseOrder(config)[findCurrentPhaseIdx(now, config)];
     }
 
     private InterviewPhase firstPhase(InterviewConfig config) {
-        return selectPhase(config, 0);
+        return phaseOrder(config)[0];
     }
 
     private int phaseOrderLength(InterviewConfig config) {
@@ -92,7 +90,7 @@ public class InterviewProgressTimeBasedTracker {
     }
 
     private InterviewPhase lastPhase(InterviewConfig config) {
-        return selectPhase(config, phaseOrderLength(config) - 1);
+        return phaseOrder(config)[phaseOrderLength(config) - 1];
     }
 
     private long interviewDuration(InterviewConfig config) {
