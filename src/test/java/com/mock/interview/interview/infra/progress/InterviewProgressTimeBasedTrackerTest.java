@@ -20,6 +20,29 @@ class InterviewProgressTimeBasedTrackerTest {
     static final LocalDateTime start = LocalDateTime.now();
 
     @Test
+    @DisplayName("경계값 - 0분 테스트")
+    void testBoundary1() {
+        final InterviewConfig config = zeroDurationComposite();
+        InterviewPhase result = tracker.tracePhase(start, config);
+        assertThat(result).isEqualTo(firstPhase(config));
+    }
+
+    @Test
+    @DisplayName("경계값 - 만료시간 이후")
+    void testBoundary2() {
+        final InterviewConfig config = zeroDurationComposite();
+        InterviewPhase result = tracker.tracePhase(config.expiredTime().plusMinutes(1), config);
+    }
+
+    private static InterviewPhase firstPhase(InterviewConfig config) {
+        return phaseOrder(config)[0];
+    }
+
+    private InterviewConfig zeroDurationComposite() {
+        return new InterviewConfig(InterviewType.COMPOSITE, start, start);
+    }
+
+    @Test
     @DisplayName("기술 면접 페이즈 테스트")
     void testTechnicalPhase() {
         final InterviewConfig config = config(InterviewType.TECHNICAL);
@@ -64,7 +87,7 @@ class InterviewProgressTimeBasedTrackerTest {
 
     private List<InterviewPhase> traceAllPhase(InterviewConfig config) {
         List<InterviewPhase> result = new LinkedList<>();
-        for (int elapsed = 0; elapsed < runningMinute; elapsed++) {
+        for (int elapsed = 0; elapsed <= runningMinute; elapsed++) {
             result.add(tracker.tracePhase(startAfter(elapsed), config));
         }
         return result;
