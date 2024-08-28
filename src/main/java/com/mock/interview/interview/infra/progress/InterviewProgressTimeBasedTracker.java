@@ -37,10 +37,14 @@ public class InterviewProgressTimeBasedTracker {
         return lastPhase(config);
     }
 
+    /** 현재 페이즈에서 경과된 시간 / 각 페이즈 시간 = ex) 0.24 */
+    public double traceProgress(LocalDateTime now, InterviewConfig config) {
+        return (double) currentPhaseElapsed(now, config) / eachPhaseDuration(config);
+    }
+
+    /** 경과 시간 / 각 페이즈 시간 */
     private int findCurrentPhaseIdx(LocalDateTime now, InterviewConfig config) {
-        long eachPhaseDuration = eachPhaseDuration(config);
-        long elapsedDuration = timeDifference(config.startTime(), now);
-        return (int) (elapsedDuration / eachPhaseDuration);
+        return (int) (elapsedDuration(config, now) / eachPhaseDuration(config));
     }
 
     private InterviewPhase currentPhase(LocalDateTime now, InterviewConfig config) {
@@ -55,10 +59,8 @@ public class InterviewProgressTimeBasedTracker {
         return phaseOrder(config).length;
     }
 
-    /** Phase 진행도 백분률 계산 */
-    public double traceProgress(LocalDateTime now, InterviewConfig config) {
-        long aa = timeDifference(config.startTime(), now) % eachPhaseDuration(config);
-        return (double) aa / eachPhaseDuration(config);
+    private long currentPhaseElapsed(LocalDateTime now, InterviewConfig config) {
+        return elapsedDuration(config, now) % eachPhaseDuration(config);
     }
 
     /** 해당 면접 타입에 몇 개의 스테이지가 있는지 */
@@ -95,6 +97,10 @@ public class InterviewProgressTimeBasedTracker {
 
     private long interviewDuration(InterviewConfig config) {
         return timeDifference(config.startTime(), config.expiredTime());
+    }
+
+    private long elapsedDuration(InterviewConfig config, LocalDateTime now) {
+        return timeDifference(config.startTime(), now);
     }
 
     /** base - target */
