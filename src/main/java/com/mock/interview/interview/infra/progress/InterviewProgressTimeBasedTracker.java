@@ -29,6 +29,8 @@ public class InterviewProgressTimeBasedTracker {
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
     public InterviewPhase tracePhase(LocalDateTime now, InterviewConfig config) {
+        validParam(now, config);
+
         if(isSinglePhase(phaseOrder(config)))
             return firstPhase(config);
 
@@ -37,9 +39,22 @@ public class InterviewProgressTimeBasedTracker {
         return lastPhase(config);
     }
 
+    private boolean isAlreadyExpiredConfig(LocalDateTime now, InterviewConfig config) {
+        return now.isAfter(config.expiredTime());
+    }
+
     /** 현재 페이즈에서 경과된 시간 / 각 페이즈 시간 = ex) 0.24 */
     public double traceProgress(LocalDateTime now, InterviewConfig config) {
+        validParam(now, config);
+
         return (double) currentPhaseElapsed(now, config) / eachPhaseDuration(config);
+    }
+
+    private void validParam(LocalDateTime now, InterviewConfig config) {
+        if(isZeroDurationConfig(config))
+            throw new IllegalArgumentException("잘못된 InterviewConfig(시작시간 == 만료시간)");
+        if(isAlreadyExpiredConfig(now, config))
+            throw new IllegalArgumentException("이미 만료된 InterviewConfig(만료시간 < 현재 시간)");
     }
 
     /** 경과 시간 / 각 페이즈 시간 */
@@ -79,6 +94,10 @@ public class InterviewProgressTimeBasedTracker {
     /** 면접_총_시간 / 면접_페이즈_수 */
     private long eachPhaseDuration(InterviewConfig config) {
         return interviewDuration(config) / numberOfPhase(config.type());
+    }
+
+    private boolean isZeroDurationConfig(InterviewConfig config) {
+        return interviewDuration(config) == 0;
     }
 
     private static InterviewPhase[] getPhase(InterviewType type) {

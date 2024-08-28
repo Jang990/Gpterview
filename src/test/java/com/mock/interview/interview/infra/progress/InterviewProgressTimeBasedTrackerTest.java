@@ -3,6 +3,8 @@ package com.mock.interview.interview.infra.progress;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.interview.infra.cache.dto.InterviewConfig;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class InterviewProgressTimeBasedTrackerTest {
     final InterviewProgressTimeBasedTracker tracker = new InterviewProgressTimeBasedTracker();
@@ -23,15 +26,25 @@ class InterviewProgressTimeBasedTrackerTest {
     @DisplayName("경계값 - 0분 테스트")
     void testBoundary1() {
         final InterviewConfig config = zeroDurationComposite();
-        InterviewPhase result = tracker.tracePhase(start, config);
-        assertThat(result).isEqualTo(firstPhase(config));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> tracker.tracePhase(start, config)
+        );
+
     }
 
     @Test
     @DisplayName("경계값 - 만료시간 이후")
     void testBoundary2() {
-        final InterviewConfig config = zeroDurationComposite();
-        InterviewPhase result = tracker.tracePhase(config.expiredTime().plusMinutes(1), config);
+        final InterviewConfig config = compositeConfig();
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> tracker.tracePhase(overdueTime(config), config)
+        );
+    }
+
+    private static LocalDateTime overdueTime(InterviewConfig config) {
+        return config.expiredTime().plusMinutes(1);
     }
 
     private static InterviewPhase firstPhase(InterviewConfig config) {
@@ -73,6 +86,10 @@ class InterviewProgressTimeBasedTrackerTest {
 
         assertAllPhasesIncluded(config, traced);
         assertPhaseFrequency(config, traced);
+    }
+
+    private InterviewConfig compositeConfig() {
+        return new InterviewConfig(InterviewType.COMPOSITE, start, startAfter(runningMinute));
     }
 
     private InterviewConfig config(InterviewType type) {
