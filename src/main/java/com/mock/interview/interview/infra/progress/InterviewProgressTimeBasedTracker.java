@@ -40,13 +40,12 @@ public class InterviewProgressTimeBasedTracker {
     }
 
     private boolean isAlreadyExpiredConfig(LocalDateTime now, InterviewConfig config) {
-        return now.isAfter(config.expiredTime());
+        return now.isEqual(config.expiredTime()) || now.isAfter(config.expiredTime());
     }
 
     /** 현재 페이즈에서 경과된 시간 / 각 페이즈 시간 = ex) 0.24 */
     public double traceProgress(LocalDateTime now, InterviewConfig config) {
         validateConfig(now, config);
-
         return (double) currentPhaseElapsed(now, config) / eachPhaseDuration(config);
     }
 

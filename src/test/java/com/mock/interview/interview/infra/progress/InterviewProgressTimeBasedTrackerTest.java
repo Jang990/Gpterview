@@ -104,7 +104,7 @@ class InterviewProgressTimeBasedTrackerTest {
 
     private List<InterviewPhase> traceAllPhase(InterviewConfig config) {
         List<InterviewPhase> result = new LinkedList<>();
-        for (int elapsed = 0; elapsed <= runningMinute; elapsed++) {
+        for (int elapsed = 0; elapsed < runningMinute; elapsed++) {
             result.add(tracker.tracePhase(startAfter(elapsed), config));
         }
         return result;
