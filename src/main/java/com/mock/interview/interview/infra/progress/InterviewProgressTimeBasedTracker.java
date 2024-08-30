@@ -29,7 +29,7 @@ public class InterviewProgressTimeBasedTracker {
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
     public InterviewPhase tracePhase(LocalDateTime now, InterviewConfig config) {
-        validParam(now, config);
+        validateConfig(now, config);
 
         if(isSinglePhase(phaseOrder(config)))
             return firstPhase(config);
@@ -45,12 +45,12 @@ public class InterviewProgressTimeBasedTracker {
 
     /** 현재 페이즈에서 경과된 시간 / 각 페이즈 시간 = ex) 0.24 */
     public double traceProgress(LocalDateTime now, InterviewConfig config) {
-        validParam(now, config);
+        validateConfig(now, config);
 
         return (double) currentPhaseElapsed(now, config) / eachPhaseDuration(config);
     }
 
-    private void validParam(LocalDateTime now, InterviewConfig config) {
+    private void validateConfig(LocalDateTime now, InterviewConfig config) {
         if(isZeroDurationConfig(config))
             throw new IllegalArgumentException("잘못된 InterviewConfig(시작시간 == 만료시간)");
         if(isAlreadyExpiredConfig(now, config))
