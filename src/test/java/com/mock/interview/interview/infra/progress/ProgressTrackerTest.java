@@ -3,8 +3,6 @@ package com.mock.interview.interview.infra.progress;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.interview.infra.cache.dto.InterviewConfig;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +13,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class InterviewProgressTimeBasedTrackerTest {
-    final InterviewProgressTimeBasedTracker tracker = new InterviewProgressTimeBasedTracker();
+class ProgressTrackerTest {
+    final ProgressTracker tracker = new ProgressTracker();
 
     final int runningMinute = 30;
 
@@ -130,7 +128,7 @@ class InterviewProgressTimeBasedTrackerTest {
     }
 
     private static InterviewPhase[] phaseOrder(InterviewConfig config) {
-        return InterviewProgressTimeBasedTracker.phaseOrder(config);
+        return ProgressTracker.phaseOrder(config);
     }
 
     @Test

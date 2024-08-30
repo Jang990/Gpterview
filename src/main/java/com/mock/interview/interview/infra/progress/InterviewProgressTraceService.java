@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InterviewProgressTraceService {
-    private final InterviewProgressTimeBasedTracker progressTracker;
+    private final ProgressTracker progressTracker;
 
     public InterviewProgress trace(InterviewInfo interviewInfo) {
         LocalDateTime now = LocalDateTime.now();
