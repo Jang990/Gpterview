@@ -89,7 +89,7 @@ class InterviewCacheRepositoryTest {
 
     private void isEqual(InterviewInfo result, Interview mockInterview) {
         assertThat(result.config().expiredTime()).isEqualTo(mockInterview.getExpiredTime());
-        assertThat(result.config().interviewType()).isEqualTo(mockInterview.getType());
+        assertThat(result.config().type()).isEqualTo(mockInterview.getType());
         assertThat(result.profile().category().getName()).isEqualTo(mockInterview.getCategory().getName());
         assertThat(result.profile().field().getName()).isEqualTo(mockInterview.getPosition().getName());
 
