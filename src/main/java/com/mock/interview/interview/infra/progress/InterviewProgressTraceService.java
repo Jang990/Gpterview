@@ -27,17 +27,17 @@ public class InterviewProgressTraceService {
 
     private InterviewTopic<?> getCurrentTopic(InterviewPhase phase, double progress, InterviewProfile profile) {
         return switch (phase) {
-            case TECHNICAL -> selectStringBasedOnProgress(progress, profile.skills());
-            case EXPERIENCE -> selectStringBasedOnProgress(progress, profile.experience());
+            case TECHNICAL -> selectTopic(profile.skills(), progress);
+            case EXPERIENCE -> selectTopic(profile.experience(), progress);
             case PERSONAL -> null;
         };
     }
 
-    private <T extends InterviewTopic<?>> T selectStringBasedOnProgress(double progress, List<T> list) {
-        if(list.isEmpty())
+    private <T extends InterviewTopic<?>> T selectTopic(List<T> topics, double progress) {
+        if(topics.isEmpty())
             return null;
-        int n = (int) Math.floor(progress * list.size());
-        return list.get(n);
+        int topicIdx = (int) Math.floor(progress * topics.size());
+        return topics.get(topicIdx);
     }
 
 }
