@@ -34,7 +34,7 @@ class ProgressTopicServiceTest {
         List<ExperienceTopic> experienceTopics = List.of(mock(ExperienceTopic.class));
 
         List<? extends InterviewTopic<?>> result = selector
-                .getTopicList(phase, mockTopicInfo(techTopics, experienceTopics));
+                .findTopicList(phase, mockTopicInfo(techTopics, experienceTopics));
 
         assertThat(result).isSameAs(techTopics);
         assertThat(result).isNotSameAs(experienceTopics);
@@ -49,7 +49,7 @@ class ProgressTopicServiceTest {
         List<ExperienceTopic> experiences = List.of(mock(ExperienceTopic.class));
 
         List<? extends InterviewTopic<?>> result = selector
-                .getTopicList(phase, mockTopicInfo(techs, experiences));
+                .findTopicList(phase, mockTopicInfo(techs, experiences));
 
         assertThat(result).isSameAs(experiences);
         assertThat(result).isNotSameAs(techs);
@@ -64,7 +64,7 @@ class ProgressTopicServiceTest {
         List<ExperienceTopic> experiences = List.of(mock(ExperienceTopic.class));
 
         List<? extends InterviewTopic<?>> result = selector
-                .getTopicList(phase, mockTopicInfo(techs, experiences));
+                .findTopicList(phase, mockTopicInfo(techs, experiences));
 
         assertThat(result).isNotSameAs(techs);
         assertThat(result).isNotSameAs(experiences);

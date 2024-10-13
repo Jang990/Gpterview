@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class ProgressTopicService {
-    public List<? extends InterviewTopic<?>> getTopicList(InterviewPhase phase, InterviewInfo info) {
+    public List<? extends InterviewTopic<?>> findTopicList(InterviewPhase phase, InterviewInfo info) {
         return switch (phase) {
             case TECHNICAL -> info.getTechTopics();
             case EXPERIENCE -> info.getExperienceTopics();
