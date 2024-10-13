@@ -13,8 +13,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class ProgressTrackerTest {
-    final ProgressTracker tracker = new ProgressTracker();
+class ProgressTracerTest {
+    final ProgressTracer tracker = new ProgressTracer();
 
     final int runningMinute = 30;
 
@@ -128,7 +128,7 @@ class ProgressTrackerTest {
     }
 
     private static InterviewPhase[] phaseOrder(InterviewConfig config) {
-        return ProgressTracker.phaseOrder(config);
+        return ProgressTracer.phaseOrder(config);
     }
 
     @Test

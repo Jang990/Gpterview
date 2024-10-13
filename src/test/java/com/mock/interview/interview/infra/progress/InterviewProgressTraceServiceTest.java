@@ -17,7 +17,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class InterviewProgressTraceServiceTest {
 
-    @Mock ProgressTracker tracker;
+    @Mock
+    ProgressTracer tracer;
     @Mock ProgressTopicService topicService;
     @InjectMocks InterviewProgressTraceService traceService;
 
@@ -28,8 +29,8 @@ class InterviewProgressTraceServiceTest {
         InterviewPhase testPhase = InterviewPhase.EXPERIENCE;
         double testProgress = 0.0;
 
-        when(tracker.tracePhase(any(),any())).thenReturn(testPhase);
-        when(tracker.traceProgress(any(), any())).thenReturn(testProgress);
+        when(tracer.tracePhase(any(),any())).thenReturn(testPhase);
+        when(tracer.traceProgress(any(), any())).thenReturn(testProgress);
         when(topicService.selectTopic(any(), anyDouble())).thenReturn(testTopic);
 
         InterviewProgress progress = traceService.trace(mock(InterviewInfo.class));

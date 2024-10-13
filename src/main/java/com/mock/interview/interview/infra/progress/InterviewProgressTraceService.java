@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class InterviewProgressTraceService {
-    private final ProgressTracker progressTracker;
+    private final ProgressTracer progressTracer;
     private final ProgressTopicService progressTopicService;
 
     public InterviewProgress trace(InterviewInfo info) {
@@ -26,11 +26,11 @@ public class InterviewProgressTraceService {
     }
 
     private InterviewPhase tracePhase(LocalDateTime time, InterviewInfo info) {
-        return progressTracker.tracePhase(time, info.config());
+        return progressTracer.tracePhase(time, info.config());
     }
 
     private double traceProgress(LocalDateTime time, InterviewInfo info) {
-        return progressTracker.traceProgress(time, info.config());
+        return progressTracer.traceProgress(time, info.config());
     }
 
     private InterviewTopic<?> traceTopic(LocalDateTime current, InterviewInfo info) {

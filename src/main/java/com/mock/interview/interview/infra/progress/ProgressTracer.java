@@ -13,7 +13,7 @@ import java.time.temporal.ChronoUnit;
 /** 진행 시간을 기반으로 현재 면접 진행 정도를 파악. */
 @Component
 @Getter
-public class ProgressTracker {
+public class ProgressTracer {
 
     private static final ChronoUnit BASE_TIME_UNIT = ChronoUnit.SECONDS;
 
