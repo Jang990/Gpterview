@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class TopicSelector {
+public class ProgressTopicService {
     public List<? extends InterviewTopic<?>> getTopicList(InterviewPhase phase, InterviewInfo info) {
         return switch (phase) {
             case TECHNICAL -> info.getTechTopics();

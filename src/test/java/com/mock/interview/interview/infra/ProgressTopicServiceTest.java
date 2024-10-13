@@ -16,9 +16,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class TopicSelectorTest {
+class ProgressTopicServiceTest {
 
-    TopicSelector selector = new TopicSelector();
+    ProgressTopicService selector = new ProgressTopicService();
 
     List<TechTopic> topics = List.of(
             new TechTopic(1L, "Something1"),
