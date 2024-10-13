@@ -1,4 +1,4 @@
-package com.mock.interview.interview.infra;
+package com.mock.interview.interview.infra.progress;
 
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;

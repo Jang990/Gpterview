@@ -1,9 +1,10 @@
-package com.mock.interview.interview.infra;
+package com.mock.interview.interview.infra.progress;
 
 import com.mock.interview.category.presentation.dto.response.CategoryResponse;
 import com.mock.interview.interview.infra.cache.dto.InterviewConfig;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
+import com.mock.interview.interview.infra.progress.ProgressTopicService;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.topic.ExperienceTopic;
 import com.mock.interview.interview.infra.progress.dto.topic.InterviewTopic;
