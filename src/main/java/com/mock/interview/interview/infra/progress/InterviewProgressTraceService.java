@@ -1,5 +1,6 @@
 package com.mock.interview.interview.infra.progress;
 
+import com.mock.interview.interview.infra.ProgressTopicService;
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.topic.InterviewTopic;
@@ -8,13 +9,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /** 현재 면접 주제 파악 서비스 */
 @Service
 @RequiredArgsConstructor
 public class InterviewProgressTraceService {
     private final ProgressTracker progressTracker;
+    private final ProgressTopicService progressTopicService;
 
     public InterviewProgress trace(InterviewInfo info) {
         LocalDateTime current = LocalDateTime.now();
@@ -34,27 +35,9 @@ public class InterviewProgressTraceService {
     }
 
     private InterviewTopic<?> traceTopic(LocalDateTime current, InterviewInfo info) {
-        return switch (tracePhase(current, info)) {
-            case TECHNICAL -> selectTopic(
-                    info.getTechTopics(),
-                    traceProgress(current, info)
-            );
-            case EXPERIENCE -> selectTopic(
-                    info.getExperienceTopics(),
-                    traceProgress(current, info)
-            );
-            case PERSONAL -> null;
-        };
+        return progressTopicService.selectTopic(
+                progressTopicService.findTopicList(tracePhase(current, info), info),
+                traceProgress(current, info)
+        );
     }
-
-    private <T extends InterviewTopic<?>> T selectTopic(List<T> topics, double progress) {
-        if(topics.isEmpty())
-            return null;
-        return topics.get(findProgressIndex(progress, topics.size()));
-    }
-
-    private int findProgressIndex(double progress, int size) {
-        return (int) Math.floor(progress * size);
-    }
-
 }
