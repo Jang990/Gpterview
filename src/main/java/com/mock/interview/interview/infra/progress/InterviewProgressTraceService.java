@@ -1,7 +1,6 @@
 package com.mock.interview.interview.infra.progress;
 
 import com.mock.interview.interview.infra.cache.dto.InterviewInfo;
-import com.mock.interview.interview.infra.cache.dto.InterviewProfile;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.infra.progress.dto.topic.InterviewTopic;
 import com.mock.interview.interview.infra.progress.dto.InterviewProgress;
@@ -17,18 +16,33 @@ import java.util.List;
 public class InterviewProgressTraceService {
     private final ProgressTracker progressTracker;
 
-    public InterviewProgress trace(InterviewInfo interviewInfo) {
-        LocalDateTime now = LocalDateTime.now();
-        InterviewPhase phase = progressTracker.tracePhase(now, interviewInfo.config());
-        double progress = progressTracker.traceProgress(now, interviewInfo.config());
-        InterviewTopic<?> currentTopic = getCurrentTopic(phase, progress, interviewInfo.profile());
-        return new InterviewProgress(phase, currentTopic, progress);
+    public InterviewProgress trace(InterviewInfo info) {
+        LocalDateTime current = LocalDateTime.now();
+        return new InterviewProgress(
+                tracePhase(current, info),
+                traceTopic(current, info),
+                traceProgress(current, info)
+        );
     }
 
-    private InterviewTopic<?> getCurrentTopic(InterviewPhase phase, double progress, InterviewProfile profile) {
-        return switch (phase) {
-            case TECHNICAL -> selectTopic(profile.skills(), progress);
-            case EXPERIENCE -> selectTopic(profile.experience(), progress);
+    private InterviewPhase tracePhase(LocalDateTime time, InterviewInfo info) {
+        return progressTracker.tracePhase(time, info.config());
+    }
+
+    private double traceProgress(LocalDateTime time, InterviewInfo info) {
+        return progressTracker.traceProgress(time, info.config());
+    }
+
+    private InterviewTopic<?> traceTopic(LocalDateTime current, InterviewInfo info) {
+        return switch (tracePhase(current, info)) {
+            case TECHNICAL -> selectTopic(
+                    info.getTechTopics(),
+                    traceProgress(current, info)
+            );
+            case EXPERIENCE -> selectTopic(
+                    info.getExperienceTopics(),
+                    traceProgress(current, info)
+            );
             case PERSONAL -> null;
         };
     }
@@ -36,8 +50,11 @@ public class InterviewProgressTraceService {
     private <T extends InterviewTopic<?>> T selectTopic(List<T> topics, double progress) {
         if(topics.isEmpty())
             return null;
-        int topicIdx = (int) Math.floor(progress * topics.size());
-        return topics.get(topicIdx);
+        return topics.get(findProgressIndex(progress, topics.size()));
+    }
+
+    private int findProgressIndex(double progress, int size) {
+        return (int) Math.floor(progress * size);
     }
 
 }
