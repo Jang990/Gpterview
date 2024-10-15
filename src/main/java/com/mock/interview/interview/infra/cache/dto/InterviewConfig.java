@@ -9,7 +9,7 @@ import com.mock.interview.interview.presentation.dto.InterviewType;
 import java.time.LocalDateTime;
 
 public record InterviewConfig(
-        InterviewType interviewType,
+        InterviewType type,
         @JsonSerialize(using = LocalDateTimeSerializer.class)
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
         LocalDateTime startTime,

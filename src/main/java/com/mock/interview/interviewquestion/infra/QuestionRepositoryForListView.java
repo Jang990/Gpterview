@@ -55,6 +55,9 @@ public class QuestionRepositoryForListView {
                 .orderBy(interviewQuestion.likes.desc(), interviewQuestion.createdAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
+
+//        if(searchOptions)
+
         filterQuery(query, searchOptions);
 
         List<InterviewQuestion> questions = query.fetch();
