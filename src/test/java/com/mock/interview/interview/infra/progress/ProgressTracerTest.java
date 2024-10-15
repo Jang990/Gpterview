@@ -45,10 +45,6 @@ class ProgressTracerTest {
         return config.expiredTime().plusMinutes(1);
     }
 
-    private static InterviewPhase firstPhase(InterviewConfig config) {
-        return phaseOrder(config)[0];
-    }
-
     private InterviewConfig zeroDurationComposite() {
         return new InterviewConfig(InterviewType.COMPOSITE, start, start);
     }
