@@ -69,7 +69,7 @@ public class AppearedQuestionIdManagerImpl implements AppearedQuestionIdManager 
 
     private void save(Interview interview, String key, List<Long> ids) {
         long diffSecond = TimeDifferenceCalculator.calculate(
-                ChronoUnit.SECONDS, LocalDateTime.now(), interview.getExpiredAt());
+                ChronoUnit.SECONDS, LocalDateTime.now(), interview.getTimer().getExpiredAt());
         if(diffSecond < 0)
             return;
 

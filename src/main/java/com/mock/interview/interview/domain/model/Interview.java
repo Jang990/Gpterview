@@ -38,11 +38,8 @@ public class Interview {
     @JoinColumn(name = "user_id")
     private Users users;
 
-    @Column(nullable = false)
-    private LocalDateTime expiredAt;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime startedAt;
+    @Embedded
+    private InterviewTimer timer;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
@@ -77,14 +74,16 @@ public class Interview {
         Interview interview = new Interview();
         interview.users = user;
         interview.type = interviewConfig.getInterviewType();
+        interview.durationMinutes = interviewConfig.getDurationMinutes();
         initCategory(category, position, interview);
-        initExpiredTime(interview, interviewConfig.getDurationMinutes());
+
+        interview.timer = createTimer(interviewConfig.getDurationMinutes());
         return interview;
     }
 
-    private static void initExpiredTime(Interview interview, int durationMinutes) {
-        interview.durationMinutes = durationMinutes;
-        interview.expiredAt = LocalDateTime.now().plusMinutes(durationMinutes);
+    private static InterviewTimer createTimer(int durationMinutes) {
+        LocalDateTime current = LocalDateTime.now();
+        return new InterviewTimer(current, current.plusMinutes(durationMinutes));
     }
 
     private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
@@ -128,11 +127,11 @@ public class Interview {
     public void expire() {
         verifyTimeoutState();
 
-        expiredAt = LocalDateTime.now();
+        timer = timer.withExpiredAt(LocalDateTime.now());
     }
 
     public boolean isTimeout() {
-        return expiredAt.isBefore(LocalDateTime.now());
+        return timer.isExpired(LocalDateTime.now());
     }
 
     public boolean isActive() {

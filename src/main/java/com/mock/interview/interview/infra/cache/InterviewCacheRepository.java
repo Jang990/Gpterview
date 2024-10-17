@@ -40,7 +40,7 @@ public class InterviewCacheRepository {
         InterviewInfo result = convert(interview);
 
         long diffMinute = TimeDifferenceCalculator
-                .calculate(ChronoUnit.MINUTES, LocalDateTime.now(), interview.getExpiredAt());
+                .calculate(ChronoUnit.MINUTES, LocalDateTime.now(), interview.getTimer().getExpiredAt());
         if (diffMinute > 0) {
             redisRepository.save(interviewId, result, diffMinute);
         }
@@ -58,7 +58,7 @@ public class InterviewCacheRepository {
                 TechConvertHelper.convertTopic(interview.getTechLink().stream().map(InterviewTechLink::getTechnicalSubjects).toList()),
                 ExperienceConvertor.convertTopic(interview.getExperienceLink().stream().map(InterviewExperienceLink::getExperience).toList())
         );
-        InterviewConfig interviewConfig = new InterviewConfig(interview.getType(), interview.getStartedAt(), interview.getExpiredAt());
+        InterviewConfig interviewConfig = new InterviewConfig(interview.getType(), interview.getTimer().getStartedAt(), interview.getTimer().getExpiredAt());
         return new InterviewInfo(interview.getId(), profile, interviewConfig);
     }
 }
