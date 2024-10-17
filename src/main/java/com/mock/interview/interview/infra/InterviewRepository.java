@@ -34,14 +34,14 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv Where iv.id = :interviewId and iv.users.id = :userId")
     Optional<Interview> findByIdAndUserId(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
-    @Query("Select iv From Interview iv Where iv.expiredTime > current_timestamp")
+    @Query("Select iv From Interview iv Where iv.expiredAt > current_timestamp")
     Optional<Interview> findActiveInterview(Long loginId);
 
     @Query(value = """
             SELECT iv
             FROM Interview iv
             WHERE iv.users.id = :userId
-            ORDER BY iv.createdAt DESC
+            ORDER BY iv.startedAt DESC
             """, countQuery = "")
     List<Interview> findCurrentInterview(@Param("userId") long loginId, Pageable pageable);
 

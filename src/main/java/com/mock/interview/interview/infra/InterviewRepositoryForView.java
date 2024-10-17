@@ -28,14 +28,14 @@ public class InterviewRepositoryForView {
                             interview.id,
                             interview.title.title,
                             interview.durationMinutes,
-                            interview.createdAt
+                            interview.startedAt
                     )
                 )
                 .from(interview)
                 .where(interview.users.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(interview.createdAt.desc())
+                .orderBy(interview.startedAt.desc())
                 .fetch();
     }
 
@@ -44,7 +44,7 @@ public class InterviewRepositoryForView {
                 .where(interview.users.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(interview.createdAt.desc())
+                .orderBy(interview.startedAt.desc())
                 .fetch();
 
         List<InterviewOverview> content = InterviewConvertor.convert(result);

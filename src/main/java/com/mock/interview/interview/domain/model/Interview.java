@@ -6,7 +6,6 @@ import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.global.Events;
-import com.mock.interview.global.auditing.BaseTimeEntity;
 import com.mock.interview.interview.domain.event.InterviewContinuedEvent;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -17,8 +16,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Interview extends BaseTimeEntity {
+public class Interview {
     @Id
     @Column(name = "interview_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +39,18 @@ public class Interview extends BaseTimeEntity {
     private Users users;
 
     @Column(nullable = false)
-    private LocalDateTime expiredTime;
+    private LocalDateTime expiredAt;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime startedAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private InterviewType type;
+
     @Column(nullable = false)
     private int durationMinutes;
 
@@ -78,7 +84,7 @@ public class Interview extends BaseTimeEntity {
 
     private static void initExpiredTime(Interview interview, int durationMinutes) {
         interview.durationMinutes = durationMinutes;
-        interview.expiredTime = LocalDateTime.now().plusMinutes(durationMinutes);
+        interview.expiredAt = LocalDateTime.now().plusMinutes(durationMinutes);
     }
 
     private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
@@ -122,11 +128,11 @@ public class Interview extends BaseTimeEntity {
     public void expire() {
         verifyTimeoutState();
 
-        expiredTime = LocalDateTime.now();
+        expiredAt = LocalDateTime.now();
     }
 
     public boolean isTimeout() {
-        return expiredTime.isBefore(LocalDateTime.now());
+        return expiredAt.isBefore(LocalDateTime.now());
     }
 
     public boolean isActive() {

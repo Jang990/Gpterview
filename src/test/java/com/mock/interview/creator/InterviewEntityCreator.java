@@ -13,7 +13,7 @@ public class InterviewEntityCreator {
         Interview mock = mock(Interview.class);
         JobCategory mockCategory = createMockCategory();
         JobPosition mockPosition = createMockPosition();
-        when(mock.getExpiredTime()).thenReturn(expireTime);
+        when(mock.getExpiredAt()).thenReturn(expireTime);
         when(mock.getCategory()).thenReturn(mockCategory);
         when(mock.getPosition()).thenReturn(mockPosition);
         return mock;

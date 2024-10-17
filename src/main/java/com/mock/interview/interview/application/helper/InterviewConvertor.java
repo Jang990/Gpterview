@@ -16,6 +16,6 @@ public final class InterviewConvertor {
         return new InterviewOverview(
                 interview.getId(), interview.getTitle().getTitle(),
                 interview.getType(), interview.getDurationMinutes(),
-                interview.getCreatedAt());
+                interview.getStartedAt());
     }
 }
