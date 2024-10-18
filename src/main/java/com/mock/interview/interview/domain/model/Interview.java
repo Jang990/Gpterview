@@ -75,18 +75,21 @@ public class Interview {
         interview.users = user;
         interview.type = interviewConfig.getInterviewType();
         interview.durationMinutes = interviewConfig.getDurationMinutes();
-        initCategory(category, position, interview);
+        interview.timer = createTimer(LocalDateTime.now(), interviewConfig.getDurationMinutes());
 
-        interview.timer = createTimer(interviewConfig.getDurationMinutes());
+        initCategory(category, position, interview);
         return interview;
     }
 
-    private static InterviewTimer createTimer(int durationMinutes) {
-        LocalDateTime current = LocalDateTime.now();
+    private static InterviewTimer createTimer(LocalDateTime current , int durationMinutes) {
+        if(durationMinutes <= 0)
+            throw new IllegalArgumentException("면접 시간은 0분 이하일 수 없음.");
         return new InterviewTimer(current, current.plusMinutes(durationMinutes));
     }
 
     private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
+        if(!position.getCategory().equals(category))
+            throw new IllegalArgumentException("카테고리와 포지션이 관계가 없음.");
         interview.category = category;
         interview.position = position;
         interview.title = new InterviewTitle(category.getName(), position.getName());
