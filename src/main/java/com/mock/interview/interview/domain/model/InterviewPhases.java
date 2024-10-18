@@ -1,4 +1,4 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.presentation.dto.InterviewType;
@@ -14,6 +14,10 @@ public final class InterviewPhases {
     private static final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
 
     static InterviewPhase[] getPhaseOrder(InterviewType type) {
+        return getOriginalPhase(type).clone();
+    }
+
+    private static InterviewPhase[] getOriginalPhase(InterviewType type) {
         return switch (type) {
             case TECHNICAL -> TECH_PHASE_ORDER;
             case PERSONALITY -> PERSONAL_PHASE_ORDER;

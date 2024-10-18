@@ -1,7 +1,9 @@
 package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.experience.domain.Experience;
+import com.mock.interview.global.TimeDifferenceCalculator;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
+import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
@@ -20,6 +22,7 @@ import org.hibernate.annotations.CascadeType;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,5 +172,38 @@ public class Interview {
     private void verifyTimeoutState(InterviewTimeHolder timeHolder) {
         if(isTimeout(timeHolder))
             throw new IsAlreadyTimeoutInterviewException();
+    }
+
+    public InterviewPhase tracePhase(InterviewTimeHolder timeHolder) {
+        verifyTimeoutState(timeHolder);
+
+        int currentIdx = findCurrentPhaseIdx(timeHolder);
+        return InterviewPhases.getPhaseOrder(type)[currentIdx];
+    }
+
+    public double traceProgress(InterviewTimeHolder timeHolder) {
+        verifyTimeoutState(timeHolder);
+
+        long eachPhaseDuration = eachPhaseDuration();
+        long passedTimeOfCurrentPhase = timePassed(timer.getStartedAt(), timeHolder.now()) % eachPhaseDuration;
+        return (double) passedTimeOfCurrentPhase / eachPhaseDuration;
+    }
+
+    /** 경과 시간 / 각 페이즈 시간 */
+    private int findCurrentPhaseIdx(InterviewTimeHolder holder) {
+        return (int) (timePassed(timer.getStartedAt(), holder.now()) / eachPhaseDuration());
+    }
+
+    /** 면접_총_시간 / 면접_페이즈_수 */
+    private long eachPhaseDuration() {
+        return interviewDuration() / InterviewPhases.numberOfPhase(type);
+    }
+
+    private long interviewDuration() {
+        return timePassed(timer.getStartedAt(), timer.getExpiredAt());
+    }
+
+    private long timePassed(LocalDateTime start, LocalDateTime end) {
+        return TimeDifferenceCalculator.calculate(ChronoUnit.SECONDS, start, end);
     }
 }
