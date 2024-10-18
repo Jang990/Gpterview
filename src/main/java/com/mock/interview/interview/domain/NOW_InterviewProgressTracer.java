@@ -3,6 +3,7 @@ package com.mock.interview.interview.domain;
 import com.mock.interview.global.TimeDifferenceCalculator;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
+import com.mock.interview.interview.domain.model.InterviewTimer;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import lombok.Getter;
@@ -39,19 +40,19 @@ public class NOW_InterviewProgressTracer {
     }
 
     /** 현재 어떤 스테이지를 진행중인지 계산 */
-    public InterviewPhase tracePhase(LocalDateTime now, Interview interview) {
-        validateTimer(now, interview);
-        return phaseOrder(interview.getType())[findCurrentPhaseIdx(now, interview)];
+    public InterviewPhase tracePhase(LocalDateTime now, InterviewTimer timer, InterviewType type) {
+        validateExpiredTimer(now, timer);
+        return phaseOrder(type)[findCurrentPhaseIdx(now, timer, type)];
     }
 
     /** 현재 페이즈에서 경과된 시간 / 각 페이즈 시간 = ex) 0.24 */
-    public double traceProgress(LocalDateTime now, Interview interview) {
-        validateTimer(now, interview);
-        return (double) currentPhaseElapsed(now, interview) / eachPhaseDuration(interview);
+    public double traceProgress(LocalDateTime now, InterviewTimer timer, InterviewType type) {
+        validateExpiredTimer(now, timer);
+        return (double) currentPhaseElapsed(now, timer, type) / eachPhaseDuration(timer, type);
     }
 
-    private void validateTimer(LocalDateTime now, Interview interview) {
-        if(isAlreadyExpiredConfig(now, interview))
+    private void validateExpiredTimer(LocalDateTime now, InterviewTimer timer) {
+        if(timer.getExpiredAt().equals(now) || timer.getExpiredAt().isBefore(now))
             throw new IsAlreadyTimeoutInterviewException();
     }
 
@@ -60,12 +61,12 @@ public class NOW_InterviewProgressTracer {
     }
 
     /** 경과 시간 / 각 페이즈 시간 */
-    private int findCurrentPhaseIdx(LocalDateTime now, Interview interview) {
-        return (int) (elapsedDuration(interview, now) / eachPhaseDuration(interview));
+    private int findCurrentPhaseIdx(LocalDateTime now, InterviewTimer timer, InterviewType type) {
+        return (int) (elapsedDuration(timer, now) / eachPhaseDuration(timer, type));
     }
 
-    private long currentPhaseElapsed(LocalDateTime now, Interview interview) {
-        return elapsedDuration(interview, now) % eachPhaseDuration(interview);
+    private long currentPhaseElapsed(LocalDateTime now, InterviewTimer timer, InterviewType type) {
+        return elapsedDuration(timer, now) % eachPhaseDuration(timer, type);
     }
 
     /** 해당 면접 타입에 몇 개의 스테이지가 있는지 */
@@ -78,16 +79,16 @@ public class NOW_InterviewProgressTracer {
     }
 
     /** 면접_총_시간 / 면접_페이즈_수 */
-    private long eachPhaseDuration(Interview interview) {
-        return interviewDuration(interview) / numberOfPhase(interview.getType());
+    private long eachPhaseDuration(InterviewTimer timer, InterviewType type) {
+        return interviewDuration(timer) / numberOfPhase(type);
     }
 
-    private long interviewDuration(Interview interview) {
-        return timeDifference(interview.getTimer().getStartedAt(), interview.getTimer().getExpiredAt());
+    private long interviewDuration(InterviewTimer timer) {
+        return timeDifference(timer.getStartedAt(), timer.getExpiredAt());
     }
 
-    private long elapsedDuration(Interview interview, LocalDateTime now) {
-        return timeDifference(interview.getTimer().getStartedAt(), now);
+    private long elapsedDuration(InterviewTimer timer, LocalDateTime now) {
+        return timeDifference(timer.getStartedAt(), now);
     }
 
     /** base - target */

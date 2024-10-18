@@ -30,89 +30,86 @@ class NOW_InterviewProgressTracerTest {
     @Test
     @DisplayName("이미 만료된 면접은 추적 불가능")
     void testBoundary2() {
-        final Interview interview = mock(Interview.class);
         InterviewTimer mockTimer = mock(InterviewTimer.class);
-        when(interview.getTimer()).thenReturn(mockTimer);
         when(mockTimer.getExpiredAt()).thenReturn(start);
 
         assertThrows(
                 IsAlreadyTimeoutInterviewException.class,
-                () -> tracker.tracePhase(overdueTime(interview), interview)
+                () -> tracker.tracePhase(overdueTime(start), mockTimer, mock(InterviewType.class))
         );
     }
 
-    private static LocalDateTime overdueTime(Interview interview) {
-        return interview.getTimer().getExpiredAt().plusMinutes(1);
+    private static LocalDateTime overdueTime(LocalDateTime base) {
+        return base.plusMinutes(1);
     }
 
-    private Interview interview(InterviewType type, int runningMinute) {
-        Interview result = mock(Interview.class);
-        when(result.getType()).thenReturn(type);
-
+    private InterviewTimer mockTimer(int runningMinute) {
         InterviewTimer mockTimer = mock(InterviewTimer.class);
         when(mockTimer.getStartedAt()).thenReturn(start);
         when(mockTimer.getExpiredAt()).thenReturn(start.plusMinutes(runningMinute));
-        when(result.getTimer()).thenReturn(mockTimer);
-        return result;
+        return mockTimer;
     }
 
     @Test
     @DisplayName("기술 면접 페이즈 테스트")
     void testTechnicalPhase() {
-        final Interview interview = interview(InterviewType.TECHNICAL, runningMinute);
+        InterviewType type = InterviewType.TECHNICAL;
+        InterviewTimer timer = mockTimer(runningMinute);
 
-        List<InterviewPhase> traced = traceAllPhase(interview);
+        List<InterviewPhase> traced = traceAllPhase(timer, type);
 
-        assertAllPhasesIncluded(interview, traced);
-        assertPhaseFrequency(interview, traced);
+        assertAllPhasesIncluded(type, traced);
+        assertPhaseFrequency(type, traced);
     }
 
     @Test
     @DisplayName("기술-경험 면접 페이즈 테스트")
     void testTechnicalExperiencePhase() {
-        final Interview config = interview(InterviewType.TECHNICAL_EXPERIENCE, runningMinute);
+        InterviewType type = InterviewType.TECHNICAL_EXPERIENCE;
+        InterviewTimer timer = mockTimer(runningMinute);
 
-        List<InterviewPhase> traced = traceAllPhase(config);
+        List<InterviewPhase> traced = traceAllPhase(timer, type);
 
-        assertAllPhasesIncluded(config, traced);
-        assertPhaseFrequency(config, traced);
+        assertAllPhasesIncluded(type, traced);
+        assertPhaseFrequency(type, traced);
     }
 
     @Test
     @DisplayName("복합{기술-경험-인성} 면접 페이즈 테스트")
     void testCompositePhase() {
-        final Interview interview = interview(InterviewType.COMPOSITE, runningMinute);
+        InterviewType type = InterviewType.COMPOSITE;
+        InterviewTimer timer = mockTimer(runningMinute);
 
-        List<InterviewPhase> traced = traceAllPhase(interview);
+        List<InterviewPhase> traced = traceAllPhase(timer, type);
 
-        assertAllPhasesIncluded(interview, traced);
-        assertPhaseFrequency(interview, traced);
+        assertAllPhasesIncluded(type, traced);
+        assertPhaseFrequency(type, traced);
     }
 
     private LocalDateTime startAfter(int minute) {
         return start.plusMinutes(minute);
     }
 
-    private List<InterviewPhase> traceAllPhase(Interview interview) {
+    private List<InterviewPhase> traceAllPhase(InterviewTimer timer, InterviewType type) {
         List<InterviewPhase> result = new LinkedList<>();
         for (int elapsed = 0; elapsed < runningMinute; elapsed++) {
-            result.add(tracker.tracePhase(startAfter(elapsed), interview));
+            result.add(tracker.tracePhase(startAfter(elapsed), timer, type));
         }
         return result;
     }
 
-    private void assertPhaseFrequency(Interview interview, List<InterviewPhase> traced) {
-        int minimum = runningMinute / phaseLength(interview);
-        for (InterviewPhase phase : phaseOrder(interview))
+    private void assertPhaseFrequency(InterviewType type, List<InterviewPhase> traced) {
+        int minimum = runningMinute / phaseLength(type);
+        for (InterviewPhase phase : phaseOrder(type))
             assertThat(countFrequency(traced, phase)).isGreaterThanOrEqualTo(minimum);
     }
 
-    private int phaseLength(Interview interview) {
-        return phaseOrder(interview).length;
+    private int phaseLength(InterviewType type) {
+        return phaseOrder(type).length;
     }
 
-    private void assertAllPhasesIncluded(Interview interview, List<InterviewPhase> traced) {
-        for (InterviewPhase phase : phaseOrder(interview))
+    private void assertAllPhasesIncluded(InterviewType type, List<InterviewPhase> traced) {
+        for (InterviewPhase phase : phaseOrder(type))
             assertThat(traced.contains(phase)).isTrue();
     }
 
@@ -120,18 +117,18 @@ class NOW_InterviewProgressTracerTest {
         return traced.stream().filter(p -> p.equals(phase)).count();
     }
 
-    private static InterviewPhase[] phaseOrder(Interview interview) {
-        return NOW_InterviewProgressTracer.phaseOrder(interview.getType());
+    private static InterviewPhase[] phaseOrder(InterviewType type) {
+        return NOW_InterviewProgressTracer.phaseOrder(type);
     }
 
     @Test
     @DisplayName("기술 면접 진행도 테스트")
     void testTechnicalProgress() {
-        final Interview interview = interview(InterviewType.TECHNICAL, runningMinute);
+        InterviewTimer timer = mockTimer(runningMinute);
+        InterviewType type = InterviewType.TECHNICAL;
+        List<List<Double>> phaseProgress = traceAllProgress(timer, type);
 
-        List<List<Double>> phaseProgress = traceAllProgress(interview);
-
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(interview));
+        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
         assertProgressIsIncreasing(phaseProgress);
         assertEndDifferenceLessThan(0.1, phaseProgress);
     }
@@ -139,11 +136,12 @@ class NOW_InterviewProgressTracerTest {
     @Test
     @DisplayName("기술-경험 면접 진행도 테스트")
     void testTechnicalExperienceProgress() {
-        final Interview interview = interview(InterviewType.TECHNICAL_EXPERIENCE, runningMinute);
+        InterviewType type = InterviewType.TECHNICAL_EXPERIENCE;
+        InterviewTimer timer = mockTimer(runningMinute);
 
-        List<List<Double>> phaseProgress = traceAllProgress(interview);
+        List<List<Double>> phaseProgress = traceAllProgress(timer, type);
 
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(interview));
+        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
         assertProgressIsIncreasing(phaseProgress);
         assertEndDifferenceLessThan(0.1, phaseProgress);
     }
@@ -151,22 +149,23 @@ class NOW_InterviewProgressTracerTest {
     @Test
     @DisplayName("복합{기술-경험-인성} 면접 진행도 테스트")
     void testCompositeProgress() {
-        final Interview interview = interview(InterviewType.COMPOSITE, runningMinute);
+        InterviewType type = InterviewType.COMPOSITE;
+        InterviewTimer timer = mockTimer(runningMinute);
 
-        List<List<Double>> phaseProgress = traceAllProgress(interview);
+        List<List<Double>> phaseProgress = traceAllProgress(timer, type);
 
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(interview));
+        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
         assertProgressIsIncreasing(phaseProgress);
         assertEndDifferenceLessThan(0.1, phaseProgress);
     }
 
-    private List<List<Double>> traceAllProgress(Interview interview) {
-        List<List<Double>> result = emptyList(interview);
+    private List<List<Double>> traceAllProgress(InterviewTimer timer, InterviewType type) {
+        List<List<Double>> result = emptyList(type);
 
         int phase = 0;
         double prev = -1;
         for (int elapsed = 0; elapsed < runningMinute; elapsed++) {
-            double current = tracker.traceProgress(startAfter(elapsed), interview);
+            double current = tracker.traceProgress(startAfter(elapsed), timer, type);
             if (isPhaseChanged(prev, current))
                 phase++;
             prev = current;
@@ -197,9 +196,9 @@ class NOW_InterviewProgressTracerTest {
         }
     }
 
-    private List<List<Double>> emptyList(Interview interview) {
+    private List<List<Double>> emptyList(InterviewType type) {
         List<List<Double>> result = new LinkedList<>();
-        for (int i = 0; i < phaseLength(interview); i++) {
+        for (int i = 0; i < phaseLength(type); i++) {
             addEmptyList(result);
         }
         return result;
