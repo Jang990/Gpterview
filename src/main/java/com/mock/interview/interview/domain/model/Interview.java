@@ -90,8 +90,9 @@ public class Interview {
     }
 
     private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
-        if(!position.getCategory().equals(category))
-            throw new IllegalArgumentException("카테고리와 포지션이 관계가 없음.");
+        if(category == null || position == null ||
+                !position.getCategory().equals(category))
+            throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
         interview.category = category;
         interview.position = position;
         interview.title = new InterviewTitle(category.getName(), position.getName());
@@ -130,37 +131,24 @@ public class Interview {
     }
 
     public void expire(InterviewTimeHolder timeHolder) {
-        verifyTimeoutState();
+        verifyTimeoutState(timeHolder);
         if(timer.getStartedAt().isAfter(timeHolder.now()))
             throw new IllegalArgumentException("만료시간을 시작시간 이전으로 설정 불가능");
 
         timer = timer.withExpiredAt(timeHolder.now());
     }
 
-    public boolean isTimeout() {
-        return timer.isExpired(LocalDateTime.now());
+    public boolean isTimeout(InterviewTimeHolder timeHolder) {
+        return timer.isExpired(timeHolder.now());
     }
 
-    public void continueInterview() {
-        verifyReadyToContinue();
-        Events.raise(new InterviewContinuedEvent(this.id));
-    }
-
-    private void verifyReadyToContinue() {
-        verifyIdExists();
-        verifyCategoryPositionExists();
-        verifyInterviewTypeRequirement();
-        verifyTimeoutState();
-    }
-
-    private void verifyIdExists() {
+    public void continueInterview(InterviewTimeHolder timeHolder) {
         if(this.id == null)
             throw new IllegalStateException();
-    }
+        verifyInterviewTypeRequirement();
+        verifyTimeoutState(timeHolder);
 
-    private void verifyCategoryPositionExists() {
-        if(category == null || position == null)
-            throw new IllegalStateException("면접 진행 시 분야-직무는 필수");
+        Events.raise(new InterviewContinuedEvent(this.id));
     }
 
     private void verifyInterviewTypeRequirement() {
@@ -178,8 +166,8 @@ public class Interview {
         }
     }
 
-    private void verifyTimeoutState() {
-        if(isTimeout())
+    private void verifyTimeoutState(InterviewTimeHolder timeHolder) {
+        if(isTimeout(timeHolder))
             throw new IsAlreadyTimeoutInterviewException();
     }
 }
