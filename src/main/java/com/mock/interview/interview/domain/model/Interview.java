@@ -129,10 +129,10 @@ public class Interview {
         experienceLink.add(InterviewExperienceLink.createLink(this, experience));
     }
 
-    public void expire() {
+    public void expire(InterviewTimeHolder timeHolder) {
         verifyTimeoutState();
 
-        timer = timer.withExpiredAt(LocalDateTime.now());
+        timer = timer.withExpiredAt(timeHolder.now());
     }
 
     public boolean isTimeout() {

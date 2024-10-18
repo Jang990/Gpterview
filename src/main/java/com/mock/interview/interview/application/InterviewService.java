@@ -102,7 +102,7 @@ public class InterviewService {
     public void expireInterview(InterviewUserIds lockDto) {
         Interview interview = repository.findByIdAndUserId(lockDto.getInterviewId(), lockDto.getUserId())
                 .orElseThrow(InterviewNotFoundException::new);
-        interview.expire();
+        interview.expire(interviewTimeHolder);
         interviewCacheRepository.expireInterviewInfo(lockDto.getInterviewId());
     }
 }
