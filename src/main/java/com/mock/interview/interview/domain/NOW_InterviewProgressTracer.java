@@ -25,11 +25,11 @@ public class NOW_InterviewProgressTracer {
     private static final InterviewPhase[] EXPERIENCE_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.EXPERIENCE};
     private static final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
 
-    public static InterviewPhase[] phaseOrder(InterviewType type) {
+    private InterviewPhase[] phaseOrder(InterviewType type) {
         return getPhase(type).clone();
     }
 
-    private static InterviewPhase[] getPhase(InterviewType type) {
+    private InterviewPhase[] getPhase(InterviewType type) {
         return switch (type) {
             case TECHNICAL -> TECH_PHASE_ORDER;
             case PERSONALITY -> PERSONAL_PHASE_ORDER;
