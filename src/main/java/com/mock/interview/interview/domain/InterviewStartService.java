@@ -23,7 +23,11 @@ public class InterviewStartService {
     }
 
     private void verifyCurrentInterview(Interview currentInterview) {
-        if(currentInterview.isActive())
+        if(isActive(currentInterview))
             throw new InterviewAlreadyInProgressException();
+    }
+
+    private boolean isActive(Interview currentInterview) {
+        return !currentInterview.isTimeout();
     }
 }

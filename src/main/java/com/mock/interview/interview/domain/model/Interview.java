@@ -141,10 +141,6 @@ public class Interview {
         return timer.isExpired(LocalDateTime.now());
     }
 
-    public boolean isActive() {
-        return !isTimeout();
-    }
-
     public void continueInterview() {
         verifyReadyToContinue();
         Events.raise(new InterviewContinuedEvent(this.id));

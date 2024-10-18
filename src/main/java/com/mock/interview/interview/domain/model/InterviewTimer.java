@@ -29,6 +29,6 @@ public class InterviewTimer {
     }
 
     boolean isExpired(LocalDateTime base) {
-        return expiredAt.isBefore(base);
+        return expiredAt.equals(base)|| expiredAt.isBefore(base);
     }
 }
