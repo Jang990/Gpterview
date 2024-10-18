@@ -1,18 +1,19 @@
 package com.mock.interview.interview.domain;
 
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
-import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.domain.model.InterviewTimer;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,13 +24,10 @@ import static org.mockito.Mockito.*;
 class NOW_InterviewProgressTracerTest {
     final NOW_InterviewProgressTracer tracker = new NOW_InterviewProgressTracer();
 
-    final int runningMinute = 30;
-
-    static final LocalDateTime start = LocalDateTime.now();
-
     @Test
     @DisplayName("이미 만료된 면접은 추적 불가능")
     void testBoundary2() {
+        LocalDateTime start = LocalDateTime.now();
         InterviewTimer mockTimer = mock(InterviewTimer.class);
         when(mockTimer.getExpiredAt()).thenReturn(start);
 
@@ -43,172 +41,90 @@ class NOW_InterviewProgressTracerTest {
         return base.plusMinutes(1);
     }
 
-    private InterviewTimer mockTimer(int runningMinute) {
-        InterviewTimer mockTimer = mock(InterviewTimer.class);
-        when(mockTimer.getStartedAt()).thenReturn(start);
-        when(mockTimer.getExpiredAt()).thenReturn(start.plusMinutes(runningMinute));
-        return mockTimer;
+    @ParameterizedTest(name = "{0} 시간 진행도: {1}/{2}, 결과: {3}")
+    @MethodSource("tracingPhaseOptions")
+    @DisplayName("모든 페이즈는 타입에 따라 균등하게 등장")
+    void tracePhase(InterviewType type, int elapsed, int totalDuration, InterviewPhase expected) {
+        LocalDateTime current = LocalDateTime.now();
+        InterviewTimer timer = interviewTimer(current, totalDuration);
+
+        assertThat(tracker.tracePhase(current.plusMinutes(elapsed), timer, type))
+                .isEqualTo(expected);
     }
 
-    @Test
-    @DisplayName("기술 면접 페이즈 테스트")
-    void testTechnicalPhase() {
-        InterviewType type = InterviewType.TECHNICAL;
-        InterviewTimer timer = mockTimer(runningMinute);
-
-        List<InterviewPhase> traced = traceAllPhase(timer, type);
-
-        assertAllPhasesIncluded(type, traced);
-        assertPhaseFrequency(type, traced);
+    private InterviewTimer interviewTimer(LocalDateTime current, int totalDuration) {
+        InterviewTimer timer = mock(InterviewTimer.class);
+        when(timer.getStartedAt()).thenReturn(current);
+        when(timer.getExpiredAt()).thenReturn(current.plusMinutes(totalDuration));
+        return timer;
     }
 
-    @Test
-    @DisplayName("기술-경험 면접 페이즈 테스트")
-    void testTechnicalExperiencePhase() {
-        InterviewType type = InterviewType.TECHNICAL_EXPERIENCE;
-        InterviewTimer timer = mockTimer(runningMinute);
+    static Stream<Arguments> tracingPhaseOptions() {
+        return Stream.of(
+                // 단일 페이즈 면접
+                Arguments.arguments(InterviewType.TECHNICAL, 0, 2, InterviewPhase.TECHNICAL),
+                Arguments.arguments(InterviewType.TECHNICAL, 1, 2, InterviewPhase.TECHNICAL),
 
-        List<InterviewPhase> traced = traceAllPhase(timer, type);
+                Arguments.arguments(InterviewType.EXPERIENCE, 0, 2, InterviewPhase.EXPERIENCE),
+                Arguments.arguments(InterviewType.EXPERIENCE, 1, 2, InterviewPhase.EXPERIENCE),
 
-        assertAllPhasesIncluded(type, traced);
-        assertPhaseFrequency(type, traced);
+                Arguments.arguments(InterviewType.PERSONALITY, 0, 2, InterviewPhase.PERSONAL),
+                Arguments.arguments(InterviewType.PERSONALITY, 1, 2, InterviewPhase.PERSONAL),
+
+                // 2단계 페이즈 면접
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 0, 4, InterviewPhase.TECHNICAL),
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 1, 4, InterviewPhase.TECHNICAL),
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 2, 4, InterviewPhase.EXPERIENCE),
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 3, 4, InterviewPhase.EXPERIENCE),
+
+                // 3단계 페이즈 면접
+                Arguments.arguments(InterviewType.COMPOSITE, 0, 6, InterviewPhase.TECHNICAL),
+                Arguments.arguments(InterviewType.COMPOSITE, 1, 6, InterviewPhase.TECHNICAL),
+                Arguments.arguments(InterviewType.COMPOSITE, 2, 6, InterviewPhase.EXPERIENCE),
+                Arguments.arguments(InterviewType.COMPOSITE, 3, 6, InterviewPhase.EXPERIENCE),
+                Arguments.arguments(InterviewType.COMPOSITE, 4, 6, InterviewPhase.PERSONAL),
+                Arguments.arguments(InterviewType.COMPOSITE, 5, 6, InterviewPhase.PERSONAL)
+        );
     }
 
-    @Test
-    @DisplayName("복합{기술-경험-인성} 면접 페이즈 테스트")
-    void testCompositePhase() {
-        InterviewType type = InterviewType.COMPOSITE;
-        InterviewTimer timer = mockTimer(runningMinute);
+    @ParameterizedTest(name = "{0} 시간 진행도: {1}/{2}, 결과: {3}")
+    @MethodSource("tracingProgressOptions")
+    @DisplayName("모든 진행도는 모든 페이즈에서 균등하게 등장")
+    void traceProgress(InterviewType type, int elapsed, int duration, double expected) {
+        LocalDateTime current = LocalDateTime.now();
+        InterviewTimer timer = interviewTimer(current, duration);
 
-        List<InterviewPhase> traced = traceAllPhase(timer, type);
-
-        assertAllPhasesIncluded(type, traced);
-        assertPhaseFrequency(type, traced);
+        assertThat(tracker.traceProgress(current.plusMinutes(elapsed), timer, type))
+                .isEqualTo(expected);
     }
 
-    private LocalDateTime startAfter(int minute) {
-        return start.plusMinutes(minute);
-    }
+    static Stream<Arguments> tracingProgressOptions() {
+        return Stream.of(
+                // 단일 페이즈 면접
+                Arguments.arguments(InterviewType.TECHNICAL, 0, 4, 0.00),
+                Arguments.arguments(InterviewType.TECHNICAL, 1, 4, 0.25),
+                Arguments.arguments(InterviewType.TECHNICAL, 2, 4, 0.50),
+                Arguments.arguments(InterviewType.TECHNICAL, 3, 4, 0.75),
 
-    private List<InterviewPhase> traceAllPhase(InterviewTimer timer, InterviewType type) {
-        List<InterviewPhase> result = new LinkedList<>();
-        for (int elapsed = 0; elapsed < runningMinute; elapsed++) {
-            result.add(tracker.tracePhase(startAfter(elapsed), timer, type));
-        }
-        return result;
-    }
+                Arguments.arguments(InterviewType.EXPERIENCE, 0, 2, 0.0),
+                Arguments.arguments(InterviewType.EXPERIENCE, 1, 2, 0.5),
 
-    private void assertPhaseFrequency(InterviewType type, List<InterviewPhase> traced) {
-        int minimum = runningMinute / phaseLength(type);
-        for (InterviewPhase phase : phaseOrder(type))
-            assertThat(countFrequency(traced, phase)).isGreaterThanOrEqualTo(minimum);
-    }
+                Arguments.arguments(InterviewType.PERSONALITY, 0, 2, 0.0),
+                Arguments.arguments(InterviewType.PERSONALITY, 1, 2, 0.5),
 
-    private int phaseLength(InterviewType type) {
-        return phaseOrder(type).length;
-    }
+                // 2단계 페이즈 면접
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 0, 4, 0.0),
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 1, 4, 0.5),
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 2, 4, 0.0),
+                Arguments.arguments(InterviewType.TECHNICAL_EXPERIENCE, 3, 4, 0.5),
 
-    private void assertAllPhasesIncluded(InterviewType type, List<InterviewPhase> traced) {
-        for (InterviewPhase phase : phaseOrder(type))
-            assertThat(traced.contains(phase)).isTrue();
-    }
-
-    private static long countFrequency(List<InterviewPhase> traced, InterviewPhase phase) {
-        return traced.stream().filter(p -> p.equals(phase)).count();
-    }
-
-    private static InterviewPhase[] phaseOrder(InterviewType type) {
-        return NOW_InterviewProgressTracer.phaseOrder(type);
-    }
-
-    @Test
-    @DisplayName("기술 면접 진행도 테스트")
-    void testTechnicalProgress() {
-        InterviewTimer timer = mockTimer(runningMinute);
-        InterviewType type = InterviewType.TECHNICAL;
-        List<List<Double>> phaseProgress = traceAllProgress(timer, type);
-
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
-        assertProgressIsIncreasing(phaseProgress);
-        assertEndDifferenceLessThan(0.1, phaseProgress);
-    }
-
-    @Test
-    @DisplayName("기술-경험 면접 진행도 테스트")
-    void testTechnicalExperienceProgress() {
-        InterviewType type = InterviewType.TECHNICAL_EXPERIENCE;
-        InterviewTimer timer = mockTimer(runningMinute);
-
-        List<List<Double>> phaseProgress = traceAllProgress(timer, type);
-
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
-        assertProgressIsIncreasing(phaseProgress);
-        assertEndDifferenceLessThan(0.1, phaseProgress);
-    }
-
-    @Test
-    @DisplayName("복합{기술-경험-인성} 면접 진행도 테스트")
-    void testCompositeProgress() {
-        InterviewType type = InterviewType.COMPOSITE;
-        InterviewTimer timer = mockTimer(runningMinute);
-
-        List<List<Double>> phaseProgress = traceAllProgress(timer, type);
-
-        assertThat(phaseProgress.size()).isEqualTo(phaseLength(type));
-        assertProgressIsIncreasing(phaseProgress);
-        assertEndDifferenceLessThan(0.1, phaseProgress);
-    }
-
-    private List<List<Double>> traceAllProgress(InterviewTimer timer, InterviewType type) {
-        List<List<Double>> result = emptyList(type);
-
-        int phase = 0;
-        double prev = -1;
-        for (int elapsed = 0; elapsed < runningMinute; elapsed++) {
-            double current = tracker.traceProgress(startAfter(elapsed), timer, type);
-            if (isPhaseChanged(prev, current))
-                phase++;
-            prev = current;
-            result.get(phase).add(current);
-        }
-        return result;
-    }
-
-
-    private void assertEndDifferenceLessThan(final double diff, List<List<Double>> phaseProgress) {
-        if(phaseProgress.size() <= 1)
-            return;
-
-        double min = 1.0, max = 0.0;
-        for (List<Double> phase : phaseProgress) {
-            min = Math.min(min, phase.get(phase.size() - 1));
-            max = Math.max(max, phase.get(phase.size() - 1));
-        }
-
-        assertThat(max - min).isLessThan(diff);
-    }
-
-    private void assertProgressIsIncreasing(List<List<Double>> phaseProgress) {
-        for (List<Double> progress : phaseProgress) {
-            for (int i = 1; i < progress.size(); i++) {
-                assertThat(progress.get(i)).isGreaterThanOrEqualTo(progress.get(i - 1));
-            }
-        }
-    }
-
-    private List<List<Double>> emptyList(InterviewType type) {
-        List<List<Double>> result = new LinkedList<>();
-        for (int i = 0; i < phaseLength(type); i++) {
-            addEmptyList(result);
-        }
-        return result;
-    }
-
-    private boolean isPhaseChanged(double prev, double current) {
-        return prev >= current;
-    }
-
-    private void addEmptyList(List<List<Double>> result) {
-        result.add(new LinkedList<>());
+                // 3단계 페이즈 면접
+                Arguments.arguments(InterviewType.COMPOSITE, 0, 6, 0.0),
+                Arguments.arguments(InterviewType.COMPOSITE, 1, 6, 0.5),
+                Arguments.arguments(InterviewType.COMPOSITE, 2, 6, 0.0),
+                Arguments.arguments(InterviewType.COMPOSITE, 3, 6, 0.5),
+                Arguments.arguments(InterviewType.COMPOSITE, 4, 6, 0.0),
+                Arguments.arguments(InterviewType.COMPOSITE, 5, 6, 0.5)
+        );
     }
 }
