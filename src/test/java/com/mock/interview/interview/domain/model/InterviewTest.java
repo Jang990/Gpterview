@@ -2,9 +2,11 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.user.domain.model.Users;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -24,9 +26,9 @@ class InterviewTest {
         InterviewTimer mockTimer = mock(InterviewTimer.class);
         when(mockTimer.getExpiredAt()).thenReturn(start);
 
-
         assertThrows(IllegalArgumentException.class, () ->
                 Interview.create(
+                        mock(InterviewTimeHolder.class),
                         new InterviewConfigForm(mock(InterviewType.class), 0),
                         mock(Users.class), mock(JobCategory.class), mock(JobPosition.class)
                 )
@@ -40,8 +42,10 @@ class InterviewTest {
         String positionName = "MyBackendPosition";
         JobCategory category = JobCategory.createCategory(categoryName);
         JobPosition position = JobPosition.create(positionName, category);
+        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
 
         Interview interview = Interview.create(
+                timeHolder,
                 new InterviewConfigForm(mock(InterviewType.class), 1),
                 mock(Users.class), category, position
         );
@@ -50,15 +54,24 @@ class InterviewTest {
         assertThat(interview.getTitle().getTitle()).containsIgnoringCase(positionName);
     }
 
+    @NotNull
+    private static InterviewTimeHolder interviewTimeHolder(LocalDateTime now) {
+        InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
+        when(timeHolder.now()).thenReturn(now);
+        return timeHolder;
+    }
+
     @Test
     @DisplayName("카테고리와 관련없는 포지션으로 면접 생성 불가능")
     void test3() {
         JobCategory category = JobCategory.createCategory("MyCategory");
         JobPosition wrongPosition = JobPosition.create(
                 "MyPosition", JobCategory.createCategory("NonRelatedCategory"));
+        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
 
         assertThrows(IllegalArgumentException.class, () ->
                 Interview.create(
+                        timeHolder,
                         new InterviewConfigForm(mock(InterviewType.class), 1),
                         mock(Users.class), category, wrongPosition
                 )

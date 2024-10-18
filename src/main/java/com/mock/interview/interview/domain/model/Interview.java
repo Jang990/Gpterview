@@ -1,6 +1,7 @@
 package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.experience.domain.Experience;
+import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
@@ -68,6 +69,7 @@ public class Interview {
     private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
 
     public static Interview create(
+            InterviewTimeHolder timeHolder,
             InterviewConfigForm interviewConfig, Users user,
             JobCategory category, JobPosition position
     ) {
@@ -75,7 +77,7 @@ public class Interview {
         interview.users = user;
         interview.type = interviewConfig.getInterviewType();
         interview.durationMinutes = interviewConfig.getDurationMinutes();
-        interview.timer = createTimer(LocalDateTime.now(), interviewConfig.getDurationMinutes());
+        interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
         initCategory(category, position, interview);
         return interview;
