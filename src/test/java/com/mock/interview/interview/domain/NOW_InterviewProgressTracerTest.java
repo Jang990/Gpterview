@@ -121,7 +121,7 @@ class NOW_InterviewProgressTracerTest {
     }
 
     private static InterviewPhase[] phaseOrder(Interview interview) {
-        return NOW_InterviewProgressTracer.phaseOrder(interview);
+        return NOW_InterviewProgressTracer.phaseOrder(interview.getType());
     }
 
     @Test

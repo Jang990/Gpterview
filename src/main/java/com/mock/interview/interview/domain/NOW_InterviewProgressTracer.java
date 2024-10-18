@@ -24,8 +24,8 @@ public class NOW_InterviewProgressTracer {
     private static final InterviewPhase[] EXPERIENCE_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.EXPERIENCE};
     private static final InterviewPhase[] PERSONAL_PHASE_ORDER = new InterviewPhase[]{InterviewPhase.PERSONAL};
 
-    public static InterviewPhase[] phaseOrder(Interview interview) {
-        return getPhase(interview.getType()).clone();
+    public static InterviewPhase[] phaseOrder(InterviewType type) {
+        return getPhase(type).clone();
     }
 
     private static InterviewPhase[] getPhase(InterviewType type) {
@@ -41,7 +41,7 @@ public class NOW_InterviewProgressTracer {
     /** 현재 어떤 스테이지를 진행중인지 계산 */
     public InterviewPhase tracePhase(LocalDateTime now, Interview interview) {
         validateTimer(now, interview);
-        return phaseOrder(interview)[findCurrentPhaseIdx(now, interview)];
+        return phaseOrder(interview.getType())[findCurrentPhaseIdx(now, interview)];
     }
 
     /** 현재 페이즈에서 경과된 시간 / 각 페이즈 시간 = ex) 0.24 */
