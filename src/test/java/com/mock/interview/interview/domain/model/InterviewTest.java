@@ -6,7 +6,6 @@ import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.user.domain.model.Users;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,10 +21,6 @@ class InterviewTest {
     @Test
     @DisplayName("면접 시간이 0분 이하인 면접 생성 불가능")
     void test1() {
-        LocalDateTime start = LocalDateTime.now();
-        InterviewTimer mockTimer = mock(InterviewTimer.class);
-        when(mockTimer.getExpiredAt()).thenReturn(start);
-
         assertThrows(IllegalArgumentException.class, () ->
                 Interview.create(
                         mock(InterviewTimeHolder.class),
@@ -54,7 +49,6 @@ class InterviewTest {
         assertThat(interview.getTitle().getTitle()).containsIgnoringCase(positionName);
     }
 
-    @NotNull
     private static InterviewTimeHolder interviewTimeHolder(LocalDateTime now) {
         InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
         when(timeHolder.now()).thenReturn(now);
