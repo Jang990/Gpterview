@@ -131,6 +131,8 @@ public class Interview {
 
     public void expire(InterviewTimeHolder timeHolder) {
         verifyTimeoutState();
+        if(timer.getStartedAt().isAfter(timeHolder.now()))
+            throw new IllegalArgumentException("만료시간을 시작시간 이전으로 설정 불가능");
 
         timer = timer.withExpiredAt(timeHolder.now());
     }
