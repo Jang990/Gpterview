@@ -1,5 +1,6 @@
 package com.mock.interview.interview.event;
 
+import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.infra.InterviewRepository;
@@ -16,6 +17,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class ConversationCompletedEventHandler {
     private final InterviewRepository interviewRepository;
+    private final InterviewTimeHolder interviewTimeHolder;
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -26,7 +28,7 @@ public class ConversationCompletedEventHandler {
     public void handle(ConversationCompletedEvent event) {
         Interview interview = interviewRepository.findById(event.interviewId())
                 .orElseThrow(InterviewNotFoundException::new);
-        interview.continueInterview();
+        interview.continueInterview(interviewTimeHolder);
     }
 
 }

@@ -25,7 +25,7 @@ public class InterviewViewService {
 
     public InterviewProgressDto findInterview(InterviewUserIds interviewUserIds) {
         Interview interview = InterviewFindingHelper.find(repository, interviewUserIds);
-        return new InterviewProgressDto(interview.getId(), interview.getTitle().getTitle(),interview.getExpiredTime());
+        return new InterviewProgressDto(interview.getId(), interview.getTitle().getTitle(),interview.getTimer().getExpiredAt());
     }
 
     // TODO: 페이징 처리 필요.
