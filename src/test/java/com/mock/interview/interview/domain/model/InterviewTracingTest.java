@@ -37,7 +37,7 @@ class InterviewTracingTest {
 
     @ParameterizedTest(name = "{0} {2}분 중 {1}분 경과, 결과: {3}페이즈 {4}% 진행")
     @MethodSource("tracingProgressOptions")
-    @DisplayName("모든 진행도는 모든 페이즈에서 균등하게 등장")
+    @DisplayName("모든 진행도와 페이즈는 균등하게 등장")
     void traceProgress(
             InterviewType type, int elapsed, int duration,
             InterviewPhase expectedPhase, double expectedProgress) {
