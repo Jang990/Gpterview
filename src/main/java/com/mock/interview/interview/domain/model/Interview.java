@@ -175,19 +175,26 @@ public class Interview {
             throw new IsAlreadyTimeoutInterviewException();
     }
 
-    public InterviewPhase tracePhase(LocalDateTime now) {
+    public InterviewProgress traceProgress(LocalDateTime now) {
+        return new InterviewProgress(
+                tracePhase(now),
+                traceProgressOfCurrentPhase(now)
+        );
+    }
+
+    private InterviewPhase tracePhase(LocalDateTime now) {
         verifyTimeoutState(now);
 
         int currentPhaseIdx = findCurrentPhaseIdx(now);
         return InterviewPhases.getPhaseOrder(type)[currentPhaseIdx];
     }
 
-    public double traceProgress(LocalDateTime now) {
+    private ProgressPercent traceProgressOfCurrentPhase(LocalDateTime now) {
         verifyTimeoutState(now);
 
         long eachPhaseDuration = eachPhaseDuration();
         long passedTimeOfCurrentPhase = timePassed(timer.getStartedAt(), now) % eachPhaseDuration;
-        return (double) passedTimeOfCurrentPhase / eachPhaseDuration;
+        return new ProgressPercent((double) passedTimeOfCurrentPhase / eachPhaseDuration);
     }
 
     /** 경과 시간 / 각 페이즈 시간 */

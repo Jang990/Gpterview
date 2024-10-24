@@ -2,6 +2,8 @@ package com.mock.interview.interview.domain;
 
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.domain.model.Interview;
+import com.mock.interview.interview.domain.model.InterviewProgress;
+import com.mock.interview.interview.domain.model.ProgressPercent;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +40,10 @@ class InterviewTopicSelectorTest {
     @DisplayName("인성 면접은 토픽을 지원하지 않으므로 항상 id null 반환")
     void test1() {
         InterviewPhase phase = InterviewPhase.PERSONAL;
+        InterviewProgress mockProgress = mock(InterviewProgress.class);
+        when(mockProgress.getPhase()).thenReturn(phase);
         Interview interview = mock(Interview.class);
-        when(interview.tracePhase(any())).thenReturn(phase);
+        when(interview.traceProgress(any())).thenReturn(mockProgress);
 
         InterviewTopic result = interviewTopicSelector.select(
                 interview,
@@ -96,9 +100,15 @@ class InterviewTopicSelectorTest {
     }
 
     Interview createMock(InterviewPhase phase, double progress) {
+        ProgressPercent mockPercent = mock(ProgressPercent.class);
+        when(mockPercent.progress()).thenReturn(progress);
+
+        InterviewProgress mockProgress = mock(InterviewProgress.class);
+        when(mockProgress.getPhase()).thenReturn(phase);
+        when(mockProgress.getProgressOfPhase()).thenReturn(mockPercent);
+
         Interview result = mock(Interview.class);
-        when(result.tracePhase(any())).thenReturn(phase);
-        when(result.traceProgress(any())).thenReturn(progress);
+        when(result.traceProgress(any())).thenReturn(mockProgress);
         return result;
     }
 
