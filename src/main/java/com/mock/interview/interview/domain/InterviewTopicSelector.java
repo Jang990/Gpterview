@@ -20,21 +20,26 @@ public class InterviewTopicSelector {
             List<TechnicalSubjects> relatedTechs,
             List<Experience> relatedExperience) {
         LocalDateTime selectedTime = timeHolder.now();
-        if(interview.tracePhase(timeHolder) == InterviewPhase.PERSONAL)
+        if(interview.tracePhase(selectedTime) == InterviewPhase.PERSONAL)
             return InterviewTopic.createEmptyTopic(selectedTime);
 
-        long selectedTopicId = findTopicId(interview, relatedTechs, relatedExperience);
+        long selectedTopicId = findTopicId(
+                interview.tracePhase(selectedTime),
+                interview.traceProgress(selectedTime),
+                relatedTechs,
+                relatedExperience
+        );
         return InterviewTopic.create(selectedTime, selectedTopicId);
     }
 
     private long findTopicId(
-            Interview interview,
+            InterviewPhase phase,
+            double progressOfPhase,
             List<TechnicalSubjects> relatedTechs,
             List<Experience> relatedExperience) {
-        double progress = interview.traceProgress(timeHolder);
-        return switch (interview.tracePhase(timeHolder)) {
-            case TECHNICAL -> selectTopic(toTechIds(relatedTechs), progress);
-            case EXPERIENCE -> selectTopic(toExperienceIds(relatedExperience), progress);
+        return switch (phase) {
+            case TECHNICAL -> selectTopic(toTechIds(relatedTechs), progressOfPhase);
+            case EXPERIENCE -> selectTopic(toExperienceIds(relatedExperience), progressOfPhase);
             case PERSONAL -> throw new IllegalStateException("지원하지 않는 면접 주제");
         };
     }

@@ -83,7 +83,7 @@ class InterviewTest {
         interview.expire(timeHolder);
 
         assertThat(interview.getTimer().getExpiredAt()).isEqualTo(expiredTime);
-        assertThat(interview.isTimeout(timeHolder)).isTrue();
+        assertThat(interview.isTimeout(expiredTime)).isTrue();
     }
 
     @Test

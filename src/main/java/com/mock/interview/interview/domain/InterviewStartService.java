@@ -22,7 +22,7 @@ public class InterviewStartService {
             verifyCurrentInterview(currentInterviewList.get(CURRENT_INTERVIEW_IDX));
 
         repository.save(interview);
-        interview.continueInterview(timeHolder);
+        interview.continueInterview(timeHolder.now());
     }
 
     private void verifyCurrentInterview(Interview currentInterview) {
@@ -31,6 +31,6 @@ public class InterviewStartService {
     }
 
     private boolean isActive(Interview currentInterview) {
-        return !currentInterview.isTimeout(timeHolder);
+        return !currentInterview.isTimeout(timeHolder.now());
     }
 }

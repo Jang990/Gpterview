@@ -32,7 +32,7 @@ class InterviewTracingTest {
         Interview interview = createInterview(InterviewType.TECHNICAL, start, 1);
         interview.expire(timeHolder(start));
 
-        assertThrows(IsAlreadyTimeoutInterviewException.class, () -> interview.tracePhase(timeHolder(start)));
+        assertThrows(IsAlreadyTimeoutInterviewException.class, () -> interview.tracePhase(start));
     }
 
 
@@ -43,7 +43,7 @@ class InterviewTracingTest {
         LocalDateTime current = LocalDateTime.now();
         Interview interview = createInterview(type, current, totalDuration);
 
-        assertThat(interview.tracePhase(elapsedTimeHolder(current, elapsed)))
+        assertThat(interview.tracePhase(elapsedTime(current, elapsed)))
                 .isEqualTo(expected);
     }
 
@@ -82,7 +82,7 @@ class InterviewTracingTest {
         LocalDateTime current = LocalDateTime.now();
         Interview interview = createInterview(type, current, duration);
 
-        assertThat(interview.traceProgress(elapsedTimeHolder(current, elapsed)))
+        assertThat(interview.traceProgress(elapsedTime(current, elapsed)))
                 .isEqualTo(expected);
     }
 
@@ -134,9 +134,7 @@ class InterviewTracingTest {
         return timeHolder;
     }
 
-    private InterviewTimeHolder elapsedTimeHolder(LocalDateTime current, int elapsed) {
-        InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
-        when(timeHolder.now()).thenReturn(current.plusMinutes(elapsed));
-        return timeHolder;
+    private LocalDateTime elapsedTime(LocalDateTime current, int elapsed) {
+        return current.plusMinutes(elapsed);
     }
 }
