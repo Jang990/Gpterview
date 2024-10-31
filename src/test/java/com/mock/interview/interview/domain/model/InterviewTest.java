@@ -46,8 +46,8 @@ class InterviewTest {
                 mock(Users.class), category, position
         );
 
-        assertThat(interview.getTitle().getTitle()).containsIgnoringCase(categoryName);
-        assertThat(interview.getTitle().getTitle()).containsIgnoringCase(positionName);
+        assertThat(interview.getTitle()).containsIgnoringCase(categoryName);
+        assertThat(interview.getTitle()).containsIgnoringCase(positionName);
     }
 
     private static InterviewTimeHolder interviewTimeHolder(LocalDateTime now) {

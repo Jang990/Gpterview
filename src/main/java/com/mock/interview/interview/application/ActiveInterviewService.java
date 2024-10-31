@@ -23,6 +23,6 @@ public class ActiveInterviewService {
     }
 
     private InterviewResponse convert(Interview activeInterview) {
-        return new InterviewResponse(activeInterview.getId(), activeInterview.getTitle().getTitle());
+        return new InterviewResponse(activeInterview.getId(), activeInterview.getTitle());
     }
 }

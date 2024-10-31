@@ -158,6 +158,10 @@ public class Interview {
         Events.raise(new InterviewContinuedEvent(this.id));
     }
 
+    public String getTitle() {
+        return title.getTitle();
+    }
+
     private void verifyInterviewTypeRequirement() {
         switch (type) {
             case TECHNICAL -> {

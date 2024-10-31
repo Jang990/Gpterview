@@ -1,7 +1,6 @@
 package com.mock.interview.interview.application;
 
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.domain.model.InterviewTitle;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import org.junit.jupiter.api.DisplayName;
@@ -52,12 +51,9 @@ class ActiveInterviewServiceTest {
     }
 
     private Interview createMock(long interviewId, String interviewTitle) {
-        InterviewTitle mockTitle = mock(InterviewTitle.class);
-        when(mockTitle.getTitle()).thenReturn(interviewTitle);
-
         Interview result = mock(Interview.class);
         when(result.getId()).thenReturn(interviewId);
-        when(result.getTitle()).thenReturn(mockTitle);
+        when(result.getTitle()).thenReturn(interviewTitle);
         return result;
     }
 }
