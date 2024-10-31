@@ -17,21 +17,21 @@ import java.util.List;
 public class InterviewTopicSelector {
     private final InterviewTimeHolder timeHolder;
 
-    public InterviewTopic select(
+    public CurrentInterviewTopic select(
             Interview interview,
             List<TechnicalSubjects> relatedTechs,
             List<Experience> relatedExperience) {
         LocalDateTime selectedTime = timeHolder.now();
         InterviewProgress progress = interview.traceProgress(selectedTime);
         if(progress.getPhase() == InterviewPhase.PERSONAL)
-            return InterviewTopic.createEmptyTopic(selectedTime);
+            return CurrentInterviewTopic.createEmptyTopic(selectedTime);
 
         long selectedTopicId = findTopicId(
                 progress,
                 relatedTechs,
                 relatedExperience
         );
-        return InterviewTopic.create(selectedTime, selectedTopicId);
+        return CurrentInterviewTopic.create(selectedTime, selectedTopicId);
     }
 
     private long findTopicId(
