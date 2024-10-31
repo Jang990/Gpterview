@@ -28,7 +28,7 @@ public class ConversationCompletedEventHandler {
     public void handle(ConversationCompletedEvent event) {
         Interview interview = interviewRepository.findById(event.interviewId())
                 .orElseThrow(InterviewNotFoundException::new);
-        interview.continueInterview(interviewTimeHolder);
+        interview.continueInterview(interviewTimeHolder.now());
     }
 
 }

@@ -134,22 +134,23 @@ public class Interview {
     }
 
     public void expire(InterviewTimeHolder timeHolder) {
-        verifyTimeoutState(timeHolder);
-        if(timer.getStartedAt().isAfter(timeHolder.now()))
+        LocalDateTime now = timeHolder.now();
+        verifyTimeoutState(now);
+        if(timer.getStartedAt().isAfter(now))
             throw new IllegalArgumentException("만료시간을 시작시간 이전으로 설정 불가능");
 
-        timer = timer.withExpiredAt(timeHolder.now());
+        timer = timer.withExpiredAt(now);
     }
 
-    public boolean isTimeout(InterviewTimeHolder timeHolder) {
-        return timer.isExpired(timeHolder.now());
+    public boolean isTimeout(LocalDateTime now) {
+        return timer.isExpired(now);
     }
 
-    public void continueInterview(InterviewTimeHolder timeHolder) {
+    public void continueInterview(LocalDateTime now) {
         if(this.id == null)
             throw new IllegalStateException();
         verifyInterviewTypeRequirement();
-        verifyTimeoutState(timeHolder);
+        verifyTimeoutState(now);
 
         Events.raise(new InterviewContinuedEvent(this.id));
     }
@@ -169,29 +170,36 @@ public class Interview {
         }
     }
 
-    private void verifyTimeoutState(InterviewTimeHolder timeHolder) {
-        if(isTimeout(timeHolder))
+    private void verifyTimeoutState(LocalDateTime now) {
+        if(isTimeout(now))
             throw new IsAlreadyTimeoutInterviewException();
     }
 
-    public InterviewPhase tracePhase(InterviewTimeHolder timeHolder) {
-        verifyTimeoutState(timeHolder);
-
-        int currentIdx = findCurrentPhaseIdx(timeHolder);
-        return InterviewPhases.getPhaseOrder(type)[currentIdx];
+    public InterviewProgress traceProgress(LocalDateTime now) {
+        return new InterviewProgress(
+                tracePhase(now),
+                traceProgressOfCurrentPhase(now)
+        );
     }
 
-    public double traceProgress(InterviewTimeHolder timeHolder) {
-        verifyTimeoutState(timeHolder);
+    private InterviewPhase tracePhase(LocalDateTime now) {
+        verifyTimeoutState(now);
+
+        int currentPhaseIdx = findCurrentPhaseIdx(now);
+        return InterviewPhases.getPhaseOrder(type)[currentPhaseIdx];
+    }
+
+    private ProgressPercent traceProgressOfCurrentPhase(LocalDateTime now) {
+        verifyTimeoutState(now);
 
         long eachPhaseDuration = eachPhaseDuration();
-        long passedTimeOfCurrentPhase = timePassed(timer.getStartedAt(), timeHolder.now()) % eachPhaseDuration;
-        return (double) passedTimeOfCurrentPhase / eachPhaseDuration;
+        long passedTimeOfCurrentPhase = timePassed(timer.getStartedAt(), now) % eachPhaseDuration;
+        return new ProgressPercent((double) passedTimeOfCurrentPhase / eachPhaseDuration);
     }
 
     /** 경과 시간 / 각 페이즈 시간 */
-    private int findCurrentPhaseIdx(InterviewTimeHolder holder) {
-        return (int) (timePassed(timer.getStartedAt(), holder.now()) / eachPhaseDuration());
+    private int findCurrentPhaseIdx(LocalDateTime now) {
+        return (int) (timePassed(timer.getStartedAt(), now) / eachPhaseDuration());
     }
 
     /** 면접_총_시간 / 면접_페이즈_수 */

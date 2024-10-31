@@ -24,7 +24,7 @@ public class ConversationRestarter {
     }
 
     private void verifyActiveInterview(Interview interview) {
-        if (interview.isTimeout(timeHolder))
+        if (interview.isTimeout(timeHolder.now()))
             throw new IsAlreadyTimeoutInterviewException();
     }
 }
