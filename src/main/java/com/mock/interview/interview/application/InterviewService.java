@@ -85,19 +85,6 @@ public class InterviewService {
         interview.linkExperience(userExperiences);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<InterviewResponse> findActiveInterview(long userId) {
-        Optional<Interview> optionalInterview = repository.findActiveInterview(userId);
-        if(optionalInterview.isEmpty())
-            return Optional.empty();
-
-        return Optional.of(convert(optionalInterview.get()));
-    }
-
-    private InterviewResponse convert(Interview activeInterview) {
-        return new InterviewResponse(activeInterview.getId(), activeInterview.getTitle().getTitle());
-    }
-
     @InterviewProgressLock
     public void expireInterview(InterviewUserIds lockDto) {
         Interview interview = repository.findByIdAndUserId(lockDto.getInterviewId(), lockDto.getUserId())

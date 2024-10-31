@@ -71,6 +71,9 @@ public class Interview {
     @OneToMany(mappedBy = "interview")
     private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
 
+    @Embedded
+    private InterviewTopics topics;
+
     public static Interview create(
             InterviewTimeHolder timeHolder,
             InterviewConfigForm interviewConfig, Users user,
