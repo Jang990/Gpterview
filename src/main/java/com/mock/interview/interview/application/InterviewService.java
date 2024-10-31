@@ -9,16 +9,11 @@ import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interview.domain.InterviewStartService;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
-import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
-import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
-import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
-import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
-import com.mock.interview.interview.presentation.dto.InterviewResponse;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.application.helper.TechFinder;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -33,7 +28,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,7 +40,6 @@ public class InterviewService {
     private final InterviewStartService interviewStartService;
     private final JobCategoryRepository jobCategoryRepository;
     private final JobPositionRepository jobPositionRepository;
-    private final InterviewCacheRepository interviewCacheRepository;
     private final InterviewTimeHolder interviewTimeHolder;
 
 
@@ -83,13 +76,5 @@ public class InterviewService {
         List<Experience> userExperiences = ExperienceFinder
                 .findUserExperiences(experienceRepository, experienceIds, loginId);
         interview.linkExperience(userExperiences);
-    }
-
-    @InterviewProgressLock
-    public void expireInterview(InterviewUserIds lockDto) {
-        Interview interview = repository.findByIdAndUserId(lockDto.getInterviewId(), lockDto.getUserId())
-                .orElseThrow(InterviewNotFoundException::new);
-        interview.expire(interviewTimeHolder);
-        interviewCacheRepository.expireInterviewInfo(lockDto.getInterviewId());
     }
 }
