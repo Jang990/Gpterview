@@ -19,7 +19,7 @@ public class InterviewTimer {
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 
-    InterviewTimer(LocalDateTime startedAt, LocalDateTime expiredAt) {
+    protected InterviewTimer(LocalDateTime startedAt, LocalDateTime expiredAt) {
         this.expiredAt = expiredAt;
         this.startedAt = startedAt;
     }

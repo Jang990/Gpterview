@@ -21,6 +21,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -52,9 +53,6 @@ public class Interview {
     @Column(nullable = false)
     private InterviewType type;
 
-    @Column(nullable = false)
-    private int durationMinutes;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_category_id")
     private JobCategory category;
@@ -82,16 +80,15 @@ public class Interview {
         Interview interview = new Interview();
         interview.users = user;
         interview.type = interviewConfig.getInterviewType();
-        interview.durationMinutes = interviewConfig.getDurationMinutes();
         interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
         initCategory(category, position, interview);
         return interview;
     }
 
-    private static InterviewTimer createTimer(LocalDateTime current , int durationMinutes) {
-        if(durationMinutes <= 0)
-            throw new IllegalArgumentException("면접 시간은 0분 이하일 수 없음.");
+    private static InterviewTimer createTimer(LocalDateTime current, int durationMinutes) {
+        if(durationMinutes <= 0 || 60 < durationMinutes)
+            throw new IllegalArgumentException("면접 시간은 1분 이상 60분 이하로 설정");
         return new InterviewTimer(current, current.plusMinutes(durationMinutes));
     }
 
@@ -180,6 +177,12 @@ public class Interview {
     private void verifyTimeoutState(LocalDateTime now) {
         if(isTimeout(now))
             throw new IsAlreadyTimeoutInterviewException();
+    }
+
+    public int getDurationMinutes() {
+        return (int) Duration.between(
+                timer.getStartedAt(), timer.getExpiredAt()
+        ).toMinutes();
     }
 
     public InterviewProgress traceProgress(LocalDateTime now) {
