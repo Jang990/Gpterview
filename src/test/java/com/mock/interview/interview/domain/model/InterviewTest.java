@@ -6,7 +6,6 @@ import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.user.domain.model.Users;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,11 +22,7 @@ class InterviewTest {
     @DisplayName("면접 시간이 0분 이하인 면접 생성 불가능")
     void test1() {
         assertThrows(IllegalArgumentException.class, () ->
-                Interview.create(
-                        mock(InterviewTimeHolder.class),
-                        new InterviewConfigForm(mock(InterviewType.class), 0),
-                        mock(Users.class), mock(JobCategory.class), mock(JobPosition.class)
-                )
+                TestInterviewBuilder.builder().durationMinute(0).build()
         );
     }
 
@@ -36,15 +31,10 @@ class InterviewTest {
     void test2() {
         String categoryName = "MyCategory";
         String positionName = "MyBackendPosition";
-        JobCategory category = JobCategory.createCategory(categoryName);
-        JobPosition position = JobPosition.create(positionName, category);
-        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
 
-        Interview interview = Interview.create(
-                timeHolder,
-                new InterviewConfigForm(mock(InterviewType.class), 1),
-                mock(Users.class), category, position
-        );
+        Interview interview = TestInterviewBuilder.builder()
+                .jobDetail(categoryName, positionName)
+                .build();
 
         assertThat(interview.getTitle()).containsIgnoringCase(categoryName);
         assertThat(interview.getTitle()).containsIgnoringCase(positionName);
@@ -76,7 +66,7 @@ class InterviewTest {
     @Test
     @DisplayName("만료시 expiredAt이 타임홀더에 맞춰짐")
     void test4() {
-        Interview interview = createInterview();
+        Interview interview = TestInterviewBuilder.builder().build();
         LocalDateTime expiredTime = LocalDateTime.now();
         InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
 
@@ -89,25 +79,11 @@ class InterviewTest {
     @Test
     @DisplayName("만료시간을 시작시간 이전으로 설정 불가능")
     void test5() {
-        Interview interview = createInterview();
+        Interview interview = TestInterviewBuilder.builder().build();
         LocalDateTime expiredTime = interview.getTimer().getStartedAt().minusMinutes(1);
         InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
 
         assertThrows(IllegalArgumentException.class, () -> interview.expire(timeHolder));
-    }
-
-    private static Interview createInterview() {
-        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
-        String categoryName = "MyCategory";
-        String positionName = "MyBackendPosition";
-        JobCategory category = JobCategory.createCategory(categoryName);
-        JobPosition position = JobPosition.create(positionName, category);
-
-        return Interview.create(
-                timeHolder,
-                new InterviewConfigForm(mock(InterviewType.class), 1),
-                mock(Users.class), category, position
-        );
     }
 
 }

@@ -29,7 +29,11 @@ class InterviewTracingTest {
     @DisplayName("이미 만료된 면접은 추적 불가능")
     void testBoundary2() {
         LocalDateTime start = LocalDateTime.now();
-        Interview interview = createInterview(InterviewType.TECHNICAL, start, 1);
+        Interview interview = TestInterviewBuilder.builder()
+                .interviewType(InterviewType.TECHNICAL)
+                .startAt(start)
+                .durationMinute(1)
+                .build();
         interview.expire(timeHolder(start));
 
         assertThrows(IsAlreadyTimeoutInterviewException.class, () -> interview.traceProgress(start));
@@ -42,7 +46,12 @@ class InterviewTracingTest {
             InterviewType type, int elapsed, int duration,
             InterviewPhase expectedPhase, double expectedProgress) {
         LocalDateTime current = LocalDateTime.now();
-        Interview interview = createInterview(type, current, duration);
+
+        Interview interview = TestInterviewBuilder.builder()
+                .interviewType(type)
+                .startAt(current)
+                .durationMinute(duration)
+                .build();
 
         InterviewProgress result = interview.traceProgress(elapsedTime(current, elapsed));
 
@@ -77,18 +86,6 @@ class InterviewTracingTest {
                 Arguments.arguments(InterviewType.COMPOSITE, 3, 6, InterviewPhase.EXPERIENCE, 0.5),
                 Arguments.arguments(InterviewType.COMPOSITE, 4, 6, InterviewPhase.PERSONAL, 0.0),
                 Arguments.arguments(InterviewType.COMPOSITE, 5, 6, InterviewPhase.PERSONAL, 0.5)
-        );
-    }
-
-    private Interview createInterview(InterviewType type, LocalDateTime start, int duration) {
-        InterviewTimeHolder timeHolder = timeHolder(start);
-        JobCategory category = JobCategory.createCategory("MyCategory");
-        JobPosition position = JobPosition.create("MyBackendPosition", category);
-
-        return Interview.create(
-                timeHolder,
-                new InterviewConfigForm(type, duration),
-                mock(Users.class), category, position
         );
     }
 
