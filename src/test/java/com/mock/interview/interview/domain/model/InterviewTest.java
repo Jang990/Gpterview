@@ -2,6 +2,7 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
@@ -35,16 +36,21 @@ class InterviewTest {
     @Test
     @DisplayName("카테고리와 관련없는 포지션으로 면접 생성 불가능")
     void test3() {
-        JobCategory category = JobCategory.createCategory("MyCategory");
-        JobPosition wrongPosition = JobPosition.create(
-                "MyPosition", JobCategory.createCategory("NonRelatedCategory"));
         InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
+        JobCategory nonRelatedCategory = mock(JobCategory.class);
+        JobCategory relatedCategory = mock(JobCategory.class);
+        JobPosition position = mock(JobPosition.class);
+        when(position.getCategory()).thenReturn(relatedCategory);
+        InterviewTopicDto topics = InterviewTopicDto.builder()
+                .position(position)
+                .category(nonRelatedCategory)
+                .build();
 
         assertThrows(IllegalArgumentException.class, () ->
                 Interview.create(
                         timeHolder, mock(InterviewTitle.class),
                         new InterviewConfigForm(mock(InterviewType.class), 1),
-                        mock(Users.class), category, wrongPosition
+                        mock(Users.class), topics
                 )
         );
     }

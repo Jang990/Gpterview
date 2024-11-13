@@ -2,6 +2,7 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
@@ -55,7 +56,7 @@ public class TestInterviewBuilder {
     public Interview build() {
         return Interview.create(
                 timeHolder, mock(InterviewTitle.class), config,
-                user, category, position
+                user, InterviewTopicDto.builder().category(category).position(position).build()
         );
     }
 }

@@ -2,6 +2,7 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.global.TimeDifferenceCalculator;
+import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
@@ -71,12 +72,11 @@ public class Interview {
 
     @Embedded
     private InterviewTopics topics;
-
     public static Interview create(
             InterviewTimeHolder timeHolder,
             InterviewTitle title,
             InterviewConfigForm interviewConfig, Users user,
-            JobCategory category, JobPosition position
+            InterviewTopicDto topicDto
     ) {
         Interview interview = new Interview();
         interview.title = title;
@@ -84,11 +84,11 @@ public class Interview {
         interview.type = interviewConfig.getInterviewType();
         interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
-        if(category == null || position == null ||
-                !position.getCategory().equals(category))
+        if(topicDto.getCategory() == null || topicDto.getPosition() == null ||
+                !topicDto.getPosition().getCategory().equals(topicDto.getCategory()))
             throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
-        interview.category = category;
-        interview.position = position;
+        interview.category = topicDto.getCategory();
+        interview.position = topicDto.getPosition();
         return interview;
     }
 
@@ -96,15 +96,6 @@ public class Interview {
         if(durationMinutes <= 0 || 60 < durationMinutes)
             throw new IllegalArgumentException("면접 시간은 1분 이상 60분 이하로 설정");
         return new InterviewTimer(current, current.plusMinutes(durationMinutes));
-    }
-
-    private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
-        if(category == null || position == null ||
-                !position.getCategory().equals(category))
-            throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
-        interview.category = category;
-        interview.position = position;
-        interview.title = new InterviewTitle(category.getName(), position.getName());
     }
 
     public void linkTech(List<TechnicalSubjects> techList) {
