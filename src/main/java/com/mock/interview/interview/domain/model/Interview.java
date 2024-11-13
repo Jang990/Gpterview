@@ -74,15 +74,21 @@ public class Interview {
 
     public static Interview create(
             InterviewTimeHolder timeHolder,
+            InterviewTitle title,
             InterviewConfigForm interviewConfig, Users user,
             JobCategory category, JobPosition position
     ) {
         Interview interview = new Interview();
+        interview.title = title;
         interview.users = user;
         interview.type = interviewConfig.getInterviewType();
         interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
-        initCategory(category, position, interview);
+        if(category == null || position == null ||
+                !position.getCategory().equals(category))
+            throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
+        interview.category = category;
+        interview.position = position;
         return interview;
     }
 

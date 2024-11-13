@@ -18,7 +18,9 @@ class InterviewTitleCreatorTest {
     void test1() {
         JobCategory category = JobCategory.createCategory("IT");
         JobPosition position = JobPosition.create("백엔드", category);
+
         InterviewTitle defaultTitle = titleCreator.createDefault(category, position);
+
         assertThat(defaultTitle.getTitle()).contains("IT", "백엔드");
     }
 

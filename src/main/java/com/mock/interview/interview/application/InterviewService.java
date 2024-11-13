@@ -9,6 +9,7 @@ import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interview.domain.InterviewStartService;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
+import com.mock.interview.interview.domain.model.InterviewTitleCreator;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.domain.model.Interview;
@@ -40,6 +41,8 @@ public class InterviewService {
     private final InterviewStartService interviewStartService;
     private final JobCategoryRepository jobCategoryRepository;
     private final JobPositionRepository jobPositionRepository;
+
+    private final InterviewTitleCreator titleCreator;
     private final InterviewTimeHolder interviewTimeHolder;
 
 
@@ -53,7 +56,12 @@ public class InterviewService {
         JobPosition position = jobPositionRepository.findById(accountForm.getPositionId())
                 .orElseThrow(JobCategoryNotFoundException::new);
 
-        Interview interview = Interview.create(interviewTimeHolder, interviewConfig, users, category, position);
+        Interview interview = Interview.create(
+                interviewTimeHolder,
+                titleCreator.createDefault(category, position),
+                interviewConfig, users,
+                category, position
+        );
         List<Long> techIds = accountForm.getTechIds();
         if (interview.getType() == InterviewType.TECHNICAL && !techIds.isEmpty()) {
             connectTech(interview, techIds);

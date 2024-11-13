@@ -26,20 +26,6 @@ class InterviewTest {
         );
     }
 
-    @Test
-    @DisplayName("면접 제목은 카테고리와 포지션 영향을 받음")
-    void test2() {
-        String categoryName = "MyCategory";
-        String positionName = "MyBackendPosition";
-
-        Interview interview = TestInterviewBuilder.builder()
-                .jobDetail(categoryName, positionName)
-                .build();
-
-        assertThat(interview.getTitle()).containsIgnoringCase(categoryName);
-        assertThat(interview.getTitle()).containsIgnoringCase(positionName);
-    }
-
     private static InterviewTimeHolder interviewTimeHolder(LocalDateTime now) {
         InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
         when(timeHolder.now()).thenReturn(now);
@@ -56,7 +42,7 @@ class InterviewTest {
 
         assertThrows(IllegalArgumentException.class, () ->
                 Interview.create(
-                        timeHolder,
+                        timeHolder, mock(InterviewTitle.class),
                         new InterviewConfigForm(mock(InterviewType.class), 1),
                         mock(Users.class), category, wrongPosition
                 )

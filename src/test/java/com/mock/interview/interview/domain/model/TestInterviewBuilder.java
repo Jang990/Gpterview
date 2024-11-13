@@ -33,15 +33,7 @@ public class TestInterviewBuilder {
         startAt(DEFAULT_START_AT);
         interviewType(DEFAULT_INTERVIEW_TYPE);
         durationMinute(DEFAULT_DURATION_MINUTE);
-        jobDetail(DEFAULT_CATEGORY_NAME, DEFAULT_POSITION_NAME);
-    }
-
-    public TestInterviewBuilder jobDetail(String categoryName, String positionName) {
-        when(category.getName()).thenReturn(categoryName);
-
-        when(position.getName()).thenReturn(positionName);
         when(position.getCategory()).thenReturn(category);
-        return this;
     }
 
     public TestInterviewBuilder durationMinute(int duration) {
@@ -62,7 +54,7 @@ public class TestInterviewBuilder {
 
     public Interview build() {
         return Interview.create(
-                timeHolder, config,
+                timeHolder, mock(InterviewTitle.class), config,
                 user, category, position
         );
     }
