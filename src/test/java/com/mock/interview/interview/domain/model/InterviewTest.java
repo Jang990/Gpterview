@@ -7,10 +7,13 @@ import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.user.domain.model.Users;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,6 +79,44 @@ class InterviewTest {
         InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
 
         assertThrows(IllegalArgumentException.class, () -> interview.expire(timeHolder));
+    }
+
+    @Test
+    @DisplayName("InterviewType이 기술 주제가 필요하다면 TechTopics가 없다면 예외가 발생한다.")
+    void test6() {
+        InterviewType type = mock(InterviewType.class);
+        when(type.requiredTechTopics()).thenReturn(true);
+        InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
+                .techTopics(Collections.EMPTY_LIST)
+                .build();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> Interview.create(
+                        interviewTimeHolder(LocalDateTime.now()),
+                        mock(InterviewTitle.class),
+                        new InterviewConfigForm(type, 30),
+                        mock(Users.class), emptyTechTopics
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("InterviewType이 경험 주제가 필요한데 ExperienceTopics가 없다면 예외가 발생한다.")
+    void test7() {
+        InterviewType type = mock(InterviewType.class);
+        when(type.requiredExperienceTopics()).thenReturn(true);
+        InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
+                .experienceTopics(Collections.EMPTY_LIST)
+                .build();
+
+        assertThrows(IllegalArgumentException.class,
+                () -> Interview.create(
+                        interviewTimeHolder(LocalDateTime.now()),
+                        mock(InterviewTitle.class),
+                        new InterviewConfigForm(type, 30),
+                        mock(Users.class), emptyTechTopics
+                )
+        );
     }
 
 }

@@ -52,42 +52,34 @@ public class InterviewService {
     public long createCustomInterview(long loginId, InterviewConfigForm interviewConfig, InterviewAccountForm accountForm) {
         Users users = userRepository.findForInterviewSetting(loginId)
                 .orElseThrow(UserNotFoundException::new);
-        JobCategory category = jobCategoryRepository.findById(accountForm.getCategoryId())
-                .orElseThrow(JobCategoryNotFoundException::new);
-        JobPosition position = jobPositionRepository.findById(accountForm.getPositionId())
-                .orElseThrow(JobCategoryNotFoundException::new);
         InterviewTopicDto topics = InterviewTopicDto.builder()
-                .category(category)
-                .position(position)
+                .category(
+                        jobCategoryRepository.findById(accountForm.getCategoryId())
+                                .orElseThrow(JobCategoryNotFoundException::new)
+                )
+                .position(
+                        jobPositionRepository.findById(accountForm.getPositionId())
+                                .orElseThrow(JobCategoryNotFoundException::new)
+                )
+                .techTopics(
+                        TechFinder.findTechs(
+                                technicalSubjectsRepository, accountForm.getTechIds()
+                        )
+                )
+                .experienceTopics(
+                        ExperienceFinder.findUserExperiences(
+                                experienceRepository, accountForm.getExperienceIds(), loginId
+                        )
+                )
                 .build();
 
         Interview interview = Interview.create(
                 interviewTimeHolder,
-                titleCreator.createDefault(category, position),
+                titleCreator.createDefault(topics.getCategory(), topics.getPosition()),
                 interviewConfig, users,
                 topics
         );
-        List<Long> techIds = accountForm.getTechIds();
-        if (interview.getType() == InterviewType.TECHNICAL && !techIds.isEmpty()) {
-            connectTech(interview, techIds);
-        }
-        List<Long> experienceIds = accountForm.getExperienceIds();
-        if (interview.getType() == InterviewType.EXPERIENCE && !experienceIds.isEmpty()) {
-            connectUserExperience(interview, loginId, experienceIds);
-        }
-
         interviewStartService.start(interview, repository, users);
         return interview.getId();
-    }
-
-    private void connectTech(Interview interview, List<Long> techIds) {
-        List<TechnicalSubjects> techs = TechFinder.findTechs(technicalSubjectsRepository, techIds);
-        interview.linkTech(techs);
-    }
-
-    private void connectUserExperience(Interview interview, long loginId, List<Long> experienceIds) {
-        List<Experience> userExperiences = ExperienceFinder
-                .findUserExperiences(experienceRepository, experienceIds, loginId);
-        interview.linkExperience(userExperiences);
     }
 }

@@ -84,6 +84,9 @@ public class Interview {
         interview.type = interviewConfig.getInterviewType();
         interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
+        interview.linkTech(topicDto.getTechTopics());
+        interview.linkExperience(topicDto.getExperienceTopics());
+
         if(topicDto.getCategory() == null || topicDto.getPosition() == null ||
                 !topicDto.getPosition().getCategory().equals(topicDto.getCategory()))
             throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
@@ -98,8 +101,8 @@ public class Interview {
         return new InterviewTimer(current, current.plusMinutes(durationMinutes));
     }
 
-    public void linkTech(List<TechnicalSubjects> techList) {
-        if(type.requiredExperienceTopics() || techList.isEmpty())
+    private void linkTech(List<TechnicalSubjects> techList) {
+        if(type.requiredTechTopics() && techList.isEmpty())
             throw new IllegalArgumentException();
 
         techList.stream()
@@ -107,7 +110,7 @@ public class Interview {
                 .forEach(techLink::add);
     }
 
-    public void linkExperience(List<Experience> experienceList) {
+    private void linkExperience(List<Experience> experienceList) {
         if (type.requiredExperienceTopics() && experienceList.isEmpty())
             throw new IllegalArgumentException();
 
