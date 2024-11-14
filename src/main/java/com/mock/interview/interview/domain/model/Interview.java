@@ -93,24 +93,6 @@ public class Interview {
         return new InterviewTimer(current, current.plusMinutes(durationMinutes));
     }
 
-    private void addTechTopics(List<TechnicalSubjects> techList) {
-        if(type.requiredTechTopics() && techList.isEmpty())
-            throw new RequiredTechTopicNotFoundException();
-
-        techList.stream()
-                .map(tech -> InterviewTechLink.createLink(this, tech))
-                .forEach(topics.getTechLink()::add);
-    }
-
-    private void addExperienceTopics(List<Experience> experienceList) {
-        if (type.requiredExperienceTopics() && experienceList.isEmpty())
-            throw new RequiredExperienceTopicNotFoundException();
-
-        experienceList.stream()
-                .map(experience -> InterviewExperienceLink.createLink(this, experience))
-                .forEach(topics.getExperienceLink()::add);
-    }
-
     public List<TechnicalSubjects> getTechTopics() {
         return topics.getTechLink().stream()
                 .map(InterviewTechLink::getTechnicalSubjects)
@@ -146,6 +128,24 @@ public class Interview {
 
     public String getTitle() {
         return title.getTitle();
+    }
+
+    private void addTechTopics(List<TechnicalSubjects> techList) {
+        if(type.requiredTechTopics() && techList.isEmpty())
+            throw new RequiredTechTopicNotFoundException();
+
+        techList.stream()
+                .map(tech -> InterviewTechLink.createLink(this, tech))
+                .forEach(topics.getTechLink()::add);
+    }
+
+    private void addExperienceTopics(List<Experience> experienceList) {
+        if (type.requiredExperienceTopics() && experienceList.isEmpty())
+            throw new RequiredExperienceTopicNotFoundException();
+
+        experienceList.stream()
+                .map(experience -> InterviewExperienceLink.createLink(this, experience))
+                .forEach(topics.getExperienceLink()::add);
     }
 
     private void verifyTimeoutState(LocalDateTime now) {
