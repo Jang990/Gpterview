@@ -16,8 +16,8 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv " +
             "join fetch iv.category " +
             "join fetch iv.position " +
-            "left join fetch iv.techLink " +
-            "left join fetch iv.techLink.technicalSubjects " +
+            "left join fetch iv.topics.techLink " +
+            "left join fetch iv.topics.techLink.technicalSubjects " +
             "Where iv.id = :interviewId And iv.users.id = :userId")
     Optional<Interview> findInterviewSetting(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
@@ -25,8 +25,8 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
             SELECT iv FROM Interview iv
             JOIN FETCH iv.category
             JOIN FETCH iv.position
-            LEFT JOIN FETCH iv.techLink
-            LEFT JOIN FETCH iv.techLink.technicalSubjects
+            LEFT JOIN FETCH iv.topics.techLink
+            LEFT JOIN FETCH iv.topics.techLink.technicalSubjects
             WHERE iv.id = :interviewId
             """)
     Optional<Interview> findInterviewSetting(@Param("interviewId") long interviewId);

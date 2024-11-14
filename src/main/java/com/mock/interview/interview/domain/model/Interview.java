@@ -20,14 +20,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -64,14 +61,6 @@ public class Interview {
     @JoinColumn(name = "job_position_id")
     private JobPosition position;
 
-    @Cascade(CascadeType.ALL)
-    @OneToMany(mappedBy = "interview")
-    private List<InterviewTechLink> techLink = new ArrayList<>();
-
-    @Cascade(CascadeType.ALL)
-    @OneToMany(mappedBy = "interview")
-    private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
-
     @Embedded
     private InterviewTopics topics;
     public static Interview create(
@@ -81,13 +70,14 @@ public class Interview {
             InterviewTopicDto topicDto
     ) {
         Interview interview = new Interview();
+        interview.topics = new InterviewTopics();
         interview.title = title;
         interview.users = user;
         interview.type = interviewConfig.getInterviewType();
         interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
-        interview.linkTech(topicDto.getTechTopics());
-        interview.linkExperience(topicDto.getExperienceTopics());
+        interview.addTechTopics(topicDto.getTechTopics());
+        interview.addExperienceTopics(topicDto.getExperienceTopics());
 
         if(topicDto.getCategory() == null || topicDto.getPosition() == null ||
                 !topicDto.getPosition().getCategory().equals(topicDto.getCategory()))
@@ -103,22 +93,34 @@ public class Interview {
         return new InterviewTimer(current, current.plusMinutes(durationMinutes));
     }
 
-    private void linkTech(List<TechnicalSubjects> techList) {
+    private void addTechTopics(List<TechnicalSubjects> techList) {
         if(type.requiredTechTopics() && techList.isEmpty())
             throw new RequiredTechTopicNotFoundException();
 
         techList.stream()
                 .map(tech -> InterviewTechLink.createLink(this, tech))
-                .forEach(techLink::add);
+                .forEach(topics.getTechLink()::add);
     }
 
-    private void linkExperience(List<Experience> experienceList) {
+    private void addExperienceTopics(List<Experience> experienceList) {
         if (type.requiredExperienceTopics() && experienceList.isEmpty())
             throw new RequiredExperienceTopicNotFoundException();
 
         experienceList.stream()
                 .map(experience -> InterviewExperienceLink.createLink(this, experience))
-                .forEach(experienceLink::add);
+                .forEach(topics.getExperienceLink()::add);
+    }
+
+    public List<TechnicalSubjects> getTechTopics() {
+        return topics.getTechLink().stream()
+                .map(InterviewTechLink::getTechnicalSubjects)
+                .toList();
+    }
+
+    public List<Experience> getExperienceTopics() {
+        return topics.getExperienceLink().stream()
+                .map(InterviewExperienceLink::getExperience)
+                .toList();
     }
 
     public void expire(InterviewTimeHolder timeHolder) {
@@ -137,7 +139,6 @@ public class Interview {
     public void continueInterview(LocalDateTime now) {
         if(this.id == null)
             throw new IllegalStateException();
-        verifyInterviewTypeRequirement();
         verifyTimeoutState(now);
 
         Events.raise(new InterviewContinuedEvent(this.id));
@@ -145,21 +146,6 @@ public class Interview {
 
     public String getTitle() {
         return title.getTitle();
-    }
-
-    private void verifyInterviewTypeRequirement() {
-        switch (type) {
-            case TECHNICAL -> {
-                if(techLink == null || techLink.isEmpty())
-                    throw new IllegalStateException("기술 면접은 기술이 필수");
-            }
-            case EXPERIENCE -> {
-                if(experienceLink == null || experienceLink.isEmpty())
-                    throw new IllegalStateException("경험 면접은 경험이 필수");
-            }
-            case PERSONALITY -> { /* 딱히 검증할 것 없음*/}
-            default -> throw new IllegalStateException("지원하지 않는 면접 타입");
-        }
     }
 
     private void verifyTimeoutState(LocalDateTime now) {
