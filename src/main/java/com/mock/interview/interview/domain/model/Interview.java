@@ -99,35 +99,21 @@ public class Interview {
     }
 
     public void linkTech(List<TechnicalSubjects> techList) {
-        if(techList == null || techList.isEmpty())
+        if(type.requiredExperienceTopics() || techList.isEmpty())
             throw new IllegalArgumentException();
 
-        techList.forEach(this::linkTech);
-    }
-
-    public void linkTech(TechnicalSubjects tech) {
-        if(tech == null)
-            throw new IllegalArgumentException();
-        if(type != InterviewType.TECHNICAL)
-            throw new IllegalStateException();
-
-        techLink.add(InterviewTechLink.createLink(this, tech));
+        techList.stream()
+                .map(tech -> InterviewTechLink.createLink(this, tech))
+                .forEach(techLink::add);
     }
 
     public void linkExperience(List<Experience> experienceList) {
-        if(experienceList == null || experienceList.isEmpty())
+        if (type.requiredExperienceTopics() && experienceList.isEmpty())
             throw new IllegalArgumentException();
 
-        experienceList.forEach(this::linkExperience);
-    }
-
-    public void linkExperience(Experience experience) {
-        if(experience == null)
-            throw new IllegalArgumentException();
-        if(type != InterviewType.EXPERIENCE)
-            throw new IllegalStateException();
-
-        experienceLink.add(InterviewExperienceLink.createLink(this, experience));
+        experienceList.stream()
+                .map(experience -> InterviewExperienceLink.createLink(this, experience))
+                .forEach(experienceLink::add);
     }
 
     public void expire(InterviewTimeHolder timeHolder) {
