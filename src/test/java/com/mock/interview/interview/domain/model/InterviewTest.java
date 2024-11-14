@@ -4,16 +4,16 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
+import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
+import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.user.domain.model.Users;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,7 +90,7 @@ class InterviewTest {
                 .techTopics(Collections.EMPTY_LIST)
                 .build();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(RequiredTechTopicNotFoundException.class,
                 () -> Interview.create(
                         interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),
@@ -109,7 +109,7 @@ class InterviewTest {
                 .experienceTopics(Collections.EMPTY_LIST)
                 .build();
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(RequiredExperienceTopicNotFoundException.class,
                 () -> Interview.create(
                         interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),

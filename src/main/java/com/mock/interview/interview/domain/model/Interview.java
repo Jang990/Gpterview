@@ -4,6 +4,8 @@ import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.global.TimeDifferenceCalculator;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
+import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
+import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
@@ -103,7 +105,7 @@ public class Interview {
 
     private void linkTech(List<TechnicalSubjects> techList) {
         if(type.requiredTechTopics() && techList.isEmpty())
-            throw new IllegalArgumentException();
+            throw new RequiredTechTopicNotFoundException();
 
         techList.stream()
                 .map(tech -> InterviewTechLink.createLink(this, tech))
@@ -112,7 +114,7 @@ public class Interview {
 
     private void linkExperience(List<Experience> experienceList) {
         if (type.requiredExperienceTopics() && experienceList.isEmpty())
-            throw new IllegalArgumentException();
+            throw new RequiredExperienceTopicNotFoundException();
 
         experienceList.stream()
                 .map(experience -> InterviewExperienceLink.createLink(this, experience))
