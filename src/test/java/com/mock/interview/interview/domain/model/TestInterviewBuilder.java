@@ -13,6 +13,7 @@ import com.mock.interview.user.domain.model.Users;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -37,7 +38,7 @@ public class TestInterviewBuilder {
         startAt(DEFAULT_START_AT);
         interviewType(DEFAULT_INTERVIEW_TYPE);
         durationMinute(DEFAULT_DURATION_MINUTE);
-        when(position.getCategory()).thenReturn(category);
+        when(position.isRelated(any())).thenReturn(true);
     }
 
     public TestInterviewBuilder durationMinute(int duration) {

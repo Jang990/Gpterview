@@ -80,7 +80,7 @@ public class Interview {
         interview.addExperienceTopics(topicDto.getExperienceTopics());
 
         if(topicDto.getCategory() == null || topicDto.getPosition() == null ||
-                !topicDto.getPosition().getCategory().equals(topicDto.getCategory()))
+                !topicDto.getPosition().isRelated(topicDto.getCategory()))
             throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
         interview.category = topicDto.getCategory();
         interview.position = topicDto.getPosition();

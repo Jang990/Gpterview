@@ -17,6 +17,7 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,14 +41,12 @@ class InterviewTest {
     @DisplayName("카테고리와 관련없는 포지션으로 면접 생성 불가능")
     void test3() {
         InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
-        JobCategory nonRelatedCategory = mock(JobCategory.class);
-        JobCategory relatedCategory = mock(JobCategory.class);
         JobPosition position = mock(JobPosition.class);
-        when(position.getCategory()).thenReturn(relatedCategory);
         InterviewTopicDto topics = InterviewTopicDto.builder()
+                .category(mock(JobCategory.class))
                 .position(position)
-                .category(nonRelatedCategory)
                 .build();
+        when(position.isRelated(any())).thenReturn(false);
 
         assertThrows(IllegalArgumentException.class, () ->
                 Interview.create(
