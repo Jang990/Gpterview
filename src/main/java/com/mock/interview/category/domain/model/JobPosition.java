@@ -29,7 +29,7 @@ public class JobPosition {
         return jobPosition;
     }
 
-    public boolean isRelated(JobCategory category) {
+    public boolean isRelatedTo(JobCategory category) {
         return this.category.equals(category);
     }
 
