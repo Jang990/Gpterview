@@ -1,55 +1,23 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
-import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
+import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
+import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.presentation.dto.InterviewType;
-import com.mock.interview.user.domain.model.Users;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
+import static com.mock.interview.interview.TimeUtils.time;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class InterviewTest {
-
-    @Test
-    @DisplayName("면접 시간이 0분 이하인 면접 생성 불가능")
-    void test1() {
-        assertThrows(IllegalArgumentException.class, () ->
-                Interview.create(
-                        mock(InterviewTimeHolder.class),
-                        new InterviewConfigForm(mock(InterviewType.class), 0),
-                        mock(Users.class), mock(JobCategory.class), mock(JobPosition.class)
-                )
-        );
-    }
-
-    @Test
-    @DisplayName("면접 제목은 카테고리와 포지션 영향을 받음")
-    void test2() {
-        String categoryName = "MyCategory";
-        String positionName = "MyBackendPosition";
-        JobCategory category = JobCategory.createCategory(categoryName);
-        JobPosition position = JobPosition.create(positionName, category);
-        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
-
-        Interview interview = Interview.create(
-                timeHolder,
-                new InterviewConfigForm(mock(InterviewType.class), 1),
-                mock(Users.class), category, position
-        );
-
-        assertThat(interview.getTitle().getTitle()).containsIgnoringCase(categoryName);
-        assertThat(interview.getTitle().getTitle()).containsIgnoringCase(positionName);
-    }
-
     private static InterviewTimeHolder interviewTimeHolder(LocalDateTime now) {
         InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
         when(timeHolder.now()).thenReturn(now);
@@ -57,57 +25,89 @@ class InterviewTest {
     }
 
     @Test
-    @DisplayName("카테고리와 관련없는 포지션으로 면접 생성 불가능")
-    void test3() {
-        JobCategory category = JobCategory.createCategory("MyCategory");
-        JobPosition wrongPosition = JobPosition.create(
-                "MyPosition", JobCategory.createCategory("NonRelatedCategory"));
-        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
-
-        assertThrows(IllegalArgumentException.class, () ->
-                Interview.create(
-                        timeHolder,
-                        new InterviewConfigForm(mock(InterviewType.class), 1),
-                        mock(Users.class), category, wrongPosition
-                )
-        );
-    }
-
-    @Test
     @DisplayName("만료시 expiredAt이 타임홀더에 맞춰짐")
     void test4() {
-        Interview interview = createInterview();
-        LocalDateTime expiredTime = LocalDateTime.now();
-        InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
+        Interview interview = TestInterviewBuilder.builder()
+                .timer(time(1, 0), time(1, 30))
+                .build();
+        InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 10));
 
         interview.expire(timeHolder);
 
-        assertThat(interview.getTimer().getExpiredAt()).isEqualTo(expiredTime);
-        assertThat(interview.isTimeout(expiredTime)).isTrue();
+        assertThat(time(1,10)).isEqualTo(interview.getTimer().getExpiredAt());
+        assertThat(interview.isTimeout(time(1,10))).isTrue();
     }
 
     @Test
     @DisplayName("만료시간을 시작시간 이전으로 설정 불가능")
     void test5() {
-        Interview interview = createInterview();
-        LocalDateTime expiredTime = interview.getTimer().getStartedAt().minusMinutes(1);
-        InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
+        Interview interview = TestInterviewBuilder.builder()
+                .timer(time(2, 0), time(2, 30))
+                .build();
+        InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 0));
 
         assertThrows(IllegalArgumentException.class, () -> interview.expire(timeHolder));
     }
 
-    private static Interview createInterview() {
-        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
-        String categoryName = "MyCategory";
-        String positionName = "MyBackendPosition";
-        JobCategory category = JobCategory.createCategory(categoryName);
-        JobPosition position = JobPosition.create(positionName, category);
+    @Test
+    @DisplayName("InterviewType이 기술 주제가 필요하다면 TechTopics가 없다면 예외가 발생한다.")
+    void test6() {
+        InterviewType type = mock(InterviewType.class);
+        when(type.requiredTechTopics()).thenReturn(true);
+        InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
+                .techTopics(Collections.EMPTY_LIST)
+                .build();
 
-        return Interview.create(
-                timeHolder,
-                new InterviewConfigForm(mock(InterviewType.class), 1),
-                mock(Users.class), category, position
+        assertThrows(RequiredTechTopicNotFoundException.class,
+                () -> Interview.create(
+                        mock(InterviewTitle.class),
+                        mock(InterviewTimer.class), type,
+                        mock(CandidateInfo.class), emptyTechTopics
+                )
         );
+    }
+
+    @Test
+    @DisplayName("InterviewType이 경험 주제가 필요한데 ExperienceTopics가 없다면 예외가 발생한다.")
+    void test7() {
+        InterviewType type = mock(InterviewType.class);
+        when(type.requiredExperienceTopics()).thenReturn(true);
+        InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
+                .experienceTopics(Collections.EMPTY_LIST)
+                .build();
+
+        assertThrows(RequiredExperienceTopicNotFoundException.class,
+                () -> Interview.create(
+                        mock(InterviewTitle.class),
+                        mock(InterviewTimer.class), type,
+                        mock(CandidateInfo.class), emptyTechTopics
+                )
+        );
+    }
+
+    @Test
+    @DisplayName("면접을 만료시키면 시간 홀더의 현재 시간으로 만료시간이 맞춰진다.")
+    void test8() {
+        InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 20));
+        Interview myInterview = TestInterviewBuilder.builder()
+                .timer(time(1, 0), time(1, 30))
+                .build();
+
+        myInterview.expire(timeHolder);
+
+        assertEquals(time(1, 20), myInterview.getTimer().getExpiredAt());
+    }
+
+    @Test
+    @DisplayName("시간에 따라 면접 타임아웃 여부를 파악할 수 있다.")
+    void test9() {
+        Interview myInterview = TestInterviewBuilder.builder()
+                .timer(time(1, 0), time(1, 30))
+                .build();
+
+        assertTrue(myInterview.isTimeout(time(1, 30)));
+        assertTrue(myInterview.isTimeout(time(1, 40)));
+        assertFalse(myInterview.isTimeout(time(1, 20)));
     }
 
 }

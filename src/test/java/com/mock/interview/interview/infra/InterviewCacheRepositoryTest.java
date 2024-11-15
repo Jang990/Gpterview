@@ -101,8 +101,7 @@ class InterviewCacheRepositoryTest {
 
         Assertions.assertIterableEquals(
                 result.profile().skills(),
-                mockInterview.getTechLink().stream()
-                        .map(InterviewTechLink::getTechnicalSubjects)
+                mockInterview.getTechTopics().stream()
                         .map(TechnicalSubjects::getName).toList()
         );
     }

@@ -14,7 +14,7 @@ public final class InterviewConvertor {
 
     public static InterviewOverview convert(Interview interview) {
         return new InterviewOverview(
-                interview.getId(), interview.getTitle().getTitle(),
+                interview.getId(), interview.getTitle(),
                 interview.getType(), interview.getDurationMinutes(),
                 interview.getTimer().getStartedAt());
     }

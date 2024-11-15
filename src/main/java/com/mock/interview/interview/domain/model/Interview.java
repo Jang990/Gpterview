@@ -2,9 +2,11 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.global.TimeDifferenceCalculator;
+import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
+import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
+import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
-import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
@@ -17,13 +19,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,99 +37,51 @@ public class Interview {
     @Embedded
     private InterviewTitle title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users users;
-
     @Embedded
     private InterviewTimer timer;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Embedded
+    private CandidateInfo candidateInfo;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private InterviewType type;
 
-    @Column(nullable = false)
-    private int durationMinutes;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_category_id")
-    private JobCategory category;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_position_id")
-    private JobPosition position;
-
-    @Cascade(CascadeType.ALL)
-    @OneToMany(mappedBy = "interview")
-    private List<InterviewTechLink> techLink = new ArrayList<>();
-
-    @Cascade(CascadeType.ALL)
-    @OneToMany(mappedBy = "interview")
-    private List<InterviewExperienceLink> experienceLink = new ArrayList<>();
+    @Embedded
+    private InterviewTopics topics;
 
     public static Interview create(
-            InterviewTimeHolder timeHolder,
-            InterviewConfigForm interviewConfig, Users user,
-            JobCategory category, JobPosition position
+            InterviewTitle title,
+            InterviewTimer timer,
+            InterviewType type,
+            CandidateInfo candidateInfo,
+            InterviewTopicDto topicDto
     ) {
         Interview interview = new Interview();
-        interview.users = user;
-        interview.type = interviewConfig.getInterviewType();
-        interview.durationMinutes = interviewConfig.getDurationMinutes();
-        interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
+        interview.candidateInfo = candidateInfo;
+        interview.title = title;
+        interview.type = type;
+        interview.timer = timer;
 
-        initCategory(category, position, interview);
+        interview.topics = new InterviewTopics();
+        interview.addTechTopics(topicDto.getTechTopics());
+        interview.addExperienceTopics(topicDto.getExperienceTopics());
         return interview;
     }
 
-    private static InterviewTimer createTimer(LocalDateTime current , int durationMinutes) {
-        if(durationMinutes <= 0)
-            throw new IllegalArgumentException("면접 시간은 0분 이하일 수 없음.");
-        return new InterviewTimer(current, current.plusMinutes(durationMinutes));
+    public List<TechnicalSubjects> getTechTopics() {
+        return topics.getTechLink().stream()
+                .map(InterviewTechLink::getTechnicalSubjects)
+                .toList();
     }
 
-    private static void initCategory(JobCategory category, JobPosition position, Interview interview) {
-        if(category == null || position == null ||
-                !position.getCategory().equals(category))
-            throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
-        interview.category = category;
-        interview.position = position;
-        interview.title = new InterviewTitle(category.getName(), position.getName());
-    }
-
-    public void linkTech(List<TechnicalSubjects> techList) {
-        if(techList == null || techList.isEmpty())
-            throw new IllegalArgumentException();
-
-        techList.forEach(this::linkTech);
-    }
-
-    public void linkTech(TechnicalSubjects tech) {
-        if(tech == null)
-            throw new IllegalArgumentException();
-        if(type != InterviewType.TECHNICAL)
-            throw new IllegalStateException();
-
-        techLink.add(InterviewTechLink.createLink(this, tech));
-    }
-
-    public void linkExperience(List<Experience> experienceList) {
-        if(experienceList == null || experienceList.isEmpty())
-            throw new IllegalArgumentException();
-
-        experienceList.forEach(this::linkExperience);
-    }
-
-    public void linkExperience(Experience experience) {
-        if(experience == null)
-            throw new IllegalArgumentException();
-        if(type != InterviewType.EXPERIENCE)
-            throw new IllegalStateException();
-
-        experienceLink.add(InterviewExperienceLink.createLink(this, experience));
+    public List<Experience> getExperienceTopics() {
+        return topics.getExperienceLink().stream()
+                .map(InterviewExperienceLink::getExperience)
+                .toList();
     }
 
     public void expire(InterviewTimeHolder timeHolder) {
@@ -149,25 +100,31 @@ public class Interview {
     public void continueInterview(LocalDateTime now) {
         if(this.id == null)
             throw new IllegalStateException();
-        verifyInterviewTypeRequirement();
         verifyTimeoutState(now);
 
         Events.raise(new InterviewContinuedEvent(this.id));
     }
 
-    private void verifyInterviewTypeRequirement() {
-        switch (type) {
-            case TECHNICAL -> {
-                if(techLink == null || techLink.isEmpty())
-                    throw new IllegalStateException("기술 면접은 기술이 필수");
-            }
-            case EXPERIENCE -> {
-                if(experienceLink == null || experienceLink.isEmpty())
-                    throw new IllegalStateException("경험 면접은 경험이 필수");
-            }
-            case PERSONALITY -> { /* 딱히 검증할 것 없음*/}
-            default -> throw new IllegalStateException("지원하지 않는 면접 타입");
-        }
+    public String getTitle() {
+        return title.getTitle();
+    }
+
+    private void addTechTopics(List<TechnicalSubjects> techList) {
+        if(type.requiredTechTopics() && techList.isEmpty())
+            throw new RequiredTechTopicNotFoundException();
+
+        techList.stream()
+                .map(tech -> InterviewTechLink.createLink(this, tech))
+                .forEach(topics.getTechLink()::add);
+    }
+
+    private void addExperienceTopics(List<Experience> experienceList) {
+        if (type.requiredExperienceTopics() && experienceList.isEmpty())
+            throw new RequiredExperienceTopicNotFoundException();
+
+        experienceList.stream()
+                .map(experience -> InterviewExperienceLink.createLink(this, experience))
+                .forEach(topics.getExperienceLink()::add);
     }
 
     private void verifyTimeoutState(LocalDateTime now) {
@@ -175,11 +132,27 @@ public class Interview {
             throw new IsAlreadyTimeoutInterviewException();
     }
 
+    public int getDurationMinutes() {
+        return timer.getDurationMinutes();
+    }
+
     public InterviewProgress traceProgress(LocalDateTime now) {
         return new InterviewProgress(
                 tracePhase(now),
                 traceProgressOfCurrentPhase(now)
         );
+    }
+
+    public JobCategory getCategory() {
+        return candidateInfo.getCategory();
+    }
+
+    public Users getUsers() {
+        return candidateInfo.getUsers();
+    }
+
+    public JobPosition getPosition() {
+        return candidateInfo.getPosition();
     }
 
     private InterviewPhase tracePhase(LocalDateTime now) {

@@ -29,6 +29,10 @@ public class JobPosition {
         return jobPosition;
     }
 
+    public boolean isRelatedTo(JobCategory category) {
+        return this.category.equals(category);
+    }
+
     /** Name은 항상 대문자로 저장 */
     private static void insertName(JobPosition category, String name) {
         category.name = name.toUpperCase();

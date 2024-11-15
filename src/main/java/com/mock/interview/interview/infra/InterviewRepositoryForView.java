@@ -27,12 +27,12 @@ public class InterviewRepositoryForView {
                     Projections.constructor(InterviewOverviewFragment.class,
                             interview.id,
                             interview.title.title,
-                            interview.durationMinutes,
+                            interview.timer.durationMinutes,
                             interview.timer.startedAt
                     )
                 )
                 .from(interview)
-                .where(interview.users.id.eq(userId))
+                .where(interview.candidateInfo.users.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(interview.timer.startedAt.desc())
@@ -41,7 +41,7 @@ public class InterviewRepositoryForView {
 
     public Page<InterviewOverview> findInterviewList(long userId, Pageable pageable) {
         List<Interview> result = query.selectFrom(interview)
-                .where(interview.users.id.eq(userId))
+                .where(interview.candidateInfo.users.id.eq(userId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(interview.timer.startedAt.desc())
@@ -49,7 +49,7 @@ public class InterviewRepositoryForView {
 
         List<InterviewOverview> content = InterviewConvertor.convert(result);
         JPAQuery<Long> countQuery = query.select(interview.count()).from(interview)
-                .where(interview.users.id.eq(userId));
+                .where(interview.candidateInfo.users.id.eq(userId));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }

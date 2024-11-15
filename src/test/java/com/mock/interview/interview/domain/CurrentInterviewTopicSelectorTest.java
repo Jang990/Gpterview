@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class InterviewTopicSelectorTest {
+class CurrentInterviewTopicSelectorTest {
     InterviewTopicSelector interviewTopicSelector;
     InterviewTimeHolder timeHolder;
     LocalDateTime now = LocalDateTime.now();
@@ -45,7 +45,7 @@ class InterviewTopicSelectorTest {
         Interview interview = mock(Interview.class);
         when(interview.traceProgress(any())).thenReturn(mockProgress);
 
-        InterviewTopic result = interviewTopicSelector.select(
+        CurrentInterviewTopic result = interviewTopicSelector.select(
                 interview,
                 createMockTechList(emptyList()),
                 createMockExperienceList(emptyList())
@@ -65,7 +65,7 @@ class InterviewTopicSelectorTest {
             long expectedId) {
         Interview interview = createMock(phase, progress);
 
-        InterviewTopic result = interviewTopicSelector.select(
+        CurrentInterviewTopic result = interviewTopicSelector.select(
                 interview,
                 createMockTechList(techIds),
                 createMockExperienceList(experienceIds)

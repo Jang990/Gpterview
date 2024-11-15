@@ -14,24 +14,24 @@ import java.util.Optional;
 @Repository
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query("Select iv From Interview iv " +
-            "join fetch iv.category " +
-            "join fetch iv.position " +
-            "left join fetch iv.techLink " +
-            "left join fetch iv.techLink.technicalSubjects " +
-            "Where iv.id = :interviewId And iv.users.id = :userId")
+            "join fetch iv.candidateInfo.category " +
+            "join fetch iv.candidateInfo.position " +
+            "left join fetch iv.topics.techLink " +
+            "left join fetch iv.topics.techLink.technicalSubjects " +
+            "Where iv.id = :interviewId And iv.candidateInfo.users.id = :userId")
     Optional<Interview> findInterviewSetting(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
     @Query("""
             SELECT iv FROM Interview iv
-            JOIN FETCH iv.category
-            JOIN FETCH iv.position
-            LEFT JOIN FETCH iv.techLink
-            LEFT JOIN FETCH iv.techLink.technicalSubjects
+            JOIN FETCH iv.candidateInfo.category
+            JOIN FETCH iv.candidateInfo.position
+            LEFT JOIN FETCH iv.topics.techLink
+            LEFT JOIN FETCH iv.topics.techLink.technicalSubjects
             WHERE iv.id = :interviewId
             """)
     Optional<Interview> findInterviewSetting(@Param("interviewId") long interviewId);
 
-    @Query("Select iv From Interview iv Where iv.id = :interviewId and iv.users.id = :userId")
+    @Query("Select iv From Interview iv Where iv.id = :interviewId and iv.candidateInfo.users.id = :userId")
     Optional<Interview> findByIdAndUserId(@Param("interviewId") long interviewId, @Param("userId") long userId);
 
     @Query("Select iv From Interview iv Where iv.timer.expiredAt > current_timestamp")
@@ -40,11 +40,8 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     @Query(value = """
             SELECT iv
             FROM Interview iv
-            WHERE iv.users.id = :userId
+            WHERE iv.candidateInfo.users.id = :userId
             ORDER BY iv.timer.startedAt DESC
             """, countQuery = "")
     List<Interview> findCurrentInterview(@Param("userId") long loginId, Pageable pageable);
-
-    /** 인터뷰 소유자 검증을 위한 쿼리 메소드 */
-    boolean existsByIdAndUsersId(long interviewId, long usersId);
 }

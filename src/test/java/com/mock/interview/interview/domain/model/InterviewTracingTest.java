@@ -3,6 +3,7 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.interview.TimeUtils;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
@@ -18,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
+import static com.mock.interview.interview.TimeUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -28,11 +30,12 @@ class InterviewTracingTest {
     @Test
     @DisplayName("이미 만료된 면접은 추적 불가능")
     void testBoundary2() {
-        LocalDateTime start = LocalDateTime.now();
-        Interview interview = createInterview(InterviewType.TECHNICAL, start, 1);
-        interview.expire(timeHolder(start));
+        Interview interview = TestInterviewBuilder.builder()
+                .interviewType(InterviewType.TECHNICAL)
+                .timer(time(0, 0), time(0, 30))
+                .build();
 
-        assertThrows(IsAlreadyTimeoutInterviewException.class, () -> interview.traceProgress(start));
+        assertThrows(IsAlreadyTimeoutInterviewException.class, () -> interview.traceProgress(time(1, 0)));
     }
 
     @ParameterizedTest(name = "{0} {2}분 중 {1}분 경과, 결과: {3}페이즈 {4}% 진행")
@@ -41,8 +44,12 @@ class InterviewTracingTest {
     void traceProgress(
             InterviewType type, int elapsed, int duration,
             InterviewPhase expectedPhase, double expectedProgress) {
-        LocalDateTime current = LocalDateTime.now();
-        Interview interview = createInterview(type, current, duration);
+        LocalDateTime current = time(0, 0);
+
+        Interview interview = TestInterviewBuilder.builder()
+                .interviewType(type)
+                .timer(current, current.plusMinutes(duration))
+                .build();
 
         InterviewProgress result = interview.traceProgress(elapsedTime(current, elapsed));
 
@@ -77,18 +84,6 @@ class InterviewTracingTest {
                 Arguments.arguments(InterviewType.COMPOSITE, 3, 6, InterviewPhase.EXPERIENCE, 0.5),
                 Arguments.arguments(InterviewType.COMPOSITE, 4, 6, InterviewPhase.PERSONAL, 0.0),
                 Arguments.arguments(InterviewType.COMPOSITE, 5, 6, InterviewPhase.PERSONAL, 0.5)
-        );
-    }
-
-    private Interview createInterview(InterviewType type, LocalDateTime start, int duration) {
-        InterviewTimeHolder timeHolder = timeHolder(start);
-        JobCategory category = JobCategory.createCategory("MyCategory");
-        JobPosition position = JobPosition.create("MyBackendPosition", category);
-
-        return Interview.create(
-                timeHolder,
-                new InterviewConfigForm(type, duration),
-                mock(Users.class), category, position
         );
     }
 
