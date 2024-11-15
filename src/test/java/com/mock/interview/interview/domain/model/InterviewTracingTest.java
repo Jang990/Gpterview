@@ -3,6 +3,7 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
+import com.mock.interview.interview.TimeUtils;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
@@ -18,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
+import static com.mock.interview.interview.TimeUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -28,14 +30,12 @@ class InterviewTracingTest {
     @Test
     @DisplayName("이미 만료된 면접은 추적 불가능")
     void testBoundary2() {
-        LocalDateTime start = LocalDateTime.now();
         Interview interview = TestInterviewBuilder.builder()
                 .interviewType(InterviewType.TECHNICAL)
-                .timer(1, start, start.plusMinutes(1))
+                .timer(time(0, 0), time(0, 30))
                 .build();
-        interview.expire(timeHolder(start));
 
-        assertThrows(IsAlreadyTimeoutInterviewException.class, () -> interview.traceProgress(start));
+        assertThrows(IsAlreadyTimeoutInterviewException.class, () -> interview.traceProgress(time(1, 0)));
     }
 
     @ParameterizedTest(name = "{0} {2}분 중 {1}분 경과, 결과: {3}페이즈 {4}% 진행")
@@ -44,11 +44,11 @@ class InterviewTracingTest {
     void traceProgress(
             InterviewType type, int elapsed, int duration,
             InterviewPhase expectedPhase, double expectedProgress) {
-        LocalDateTime current = LocalDateTime.now();
+        LocalDateTime current = time(0, 0);
 
         Interview interview = TestInterviewBuilder.builder()
                 .interviewType(type)
-                .timer(duration, current, current.plusMinutes(duration))
+                .timer(current, current.plusMinutes(duration))
                 .build();
 
         InterviewProgress result = interview.traceProgress(elapsedTime(current, elapsed));

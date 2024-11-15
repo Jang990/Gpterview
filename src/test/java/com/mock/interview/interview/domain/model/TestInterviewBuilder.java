@@ -1,26 +1,22 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.experience.domain.Experience;
+import com.mock.interview.interview.TimeUtils;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
-import com.mock.interview.user.domain.model.Users;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 
 public class TestInterviewBuilder {
-    private static final LocalDateTime NOW = LocalDateTime.now();
-    public static final int DEFAULT_DURATION_MINUTE = 30;
-    public static final LocalDateTime DEFAULT_START_AT = NOW;
-    public static final LocalDateTime DEFAULT_EXPIRED_AT = NOW.plusMinutes(DEFAULT_DURATION_MINUTE);
-    public static final InterviewType DEFAULT_INTERVIEW_TYPE = InterviewType.PERSONALITY;
+    private static final LocalDateTime DEFAULT_START_AT = TimeUtils.time(0, 0);
+    private static final LocalDateTime DEFAULT_EXPIRED_AT = TimeUtils.time(0, 30);
+    private static final InterviewType DEFAULT_INTERVIEW_TYPE = InterviewType.PERSONALITY;
 
     public static TestInterviewBuilder builder() {
         return new TestInterviewBuilder();
@@ -30,27 +26,18 @@ public class TestInterviewBuilder {
     private LocalDateTime startedAt;
     private LocalDateTime expiredAt;
     private InterviewConfigForm config = new InterviewConfigForm();
-    private JobCategory category = mock(JobCategory.class);
-    private JobPosition position = mock(JobPosition.class);
-    private Users user = mock(Users.class);
     private List<TechnicalSubjects> techTopics = List.of(mock(TechnicalSubjects.class));
     private List<Experience> experiencesTopics = List.of(mock(Experience.class));
 
     public TestInterviewBuilder() {
         interviewType(DEFAULT_INTERVIEW_TYPE);
-        durationMinute(DEFAULT_DURATION_MINUTE);
-        timer(DEFAULT_DURATION_MINUTE, DEFAULT_START_AT, DEFAULT_EXPIRED_AT);
+        timer(DEFAULT_START_AT, DEFAULT_EXPIRED_AT);
     }
 
-    public TestInterviewBuilder timer(int durationMinute, LocalDateTime startedAt, LocalDateTime expiredAt) {
-        this.durationMinute = durationMinute;
+    public TestInterviewBuilder timer(LocalDateTime startedAt, LocalDateTime expiredAt) {
         this.startedAt = startedAt;
         this.expiredAt = expiredAt;
-        return this;
-    }
-
-    public TestInterviewBuilder durationMinute(int duration) {
-        config = new InterviewConfigForm(config.getInterviewType(), duration);
+        this.durationMinute = (int) Duration.between(startedAt, expiredAt).toMinutes();
         return this;
     }
 
@@ -74,7 +61,7 @@ public class TestInterviewBuilder {
         return Interview.create(
                 mock(InterviewTitle.class),
                 new InterviewTimer(durationMinute, startedAt, expiredAt), config,
-                new CandidateInfo(user, category, position),
+                mock(CandidateInfo.class),
                 InterviewTopicDto.builder()
                         .techTopics(techTopics)
                         .experienceTopics(experiencesTopics)

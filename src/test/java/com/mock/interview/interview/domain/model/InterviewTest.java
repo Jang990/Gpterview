@@ -36,7 +36,7 @@ class InterviewTest {
     @DisplayName("만료시 expiredAt이 타임홀더에 맞춰짐")
     void test4() {
         Interview interview = TestInterviewBuilder.builder()
-                .timer(30, time(1, 0), time(1, 30))
+                .timer(time(1, 0), time(1, 30))
                 .build();
         InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 10));
 
@@ -50,7 +50,7 @@ class InterviewTest {
     @DisplayName("만료시간을 시작시간 이전으로 설정 불가능")
     void test5() {
         Interview interview = TestInterviewBuilder.builder()
-                .timer(30, time(2, 0), time(2, 30))
+                .timer(time(2, 0), time(2, 30))
                 .build();
         InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 0));
 
