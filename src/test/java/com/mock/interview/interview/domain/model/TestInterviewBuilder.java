@@ -15,11 +15,12 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class TestInterviewBuilder {
+    private static final LocalDateTime NOW = LocalDateTime.now();
     public static final int DEFAULT_DURATION_MINUTE = 30;
-    public static final LocalDateTime DEFAULT_START_AT = LocalDateTime.now();
+    public static final LocalDateTime DEFAULT_START_AT = NOW;
+    public static final LocalDateTime DEFAULT_EXPIRED_AT = NOW.plusMinutes(DEFAULT_DURATION_MINUTE);
     public static final InterviewType DEFAULT_INTERVIEW_TYPE = InterviewType.PERSONALITY;
 
     public static TestInterviewBuilder builder() {
@@ -27,6 +28,9 @@ public class TestInterviewBuilder {
     }
 
     private InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
+    private int durationMinute;
+    private LocalDateTime startedAt;
+    private LocalDateTime expiredAt;
     private InterviewConfigForm config = new InterviewConfigForm();
     private JobCategory category = mock(JobCategory.class);
     private JobPosition position = mock(JobPosition.class);
@@ -35,9 +39,16 @@ public class TestInterviewBuilder {
     private List<Experience> experiencesTopics = List.of(mock(Experience.class));
 
     public TestInterviewBuilder() {
-        startAt(DEFAULT_START_AT);
         interviewType(DEFAULT_INTERVIEW_TYPE);
         durationMinute(DEFAULT_DURATION_MINUTE);
+        timer(DEFAULT_DURATION_MINUTE, DEFAULT_START_AT, DEFAULT_EXPIRED_AT);
+    }
+
+    public TestInterviewBuilder timer(int durationMinute, LocalDateTime startedAt, LocalDateTime expiredAt) {
+        this.durationMinute = durationMinute;
+        this.startedAt = startedAt;
+        this.expiredAt = expiredAt;
+        return this;
     }
 
     public TestInterviewBuilder durationMinute(int duration) {
@@ -47,11 +58,6 @@ public class TestInterviewBuilder {
 
     public TestInterviewBuilder interviewType(InterviewType type) {
         config = new InterviewConfigForm(type, config.getDurationMinutes());
-        return this;
-    }
-
-    public TestInterviewBuilder startAt(LocalDateTime startAt) {
-        when(timeHolder.now()).thenReturn(startAt);
         return this;
     }
 
@@ -68,7 +74,8 @@ public class TestInterviewBuilder {
 
     public Interview build() {
         return Interview.create(
-                timeHolder, mock(InterviewTitle.class), config,
+                timeHolder, mock(InterviewTitle.class),
+                new InterviewTimer(durationMinute, startedAt, expiredAt), config,
                 new CandidateInfo(user, category, position),
                 InterviewTopicDto.builder()
                         .techTopics(techTopics)

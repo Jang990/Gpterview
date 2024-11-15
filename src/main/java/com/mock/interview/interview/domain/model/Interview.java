@@ -56,16 +56,18 @@ public class Interview {
     public static Interview create(
             InterviewTimeHolder timeHolder,
             InterviewTitle title,
-            InterviewConfigForm interviewConfig, CandidateInfo candidateInfo,
+            InterviewTimer timer,
+            InterviewConfigForm interviewConfig,
+            CandidateInfo candidateInfo,
             InterviewTopicDto topicDto
     ) {
         Interview interview = new Interview();
-        interview.topics = new InterviewTopics();
         interview.candidateInfo = candidateInfo;
         interview.title = title;
         interview.type = interviewConfig.getInterviewType();
-        interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
+        interview.timer = timer;
 
+        interview.topics = new InterviewTopics();
         interview.addTechTopics(topicDto.getTechTopics());
         interview.addExperienceTopics(topicDto.getExperienceTopics());
         return interview;

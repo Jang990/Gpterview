@@ -39,6 +39,7 @@ public class InterviewService {
 
     private final InterviewTitleCreator titleCreator;
     private final CandidateInfoCreator candidateInfoCreator;
+    private final InterviewTimerCreator timerCreator;
     private final InterviewTimeHolder interviewTimeHolder;
 
 
@@ -67,9 +68,10 @@ public class InterviewService {
                         )
                 )
                 .build();
+        InterviewTimer timer = timerCreator.create(interviewConfig.getDurationMinutes());
 
         Interview interview = Interview.create(
-                interviewTimeHolder, interviewTitle,
+                interviewTimeHolder, interviewTitle, timer,
                 interviewConfig, candidateInfo, topics
         );
         interviewStartService.start(interview, repository, users);

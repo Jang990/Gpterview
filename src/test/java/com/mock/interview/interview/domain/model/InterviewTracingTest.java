@@ -31,8 +31,7 @@ class InterviewTracingTest {
         LocalDateTime start = LocalDateTime.now();
         Interview interview = TestInterviewBuilder.builder()
                 .interviewType(InterviewType.TECHNICAL)
-                .startAt(start)
-                .durationMinute(1)
+                .timer(1, start, start.plusMinutes(1))
                 .build();
         interview.expire(timeHolder(start));
 
@@ -49,8 +48,7 @@ class InterviewTracingTest {
 
         Interview interview = TestInterviewBuilder.builder()
                 .interviewType(type)
-                .startAt(current)
-                .durationMinute(duration)
+                .timer(duration, current, current.plusMinutes(duration))
                 .build();
 
         InterviewProgress result = interview.traceProgress(elapsedTime(current, elapsed));

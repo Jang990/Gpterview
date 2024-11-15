@@ -23,14 +23,6 @@ import static org.mockito.Mockito.when;
 
 class InterviewTest {
 
-    @Test
-    @DisplayName("면접 시간이 0분 이하인 면접 생성 불가능")
-    void test1() {
-        assertThrows(IllegalArgumentException.class, () ->
-                TestInterviewBuilder.builder().durationMinute(0).build()
-        );
-    }
-
     private static InterviewTimeHolder interviewTimeHolder(LocalDateTime now) {
         InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
         when(timeHolder.now()).thenReturn(now);
@@ -40,7 +32,11 @@ class InterviewTest {
     @Test
     @DisplayName("만료시 expiredAt이 타임홀더에 맞춰짐")
     void test4() {
-        Interview interview = TestInterviewBuilder.builder().build();
+        LocalDateTime now = LocalDateTime.now();
+        Interview interview = TestInterviewBuilder.builder()
+                .timer(30, now, now.plusMinutes(30))
+                .build();
+
         LocalDateTime expiredTime = LocalDateTime.now();
         InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
 
@@ -73,6 +69,7 @@ class InterviewTest {
                 () -> Interview.create(
                         interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),
+                        mock(InterviewTimer.class),
                         new InterviewConfigForm(type, 30),
                         mock(CandidateInfo.class), emptyTechTopics
                 )
@@ -92,6 +89,7 @@ class InterviewTest {
                 () -> Interview.create(
                         interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),
+                        mock(InterviewTimer.class),
                         new InterviewConfigForm(type, 30),
                         mock(CandidateInfo.class), emptyTechTopics
                 )
