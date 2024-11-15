@@ -27,7 +27,7 @@ public class InterviewRepositoryForView {
                     Projections.constructor(InterviewOverviewFragment.class,
                             interview.id,
                             interview.title.title,
-                            /*interview.durationMinutes*/interview.id, // TODO: 임시 코드
+                            interview.timer.durationMinutes,
                             interview.timer.startedAt
                     )
                 )

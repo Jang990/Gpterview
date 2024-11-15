@@ -13,19 +13,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class InterviewTimer {
 
+    private int durationMinutes;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime startedAt;
 
     @Column(nullable = false)
     private LocalDateTime expiredAt;
 
-    protected InterviewTimer(LocalDateTime startedAt, LocalDateTime expiredAt) {
-        this.expiredAt = expiredAt;
+    protected InterviewTimer(
+            int durationMinutes,
+            LocalDateTime startedAt,
+            LocalDateTime expiredAt) {
+        this.durationMinutes = durationMinutes;
         this.startedAt = startedAt;
+        this.expiredAt = expiredAt;
     }
 
     InterviewTimer withExpiredAt(LocalDateTime expiredAt) {
-        return new InterviewTimer(this.startedAt, expiredAt);
+        return new InterviewTimer(this.durationMinutes, this.startedAt, expiredAt);
     }
 
     boolean isExpired(LocalDateTime base) {

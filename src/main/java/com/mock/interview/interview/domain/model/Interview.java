@@ -76,7 +76,10 @@ public class Interview {
     private static InterviewTimer createTimer(LocalDateTime current, int durationMinutes) {
         if(durationMinutes <= 0 || 60 < durationMinutes)
             throw new IllegalArgumentException("면접 시간은 1분 이상 60분 이하로 설정");
-        return new InterviewTimer(current, current.plusMinutes(durationMinutes));
+        return new InterviewTimer(
+                durationMinutes, current,
+                current.plusMinutes(durationMinutes)
+        );
     }
 
     public List<TechnicalSubjects> getTechTopics() {
@@ -140,9 +143,7 @@ public class Interview {
     }
 
     public int getDurationMinutes() {
-        return (int) Duration.between(
-                timer.getStartedAt(), timer.getExpiredAt()
-        ).toMinutes();
+        return timer.getDurationMinutes();
     }
 
     public InterviewProgress traceProgress(LocalDateTime now) {
