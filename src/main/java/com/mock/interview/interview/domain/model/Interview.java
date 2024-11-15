@@ -22,7 +22,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -57,19 +56,18 @@ public class Interview {
     public static Interview create(
             InterviewTimeHolder timeHolder,
             InterviewTitle title,
-            InterviewConfigForm interviewConfig, Users user,
+            InterviewConfigForm interviewConfig, CandidateInfo candidateInfo,
             InterviewTopicDto topicDto
     ) {
         Interview interview = new Interview();
         interview.topics = new InterviewTopics();
+        interview.candidateInfo = candidateInfo;
         interview.title = title;
         interview.type = interviewConfig.getInterviewType();
         interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
         interview.addTechTopics(topicDto.getTechTopics());
         interview.addExperienceTopics(topicDto.getExperienceTopics());
-
-        interview.candidateInfo = new CandidateInfo(user, topicDto.getCategory(), topicDto.getPosition());
         return interview;
     }
 

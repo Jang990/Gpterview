@@ -31,9 +31,6 @@ public class CandidateInfo {
             Users users,
             JobCategory category,
             JobPosition position) {
-        if(category == null || position == null || !position.isRelated(category))
-            throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
-
         this.users = users;
         this.category = category;
         this.position = position;

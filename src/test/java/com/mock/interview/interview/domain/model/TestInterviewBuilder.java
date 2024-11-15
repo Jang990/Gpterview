@@ -38,7 +38,6 @@ public class TestInterviewBuilder {
         startAt(DEFAULT_START_AT);
         interviewType(DEFAULT_INTERVIEW_TYPE);
         durationMinute(DEFAULT_DURATION_MINUTE);
-        when(position.isRelated(any())).thenReturn(true);
     }
 
     public TestInterviewBuilder durationMinute(int duration) {
@@ -69,10 +68,9 @@ public class TestInterviewBuilder {
 
     public Interview build() {
         return Interview.create(
-                timeHolder, mock(InterviewTitle.class), config, user,
+                timeHolder, mock(InterviewTitle.class), config,
+                new CandidateInfo(user, category, position),
                 InterviewTopicDto.builder()
-                        .category(category)
-                        .position(position)
                         .techTopics(techTopics)
                         .experienceTopics(experiencesTopics)
                         .build()

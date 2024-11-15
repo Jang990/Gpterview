@@ -38,26 +38,6 @@ class InterviewTest {
     }
 
     @Test
-    @DisplayName("카테고리와 관련없는 포지션으로 면접 생성 불가능")
-    void test3() {
-        InterviewTimeHolder timeHolder = interviewTimeHolder(LocalDateTime.now());
-        JobPosition position = mock(JobPosition.class);
-        InterviewTopicDto topics = InterviewTopicDto.builder()
-                .category(mock(JobCategory.class))
-                .position(position)
-                .build();
-        when(position.isRelated(any())).thenReturn(false);
-
-        assertThrows(IllegalArgumentException.class, () ->
-                Interview.create(
-                        timeHolder, mock(InterviewTitle.class),
-                        new InterviewConfigForm(mock(InterviewType.class), 1),
-                        mock(Users.class), topics
-                )
-        );
-    }
-
-    @Test
     @DisplayName("만료시 expiredAt이 타임홀더에 맞춰짐")
     void test4() {
         Interview interview = TestInterviewBuilder.builder().build();
@@ -94,7 +74,7 @@ class InterviewTest {
                         interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),
                         new InterviewConfigForm(type, 30),
-                        mock(Users.class), emptyTechTopics
+                        mock(CandidateInfo.class), emptyTechTopics
                 )
         );
     }
@@ -113,7 +93,7 @@ class InterviewTest {
                         interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),
                         new InterviewConfigForm(type, 30),
-                        mock(Users.class), emptyTechTopics
+                        mock(CandidateInfo.class), emptyTechTopics
                 )
         );
     }

@@ -13,9 +13,6 @@ import java.util.List;
 @Builder
 @Getter
 public class InterviewTopicDto {
-    private JobCategory category;
-    private JobPosition position;
-
     @Builder.Default
     private List<TechnicalSubjects> techTopics = new LinkedList<>();
     @Builder.Default
