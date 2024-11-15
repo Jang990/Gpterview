@@ -7,7 +7,6 @@ import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
 import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
-import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
@@ -57,14 +56,14 @@ public class Interview {
     public static Interview create(
             InterviewTitle title,
             InterviewTimer timer,
-            InterviewConfigForm interviewConfig,
+            InterviewType type,
             CandidateInfo candidateInfo,
             InterviewTopicDto topicDto
     ) {
         Interview interview = new Interview();
         interview.candidateInfo = candidateInfo;
         interview.title = title;
-        interview.type = interviewConfig.getInterviewType();
+        interview.type = type;
         interview.timer = timer;
 
         interview.topics = new InterviewTopics();

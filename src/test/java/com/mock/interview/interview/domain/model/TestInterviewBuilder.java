@@ -3,7 +3,6 @@ package com.mock.interview.interview.domain.model;
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.TimeUtils;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
-import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 
@@ -25,7 +24,7 @@ public class TestInterviewBuilder {
     private int durationMinute;
     private LocalDateTime startedAt;
     private LocalDateTime expiredAt;
-    private InterviewConfigForm config = new InterviewConfigForm();
+    private InterviewType type;
     private List<TechnicalSubjects> techTopics = List.of(mock(TechnicalSubjects.class));
     private List<Experience> experiencesTopics = List.of(mock(Experience.class));
 
@@ -42,7 +41,7 @@ public class TestInterviewBuilder {
     }
 
     public TestInterviewBuilder interviewType(InterviewType type) {
-        config = new InterviewConfigForm(type, config.getDurationMinutes());
+        this.type = type;
         return this;
     }
 
@@ -60,7 +59,7 @@ public class TestInterviewBuilder {
     public Interview build() {
         return Interview.create(
                 mock(InterviewTitle.class),
-                new InterviewTimer(durationMinute, startedAt, expiredAt), config,
+                new InterviewTimer(durationMinute, startedAt, expiredAt), type,
                 mock(CandidateInfo.class),
                 InterviewTopicDto.builder()
                         .techTopics(techTopics)

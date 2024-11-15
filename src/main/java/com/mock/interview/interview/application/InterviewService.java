@@ -69,7 +69,7 @@ public class InterviewService {
 
         Interview interview = Interview.create(
                 interviewTitle, timer,
-                interviewConfig, candidateInfo, topics
+                interviewConfig.getInterviewType(), candidateInfo, topics
         );
         interviewStartService.start(interview, repository, users);
         return interview.getId();

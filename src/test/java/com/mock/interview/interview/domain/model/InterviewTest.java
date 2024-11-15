@@ -4,7 +4,6 @@ import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
 import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
-import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,8 +61,7 @@ class InterviewTest {
         assertThrows(RequiredTechTopicNotFoundException.class,
                 () -> Interview.create(
                         mock(InterviewTitle.class),
-                        mock(InterviewTimer.class),
-                        new InterviewConfigForm(type, 30),
+                        mock(InterviewTimer.class), type,
                         mock(CandidateInfo.class), emptyTechTopics
                 )
         );
@@ -81,8 +79,7 @@ class InterviewTest {
         assertThrows(RequiredExperienceTopicNotFoundException.class,
                 () -> Interview.create(
                         mock(InterviewTitle.class),
-                        mock(InterviewTimer.class),
-                        new InterviewConfigForm(type, 30),
+                        mock(InterviewTimer.class), type,
                         mock(CandidateInfo.class), emptyTechTopics
                 )
         );
