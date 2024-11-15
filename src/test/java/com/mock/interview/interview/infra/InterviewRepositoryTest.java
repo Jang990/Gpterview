@@ -16,13 +16,4 @@ class InterviewRepositoryTest {
     @Autowired
     JobCategoryRepository jcRepository;
 
-    @Autowired
-
-
-//    @Test
-    @DisplayName("limit를 사용하는 exists")
-    void test2() {
-        System.out.println(repository.existsByIdAndUsersId(1, 8));
-    }
-
 }

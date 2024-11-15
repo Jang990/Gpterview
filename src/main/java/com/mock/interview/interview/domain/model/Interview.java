@@ -39,27 +39,18 @@ public class Interview {
     @Embedded
     private InterviewTitle title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users users;
-
     @Embedded
     private InterviewTimer timer;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Embedded
+    private CandidateInfo candidateInfo;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private InterviewType type;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_category_id")
-    private JobCategory category;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_position_id")
-    private JobPosition position;
 
     @Embedded
     private InterviewTopics topics;
@@ -72,18 +63,13 @@ public class Interview {
         Interview interview = new Interview();
         interview.topics = new InterviewTopics();
         interview.title = title;
-        interview.users = user;
         interview.type = interviewConfig.getInterviewType();
         interview.timer = createTimer(timeHolder.now(), interviewConfig.getDurationMinutes());
 
         interview.addTechTopics(topicDto.getTechTopics());
         interview.addExperienceTopics(topicDto.getExperienceTopics());
 
-        if(topicDto.getCategory() == null || topicDto.getPosition() == null ||
-                !topicDto.getPosition().isRelated(topicDto.getCategory()))
-            throw new IllegalArgumentException("카테고리와 포지션 문제 발생");
-        interview.category = topicDto.getCategory();
-        interview.position = topicDto.getPosition();
+        interview.candidateInfo = new CandidateInfo(user, topicDto.getCategory(), topicDto.getPosition());
         return interview;
     }
 
@@ -164,6 +150,18 @@ public class Interview {
                 tracePhase(now),
                 traceProgressOfCurrentPhase(now)
         );
+    }
+
+    public JobCategory getCategory() {
+        return candidateInfo.getCategory();
+    }
+
+    public Users getUsers() {
+        return candidateInfo.getUsers();
+    }
+
+    public JobPosition getPosition() {
+        return candidateInfo.getPosition();
     }
 
     private InterviewPhase tracePhase(LocalDateTime now) {
