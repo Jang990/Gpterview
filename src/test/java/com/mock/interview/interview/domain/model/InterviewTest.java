@@ -1,18 +1,18 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.category.domain.model.JobCategory;
-import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
 import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
-import com.mock.interview.user.domain.model.Users;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,6 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class InterviewTest {
+    private static final LocalDate nowDate = LocalDate.now();
 
     private static InterviewTimeHolder interviewTimeHolder(LocalDateTime now) {
         InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
@@ -29,29 +30,31 @@ class InterviewTest {
         return timeHolder;
     }
 
+    private static LocalDateTime time(int hour, int minute) {
+        return LocalDateTime.of(nowDate, LocalTime.of(hour, minute));
+    }
+
     @Test
     @DisplayName("만료시 expiredAt이 타임홀더에 맞춰짐")
     void test4() {
-        LocalDateTime now = LocalDateTime.now();
         Interview interview = TestInterviewBuilder.builder()
-                .timer(30, now, now.plusMinutes(30))
+                .timer(30, time(1, 0), time(1, 30))
                 .build();
-
-        LocalDateTime expiredTime = LocalDateTime.now();
-        InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
+        InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 10));
 
         interview.expire(timeHolder);
 
-        assertThat(interview.getTimer().getExpiredAt()).isEqualTo(expiredTime);
-        assertThat(interview.isTimeout(expiredTime)).isTrue();
+        assertThat(time(1,10)).isEqualTo(interview.getTimer().getExpiredAt());
+        assertThat(interview.isTimeout(time(1,10))).isTrue();
     }
 
     @Test
     @DisplayName("만료시간을 시작시간 이전으로 설정 불가능")
     void test5() {
-        Interview interview = TestInterviewBuilder.builder().build();
-        LocalDateTime expiredTime = interview.getTimer().getStartedAt().minusMinutes(1);
-        InterviewTimeHolder timeHolder = interviewTimeHolder(expiredTime);
+        Interview interview = TestInterviewBuilder.builder()
+                .timer(30, time(2, 0), time(2, 30))
+                .build();
+        InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 0));
 
         assertThrows(IllegalArgumentException.class, () -> interview.expire(timeHolder));
     }
