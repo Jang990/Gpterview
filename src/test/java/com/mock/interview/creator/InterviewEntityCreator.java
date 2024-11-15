@@ -3,7 +3,6 @@ package com.mock.interview.creator;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.domain.model.InterviewTimer;
 
 import java.time.LocalDateTime;
 
@@ -14,12 +13,9 @@ public class InterviewEntityCreator {
         Interview mock = mock(Interview.class);
         JobCategory mockCategory = createMockCategory();
         JobPosition mockPosition = createMockPosition();
+        when(mock.getExpiredTime()).thenReturn(expireTime);
         when(mock.getCategory()).thenReturn(mockCategory);
         when(mock.getPosition()).thenReturn(mockPosition);
-
-        InterviewTimer mockTimer = mock(InterviewTimer.class);
-        when(mockTimer.getExpiredAt()).thenReturn(expireTime);
-        when(mock.getTimer()).thenReturn(mockTimer);
         return mock;
     }
 

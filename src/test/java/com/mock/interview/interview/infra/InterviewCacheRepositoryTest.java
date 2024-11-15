@@ -59,7 +59,7 @@ class InterviewCacheRepositoryTest {
 
         when(interviewRedisRepository.find(testInterviewId)).thenReturn(Optional.empty());
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
-        when(mockInterview.getTimer().getExpiredAt()).thenReturn(activeTime);
+        when(mockInterview.getExpiredTime()).thenReturn(activeTime);
 
         InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
@@ -77,7 +77,7 @@ class InterviewCacheRepositoryTest {
 
         when(interviewRedisRepository.find(testInterviewId)).thenReturn(Optional.empty());
         when(interviewRepository.findInterviewSetting(testInterviewId)).thenReturn(Optional.of(mockInterview));
-        when(mockInterview.getTimer().getExpiredAt()).thenReturn(expiredTime);
+        when(mockInterview.getExpiredTime()).thenReturn(expiredTime);
 
         InterviewInfo result = cacheRepo.findProgressingInterviewInfo(testInterviewId);
 
@@ -88,7 +88,7 @@ class InterviewCacheRepositoryTest {
     }
 
     private void isEqual(InterviewInfo result, Interview mockInterview) {
-        assertThat(result.config().expiredTime()).isEqualTo(mockInterview.getTimer().getExpiredAt());
+        assertThat(result.config().expiredTime()).isEqualTo(mockInterview.getExpiredTime());
         assertThat(result.config().type()).isEqualTo(mockInterview.getType());
         assertThat(result.profile().category().getName()).isEqualTo(mockInterview.getCategory().getName());
         assertThat(result.profile().field().getName()).isEqualTo(mockInterview.getPosition().getName());
@@ -101,7 +101,8 @@ class InterviewCacheRepositoryTest {
 
         Assertions.assertIterableEquals(
                 result.profile().skills(),
-                mockInterview.getTechTopics().stream()
+                mockInterview.getTechLink().stream()
+                        .map(InterviewTechLink::getTechnicalSubjects)
                         .map(TechnicalSubjects::getName).toList()
         );
     }

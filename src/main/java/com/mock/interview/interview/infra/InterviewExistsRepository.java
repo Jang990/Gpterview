@@ -16,7 +16,7 @@ public class InterviewExistsRepository {
     public boolean isExist(long interviewId, long userId) {
         Integer exist = query.selectOne()
                 .from(interview)
-                .where(interview.id.eq(interviewId), interview.candidateInfo.users.id.eq(userId))
+                .where(interview.id.eq(interviewId), interview.users.id.eq(userId))
                 .fetchFirst();
 
         return exist != null;

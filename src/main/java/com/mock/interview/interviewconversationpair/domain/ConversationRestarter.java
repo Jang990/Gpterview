@@ -1,6 +1,5 @@
 package com.mock.interview.interviewconversationpair.domain;
 
-import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.IsAlreadyTimeoutInterviewException;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interviewconversationpair.domain.model.InterviewConversationPair;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ConversationRestarter {
     private final AppearedQuestionIdManager appearedQuestionIdManager;
-    private final InterviewTimeHolder timeHolder;
 
     public void restart(Interview interview, InterviewConversationPair conversationPair) {
         verifyActiveInterview(interview);
@@ -23,8 +21,8 @@ public class ConversationRestarter {
         conversationPair.restartConversationWithAi(appearedQuestionIdManager);
     }
 
-    private void verifyActiveInterview(Interview interview) {
-        if (interview.isTimeout(timeHolder.now()))
+    private static void verifyActiveInterview(Interview interview) {
+        if (interview.isTimeout())
             throw new IsAlreadyTimeoutInterviewException();
     }
 }

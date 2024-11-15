@@ -1,7 +1,7 @@
 package com.mock.interview;
 
 import com.mock.interview.global.security.dto.LoginUserDetail;
-import com.mock.interview.interview.application.ActiveInterviewService;
+import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.InterviewRepositoryForView;
 import com.mock.interview.interview.presentation.dto.InterviewOverviewFragment;
 import com.mock.interview.interview.presentation.dto.InterviewResponse;
@@ -19,8 +19,8 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class MainPageController {
+    private final InterviewService interviewService;
     private final InterviewRepositoryForView interviewRepositoryForView;
-    private final ActiveInterviewService activeInterviewService;
 
     @GetMapping("/")
     public String indexPage(Model model, @AuthenticationPrincipal LoginUserDetail users) {
@@ -41,7 +41,7 @@ public class MainPageController {
     }
 
     private InterviewResponse getActiveInterview(long loginId) {
-        return activeInterviewService.find(loginId)
+        return interviewService.findActiveInterview(loginId)
                 .orElseGet(InterviewResponse::new);
     }
 }

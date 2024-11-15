@@ -1,6 +1,5 @@
 package com.mock.interview.interview.presentation.web;
 
-import com.mock.interview.interview.InterviewExpirationService;
 import com.mock.interview.interview.application.InterviewService;
 import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class InterviewProgressController {
 
     private final InterviewService interviewService;
-    private final InterviewExpirationService interviewExpirationService;
 
     @PostMapping("/interview")
     @WithUserInterviewRateLimiter
@@ -40,7 +38,7 @@ public class InterviewProgressController {
             @PathVariable("interviewId") long interviewId
     ) {
         InterviewUserIds lockDto = new InterviewUserIds(interviewId, loginId);
-        interviewExpirationService.expire(lockDto);
+        interviewService.expireInterview(lockDto);
         return "redirect:/interview/" + interviewId + "/expiration/result";
     }
 }

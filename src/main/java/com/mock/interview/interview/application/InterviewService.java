@@ -5,15 +5,22 @@ import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.category.infra.JobCategoryRepository;
 import com.mock.interview.category.infra.JobPositionRepository;
 import com.mock.interview.experience.application.helper.ExperienceFinder;
+import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.experience.infra.ExperienceRepository;
-import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewStartService;
-import com.mock.interview.interview.domain.model.*;
+import com.mock.interview.interview.domain.exception.InterviewNotFoundException;
+import com.mock.interview.interview.infra.cache.InterviewCacheRepository;
+import com.mock.interview.interview.infra.lock.progress.InterviewProgressLock;
+import com.mock.interview.interview.infra.lock.progress.dto.InterviewUserIds;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
+import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
+import com.mock.interview.interview.presentation.dto.InterviewResponse;
+import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.application.helper.TechFinder;
+import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
@@ -23,6 +30,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,10 +45,8 @@ public class InterviewService {
     private final InterviewStartService interviewStartService;
     private final JobCategoryRepository jobCategoryRepository;
     private final JobPositionRepository jobPositionRepository;
+    private final InterviewCacheRepository interviewCacheRepository;
 
-    private final InterviewTitleCreator titleCreator;
-    private final CandidateInfoCreator candidateInfoCreator;
-    private final InterviewTimerCreator timerCreator;
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -50,28 +58,49 @@ public class InterviewService {
         JobPosition position = jobPositionRepository.findById(accountForm.getPositionId())
                 .orElseThrow(JobCategoryNotFoundException::new);
 
-        CandidateInfo candidateInfo = candidateInfoCreator.create(users, category, position);
-        InterviewTitle interviewTitle = titleCreator.createDefault(category, position);
+        Interview interview = Interview.create(interviewConfig, users, category, position);
+        List<Long> techIds = accountForm.getTechIds();
+        if (interview.getType() == InterviewType.TECHNICAL && !techIds.isEmpty()) {
+            connectTech(interview, techIds);
+        }
+        List<Long> experienceIds = accountForm.getExperienceIds();
+        if (interview.getType() == InterviewType.EXPERIENCE && !experienceIds.isEmpty()) {
+            connectUserExperience(interview, loginId, experienceIds);
+        }
 
-        InterviewTopicDto topics = InterviewTopicDto.builder()
-                .techTopics(
-                        TechFinder.findTechs(
-                                technicalSubjectsRepository, accountForm.getTechIds()
-                        )
-                )
-                .experienceTopics(
-                        ExperienceFinder.findUserExperiences(
-                                experienceRepository, accountForm.getExperienceIds(), loginId
-                        )
-                )
-                .build();
-        InterviewTimer timer = timerCreator.create(interviewConfig.getDurationMinutes());
-
-        Interview interview = Interview.create(
-                interviewTitle, timer,
-                interviewConfig.getInterviewType(), candidateInfo, topics
-        );
         interviewStartService.start(interview, repository, users);
         return interview.getId();
+    }
+
+    private void connectTech(Interview interview, List<Long> techIds) {
+        List<TechnicalSubjects> techs = TechFinder.findTechs(technicalSubjectsRepository, techIds);
+        interview.linkTech(techs);
+    }
+
+    private void connectUserExperience(Interview interview, long loginId, List<Long> experienceIds) {
+        List<Experience> userExperiences = ExperienceFinder
+                .findUserExperiences(experienceRepository, experienceIds, loginId);
+        interview.linkExperience(userExperiences);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<InterviewResponse> findActiveInterview(long userId) {
+        Optional<Interview> optionalInterview = repository.findActiveInterview(userId);
+        if(optionalInterview.isEmpty())
+            return Optional.empty();
+
+        return Optional.of(convert(optionalInterview.get()));
+    }
+
+    private InterviewResponse convert(Interview activeInterview) {
+        return new InterviewResponse(activeInterview.getId(), activeInterview.getTitle().getTitle());
+    }
+
+    @InterviewProgressLock
+    public void expireInterview(InterviewUserIds lockDto) {
+        Interview interview = repository.findByIdAndUserId(lockDto.getInterviewId(), lockDto.getUserId())
+                .orElseThrow(InterviewNotFoundException::new);
+        interview.expire();
+        interviewCacheRepository.expireInterviewInfo(lockDto.getInterviewId());
     }
 }

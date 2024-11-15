@@ -14,16 +14,4 @@ public enum InterviewType {
     InterviewType(String name) {
         this.name = name;
     }
-
-    public boolean requiredTechTopics() {
-        return this == TECHNICAL
-                || this == TECHNICAL_EXPERIENCE
-                || this == COMPOSITE;
-    }
-
-    public boolean requiredExperienceTopics() {
-        return this == EXPERIENCE
-                || this == TECHNICAL_EXPERIENCE
-                || this == COMPOSITE;
-    }
 }
