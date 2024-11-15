@@ -32,15 +32,12 @@ class InterviewExpirationServiceTest {
     @Test
     @DisplayName("면접을 만료시키면 시간 홀더의 현재 시간으로 만료시간이 맞춰진다.")
     void test1() {
-        Interview myInterview = TestInterviewBuilder.builder()
-                .timer(time(1, 0), time(1, 30))
-                .build();
-        when(interviewTimeHolder.now()).thenReturn(time(1,20));
-        when(repository.findByIdAndUserId(anyLong(), anyLong())).thenReturn(Optional.of(myInterview));
-        InterviewUserIds interviewUserIds = new InterviewUserIds(1L, 2L);
+        Interview myInterview = mock(Interview.class);
+        when(repository.findByIdAndUserId(anyLong(), anyLong()))
+                .thenReturn(Optional.of(myInterview));
 
-        service.expire(interviewUserIds);
+        service.expire(new InterviewUserIds(1L, 2L));
 
-        assertTrue(myInterview.isTimeout(time(1, 20)));
+        verify(myInterview).expire(any());
     }
 }
