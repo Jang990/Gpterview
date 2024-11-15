@@ -53,8 +53,8 @@ public class Interview {
 
     @Embedded
     private InterviewTopics topics;
+
     public static Interview create(
-            InterviewTimeHolder timeHolder,
             InterviewTitle title,
             InterviewTimer timer,
             InterviewConfigForm interviewConfig,
@@ -71,15 +71,6 @@ public class Interview {
         interview.addTechTopics(topicDto.getTechTopics());
         interview.addExperienceTopics(topicDto.getExperienceTopics());
         return interview;
-    }
-
-    private static InterviewTimer createTimer(LocalDateTime current, int durationMinutes) {
-        if(durationMinutes <= 0 || 60 < durationMinutes)
-            throw new IllegalArgumentException("면접 시간은 1분 이상 60분 이하로 설정");
-        return new InterviewTimer(
-                durationMinutes, current,
-                current.plusMinutes(durationMinutes)
-        );
     }
 
     public List<TechnicalSubjects> getTechTopics() {

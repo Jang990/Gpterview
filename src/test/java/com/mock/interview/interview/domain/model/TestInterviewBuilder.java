@@ -4,7 +4,6 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
-import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
@@ -27,7 +26,6 @@ public class TestInterviewBuilder {
         return new TestInterviewBuilder();
     }
 
-    private InterviewTimeHolder timeHolder = mock(InterviewTimeHolder.class);
     private int durationMinute;
     private LocalDateTime startedAt;
     private LocalDateTime expiredAt;
@@ -74,7 +72,7 @@ public class TestInterviewBuilder {
 
     public Interview build() {
         return Interview.create(
-                timeHolder, mock(InterviewTitle.class),
+                mock(InterviewTitle.class),
                 new InterviewTimer(durationMinute, startedAt, expiredAt), config,
                 new CandidateInfo(user, category, position),
                 InterviewTopicDto.builder()

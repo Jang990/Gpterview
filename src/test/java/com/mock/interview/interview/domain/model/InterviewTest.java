@@ -6,7 +6,6 @@ import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotF
 import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.interview.presentation.dto.InterviewType;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +16,6 @@ import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -70,7 +68,6 @@ class InterviewTest {
 
         assertThrows(RequiredTechTopicNotFoundException.class,
                 () -> Interview.create(
-                        interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),
                         mock(InterviewTimer.class),
                         new InterviewConfigForm(type, 30),
@@ -90,7 +87,6 @@ class InterviewTest {
 
         assertThrows(RequiredExperienceTopicNotFoundException.class,
                 () -> Interview.create(
-                        interviewTimeHolder(LocalDateTime.now()),
                         mock(InterviewTitle.class),
                         mock(InterviewTimer.class),
                         new InterviewConfigForm(type, 30),

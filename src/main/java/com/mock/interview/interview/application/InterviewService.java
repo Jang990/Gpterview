@@ -8,7 +8,6 @@ import com.mock.interview.experience.application.helper.ExperienceFinder;
 import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewStartService;
-import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.model.*;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
@@ -40,8 +39,6 @@ public class InterviewService {
     private final InterviewTitleCreator titleCreator;
     private final CandidateInfoCreator candidateInfoCreator;
     private final InterviewTimerCreator timerCreator;
-    private final InterviewTimeHolder interviewTimeHolder;
-
 
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -71,7 +68,7 @@ public class InterviewService {
         InterviewTimer timer = timerCreator.create(interviewConfig.getDurationMinutes());
 
         Interview interview = Interview.create(
-                interviewTimeHolder, interviewTitle, timer,
+                interviewTitle, timer,
                 interviewConfig, candidateInfo, topics
         );
         interviewStartService.start(interview, repository, users);
