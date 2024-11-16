@@ -1,10 +1,13 @@
 package com.mock.interview.interview.domain.model;
 
+import com.mock.interview.category.domain.model.JobCategory;
+import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.TimeUtils;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
+import com.mock.interview.user.domain.model.Users;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -25,12 +28,19 @@ public class TestInterviewBuilder {
     private LocalDateTime startedAt;
     private LocalDateTime expiredAt;
     private InterviewType type;
-    private List<TechnicalSubjects> techTopics = List.of(mock(TechnicalSubjects.class));
-    private List<Experience> experiencesTopics = List.of(mock(Experience.class));
+    private List<TechnicalSubjects> techTopics;
+    private List<Experience> experiencesTopics;
+
+    private Users users;
+    private JobCategory category = mock(JobCategory.class);
+    private JobPosition position = mock(JobPosition.class);
 
     public TestInterviewBuilder() {
         interviewType(DEFAULT_INTERVIEW_TYPE);
         timer(DEFAULT_START_AT, DEFAULT_EXPIRED_AT);
+        users(mock(Users.class));
+        techTopics(List.of(mock(TechnicalSubjects.class)));
+        experienceTopics(List.of(mock(Experience.class)));
     }
 
     public TestInterviewBuilder timer(LocalDateTime startedAt, LocalDateTime expiredAt) {
@@ -45,6 +55,21 @@ public class TestInterviewBuilder {
         return this;
     }
 
+    public TestInterviewBuilder users(Users users) {
+        this.users = users;
+        return this;
+    }
+
+    public TestInterviewBuilder category(JobCategory category) {
+        this.category = category;
+        return this;
+    }
+
+    public TestInterviewBuilder position(JobPosition position) {
+        this.position = position;
+        return this;
+    }
+
     public TestInterviewBuilder techTopics(List<TechnicalSubjects> techTopics) {
         this.techTopics = techTopics;
         return this;
@@ -55,12 +80,11 @@ public class TestInterviewBuilder {
         return this;
     }
 
-
     public Interview build() {
         return Interview.create(
                 mock(InterviewTitle.class),
                 new InterviewTimer(durationMinute, startedAt, expiredAt), type,
-                mock(CandidateInfo.class),
+                new CandidateInfo(users, category, position),
                 InterviewTopicDto.builder()
                         .techTopics(techTopics)
                         .experienceTopics(experiencesTopics)

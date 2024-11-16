@@ -39,7 +39,7 @@ public class InterviewConversationRepositoryForView {
     }
 
     private BooleanExpression userIdEq(long userId) {
-        return interviewConversationPair.interview.users.id.eq(userId);
+        return interviewConversationPair.interview.candidateInfo.users.id.eq(userId);
     }
 
     private BooleanExpression conversationIdEq(long conversationId) {
