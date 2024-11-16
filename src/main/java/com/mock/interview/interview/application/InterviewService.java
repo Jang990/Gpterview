@@ -71,7 +71,9 @@ public class InterviewService {
                 interviewTitle, timer,
                 interviewConfig.getInterviewType(), candidateInfo, topics
         );
-        interviewStartService.start(interview, repository, users);
+
+        repository.save(interview);
+        interviewStartService.start(interview, users);
         return interview.getId();
     }
 }

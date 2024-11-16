@@ -9,28 +9,19 @@ import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class InterviewStartService {
-    private final int CURRENT_INTERVIEW_IDX = 0;
     private final InterviewTimeHolder timeHolder;
-    public void start(Interview interview, InterviewRepository repository, Users users) {
-        List<Interview> currentInterviewList = repository.findCurrentInterview(users.getId(), RepositoryConst.LIMIT_ONE);
-        if(!currentInterviewList.isEmpty())
-            verifyCurrentInterview(currentInterviewList.get(CURRENT_INTERVIEW_IDX));
-
-        repository.save(interview);
-        interview.continueInterview(timeHolder.now());
-    }
-
-    private void verifyCurrentInterview(Interview currentInterview) {
-        if(isActive(currentInterview))
+    private final ActiveInterviewFinder activeInterviewFinder;
+    public void start(Interview interview, Users users) {
+        LocalDateTime now = timeHolder.now();
+        if(activeInterviewFinder.hasActiveInterview(users, now))
             throw new InterviewAlreadyInProgressException();
-    }
 
-    private boolean isActive(Interview currentInterview) {
-        return !currentInterview.isTimeout(timeHolder.now());
+        interview.continueInterview(now);
     }
 }
