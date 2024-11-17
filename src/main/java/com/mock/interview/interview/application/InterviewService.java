@@ -7,7 +7,6 @@ import com.mock.interview.category.infra.JobPositionRepository;
 import com.mock.interview.experience.application.helper.ExperienceFinder;
 import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
-import com.mock.interview.interview.domain.model.InterviewStartService;
 import com.mock.interview.interview.domain.model.*;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
@@ -40,31 +39,45 @@ public class InterviewService {
     @InterviewCreationUserLock
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public long createCustomInterview(long loginId, InterviewConfigForm interviewConfig, InterviewAccountForm accountForm) {
-        Users users = userRepository.findForInterviewSetting(loginId)
-                .orElseThrow(UserNotFoundException::new);
-        JobCategory category = jobCategoryRepository.findById(accountForm.getCategoryId())
-                .orElseThrow(JobCategoryNotFoundException::new);
-        JobPosition position = jobPositionRepository.findById(accountForm.getPositionId())
-                .orElseThrow(JobCategoryNotFoundException::new);
-
-        CandidateInfo candidateInfo = candidateInfoCreator.create(users, category, position);
-
-        InterviewTopicDto topics = InterviewTopicDto.builder()
-                .techTopics(
-                        TechFinder.findTechs(
-                                technicalSubjectsRepository, accountForm.getTechIds()
-                        )
-                )
-                .experienceTopics(
-                        ExperienceFinder.findUserExperiences(
-                                experienceRepository, accountForm.getExperienceIds(), loginId
-                        )
-                )
-                .build();
+        CandidateInfo candidateInfo = loadCandidateInfo(loginId, accountForm.getCategoryId(), accountForm.getPositionId());
+        InterviewTopicDto topics = loadInterviewTopics(loginId, interviewConfig, accountForm);
         InterviewTimer timer = timerCreator.create(interviewConfig.getDurationMinutes());
 
         return interviewStartService
                 .start(candidateInfo, topics, timer)
                 .getId();
+    }
+
+    private InterviewTopicDto loadInterviewTopics(
+            long loginId,
+            InterviewConfigForm interviewConfig,
+            InterviewAccountForm accountForm) {
+        return InterviewTopicDto.builder()
+                .type(interviewConfig.getInterviewType())
+                .techTopics(
+                        TechFinder.findTechs(
+                                technicalSubjectsRepository,
+                                accountForm.getTechIds()
+                        )
+                )
+                .experienceTopics(
+                        ExperienceFinder.findUserExperiences(
+                                experienceRepository,
+                                accountForm.getExperienceIds(),
+                                loginId
+                        )
+                )
+                .build();
+    }
+
+    private CandidateInfo loadCandidateInfo(long loginId, Long categoryId, Long positionId) {
+        Users users = userRepository.findForInterviewSetting(loginId)
+                .orElseThrow(UserNotFoundException::new);
+        JobCategory category = jobCategoryRepository.findById(categoryId)
+                .orElseThrow(JobCategoryNotFoundException::new);
+        JobPosition position = jobPositionRepository.findById(positionId)
+                .orElseThrow(JobCategoryNotFoundException::new);
+
+        return candidateInfoCreator.create(users, category, position);
     }
 }
