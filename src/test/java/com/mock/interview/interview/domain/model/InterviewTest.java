@@ -55,14 +55,16 @@ class InterviewTest {
         InterviewType type = mock(InterviewType.class);
         when(type.requiredTechTopics()).thenReturn(true);
         InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
+                .type(type)
                 .techTopics(Collections.EMPTY_LIST)
                 .build();
 
         assertThrows(RequiredTechTopicNotFoundException.class,
-                () -> Interview.create(
+                () -> Interview.createNEW(
                         mock(InterviewTitle.class),
-                        mock(InterviewTimer.class), type,
-                        mock(CandidateInfo.class), emptyTechTopics
+                        mock(InterviewTimer.class),
+                        mock(CandidateInfo.class),
+                        emptyTechTopics
                 )
         );
     }
@@ -73,14 +75,16 @@ class InterviewTest {
         InterviewType type = mock(InterviewType.class);
         when(type.requiredExperienceTopics()).thenReturn(true);
         InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
+                .type(type)
                 .experienceTopics(Collections.EMPTY_LIST)
                 .build();
 
         assertThrows(RequiredExperienceTopicNotFoundException.class,
-                () -> Interview.create(
+                () -> Interview.createNEW(
                         mock(InterviewTitle.class),
-                        mock(InterviewTimer.class), type,
-                        mock(CandidateInfo.class), emptyTechTopics
+                        mock(InterviewTimer.class),
+                        mock(CandidateInfo.class),
+                        emptyTechTopics
                 )
         );
     }

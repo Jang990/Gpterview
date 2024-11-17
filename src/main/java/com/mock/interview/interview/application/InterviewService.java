@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class InterviewService {
-    private final InterviewRepository repository;
     private final UserRepository userRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final ExperienceRepository experienceRepository;
@@ -36,7 +35,6 @@ public class InterviewService {
     private final JobCategoryRepository jobCategoryRepository;
     private final JobPositionRepository jobPositionRepository;
 
-    private final InterviewTitleCreator titleCreator;
     private final CandidateInfoCreator candidateInfoCreator;
     private final InterviewTimerCreator timerCreator;
 
@@ -51,7 +49,6 @@ public class InterviewService {
                 .orElseThrow(JobCategoryNotFoundException::new);
 
         CandidateInfo candidateInfo = candidateInfoCreator.create(users, category, position);
-        InterviewTitle interviewTitle = titleCreator.createDefault(category, position);
 
         InterviewTopicDto topics = InterviewTopicDto.builder()
                 .techTopics(
@@ -67,13 +64,8 @@ public class InterviewService {
                 .build();
         InterviewTimer timer = timerCreator.create(interviewConfig.getDurationMinutes());
 
-        Interview interview = Interview.create(
-                interviewTitle, timer,
-                interviewConfig.getInterviewType(), candidateInfo, topics
-        );
-
-        repository.save(interview);
-        interviewStartService.start(interview, users);
-        return interview.getId();
+        return interviewStartService
+                .start(candidateInfo, topics, timer)
+                .getId();
     }
 }

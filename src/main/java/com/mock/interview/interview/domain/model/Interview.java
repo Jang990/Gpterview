@@ -71,25 +71,6 @@ public class Interview {
         return interview;
     }
 
-    public static Interview create(
-            InterviewTitle title,
-            InterviewTimer timer,
-            InterviewType type,
-            CandidateInfo candidateInfo,
-            InterviewTopicDto topicDto
-    ) {
-        Interview interview = new Interview();
-        interview.candidateInfo = candidateInfo;
-        interview.title = title;
-        interview.type = type;
-        interview.timer = timer;
-
-        interview.topics = new InterviewTopics();
-        interview.addTechTopics(topicDto.getTechTopics());
-        interview.addExperienceTopics(topicDto.getExperienceTopics());
-        return interview;
-    }
-
     public List<TechnicalSubjects> getTechTopics() {
         return topics.getTechLink().stream()
                 .map(InterviewTechLink::getTechnicalSubjects)

@@ -81,11 +81,12 @@ public class TestInterviewBuilder {
     }
 
     public Interview build() {
-        return Interview.create(
+        return Interview.createNEW(
                 mock(InterviewTitle.class),
-                new InterviewTimer(durationMinute, startedAt, expiredAt), type,
+                new InterviewTimer(durationMinute, startedAt, expiredAt),
                 new CandidateInfo(users, category, position),
                 InterviewTopicDto.builder()
+                        .type(type)
                         .techTopics(techTopics)
                         .experienceTopics(experiencesTopics)
                         .build()
