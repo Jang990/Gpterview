@@ -1,4 +1,4 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.model.*;

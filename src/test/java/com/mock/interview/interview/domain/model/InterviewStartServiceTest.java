@@ -1,10 +1,10 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
+import com.mock.interview.interview.domain.ActiveInterviewFinder;
+import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
-import com.mock.interview.interview.domain.model.CandidateInfo;
-import com.mock.interview.interview.domain.model.Interview;
-import com.mock.interview.interview.domain.model.InterviewTimer;
+import com.mock.interview.interview.domain.model.*;
 import com.mock.interview.interview.infra.InterviewRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,11 +18,15 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class InterviewStartServiceTest {
-    @Mock InterviewTimeHolder timeHolder;
-    @Mock ActiveInterviewFinder activeInterviewFinder;
+    @Mock
+    InterviewTimeHolder timeHolder;
+    @Mock
+    ActiveInterviewFinder activeInterviewFinder;
     @Mock InterviewRepository repository;
-    @Mock InterviewCreator interviewCreator;
-    @InjectMocks InterviewStartService startService;
+    @Mock
+    InterviewCreator interviewCreator;
+    @InjectMocks
+    InterviewStartService startService;
 
     @DisplayName("현재 이미 진행중인 면접이 있다면, 면접을 진행하지 않는다.")
     @Test

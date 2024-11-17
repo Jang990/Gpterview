@@ -53,7 +53,7 @@ public class Interview {
     @Embedded
     private InterviewTopics topics;
 
-    public static Interview create(
+    protected static Interview create(
             InterviewTitle title,
             InterviewTimer timer,
             CandidateInfo candidateInfo,

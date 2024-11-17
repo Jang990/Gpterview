@@ -1,10 +1,10 @@
-package com.mock.interview.interview.domain;
+package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
+import com.mock.interview.interview.domain.ActiveInterviewFinder;
+import com.mock.interview.interview.domain.InterviewTimeHolder;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
-import com.mock.interview.interview.domain.model.*;
 import com.mock.interview.interview.infra.InterviewRepository;
-import com.mock.interview.user.domain.model.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
