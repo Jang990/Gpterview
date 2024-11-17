@@ -60,7 +60,7 @@ class InterviewTest {
                 .build();
 
         assertThrows(RequiredTechTopicNotFoundException.class,
-                () -> Interview.createNEW(
+                () -> Interview.create(
                         mock(InterviewTitle.class),
                         mock(InterviewTimer.class),
                         mock(CandidateInfo.class),
@@ -80,7 +80,7 @@ class InterviewTest {
                 .build();
 
         assertThrows(RequiredExperienceTopicNotFoundException.class,
-                () -> Interview.createNEW(
+                () -> Interview.create(
                         mock(InterviewTitle.class),
                         mock(InterviewTimer.class),
                         mock(CandidateInfo.class),

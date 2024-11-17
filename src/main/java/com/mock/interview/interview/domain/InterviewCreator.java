@@ -18,6 +18,6 @@ public class InterviewCreator {
     protected Interview create(CandidateInfo candidateInfo, InterviewTopicDto topics, InterviewTimer timer) {
         InterviewTitle interviewTitle = titleCreator
                 .createDefault(candidateInfo.getCategory(), candidateInfo.getPosition());
-        return Interview.createNEW(interviewTitle, timer, candidateInfo, topics);
+        return Interview.create(interviewTitle, timer, candidateInfo, topics);
     }
 }

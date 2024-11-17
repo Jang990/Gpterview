@@ -81,7 +81,7 @@ public class TestInterviewBuilder {
     }
 
     public Interview build() {
-        return Interview.createNEW(
+        return Interview.create(
                 mock(InterviewTitle.class),
                 new InterviewTimer(durationMinute, startedAt, expiredAt),
                 new CandidateInfo(users, category, position),
