@@ -1,10 +1,9 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.ActiveInterviewFinder;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
+import com.mock.interview.interview.domain.InterviewTopicsDto;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
-import com.mock.interview.interview.domain.model.*;
 import com.mock.interview.interview.infra.InterviewRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +35,7 @@ class InterviewStartServiceTest {
         assertThrows(InterviewAlreadyInProgressException.class,
                 () -> startService.start(
                         mock(CandidateInfo.class),
-                        mock(InterviewTopicDto.class),
+                        mock(InterviewTopicsDto.class),
                         mock(InterviewTimer.class)
                 )
         );
@@ -51,7 +50,7 @@ class InterviewStartServiceTest {
 
         Interview result = startService.start(
                 mock(CandidateInfo.class),
-                mock(InterviewTopicDto.class),
+                mock(InterviewTopicsDto.class),
                 mock(InterviewTimer.class)
         );
 

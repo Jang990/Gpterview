@@ -1,7 +1,6 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.interview.application.dto.InterviewTopicDto;
-import com.mock.interview.interview.domain.model.*;
+import com.mock.interview.interview.domain.InterviewTopicsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,10 @@ import org.springframework.stereotype.Service;
 public class InterviewCreator {
     private final InterviewTitleCreator titleCreator;
 
-    protected Interview create(CandidateInfo candidateInfo, InterviewTopicDto topics, InterviewTimer timer) {
+    protected Interview create(
+            CandidateInfo candidateInfo,
+            InterviewTopicsDto topics,
+            InterviewTimer timer) {
         InterviewTitle interviewTitle = titleCreator
                 .createDefault(candidateInfo.getCategory(), candidateInfo.getPosition());
         return Interview.create(interviewTitle, timer, candidateInfo, topics);

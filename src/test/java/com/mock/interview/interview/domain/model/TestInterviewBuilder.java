@@ -4,7 +4,7 @@ import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.category.domain.model.JobPosition;
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.interview.TimeUtils;
-import com.mock.interview.interview.application.dto.InterviewTopicDto;
+import com.mock.interview.interview.domain.InterviewTopicsDto;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
 import com.mock.interview.user.domain.model.Users;
@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TestInterviewBuilder {
     private static final LocalDateTime DEFAULT_START_AT = TimeUtils.time(0, 0);
@@ -81,15 +82,16 @@ public class TestInterviewBuilder {
     }
 
     public Interview build() {
+        InterviewTopicsDto mockTopics = mock(InterviewTopicsDto.class);
+        when(mockTopics.getExperienceTopics()).thenReturn(experiencesTopics);
+        when(mockTopics.getTechTopics()).thenReturn(techTopics);
+        when(mockTopics.getType()).thenReturn(type);
+
         return Interview.create(
                 mock(InterviewTitle.class),
                 new InterviewTimer(durationMinute, startedAt, expiredAt),
                 new CandidateInfo(users, category, position),
-                InterviewTopicDto.builder()
-                        .type(type)
-                        .techTopics(techTopics)
-                        .experienceTopics(experiencesTopics)
-                        .build()
+                mockTopics
         );
     }
 }

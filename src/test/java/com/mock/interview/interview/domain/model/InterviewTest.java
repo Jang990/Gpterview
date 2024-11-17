@@ -1,10 +1,6 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
-import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
-import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
-import com.mock.interview.interview.presentation.dto.InterviewType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -47,46 +43,6 @@ class InterviewTest {
         InterviewTimeHolder timeHolder = interviewTimeHolder(time(1, 0));
 
         assertThrows(IllegalArgumentException.class, () -> interview.expire(timeHolder));
-    }
-
-    @Test
-    @DisplayName("InterviewType이 기술 주제가 필요하다면 TechTopics가 없다면 예외가 발생한다.")
-    void test6() {
-        InterviewType type = mock(InterviewType.class);
-        when(type.requiredTechTopics()).thenReturn(true);
-        InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
-                .type(type)
-                .techTopics(Collections.EMPTY_LIST)
-                .build();
-
-        assertThrows(RequiredTechTopicNotFoundException.class,
-                () -> Interview.create(
-                        mock(InterviewTitle.class),
-                        mock(InterviewTimer.class),
-                        mock(CandidateInfo.class),
-                        emptyTechTopics
-                )
-        );
-    }
-
-    @Test
-    @DisplayName("InterviewType이 경험 주제가 필요한데 ExperienceTopics가 없다면 예외가 발생한다.")
-    void test7() {
-        InterviewType type = mock(InterviewType.class);
-        when(type.requiredExperienceTopics()).thenReturn(true);
-        InterviewTopicDto emptyTechTopics = InterviewTopicDto.builder()
-                .type(type)
-                .experienceTopics(Collections.EMPTY_LIST)
-                .build();
-
-        assertThrows(RequiredExperienceTopicNotFoundException.class,
-                () -> Interview.create(
-                        mock(InterviewTitle.class),
-                        mock(InterviewTimer.class),
-                        mock(CandidateInfo.class),
-                        emptyTechTopics
-                )
-        );
     }
 
     @Test

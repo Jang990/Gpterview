@@ -1,8 +1,8 @@
 package com.mock.interview.interview.domain.model;
 
-import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.ActiveInterviewFinder;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
+import com.mock.interview.interview.domain.InterviewTopicsDto;
 import com.mock.interview.interview.domain.exception.InterviewAlreadyInProgressException;
 import com.mock.interview.interview.infra.InterviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class InterviewStartService {
 
     public Interview start(
             CandidateInfo candidateInfo,
-            InterviewTopicDto topics,
+            InterviewTopicsDto topics,
             InterviewTimer timer
     ) {
         LocalDateTime now = timeHolder.now();
