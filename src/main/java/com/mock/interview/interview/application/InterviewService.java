@@ -7,14 +7,13 @@ import com.mock.interview.category.infra.JobPositionRepository;
 import com.mock.interview.experience.application.helper.ExperienceFinder;
 import com.mock.interview.experience.infra.ExperienceRepository;
 import com.mock.interview.interview.application.dto.InterviewTopicDto;
-import com.mock.interview.interview.domain.InterviewStartService;
+import com.mock.interview.interview.domain.model.InterviewStartService;
 import com.mock.interview.interview.domain.model.*;
 import com.mock.interview.interview.presentation.dto.InterviewAccountForm;
 import com.mock.interview.interview.presentation.dto.InterviewConfigForm;
 import com.mock.interview.category.domain.model.JobCategory;
 import com.mock.interview.interview.infra.lock.creation.InterviewCreationUserLock;
 import com.mock.interview.tech.application.helper.TechFinder;
-import com.mock.interview.interview.infra.InterviewRepository;
 import com.mock.interview.tech.infra.TechnicalSubjectsRepository;
 import com.mock.interview.user.domain.exception.UserNotFoundException;
 import com.mock.interview.user.domain.model.Users;
@@ -28,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class InterviewService {
-    private final InterviewRepository repository;
     private final UserRepository userRepository;
     private final TechnicalSubjectsRepository technicalSubjectsRepository;
     private final ExperienceRepository experienceRepository;
@@ -36,7 +34,6 @@ public class InterviewService {
     private final JobCategoryRepository jobCategoryRepository;
     private final JobPositionRepository jobPositionRepository;
 
-    private final InterviewTitleCreator titleCreator;
     private final CandidateInfoCreator candidateInfoCreator;
     private final InterviewTimerCreator timerCreator;
 
@@ -51,7 +48,6 @@ public class InterviewService {
                 .orElseThrow(JobCategoryNotFoundException::new);
 
         CandidateInfo candidateInfo = candidateInfoCreator.create(users, category, position);
-        InterviewTitle interviewTitle = titleCreator.createDefault(category, position);
 
         InterviewTopicDto topics = InterviewTopicDto.builder()
                 .techTopics(
@@ -67,13 +63,8 @@ public class InterviewService {
                 .build();
         InterviewTimer timer = timerCreator.create(interviewConfig.getDurationMinutes());
 
-        Interview interview = Interview.create(
-                interviewTitle, timer,
-                interviewConfig.getInterviewType(), candidateInfo, topics
-        );
-
-        repository.save(interview);
-        interviewStartService.start(interview, users);
-        return interview.getId();
+        return interviewStartService
+                .start(candidateInfo, topics, timer)
+                .getId();
     }
 }
