@@ -5,9 +5,11 @@ import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotF
 import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.tech.domain.model.TechnicalSubjects;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class InterviewTopicsDtoCreator {
     public InterviewTopicsDto create(
             InterviewType type,

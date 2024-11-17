@@ -2,10 +2,8 @@ package com.mock.interview.interview.domain.model;
 
 import com.mock.interview.experience.domain.Experience;
 import com.mock.interview.global.TimeDifferenceCalculator;
-import com.mock.interview.interview.application.dto.InterviewTopicDto;
 import com.mock.interview.interview.domain.InterviewTimeHolder;
-import com.mock.interview.interview.domain.exception.RequiredExperienceTopicNotFoundException;
-import com.mock.interview.interview.domain.exception.RequiredTechTopicNotFoundException;
+import com.mock.interview.interview.domain.InterviewTopicsDto;
 import com.mock.interview.interview.infra.progress.dto.InterviewPhase;
 import com.mock.interview.interview.presentation.dto.InterviewType;
 import com.mock.interview.category.domain.model.JobCategory;
@@ -57,7 +55,7 @@ public class Interview {
             InterviewTitle title,
             InterviewTimer timer,
             CandidateInfo candidateInfo,
-            InterviewTopicDto topicDto
+            InterviewTopicsDto topicDto
     ) {
         Interview interview = new Interview();
         interview.title = title;
@@ -109,18 +107,12 @@ public class Interview {
     }
 
     private void addTechTopics(List<TechnicalSubjects> techList) {
-        if(type.requiredTechTopics() && techList.isEmpty())
-            throw new RequiredTechTopicNotFoundException();
-
         techList.stream()
                 .map(tech -> InterviewTechLink.createLink(this, tech))
                 .forEach(topics.getTechLink()::add);
     }
 
     private void addExperienceTopics(List<Experience> experienceList) {
-        if (type.requiredExperienceTopics() && experienceList.isEmpty())
-            throw new RequiredExperienceTopicNotFoundException();
-
         experienceList.stream()
                 .map(experience -> InterviewExperienceLink.createLink(this, experience))
                 .forEach(topics.getExperienceLink()::add);
