@@ -53,6 +53,24 @@ public class Interview {
     @Embedded
     private InterviewTopics topics;
 
+    public static Interview createNEW(
+            InterviewTitle title,
+            InterviewTimer timer,
+            CandidateInfo candidateInfo,
+            InterviewTopicDto topicDto
+    ) {
+        Interview interview = new Interview();
+        interview.title = title;
+        interview.timer = timer;
+        interview.candidateInfo = candidateInfo;
+        interview.type = topicDto.getType();
+
+        interview.topics = new InterviewTopics();
+        interview.addTechTopics(topicDto.getTechTopics());
+        interview.addExperienceTopics(topicDto.getExperienceTopics());
+        return interview;
+    }
+
     public static Interview create(
             InterviewTitle title,
             InterviewTimer timer,
