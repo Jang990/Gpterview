@@ -18,14 +18,6 @@ public class InterviewStartService {
     private final InterviewRepository repository;
     private final InterviewCreator interviewCreator;
 
-    public void start(Interview interview, Users users) {
-        LocalDateTime now = timeHolder.now();
-        if(activeInterviewFinder.hasActiveInterview(users, now))
-            throw new InterviewAlreadyInProgressException();
-
-        interview.continueInterview(now);
-    }
-
     public Interview start(
             CandidateInfo candidateInfo,
             InterviewTopicDto topics,

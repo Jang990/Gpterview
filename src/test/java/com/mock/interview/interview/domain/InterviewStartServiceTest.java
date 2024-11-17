@@ -6,7 +6,6 @@ import com.mock.interview.interview.domain.model.CandidateInfo;
 import com.mock.interview.interview.domain.model.Interview;
 import com.mock.interview.interview.domain.model.InterviewTimer;
 import com.mock.interview.interview.infra.InterviewRepository;
-import com.mock.interview.user.domain.model.Users;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +30,11 @@ class InterviewStartServiceTest {
         when(activeInterviewFinder.hasActiveInterview(any(), any())).thenReturn(true);
 
         assertThrows(InterviewAlreadyInProgressException.class,
-                () -> startService.start(mock(Interview.class), mock(Users.class))
+                () -> startService.start(
+                        mock(CandidateInfo.class),
+                        mock(InterviewTopicDto.class),
+                        mock(InterviewTimer.class)
+                )
         );
     }
 
